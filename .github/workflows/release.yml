@@ -5,6 +5,11 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
 env:
   REGISTRY: ghcr.io
 
