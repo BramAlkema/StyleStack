@@ -53,7 +53,7 @@ jobs:
       - name: Resolve design tokens
         run: |
           echo "🎨 Resolving design tokens for: ${{ matrix.name }}"
-          python tools/token_resolver.py ${{ matrix.args }} --format yaml --output resolved-tokens.yaml --verbose
+          python tools/token_resolver.py --channel ${{ matrix.channel }} --format yaml --output resolved-tokens.yaml --verbose
           
       - name: Build templates with enhanced OOXML system
         run: |
