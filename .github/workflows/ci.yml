@@ -206,6 +206,173 @@ jobs:
           print('🎉 All Point and Rectangle tests passed!')
           "
 
+  test-variable-resolver:
+    name: Test Variable Resolution System
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov
+      
+      - name: Run Variable Resolution System tests
+        run: |
+          echo "🔧 Testing Variable Resolution System..."
+          python -m pytest tests/test_formula_variable_resolver.py -v --tb=short --cov=tools.formula_variable_resolver --cov-report=term-missing
+      
+      - name: Test dependency graph resolution
+        run: |
+          echo "📊 Testing dependency graph resolution..."
+          python -c "
+          from tools.formula_variable_resolver import FormulaVariableResolver
+          
+          # Test complex dependency resolution
+          resolver = FormulaVariableResolver()
+          
+          # Core design system variables
+          core_vars = {
+              'SLIDE_W': 12192000,  # 13.33 inches in EMU
+              'SLIDE_H': 6858000,   # 7.5 inches in EMU
+              'SAFE_L': 1219200,    # Left safe margin
+              'SAFE_T': 685800,     # Top safe margin
+              'COL_W': 673100,      # Column width
+              'GUT': 152400,        # Gutter width
+              'GRID_X': 'SAFE_L + (col - 1) * (COL_W + GUT)',  # Grid position formula
+              'GRID_W': 'span * COL_W + (span - 1) * GUT'      # Grid width formula
+          }
+          resolver.add_layer('core', core_vars)
+          
+          # Test resolution with different column values
+          test_cases = [
+              ({'col': 1, 'span': 1}, 'GRID_X', 1219200),  # First column
+              ({'col': 2, 'span': 1}, 'GRID_X', 1219200 + 825500),  # Second column  
+              ({'col': 1, 'span': 2}, 'GRID_W', 673100 * 2 + 152400),  # Two columns
+              ({'col': 3, 'span': 3}, 'GRID_W', 673100 * 3 + 152400 * 2)  # Three columns
+          ]
+          
+          for context, var_name, expected in test_cases:
+              result = resolver.resolve_variable(var_name, context)
+              print(f'✅ {var_name} with {context} = {result} (expected: {expected})')
+              assert result == expected, f'Expected {expected}, got {result}'
+          
+          print('🎉 All dependency resolution tests passed!')
+          "
+      
+      - name: Test hierarchical layer resolution
+        run: |
+          echo "🏗️ Testing hierarchical layer resolution..."
+          python -c "
+          from tools.formula_variable_resolver import FormulaVariableResolver
+          
+          resolver = FormulaVariableResolver()
+          
+          # Core layer - baseline defaults
+          resolver.add_layer('core', {
+              'PRIMARY_COLOR': '#0066CC',
+              'MARGIN': 20,
+              'TITLE_SIZE': 'MARGIN * 2'
+          })
+          
+          # Org layer - corporate overrides
+          resolver.add_layer('org', {
+              'PRIMARY_COLOR': '#FF6600',  # Override color
+              'LOGO_SIZE': 'MARGIN * 3'    # Add new variable
+          })
+          
+          # Channel layer - template flavor
+          resolver.add_layer('channel', {
+              'MARGIN': 30,  # Override margin (affects TITLE_SIZE and LOGO_SIZE)
+          })
+          
+          # Resolve all variables
+          results = resolver.resolve_all()
+          
+          # Verify layer precedence
+          assert results['PRIMARY_COLOR'] == '#FF6600', 'Org layer should override core'
+          assert results['MARGIN'] == 30, 'Channel layer should override core and org'
+          assert results['TITLE_SIZE'] == 60, 'Formula should use latest MARGIN value'
+          assert results['LOGO_SIZE'] == 90, 'Formula should use latest MARGIN value'
+          
+          print('✅ Core variables:', {k: v for k, v in results.items() if k in ['PRIMARY_COLOR', 'MARGIN']})
+          print('✅ Computed variables:', {k: v for k, v in results.items() if k in ['TITLE_SIZE', 'LOGO_SIZE']})
+          print('🎉 All hierarchical resolution tests passed!')
+          "
+      
+      - name: Test circular dependency detection
+        run: |
+          echo "🔄 Testing circular dependency detection..."
+          python -c "
+          from tools.formula_variable_resolver import FormulaVariableResolver, CircularDependencyError
+          
+          resolver = FormulaVariableResolver()
+          
+          # Simple circular dependency
+          resolver.add_layer('core', {
+              'A': 'B + 1',
+              'B': 'A + 1'
+          })
+          
+          try:
+              resolver.resolve_variable('A')
+              assert False, 'Should have detected circular dependency'
+          except CircularDependencyError as e:
+              print(f'✅ Detected simple circular dependency: {e}')
+          
+          # Complex circular dependency
+          resolver = FormulaVariableResolver()
+          resolver.add_layer('core', {
+              'X': 'Y * 2',
+              'Y': 'Z + 5', 
+              'Z': 'X / 3'
+          })
+          
+          try:
+              resolver.resolve_variable('X')
+              assert False, 'Should have detected complex circular dependency'
+          except CircularDependencyError as e:
+              print(f'✅ Detected complex circular dependency: {e}')
+          
+          print('🎉 All circular dependency detection tests passed!')
+          "
+      
+      - name: Test cache invalidation
+        run: |
+          echo "💾 Testing cache invalidation..."
+          python -c "
+          from tools.formula_variable_resolver import FormulaVariableResolver
+          
+          resolver = FormulaVariableResolver()
+          resolver.add_layer('core', {
+              'BASE': 100,
+              'DERIVED_A': 'BASE * 2',
+              'DERIVED_B': 'BASE * 3', 
+              'INDEPENDENT': 500
+          })
+          
+          # Resolve all to populate cache
+          results = resolver.resolve_all()
+          assert len(resolver.resolved_cache) == 4
+          print(f'✅ Initial cache size: {len(resolver.resolved_cache)}')
+          
+          # Invalidate BASE - should clear BASE, DERIVED_A, DERIVED_B but not INDEPENDENT
+          resolver.invalidate_cache({'BASE'})
+          
+          # Check cache state
+          cached_vars = set(resolver.resolved_cache.keys())
+          expected_cached = {'INDEPENDENT'}
+          assert cached_vars == expected_cached, f'Expected {expected_cached}, got {cached_vars}'
+          
+          print(f'✅ Cache after invalidation: {cached_vars}')
+          print('🎉 All cache invalidation tests passed!')
+          "
+
   build-templates:
     name: Build Template Matrix
     runs-on: ubuntu-latest
