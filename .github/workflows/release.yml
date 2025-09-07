@@ -55,10 +55,6 @@ jobs:
           mkdir -p dist/
           
           echo "🚀 Building ${{ matrix.name }} templates with ${{ matrix.channel }} tokens..."
-          echo "🔍 Debug: Checking baseline template files..."
-          ls -la baseline-templates/ || echo "❌ baseline-templates directory not found"
-          echo "📂 Current directory contents:"
-          ls -la
           
           # Extract products from matrix args
           PRODUCTS=$(echo "${{ matrix.args }}" | grep -o 'potx\|dotx\|xltx' | tr '\n' ',' | sed 's/,$//')
@@ -132,14 +128,12 @@ jobs:
             fi
             
             # Create final OOXML package
-            cd "temp-${PRODUCT}"
-            zip -r "../${OUTPUT_PATH}" . || {
+            (cd "temp-${PRODUCT}" && zip -r "../${OUTPUT_PATH}" .) || {
                 echo "❌ Build failed for ${PRODUCT}, creating fallback..."
                 echo "StyleStack ${{ matrix.name }} ${PRODUCT^^} Template v${{ steps.version.outputs.version }}" > "${OUTPUT_PATH}"
                 echo "" >> "${OUTPUT_PATH}"
                 echo "🚀 Built with: StyleStack Modern Typography System" >> "${OUTPUT_PATH}"
                 echo "" >> "${OUTPUT_PATH}"
-                cd ..
                 echo "✅ Clean A4 Grid Template Features:" >> "${OUTPUT_PATH}"
                 echo "  • Inter font stack with professional kerning" >> "${OUTPUT_PATH}"
                 echo "  • A4 paper format (210×297mm) with baseline grid" >> "${OUTPUT_PATH}"
