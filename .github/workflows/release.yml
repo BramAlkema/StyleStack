@@ -95,8 +95,8 @@ jobs:
               # Copy A4 document with grid margins
               cp "${BASELINE_DIR}/minimal-word-a4-document.xml" "temp-${PRODUCT}/word/document.xml"
               
-              # Copy grid-aligned styles
-              cp "${BASELINE_DIR}/minimal-word-styles.xml" "temp-${PRODUCT}/word/styles.xml"
+              # Copy OpenOffice-style grid-aligned styles
+              cp "${BASELINE_DIR}/oo-style-word-styles.xml" "temp-${PRODUCT}/word/styles.xml"
               
               # Create Word Content_Types.xml
               cat > "temp-${PRODUCT}/[Content_Types].xml" << 'EOF'
@@ -127,8 +127,8 @@ EOF
               # Copy A4 worksheet with grid row height
               cp "${BASELINE_DIR}/minimal-excel-a4-worksheet.xml" "temp-${PRODUCT}/xl/worksheets/sheet1.xml"
               
-              # Copy clean styles
-              cp "${BASELINE_DIR}/minimal-excel-styles.xml" "temp-${PRODUCT}/xl/styles.xml"
+              # Copy OpenOffice-style clean styles
+              cp "${BASELINE_DIR}/oo-style-excel-styles.xml" "temp-${PRODUCT}/xl/styles.xml"
               
               # Create Excel Content_Types.xml
               cat > "temp-${PRODUCT}/[Content_Types].xml" << 'EOF'
