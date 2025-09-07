@@ -1,0 +1,72 @@
+# StyleStack Design Token Schema
+# W3C Design Tokens Community Group Draft compatible
+
+$schema: "http://json-schema.org/draft-07/schema#"
+title: "StyleStack Design Token"
+type: object
+
+patternProperties:
+  "^[a-zA-Z0-9-_]+$":
+    type: object
+    properties:
+      value:
+        description: "The actual token value"
+      type:
+        type: string
+        enum: ["color", "dimension", "fontFamily", "fontWeight", "duration", "cubicBezier", "number", "typography", "shadow", "gradient", "transition"]
+        description: "Token type following W3C spec"
+      description:
+        type: string
+        description: "Human readable description"
+      $extensions:
+        type: object
+        description: "Tool-specific extensions"
+        properties:
+          stylestack:
+            type: object
+            properties:
+              emu:
+                type: number
+                description: "EMU value for OOXML precision"
+              contrast:
+                type: number
+                description: "WCAG contrast ratio"
+              category:
+                type: string
+                enum: ["primitive", "semantic", "component"]
+    required: ["value"]
+    additionalProperties: false
+
+definitions:
+  typography:
+    type: object
+    properties:
+      fontFamily:
+        type: string
+      fontSize:
+        type: string
+      lineHeight:
+        type: string
+      fontWeight:
+        type: [string, number]
+      letterSpacing:
+        type: string
+      textAlign:
+        type: string
+        enum: ["left", "center", "right", "justify"]
+    required: ["fontFamily", "fontSize"]
+
+  shadow:
+    type: object
+    properties:
+      color:
+        type: string
+      offsetX:
+        type: string
+      offsetY:
+        type: string
+      blur:
+        type: string
+      spread:
+        type: string
+    required: ["color", "offsetX", "offsetY", "blur"]

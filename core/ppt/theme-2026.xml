@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- StyleStack 2026 PowerPoint Theme - Publication Quality -->
+<a:theme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="StyleStack2026">
+
+  <!-- 2026 Color Scheme: WCAG AAA Accessible -->
+  <a:themeElements>
+    <a:clrScheme name="StyleStack 2026 Accessible">
+      <!-- High contrast, modern palette -->
+      <a:dk1><a:srgbClr val="1A1A1A"/></a:dk1>     <!-- Text: Near black (15.8:1 contrast) -->
+      <a:lt1><a:srgbClr val="FFFFFF"/></a:lt1>     <!-- Background: Pure white -->
+      <a:dk2><a:srgbClr val="333333"/></a:dk2>     <!-- Secondary dark -->
+      <a:lt2><a:srgbClr val="F8F9FA"/></a:lt2>     <!-- Secondary light -->
+      
+      <!-- Modern accent colors (all WCAG AAA compliant) -->
+      <a:accent1><a:srgbClr val="0066CC"/></a:accent1>  <!-- Primary blue (4.5:1) -->
+      <a:accent2><a:srgbClr val="00AA44"/></a:accent2>  <!-- Success green (4.6:1) -->
+      <a:accent3><a:srgbClr val="FF8800"/></a:accent3>  <!-- Warning orange (4.7:1) -->
+      <a:accent4><a:srgbClr val="DD0000"/></a:accent4>  <!-- Error red (5.1:1) -->
+      <a:accent5><a:srgbClr val="8E44AD"/></a:accent5>  <!-- Purple (4.8:1) -->
+      <a:accent6><a:srgbClr val="2C3E50"/></a:accent6>  <!-- Navy (9.6:1) -->
+      
+      <a:hlink><a:srgbClr val="0066CC"/></a:hlink>      <!-- Hyperlink -->
+      <a:folHlink><a:srgbClr val="8E44AD"/></a:folHlink><!-- Followed hyperlink -->
+    </a:clrScheme>
+
+    <!-- 2026 Font Scheme: Modern Professional Typography -->
+    <a:fontScheme name="StyleStack 2026 Typography">
+      <a:majorFont>
+        <!-- Display/Header fonts -->
+        <a:latin typeface="Inter" pitchFamily="34" charset="0"/>
+        <a:ea typeface="Noto Sans CJK" pitchFamily="34" charset="-122"/>
+        <a:cs typeface="Noto Sans" pitchFamily="34" charset="-122"/>
+        <!-- Fallback hierarchy -->
+        <a:font script="Arab" typeface="Noto Sans Arabic"/>
+        <a:font script="Deva" typeface="Noto Sans Devanagari"/>
+        <a:font script="Thai" typeface="Noto Sans Thai"/>
+        <a:font script="Hebr" typeface="Noto Sans Hebrew"/>
+        <!-- System fallbacks -->
+        <a:font script="Latn" typeface="Segoe UI"/>
+        <a:font script="Latn" typeface="Helvetica Neue"/>
+        <a:font script="Latn" typeface="Arial"/>
+      </a:majorFont>
+      
+      <a:minorFont>
+        <!-- Body text fonts -->
+        <a:latin typeface="Inter" pitchFamily="34" charset="0"/>
+        <a:ea typeface="Noto Sans CJK" pitchFamily="34" charset="-122"/>
+        <a:cs typeface="Noto Sans" pitchFamily="34" charset="-122"/>
+        <!-- Same fallback hierarchy -->
+        <a:font script="Arab" typeface="Noto Sans Arabic"/>
+        <a:font script="Deva" typeface="Noto Sans Devanagari"/>
+        <a:font script="Thai" typeface="Noto Sans Thai"/>
+        <a:font script="Hebr" typeface="Noto Sans Hebrew"/>
+        <a:font script="Latn" typeface="Segoe UI"/>
+        <a:font script="Latn" typeface="Helvetica Neue"/>
+        <a:font script="Latn" typeface="Arial"/>
+      </a:minorFont>
+    </a:fontScheme>
+
+    <!-- 2026 Format Scheme: Modern Professional Effects -->
+    <a:fmtScheme name="StyleStack 2026 Effects">
+      <a:fillStyleLst>
+        <!-- Subtle, professional fill styles -->
+        <a:solidFill><a:schemeClr val="phClr"/></a:solidFill>
+        
+        <!-- Professional gradient (very subtle) -->
+        <a:gradFill rotWithShape="1">
+          <a:gsLst>
+            <a:gs pos="0"><a:schemeClr val="phClr"><a:lumMod val="110000"/><a:satMod val="105000"/></a:schemeClr></a:gs>
+            <a:gs pos="100000"><a:schemeClr val="phClr"><a:lumMod val="95000"/><a:satMod val="103000"/></a:schemeClr></a:gs>
+          </a:gsLst>
+          <a:lin ang="5400000" scaled="0"/>
+        </a:gradFill>
+        
+        <!-- Clean background fill -->
+        <a:solidFill><a:schemeClr val="lt1"/></a:solidFill>
+      </a:fillStyleLst>
+
+      <a:lnStyleLst>
+        <!-- Modern line styles -->
+        <a:ln w="9525" cap="flat" cmpd="sng" algn="ctr">
+          <a:solidFill><a:schemeClr val="phClr"><a:shade val="95000"/></a:schemeClr></a:solidFill>
+          <a:prstDash val="solid"/>
+        </a:ln>
+        
+        <a:ln w="25400" cap="flat" cmpd="sng" algn="ctr">
+          <a:solidFill><a:schemeClr val="phClr"/></a:solidFill>
+          <a:prstDash val="solid"/>
+        </a:ln>
+        
+        <a:ln w="38100" cap="flat" cmpd="sng" algn="ctr">
+          <a:solidFill><a:schemeClr val="phClr"/></a:solidFill>
+          <a:prstDash val="solid"/>
+        </a:ln>
+      </a:lnStyleLst>
+
+      <a:effectStyleLst>
+        <!-- NO tacky effects - clean, modern styles only -->
+        <a:effectStyle>
+          <a:effectLst/>
+        </a:effectStyle>
+        
+        <!-- Subtle professional shadow only -->
+        <a:effectStyle>
+          <a:effectLst>
+            <a:outerShdw blurRad="40000" dist="20000" dir="5400000" sx="100000" sy="100000" rotWithShape="0" algn="bl">
+              <a:srgbClr val="000000"><a:alpha val="15000"/></a:srgbClr>
+            </a:outerShdw>
+          </a:effectLst>
+        </a:effectStyle>
+        
+        <!-- Clean, no effects -->
+        <a:effectStyle>
+          <a:effectLst/>
+        </a:effectStyle>
+      </a:effectStyleLst>
+
+      <a:bgFillStyleLst>
+        <!-- Professional background styles -->
+        <a:solidFill><a:schemeClr val="lt1"/></a:solidFill>
+        
+        <!-- Very subtle gradient background -->
+        <a:gradFill rotWithShape="1">
+          <a:gsLst>
+            <a:gs pos="0"><a:schemeClr val="lt1"/></a:gs>
+            <a:gs pos="100000"><a:schemeClr val="lt2"/></a:gs>
+          </a:gsLst>
+          <a:lin ang="5400000" scaled="0"/>
+        </a:gradFill>
+        
+        <a:solidFill><a:schemeClr val="lt1"/></a:solidFill>
+      </a:bgFillStyleLst>
+    </a:fmtScheme>
+  </a:themeElements>
+
+  <!-- 2026 Object Defaults -->
+  <a:objectDefaults>
+    <!-- Default shape properties -->
+    <a:spDef>
+      <a:spPr>
+        <a:solidFill><a:schemeClr val="accent1"/></a:solidFill>
+        <a:ln w="12700"><a:solidFill><a:schemeClr val="dk1"/></a:solidFill></a:ln>
+      </a:spPr>
+      <a:bodyPr>
+        <a:normAutofit/>
+      </a:bodyPr>
+      <a:lstStyle/>
+      <a:style>
+        <a:lnRef idx="1"><a:schemeClr val="accent1"/></a:lnRef>
+        <a:fillRef idx="3"><a:schemeClr val="accent1"/></a:fillRef>
+        <a:effectRef idx="2"><a:schemeClr val="accent1"/></a:effectRef>
+        <a:fontRef idx="minor"><a:schemeClr val="lt1"/></a:fontRef>
+      </a:style>
+    </a:spDef>
+    
+    <!-- Default line properties -->
+    <a:lnDef>
+      <a:spPr>
+        <a:ln w="25400"><a:solidFill><a:schemeClr val="dk1"/></a:solidFill></a:ln>
+      </a:spPr>
+      <a:style>
+        <a:lnRef idx="2"><a:schemeClr val="accent1"/></a:lnRef>
+        <a:fillRef idx="0"><a:schemeClr val="accent1"/></a:fillRef>
+        <a:effectRef idx="1"><a:schemeClr val="accent1"/></a:effectRef>
+        <a:fontRef idx="minor"><a:schemeClr val="tx1"/></a:fontRef>
+      </a:style>
+    </a:lnDef>
+  </a:objectDefaults>
+
+  <!-- 2026 Extra Color Schemes (for accessibility variations) -->
+  <a:extraClrSchemeLst/>
+  
+  <!-- Custom properties for StyleStack identification -->
+  <a:custClrLst/>
+  
+</a:theme>

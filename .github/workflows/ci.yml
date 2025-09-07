@@ -1,0 +1,153 @@
+name: CI - Build and Validate Templates
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-xml:
+    name: Lint XML Structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install XML tools
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+      
+      - name: Lint OOXML files
+        run: |
+          find core/ -name "*.xml" -exec xmllint --noout {} \; || echo "No XML files found yet"
+
+  build-templates:
+    name: Build Template Matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Test different layer combinations
+        include:
+          # Core only
+          - layers: "core-only"
+            args: "--channel present --products potx"
+          # Fork level  
+          - layers: "fork"
+            args: "--fork enterprise-defaults --channel present --products potx"
+          # Full 5-layer stack
+          - layers: "full-stack"
+            args: "--fork enterprise-defaults --org acme --group marketing --personal john-doe --channel present --products potx"
+          # Different channels
+          - layers: "doc-channel"
+            args: "--org acme --channel doc --products dotx"
+          - layers: "finance-channel" 
+            args: "--org acme --group finance --channel finance --products xltx"
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt || echo "No requirements.txt yet"
+      
+      - name: Resolve design tokens
+        run: |
+          echo "🎨 Resolving design tokens for: ${{ matrix.layers }}"
+          python tools/token_resolver.py ${{ matrix.args }} --format yaml --output resolved-tokens.yaml --verbose
+        continue-on-error: true
+
+      - name: Build templates
+        run: |
+          # Create build script if it doesn't exist
+          if [ ! -f build.py ]; then
+            echo "Build script not implemented yet"
+            exit 0
+          fi
+          echo "📦 Building templates: ${{ matrix.layers }}"
+          python build.py ${{ matrix.args }} --tokens resolved-tokens.yaml --verbose
+        continue-on-error: true
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: templates-${{ matrix.layers }}
+          path: dist/
+        if: always()
+
+  validate-quality:
+    name: Quality Validation
+    runs-on: ubuntu-latest
+    needs: build-templates
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install validation tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install lxml colorama pillow || echo "Installing validation dependencies"
+      
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts/
+      
+      - name: Run quality checks
+        run: |
+          # Create validation script if it doesn't exist
+          if [ ! -f tools/validate.py ]; then
+            echo "Validation not implemented yet - checking for tacky effects manually"
+            # Look for banned elements in any XML files
+            if find artifacts/ -name "*.xml" -exec grep -l "a:bevel\|a:glow\|a:shadow" {} \; 2>/dev/null; then
+              echo "❌ Found banned tacky effects!"
+              exit 1
+            else
+              echo "✅ No tacky effects found"
+            fi
+          else
+            python tools/validate.py artifacts/
+          fi
+        continue-on-error: true
+      
+      - name: Check accessibility
+        run: |
+          echo "🔍 Checking accessibility compliance..."
+          echo "✅ Accessibility validation placeholder - implement contrast checking"
+      
+      - name: Verify custom properties
+        run: |
+          echo "🔍 Verifying custom properties..."
+          echo "✅ Custom property validation placeholder - check for BD_Template, BD_Version, etc."
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Scan for secrets
+        run: |
+          echo "🔍 Scanning for potential secrets or API keys..."
+          if grep -r -i "api[_-]key\|secret\|password\|token" --exclude-dir=.git --exclude-dir=.github . || true; then
+            echo "⚠️  Potential secrets found - review manually"
+          else
+            echo "✅ No obvious secrets detected"
+          fi
+      
+      - name: Check for macros
+        run: |
+          echo "🔍 Checking templates contain no executable macros..."
+          if find . -name "*.potx" -o -name "*.dotx" -o -name "*.xltx" | xargs grep -l "vba\|macro" 2>/dev/null || true; then
+            echo "❌ Macros detected in templates!"
+            exit 1
+          else
+            echo "✅ No macros found in templates"
+          fi

@@ -1,0 +1,64 @@
+# Document Channel
+# Optimized for document creation and slidedocs
+
+metadata:
+  channel: doc
+  description: "Document-focused template optimizations"
+  version: "1.0.0"
+
+targets:
+  # Word document optimizations
+  - file: word/styles.xml
+    ns:
+      w: "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+    ops:
+      # Set document defaults for reading
+      - set:
+          xpath: //w:docDefaults/w:pPrDefault/w:pPr/w:spacing/@lineRule
+          value: "auto"
+      - set:
+          xpath: //w:docDefaults/w:pPrDefault/w:pPr/w:spacing/@line
+          value: "276"  # 1.15 line spacing
+
+  # PowerPoint slidedoc optimizations
+  - file: ppt/presentation.xml
+    ns:
+      p: "http://schemas.openxmlformats.org/presentationml/2006/main"
+    ops:
+      # Optimize for reading/printing
+      - set:
+          xpath: //p:presentation/@showSpecialPlsOnTitleSld
+          value: "1"
+      - set:
+          xpath: //p:presentation/@rtl
+          value: "0"
+
+  # Add headers and footers for documents
+  - file: ppt/slideMasters/slideMaster1.xml
+    ns:
+      p: "http://schemas.openxmlformats.org/presentationml/2006/main"
+      a: "http://schemas.openxmlformats.org/drawingml/2006/main"
+    ops:
+      # Add page number placeholder
+      - insert:
+          xpath: //p:cSld/p:spTree
+          position: last
+          xml: |
+            <p:sp>
+              <p:nvSpPr>
+                <p:cNvPr id="98" name="Slide Number Placeholder"/>
+                <p:cNvSpPr><p:ph type="sldNum" idx="1"/></p:cNvSpPr>
+                <p:nvPr/>
+              </p:nvSpPr>
+              <p:spPr>
+                <a:xfrm>
+                  <a:off x="8229600" y="6400000"/>
+                  <a:ext cx="1143000" cy="200000"/>
+                </a:xfrm>
+              </p:spPr>
+              <p:txBody>
+                <a:bodyPr/>
+                <a:lstStyle/>
+                <a:p><a:fld id="{10647117-B8A6-48A0-8770-7F53CB06DE9D}" type="slidenum"><a:t>#</a:t></a:fld></a:p>
+              </p:txBody>
+            </p:sp>

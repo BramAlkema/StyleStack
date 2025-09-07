@@ -1,0 +1,69 @@
+# Enterprise Defaults Fork
+# Conservative corporate styling fork
+
+metadata:
+  fork: enterprise-defaults
+  description: "Conservative corporate styling for enterprise environments"
+  version: "1.0.0"
+  upstream: core
+  philosophy: "Professional, conservative, compliance-focused"
+
+targets:
+  # PowerPoint enterprise colors
+  - file: ppt/theme/theme1.xml
+    ns:
+      a: "http://schemas.openxmlformats.org/drawingml/2006/main"
+    ops:
+      - set:
+          xpath: //a:clrScheme/@name
+          value: "Enterprise Professional"
+      # Conservative blue palette
+      - set:
+          xpath: //a:accent1/a:srgbClr/@val
+          value: "2F5597"  # Professional blue
+      - set:
+          xpath: //a:accent2/a:srgbClr/@val
+          value: "5B9BD5"  # Light blue
+      - set:
+          xpath: //a:accent3/a:srgbClr/@val
+          value: "70AD47"  # Conservative green
+      - set:
+          xpath: //a:accent4/a:srgbClr/@val
+          value: "255192"  # Muted gold
+
+  # Enterprise typography (stick to system fonts)
+  - file: ppt/theme/theme1.xml
+    ns:
+      a: "http://schemas.openxmlformats.org/drawingml/2006/main"
+    ops:
+      - set:
+          xpath: //a:fontScheme/a:majorFont/a:latin/@typeface
+          value: "Calibri"
+      - set:
+          xpath: //a:fontScheme/a:minorFont/a:latin/@typeface
+          value: "Calibri"
+
+  # Remove fancy effects (enterprise compliance)
+  - file: ppt/slideMasters/slideMaster1.xml
+    ns:
+      p: "http://schemas.openxmlformats.org/presentationml/2006/main"
+      a: "http://schemas.openxmlformats.org/drawingml/2006/main"
+    ops:
+      # Ensure no gradients or effects
+      - remove:
+          xpath: "//a:gradFill"
+      - remove:
+          xpath: "//a:effectLst"
+
+  # Word enterprise styles
+  - file: word/styles.xml
+    ns:
+      w: "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+    ops:
+      # Conservative document formatting
+      - set:
+          xpath: "//w:style[@w:styleId='Normal']/w:rPr/w:rFonts/@w:ascii"
+          value: "Calibri"
+      - set:
+          xpath: "//w:style[@w:styleId='Normal']/w:rPr/w:sz/@w:val"
+          value: "22"  # 11pt font size

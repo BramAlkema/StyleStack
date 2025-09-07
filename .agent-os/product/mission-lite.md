@@ -1,0 +1,5 @@
+# Product Mission (Lite)
+
+StyleStack is an OOXML-native build system that helps developers, designers, and IT admins create consistent, accessible Office templates by providing layered, community-driven defaults that replace Microsoft's outdated 1995 styling.
+
+StyleStack serves development teams, IT administrators, and enterprise organizations who need versionable Office template infrastructure with automated deployment. Unlike traditional template tools, StyleStack operates directly on OOXML files using declarative YAML patches and implements a three-layer system (Core → Org → User) where community improvements automatically flow downstream while preserving organizational branding. The system includes CI/CD automation, multi-platform add-ins for Microsoft Office, LibreOffice, and Google Workspace, and treats templates as code with semantic versioning and automated quality validation.

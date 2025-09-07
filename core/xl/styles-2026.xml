@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- StyleStack 2026 Excel Styles - Data-Driven Typography -->
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+
+  <!-- Modern number formats for 2026 -->
+  <numFmts count="12">
+    <!-- Professional accounting formats -->
+    <numFmt numFmtId="164" formatCode="_(&quot;$&quot;* #,##0.00_);_(&quot;$&quot;* \(#,##0.00\);_(&quot;$&quot;* &quot;-&quot;??_);_(@_)"/>
+    <numFmt numFmtId="165" formatCode="[Red](&quot;$&quot;#,##0.00_);[Black]&quot;$&quot;#,##0.00"/>
+    
+    <!-- Modern percentage formats -->
+    <numFmt numFmtId="166" formatCode="0.0%"/>
+    <numFmt numFmtId="167" formatCode="0.00%"/>
+    
+    <!-- International date formats -->
+    <numFmt numFmtId="168" formatCode="[$-409]d/m/yyyy;@"/>
+    <numFmt numFmtId="169" formatCode="[$-409]dd mmm yyyy"/>
+    
+    <!-- Scientific notation -->
+    <numFmt numFmtId="170" formatCode="0.00E+00"/>
+    
+    <!-- Clean number formats -->
+    <numFmt numFmtId="171" formatCode="#,##0"/>
+    <numFmt numFmtId="172" formatCode="#,##0.0"/>
+    <numFmt numFmtId="173" formatCode="#,##0.00"/>
+    
+    <!-- Time formats -->
+    <numFmt numFmtId="174" formatCode="[$-409]h:mm AM/PM"/>
+    <numFmt numFmtId="175" formatCode="[$-409]h:mm:ss"/>
+  </numFmts>
+
+  <!-- Professional fonts with fallbacks -->
+  <fonts count="8">
+    <!-- Default font - Inter for readability -->
+    <font>
+      <sz val="11"/>
+      <color rgb="FF1A1A1A"/>      <!-- High contrast text -->
+      <name val="Inter"/>
+      <family val="2"/>
+      <scheme val="minor"/>
+    </font>
+    
+    <!-- Header font - Inter Medium -->
+    <font>
+      <b/>
+      <sz val="12"/>
+      <color rgb="FF1A1A1A"/>
+      <name val="Inter"/>
+      <family val="2"/>
+      <scheme val="major"/>
+    </font>
+    
+    <!-- Large header font -->
+    <font>
+      <b/>
+      <sz val="14"/>
+      <color rgb="FF1A1A1A"/>
+      <name val="Inter"/>
+      <family val="2"/>
+    </font>
+    
+    <!-- Monospace for data/code -->
+    <font>
+      <sz val="10"/>
+      <color rgb="FF0066CC"/>      <!-- Accent color for code -->
+      <name val="Fira Code"/>
+      <family val="1"/>            <!-- Monospace family -->
+    </font>
+    
+    <!-- Small text/captions -->
+    <font>
+      <sz val="9"/>
+      <color rgb="FF666666"/>      <!-- Muted for secondary info -->
+      <name val="Inter"/>
+      <family val="2"/>
+    </font>
+    
+    <!-- Positive values (green) -->
+    <font>
+      <sz val="11"/>
+      <color rgb="FF00AA44"/>      <!-- Success green -->
+      <name val="Inter"/>
+      <family val="2"/>
+    </font>
+    
+    <!-- Negative values (red) -->
+    <font>
+      <sz val="11"/>
+      <color rgb="FFDD0000"/>      <!-- Error red -->
+      <name val="Inter"/>
+      <family val="2"/>
+    </font>
+    
+    <!-- Hyperlink style -->
+    <font>
+      <u/>
+      <sz val="11"/>
+      <color rgb="FF0066CC"/>      <!-- Link blue -->
+      <name val="Inter"/>
+      <family val="2"/>
+    </font>
+  </fonts>
+
+  <!-- Modern fill patterns -->
+  <fills count="6">
+    <!-- Default fills -->
+    <fill><patternFill patternType="none"/></fill>
+    <fill><patternFill patternType="gray125"/></fill>
+    
+    <!-- Clean white background -->
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="FFFFFFFF"/>
+      </patternFill>
+    </fill>
+    
+    <!-- Light gray for headers -->
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="FFF8F9FA"/>  <!-- Very light gray -->
+      </patternFill>
+    </fill>
+    
+    <!-- Accent background -->
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="FFE3F2FD"/>  <!-- Light blue tint -->
+      </patternFill>
+    </fill>
+    
+    <!-- Warning background -->
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="FFFFF3E0"/>  <!-- Light orange tint -->
+      </patternFill>
+    </fill>
+  </fills>
+
+  <!-- Professional borders -->
+  <borders count="6">
+    <!-- No border -->
+    <border>
+      <left/><right/><top/><bottom/><diagonal/>
+    </border>
+    
+    <!-- Thin border all around -->
+    <border>
+      <left style="thin"><color rgb="FFE0E0E0"/></left>
+      <right style="thin"><color rgb="FFE0E0E0"/></right>
+      <top style="thin"><color rgb="FFE0E0E0"/></top>
+      <bottom style="thin"><color rgb="FFE0E0E0"/></bottom>
+    </border>
+    
+    <!-- Header border (top and bottom) -->
+    <border>
+      <left/>
+      <right/>
+      <top style="thin"><color rgb="FF333333"/></top>
+      <bottom style="medium"><color rgb="FF1A1A1A"/></bottom>
+    </border>
+    
+    <!-- Data row border (bottom only) -->
+    <border>
+      <left/>
+      <right/>
+      <top/>
+      <bottom style="thin"><color rgb="FFE0E0E0"/></bottom>
+    </border>
+    
+    <!-- Total row border (top) -->
+    <border>
+      <left/>
+      <right/>
+      <top style="medium"><color rgb="FF333333"/></top>
+      <bottom/>
+    </border>
+    
+    <!-- Accent border -->
+    <border>
+      <left style="thin"><color rgb="FF0066CC"/></left>
+      <right/>
+      <top/>
+      <bottom/>
+    </border>
+  </borders>
+
+  <!-- Professional cell styles -->
+  <cellXfs count="12">
+    <!-- Default style - Inter 11pt -->
+    <xf numFmtId="0" fontId="0" fillId="2" borderId="0" xfId="0">
+      <alignment horizontal="left" vertical="center"/>
+    </xf>
+    
+    <!-- Header style -->
+    <xf numFmtId="0" fontId="1" fillId="3" borderId="2" xfId="0">
+      <alignment horizontal="center" vertical="center"/>
+    </xf>
+    
+    <!-- Number style with comma separator -->
+    <xf numFmtId="171" fontId="0" fillId="2" borderId="1" xfId="0">
+      <alignment horizontal="right" vertical="center"/>
+    </xf>
+    
+    <!-- Currency style -->
+    <xf numFmtId="164" fontId="0" fillId="2" borderId="1" xfId="0">
+      <alignment horizontal="right" vertical="center"/>
+    </xf>
+    
+    <!-- Percentage style -->
+    <xf numFmtId="166" fontId="0" fillId="2" borderId="1" xfId="0">
+      <alignment horizontal="right" vertical="center"/>
+    </xf>
+    
+    <!-- Date style -->
+    <xf numFmtId="169" fontId="0" fillId="2" borderId="1" xfId="0">
+      <alignment horizontal="center" vertical="center"/>
+    </xf>
+    
+    <!-- Code/monospace style -->
+    <xf numFmtId="0" fontId="3" fillId="4" borderId="1" xfId="0">
+      <alignment horizontal="left" vertical="center"/>
+    </xf>
+    
+    <!-- Positive value style -->
+    <xf numFmtId="171" fontId="5" fillId="2" borderId="1" xfId="0">
+      <alignment horizontal="right" vertical="center"/>
+    </xf>
+    
+    <!-- Negative value style -->
+    <xf numFmtId="171" fontId="6" fillId="2" borderId="1" xfId="0">
+      <alignment horizontal="right" vertical="center"/>
+    </xf>
+    
+    <!-- Total row style -->
+    <xf numFmtId="164" fontId="1" fillId="2" borderId="4" xfId="0">
+      <alignment horizontal="right" vertical="center"/>
+    </xf>
+    
+    <!-- Hyperlink style -->
+    <xf numFmtId="0" fontId="7" fillId="2" borderId="0" xfId="0">
+      <alignment horizontal="left" vertical="center"/>
+    </xf>
+    
+    <!-- Caption/small text style -->
+    <xf numFmtId="0" fontId="4" fillId="2" borderId="0" xfId="0">
+      <alignment horizontal="left" vertical="center"/>
+    </xf>
+  </cellXfs>
+
+  <!-- Master cell style formats -->
+  <cellStyleXfs count="1">
+    <xf numFmtId="0" fontId="0" fillId="0" borderId="0"/>
+  </cellStyleXfs>
+
+  <!-- Named cell styles -->
+  <cellStyles count="6">
+    <cellStyle name="Normal" xfId="0" builtinId="0"/>
+    <cellStyle name="Header" xfId="1"/>
+    <cellStyle name="Currency" xfId="3"/>
+    <cellStyle name="Percentage" xfId="4"/>
+    <cellStyle name="Code" xfId="6"/>
+    <cellStyle name="Total" xfId="9"/>
+  </cellStyles>
+
+  <!-- Professional table styles -->
+  <tableStyles count="1" defaultTableStyle="ProfessionalTable">
+    <tableStyle name="ProfessionalTable" 
+                pivot="0" 
+                count="7">
+      <!-- Header row -->
+      <tableStyleElement type="headerRow" 
+                        dxfId="0"/>
+      <!-- Total row -->
+      <tableStyleElement type="totalRow" 
+                        dxfId="1"/>
+      <!-- First column -->
+      <tableStyleElement type="firstColumn" 
+                        dxfId="2"/>
+      <!-- Last column -->
+      <tableStyleElement type="lastColumn" 
+                        dxfId="3"/>
+      <!-- Banded rows -->
+      <tableStyleElement type="firstRowStripe" 
+                        dxfId="4"/>
+      <tableStyleElement type="secondRowStripe" 
+                        dxfId="5"/>
+    </tableStyle>
+  </tableStyles>
+
+  <!-- Differential formatting for table styles -->
+  <dxfs count="6">
+    <!-- Header row formatting -->
+    <dxf>
+      <font><b/><color rgb="FF1A1A1A"/></font>
+      <fill><patternFill patternType="solid"><fgColor rgb="FFF8F9FA"/></patternFill></fill>
+      <border><bottom style="medium"><color rgb="FF333333"/></bottom></border>
+    </dxf>
+    
+    <!-- Total row formatting -->
+    <dxf>
+      <font><b/><color rgb="FF1A1A1A"/></font>
+      <border><top style="medium"><color rgb="FF333333"/></top></border>
+    </dxf>
+    
+    <!-- First column formatting -->
+    <dxf>
+      <font><b/></font>
+    </dxf>
+    
+    <!-- Last column formatting -->
+    <dxf>
+      <border><right style="thin"><color rgb="FF333333"/></right></border>
+    </dxf>
+    
+    <!-- First row stripe -->
+    <dxf>
+      <fill><patternFill patternType="solid"><fgColor rgb="FFFAFAFA"/></patternFill></fill>
+    </dxf>
+    
+    <!-- Second row stripe (white) -->
+    <dxf>
+      <fill><patternFill patternType="solid"><fgColor rgb="FFFFFFFF"/></patternFill></fill>
+    </dxf>
+  </dxfs>
+
+</styleSheet>

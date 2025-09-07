@@ -1,0 +1,405 @@
+# StyleStack Core Typography Tokens - 2026 Edition  
+# EMU-precision typography with professional scaling
+
+$schema: "../schema/token.schema.yaml"
+
+# Font family primitives
+fonts:
+  primary:
+    value: ["Inter", "Segoe UI", "-apple-system", "BlinkMacSystemFont", "sans-serif"]
+    type: "fontFamily"
+    description: "Primary font stack with excellent readability"
+    $extensions:
+      stylestack:
+        category: "primitive"
+  
+  secondary:
+    value: ["Noto Sans", "Inter", "Segoe UI", "Arial", "sans-serif"] 
+    type: "fontFamily"
+    description: "Secondary font with international character support"
+    $extensions:
+      stylestack:
+        category: "primitive"
+  
+  monospace:
+    value: ["Fira Code", "SF Mono", "Monaco", "Consolas", "monospace"]
+    type: "fontFamily"
+    description: "Monospace font for code and data"
+    $extensions:
+      stylestack:
+        category: "primitive"
+
+# Font weight primitives
+weights:
+  light:
+    value: 300
+    type: "fontWeight"
+    description: "Light weight for elegant headings"
+    $extensions:
+      stylestack:
+        category: "primitive"
+  
+  regular:
+    value: 400
+    type: "fontWeight"
+    description: "Regular weight for body text"
+    $extensions:
+      stylestack:
+        category: "primitive"
+  
+  medium:
+    value: 500
+    type: "fontWeight"
+    description: "Medium weight for emphasis"
+    $extensions:
+      stylestack:
+        category: "primitive"
+  
+  semibold:
+    value: 600
+    type: "fontWeight"
+    description: "Semi-bold for strong headings"
+    $extensions:
+      stylestack:
+        category: "primitive"
+  
+  bold:
+    value: 700
+    type: "fontWeight"
+    description: "Bold for strong emphasis"
+    $extensions:
+      stylestack:
+        category: "primitive"
+
+# Font size primitives (2026 professional scale)
+sizes:
+  xs:
+    value: "9pt"
+    type: "dimension"
+    description: "Extra small for captions, fine print"
+    $extensions:
+      stylestack:
+        emu: 114300
+        category: "primitive"
+  
+  sm:
+    value: "11pt"
+    type: "dimension" 
+    description: "Small for secondary text"
+    $extensions:
+      stylestack:
+        emu: 139700
+        category: "primitive"
+  
+  base:
+    value: "12pt"
+    type: "dimension"
+    description: "Base font size for body text"
+    $extensions:
+      stylestack:
+        emu: 152400
+        category: "primitive"
+  
+  lg:
+    value: "14pt"
+    type: "dimension"
+    description: "Large for emphasized text"
+    $extensions:
+      stylestack:
+        emu: 177800
+        category: "primitive"
+  
+  xl:
+    value: "16pt"
+    type: "dimension"
+    description: "Extra large for subheadings"
+    $extensions:
+      stylestack:
+        emu: 203200
+        category: "primitive"
+  
+  "2xl":
+    value: "18pt"
+    type: "dimension"
+    description: "2XL baseline grid aligned"
+    $extensions:
+      stylestack:
+        emu: 228600
+        category: "primitive"
+  
+  "3xl":
+    value: "24pt"
+    type: "dimension"
+    description: "3XL for large headings"
+    $extensions:
+      stylestack:
+        emu: 304800
+        category: "primitive"
+  
+  "4xl":
+    value: "36pt"
+    type: "dimension"
+    description: "4XL for display text"
+    $extensions:
+      stylestack:
+        emu: 457200
+        category: "primitive"
+  
+  "5xl":
+    value: "48pt"
+    type: "dimension"
+    description: "5XL for hero text"
+    $extensions:
+      stylestack:
+        emu: 609600
+        category: "primitive"
+  
+  "6xl":
+    value: "72pt"
+    type: "dimension"
+    description: "6XL for display headlines"
+    $extensions:
+      stylestack:
+        emu: 914400
+        category: "primitive"
+
+# Line height primitives (EMU-based for precision)
+lineHeights:
+  tight:
+    value: "1.1"
+    type: "number"
+    description: "Tight line height for headlines"
+    $extensions:
+      stylestack:
+        category: "primitive"
+  
+  normal:
+    value: "1.25"
+    type: "number"
+    description: "Normal line height for body text"
+    $extensions:
+      stylestack:
+        category: "primitive"
+  
+  relaxed:
+    value: "1.4"
+    type: "number"
+    description: "Relaxed line height for readability"
+    $extensions:
+      stylestack:
+        category: "primitive"
+  
+  loose:
+    value: "1.6"
+    type: "number"
+    description: "Loose line height for accessibility"
+    $extensions:
+      stylestack:
+        category: "primitive"
+
+# Letter spacing primitives
+letterSpacing:
+  tighter:
+    value: "-0.05em"
+    type: "dimension"
+    description: "Tighter tracking for large text"
+    $extensions:
+      stylestack:
+        category: "primitive"
+  
+  tight:
+    value: "-0.025em"
+    type: "dimension"
+    description: "Slightly tight tracking"
+    $extensions:
+      stylestack:
+        category: "primitive"
+  
+  normal:
+    value: "0"
+    type: "dimension"
+    description: "Normal letter spacing"
+    $extensions:
+      stylestack:
+        category: "primitive"
+  
+  wide:
+    value: "0.025em"
+    type: "dimension"
+    description: "Wide tracking for small text"
+    $extensions:
+      stylestack:
+        category: "primitive"
+  
+  wider:
+    value: "0.05em"
+    type: "dimension"
+    description: "Wider tracking for emphasis"
+    $extensions:
+      stylestack:
+        category: "primitive"
+
+# Semantic typography tokens (complete type styles)
+typography:
+  # Display styles
+  display:
+    large:
+      value:
+        fontFamily: "{fonts.primary}"
+        fontSize: "{sizes.6xl}"
+        fontWeight: "{weights.light}"
+        lineHeight: "{lineHeights.tight}"
+        letterSpacing: "{letterSpacing.tighter}"
+      type: "typography"
+      description: "Large display text for heroes, major headlines"
+      $extensions:
+        stylestack:
+          category: "semantic"
+  
+    medium:
+      value:
+        fontFamily: "{fonts.primary}"
+        fontSize: "{sizes.5xl}"
+        fontWeight: "{weights.regular}"
+        lineHeight: "{lineHeights.tight}"
+        letterSpacing: "{letterSpacing.tight}"
+      type: "typography"
+      description: "Medium display text for section headlines"
+      $extensions:
+        stylestack:
+          category: "semantic"
+  
+    small:
+      value:
+        fontFamily: "{fonts.primary}"
+        fontSize: "{sizes.4xl}"
+        fontWeight: "{weights.medium}"
+        lineHeight: "{lineHeights.normal}"
+        letterSpacing: "{letterSpacing.normal}"
+      type: "typography"
+      description: "Small display text for page titles"
+      $extensions:
+        stylestack:
+          category: "semantic"
+
+  # Heading styles  
+  heading:
+    h1:
+      value:
+        fontFamily: "{fonts.primary}"
+        fontSize: "{sizes.3xl}"
+        fontWeight: "{weights.semibold}"
+        lineHeight: "{lineHeights.tight}"
+        letterSpacing: "{letterSpacing.normal}"
+      type: "typography"
+      description: "H1 heading style"
+      $extensions:
+        stylestack:
+          category: "semantic"
+    
+    h2:
+      value:
+        fontFamily: "{fonts.primary}"
+        fontSize: "{sizes.2xl}"
+        fontWeight: "{weights.semibold}"
+        lineHeight: "{lineHeights.normal}"
+        letterSpacing: "{letterSpacing.normal}"
+      type: "typography"
+      description: "H2 heading style"
+      $extensions:
+        stylestack:
+          category: "semantic"
+    
+    h3:
+      value:
+        fontFamily: "{fonts.primary}"
+        fontSize: "{sizes.xl}"
+        fontWeight: "{weights.medium}"
+        lineHeight: "{lineHeights.normal}"
+        letterSpacing: "{letterSpacing.normal}"
+      type: "typography"
+      description: "H3 heading style"
+      $extensions:
+        stylestack:
+          category: "semantic"
+    
+    h4:
+      value:
+        fontFamily: "{fonts.primary}"
+        fontSize: "{sizes.lg}"
+        fontWeight: "{weights.medium}"
+        lineHeight: "{lineHeights.normal}"
+        letterSpacing: "{letterSpacing.normal}"
+      type: "typography"
+      description: "H4 heading style"
+      $extensions:
+        stylestack:
+          category: "semantic"
+
+  # Body text styles
+  body:
+    large:
+      value:
+        fontFamily: "{fonts.primary}"
+        fontSize: "{sizes.lg}"
+        fontWeight: "{weights.regular}"
+        lineHeight: "{lineHeights.relaxed}"
+        letterSpacing: "{letterSpacing.normal}"
+      type: "typography"
+      description: "Large body text for emphasis"
+      $extensions:
+        stylestack:
+          category: "semantic"
+    
+    normal:
+      value:
+        fontFamily: "{fonts.primary}"
+        fontSize: "{sizes.base}"
+        fontWeight: "{weights.regular}"
+        lineHeight: "{lineHeights.normal}"
+        letterSpacing: "{letterSpacing.normal}"
+      type: "typography"
+      description: "Normal body text"
+      $extensions:
+        stylestack:
+          category: "semantic"
+    
+    small:
+      value:
+        fontFamily: "{fonts.primary}"
+        fontSize: "{sizes.sm}"
+        fontWeight: "{weights.regular}"
+        lineHeight: "{lineHeights.normal}"
+        letterSpacing: "{letterSpacing.normal}"
+      type: "typography"
+      description: "Small body text for secondary content"
+      $extensions:
+        stylestack:
+          category: "semantic"
+
+  # Special purpose styles
+  caption:
+    value:
+      fontFamily: "{fonts.primary}"
+      fontSize: "{sizes.xs}"
+      fontWeight: "{weights.regular}"
+      lineHeight: "{lineHeights.normal}"
+      letterSpacing: "{letterSpacing.wide}"
+    type: "typography"
+    description: "Caption text for images, tables"
+    $extensions:
+      stylestack:
+        category: "semantic"
+
+  code:
+    value:
+      fontFamily: "{fonts.monospace}"
+      fontSize: "{sizes.sm}"
+      fontWeight: "{weights.regular}"
+      lineHeight: "{lineHeights.normal}"
+      letterSpacing: "{letterSpacing.normal}"
+    type: "typography"
+    description: "Code and monospace text"
+    $extensions:
+      stylestack:
+        category: "semantic"

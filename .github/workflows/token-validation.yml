@@ -1,0 +1,144 @@
+name: Token Validation - Design System Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths: 
+      - 'tokens/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'tokens/**'
+
+jobs:
+  validate-tokens:
+    name: Validate Design Tokens
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml jsonschema click colorama
+      
+      - name: Validate token schema
+        run: |
+          echo "🔍 Validating token schema compliance..."
+          find tokens/core -name "*.yaml" -exec echo "Checking {}" \;
+          # TODO: Add jsonschema validation against W3C spec
+      
+      - name: Test token resolution
+        run: |
+          echo "🎨 Testing token resolution engine..."
+          
+          # Test core-only resolution
+          python tools/token_resolver.py --verbose --format json > core-tokens.json
+          echo "✅ Core tokens resolved"
+          
+          # Test channel overrides
+          python tools/token_resolver.py --channel present --verbose --format json > present-tokens.json
+          echo "✅ Present channel tokens resolved"
+          
+          python tools/token_resolver.py --channel doc --verbose --format json > doc-tokens.json  
+          echo "✅ Doc channel tokens resolved"
+          
+          python tools/token_resolver.py --channel finance --verbose --format json > finance-tokens.json
+          echo "✅ Finance channel tokens resolved"
+      
+      - name: Check accessibility compliance
+        run: |
+          echo "♿ Checking WCAG AAA compliance..."
+          python -c "
+import json
+import sys
+
+def hex_to_rgb(hex_color):
+    hex_color = hex_color.lstrip('#')
+    return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+
+def relative_luminance(rgb):
+    r, g, b = [c/255.0 for c in rgb]
+    def adjust(c):
+        if c <= 0.03928:
+            return c / 12.92
+        else:
+            return ((c + 0.055) / 1.055) ** 2.4
+    return 0.2126 * adjust(r) + 0.7152 * adjust(g) + 0.0722 * adjust(b)
+
+def contrast_ratio(color1_rgb, color2_rgb):
+    lum1 = relative_luminance(color1_rgb)
+    lum2 = relative_luminance(color2_rgb)
+    brighter = max(lum1, lum2)
+    darker = min(lum1, lum2)
+    return (brighter + 0.05) / (darker + 0.05)
+
+# Load resolved tokens
+with open('core-tokens.json') as f:
+    tokens = json.load(f)
+
+failed = False
+white_rgb = (255, 255, 255)
+
+for key, value in tokens.items():
+    if 'colors' in key and isinstance(value, str) and value.startswith('#'):
+        try:
+            color_rgb = hex_to_rgb(value)
+            ratio = contrast_ratio(color_rgb, white_rgb)
+            
+            # Check if it's meant to be readable text color
+            if 'text' in key or any(x in key for x in ['primary', 'secondary', '500', '700', '900']):
+                if ratio < 7.0:  # WCAG AAA requirement
+                    print(f'❌ Poor contrast: {key} = {value} (ratio: {ratio:.1f})')
+                    failed = True
+                else:
+                    print(f'✅ Good contrast: {key} = {value} (ratio: {ratio:.1f})')
+        except:
+            pass
+
+if failed:
+    sys.exit(1)
+else:
+    print('🎉 All colors meet WCAG AAA standards!')
+"
+      
+      - name: Generate token documentation
+        run: |
+          echo "📚 Generating token documentation..."
+          
+          # Create token reference
+          cat > token-reference.md << 'EOF'
+# StyleStack Design Token Reference
+          
+*Auto-generated from token resolution*
+          
+## Core Color Tokens
+          
+EOF
+          
+          python -c "
+import json
+with open('core-tokens.json') as f:
+    tokens = json.load(f)
+    
+color_tokens = {k: v for k, v in tokens.items() if 'colors' in k}
+for key, value in sorted(color_tokens.items()):
+    if isinstance(value, str) and (value.startswith('#') or value.startswith('rgb')):
+        print(f'- **{key}**: {value}')
+" >> token-reference.md
+          
+          echo "✅ Token documentation generated"
+      
+      - name: Upload token artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: resolved-tokens
+          path: |
+            *.json
+            token-reference.md
+        if: always()

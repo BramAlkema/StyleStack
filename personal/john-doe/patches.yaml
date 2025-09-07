@@ -1,0 +1,62 @@
+# John Doe Personal Preferences
+# Individual customizations
+
+metadata:
+  personal: john-doe
+  group: marketing
+  org: acme
+  description: "John's personal template preferences"
+  version: "1.0.0"
+
+targets:
+  # John prefers larger fonts for better readability
+  - file: ppt/theme/theme1.xml
+    ns:
+      a: "http://schemas.openxmlformats.org/drawingml/2006/main"
+    ops:
+      # Increase default font sizes
+      - set:
+          xpath: "//a:defRPr/@sz"
+          value: "2000"  # 20pt instead of default 18pt
+
+  # John likes minimal bullet points
+  - file: ppt/slideMasters/slideMaster1.xml
+    ns:
+      p: "http://schemas.openxmlformats.org/presentationml/2006/main"
+      a: "http://schemas.openxmlformats.org/drawingml/2006/main"
+    ops:
+      # Simple dash bullets instead of fancy ones
+      - set:
+          xpath: //a:buChar/@char
+          value: "—"
+      # Slightly larger line spacing for readability
+      - set:
+          xpath: //a:lnSpc/a:spcPct/@val
+          value: "120000"  # 120% line spacing
+
+  # John's preferred slide layout adjustments
+  - file: ppt/slideMasters/slideMaster1.xml
+    ns:
+      p: "http://schemas.openxmlformats.org/presentationml/2006/main"
+      a: "http://schemas.openxmlformats.org/drawingml/2006/main"
+    ops:
+      # Wider margins for less cramped feel
+      - set:
+          xpath: //p:sp[p:nvSpPr/p:cNvPr[@name='Content Placeholder 2']]/p:spPr/a:xfrm/a:off/@x
+          value: "685800"  # Slightly wider left margin
+      - set:
+          xpath: //p:sp[p:nvSpPr/p:cNvPr[@name='Content Placeholder 2']]/p:spPr/a:xfrm/a:ext/@cx
+          value: "7772400"  # Correspondingly narrower content
+
+  # Word document preferences
+  - file: word/styles.xml
+    ns:
+      w: "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+    ops:
+      # John prefers single spacing in documents
+      - set:
+          xpath: "//w:style[@w:styleId='Normal']/w:pPr/w:spacing/@w:line"
+          value: "240"  # Single spacing
+      - set:
+          xpath: "//w:style[@w:styleId='Normal']/w:pPr/w:spacing/@w:lineRule"
+          value: "auto"
