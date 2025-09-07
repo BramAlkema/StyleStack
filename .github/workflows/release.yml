@@ -55,6 +55,10 @@ jobs:
           mkdir -p dist/
           
           echo "🚀 Building ${{ matrix.name }} templates with ${{ matrix.channel }} tokens..."
+          echo "🔍 Debug: Checking baseline template files..."
+          ls -la baseline-templates/ || echo "❌ baseline-templates directory not found"
+          echo "📂 Current directory contents:"
+          ls -la
           
           # Extract products from matrix args
           PRODUCTS=$(echo "${{ matrix.args }}" | grep -o 'potx\|dotx\|xltx' | tr '\n' ',' | sed 's/,$//')
