@@ -16,8 +16,9 @@ EMU_PER_POINT = 12700
 EMU_PER_CM = 360000
 
 # Maximum safe EMU value to prevent overflow in calculations
-MAX_EMU_VALUE = 2**31 - 1  # Max 32-bit signed integer
-MIN_EMU_VALUE = -2**31
+# Use 64-bit range but keep reasonable limits for OOXML usage
+MAX_EMU_VALUE = 2**50  # Very large but safe for multiplication
+MIN_EMU_VALUE = -2**50
 
 
 class EMUOverflowError(OverflowError):
