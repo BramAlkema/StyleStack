@@ -73,3 +73,7 @@ htmlcov/
 *.key
 *.pem
 cosign.key
+
+# Claude Code and Agent OS directories
+.claude/
+.agent-os/
