@@ -259,7 +259,7 @@ jobs:
           
           for context, var_name, expected in test_cases:
               # Clear cache before each test to avoid interference
-              resolver.resolved_cache.clear()
+              resolver.invalidate_cache()
               result = resolver.resolve_variable(var_name, context)
               print(f'✅ {var_name} with {context} = {result} (expected: {expected})')
               
