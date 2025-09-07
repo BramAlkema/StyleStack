@@ -98,12 +98,13 @@ class DependencyGraph:
             cycle_strs = [" → ".join(cycle) for cycle in cycles]
             raise CircularDependencyError(f"Circular dependencies detected: {'; '.join(cycle_strs)}")
         
-        # Kahn's algorithm
-        in_degree = {node: 0 for node in self.nodes}
-        for node in self.nodes:
-            for dep in self.edges[node]:
-                in_degree[dep] += 1
+        # Kahn's algorithm - but we need to reverse the logic since our edges
+        # go from node -> dependencies, but we need dependencies first
         
+        # Calculate in-degree: how many variables depend on this variable
+        in_degree = {node: len(self.reverse_edges[node]) for node in self.nodes}
+        
+        # Start with nodes that no other nodes depend on (leaves)
         queue = deque([node for node in self.nodes if in_degree[node] == 0])
         result = []
         
@@ -111,16 +112,18 @@ class DependencyGraph:
             node = queue.popleft()
             result.append(node)
             
-            for dependent in self.reverse_edges[node]:
-                in_degree[dependent] -= 1
-                if in_degree[dependent] == 0:
-                    queue.append(dependent)
+            # For each dependency of this node, reduce its in-degree
+            for dep in self.edges[node]:
+                in_degree[dep] -= 1
+                if in_degree[dep] == 0:
+                    queue.append(dep)
         
         if len(result) != len(self.nodes):
             # This shouldn't happen if cycle detection worked correctly
             raise CircularDependencyError("Failed to resolve all dependencies")
         
-        return result
+        # Reverse the result since we want dependencies first
+        return result[::-1]
 
 
 class FormulaVariableResolver:
@@ -245,6 +248,9 @@ class FormulaVariableResolver:
                         eval_context.update(context)
                     
                     result = self.parser.evaluate(ast, eval_context)
+                except CircularDependencyError:
+                    # Re-raise circular dependency errors without wrapping
+                    raise
                 except Exception as e:
                     raise ValueError(f"Failed to evaluate formula for variable '{name}': {value}. Error: {e}")
             else:
