@@ -105,7 +105,7 @@ jobs:
               python3 tools/template_patcher.py "${BASELINE_DIR}/oo-style-word-styles.xml" "temp-${PRODUCT}/word/styles.xml" resolved-tokens.json
               
               # Create Word Content_Types.xml
-              cat > "temp-${PRODUCT}/[Content_Types].xml" << 'XMLXMLEOF'
+              cat > "temp-${PRODUCT}/[Content_Types].xml" << 'XMLEOF'
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
   <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
