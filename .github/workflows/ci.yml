@@ -258,8 +258,19 @@ jobs:
           ]
           
           for context, var_name, expected in test_cases:
+              # Clear cache before each test to avoid interference
+              resolver.resolved_cache.clear()
               result = resolver.resolve_variable(var_name, context)
               print(f'✅ {var_name} with {context} = {result} (expected: {expected})')
+              
+              # Debug information if test fails
+              if result != expected:
+                  print(f'❌ Test failed! Debug info:')
+                  print(f'   Variable definition: {resolver.get_variable_definition(var_name)}')
+                  print(f'   Context: {context}')
+                  print(f'   Result: {result}')
+                  print(f'   Expected: {expected}')
+              
               assert result == expected, f'Expected {expected}, got {result}'
           
           print('🎉 All dependency resolution tests passed!')
