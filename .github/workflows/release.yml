@@ -44,11 +44,16 @@ jobs:
           echo "🔧 Setting up OOXML build environment"
           echo "Using native zip command for OOXML packaging"
       
-      - name: Build templates with enhanced OOXML system
+      - name: Resolve design tokens for channel
+        run: |
+          echo "🎨 Resolving design tokens for ${{ matrix.channel }} channel..."
+          python3 tools/token_resolver.py --channel ${{ matrix.channel }} --format json --output resolved-tokens.json --verbose
+          
+      - name: Build templates with token-patched OOXML system
         run: |
           mkdir -p dist/
           
-          echo "🚀 Building ${{ matrix.name }} templates (Clean A4 Grid Style)..."
+          echo "🚀 Building ${{ matrix.name }} templates with ${{ matrix.channel }} tokens..."
           
           # Extract products from matrix args
           PRODUCTS=$(echo "${{ matrix.args }}" | grep -o 'potx\|dotx\|xltx' | tr '\n' ',' | sed 's/,$//')
@@ -95,8 +100,8 @@ jobs:
               # Copy A4 document with grid margins
               cp "${BASELINE_DIR}/minimal-word-a4-document.xml" "temp-${PRODUCT}/word/document.xml"
               
-              # Copy OpenOffice-style grid-aligned styles
-              cp "${BASELINE_DIR}/oo-style-word-styles.xml" "temp-${PRODUCT}/word/styles.xml"
+              # Apply tokens to OpenOffice-style grid-aligned styles
+              python3 tools/template_patcher.py "${BASELINE_DIR}/oo-style-word-styles.xml" "temp-${PRODUCT}/word/styles.xml" resolved-tokens.json
               
               # Create Word Content_Types.xml
               cat > "temp-${PRODUCT}/[Content_Types].xml" << 'EOF'
@@ -127,8 +132,8 @@ EOF
               # Copy A4 worksheet with grid row height
               cp "${BASELINE_DIR}/minimal-excel-a4-worksheet.xml" "temp-${PRODUCT}/xl/worksheets/sheet1.xml"
               
-              # Copy OpenOffice-style clean styles
-              cp "${BASELINE_DIR}/oo-style-excel-styles.xml" "temp-${PRODUCT}/xl/styles.xml"
+              # Apply tokens to OpenOffice-style clean styles
+              python3 tools/template_patcher.py "${BASELINE_DIR}/oo-style-excel-styles.xml" "temp-${PRODUCT}/xl/styles.xml" resolved-tokens.json
               
               # Create Excel Content_Types.xml
               cat > "temp-${PRODUCT}/[Content_Types].xml" << 'EOF'

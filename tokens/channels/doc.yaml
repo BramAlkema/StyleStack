@@ -1,0 +1,5 @@
+# Document channel overrides  
+overrides:
+  fonts.primary: "Inter"
+  grid.font_size: 24    # 12pt for documents
+  colors.accent: "#333333"  # Neutral for documents
