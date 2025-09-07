@@ -98,6 +98,114 @@ jobs:
           print('🎉 All dependency extraction tests passed!')
           "
 
+  test-emu-type-system:
+    name: Test EMU Type System
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov
+      
+      - name: Run EMU type system tests
+        run: |
+          echo "🧮 Testing EMU Type System..."
+          python -m pytest tests/test_emu_type_system.py -v --tb=short --cov=tools.emu_types --cov-report=term-missing
+      
+      - name: Test EMU conversions
+        run: |
+          echo "📏 Testing unit conversions..."
+          python -c "
+          from tools.emu_types import EMUValue, inches_to_emu, points_to_emu, cm_to_emu
+          
+          # Test standard conversions
+          one_inch = inches_to_emu(1.0)
+          print(f'✅ 1 inch = {one_inch.value} EMU')
+          assert one_inch.value == 914400
+          
+          seventy_two_points = points_to_emu(72.0)  # 1 inch
+          print(f'✅ 72 points = {seventy_two_points.value} EMU')
+          assert seventy_two_points.value == 914400
+          
+          one_cm = cm_to_emu(1.0)
+          print(f'✅ 1 cm = {one_cm.value} EMU')
+          assert one_cm.value == 360000
+          
+          print('🎉 All unit conversions passed!')
+          "
+      
+      - name: Test EMU arithmetic operations
+        run: |
+          echo "➕ Testing EMU arithmetic..."
+          python -c "
+          from tools.emu_types import EMUValue
+          
+          # Test arithmetic operations
+          a = EMUValue(1000000)
+          b = EMUValue(500000)
+          
+          # Addition
+          result = a + b
+          print(f'✅ {a.value} + {b.value} = {result.value}')
+          assert result.value == 1500000
+          
+          # Subtraction  
+          result = a - b
+          print(f'✅ {a.value} - {b.value} = {result.value}')
+          assert result.value == 500000
+          
+          # Multiplication
+          result = a * 2
+          print(f'✅ {a.value} * 2 = {result.value}')
+          assert result.value == 2000000
+          
+          # Division
+          result = a / 2
+          print(f'✅ {a.value} / 2 = {result.value}')
+          assert result.value == 500000
+          
+          print('🎉 All EMU arithmetic operations passed!')
+          "
+      
+      - name: Test Point and Rectangle classes
+        run: |
+          echo "📐 Testing Point and Rectangle classes..."
+          python -c "
+          from tools.emu_types import Point, Rectangle, EMUValue
+          
+          # Test Point operations
+          p1 = Point(100000, 200000)
+          p2 = Point(50000, 75000)
+          
+          result = p1 + p2
+          print(f'✅ Point addition: ({result.x.value}, {result.y.value})')
+          assert result.x.value == 150000 and result.y.value == 275000
+          
+          # Test Rectangle operations
+          rect = Rectangle(100000, 200000, 300000, 400000)
+          print(f'✅ Rectangle: {rect.x.value}, {rect.y.value}, {rect.width.value} × {rect.height.value}')
+          
+          # Test center calculation
+          center = rect.center()
+          print(f'✅ Rectangle center: ({center.x.value}, {center.y.value})')
+          assert center.x.value == 250000 and center.y.value == 400000
+          
+          # Test OOXML output
+          ooxml = rect.to_ooxml()
+          expected = {'x': '100000', 'y': '200000', 'cx': '300000', 'cy': '400000'}
+          print(f'✅ OOXML output: {ooxml}')
+          assert ooxml == expected
+          
+          print('🎉 All Point and Rectangle tests passed!')
+          "
+
   build-templates:
     name: Build Template Matrix
     runs-on: ubuntu-latest

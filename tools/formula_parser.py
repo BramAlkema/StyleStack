@@ -487,7 +487,7 @@ class FormulaParser:
         
         return errors
     
-    def evaluate(self, ast: ExpressionAST, context: Dict[str, Any]) -> Union[int, float]:
+    def evaluate(self, ast: ExpressionAST, context: Dict[str, Any]) -> Union[int, float, 'EMUValue']:
         """
         Evaluate an AST with variable context
         
@@ -496,7 +496,7 @@ class FormulaParser:
             context: Dictionary mapping variable names to values
             
         Returns:
-            Numeric result of evaluation
+            Numeric result of evaluation (supports EMUValue for precise OOXML calculations)
             
         Raises:
             EvaluationError: If variables are undefined or operations fail
