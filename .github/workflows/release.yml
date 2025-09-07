@@ -104,24 +104,9 @@ jobs:
               # Apply tokens to OpenOffice-style grid-aligned styles
               python3 tools/template_patcher.py "${BASELINE_DIR}/oo-style-word-styles.xml" "temp-${PRODUCT}/word/styles.xml" resolved-tokens.json
               
-              # Create Word Content_Types.xml
-              cat > "temp-${PRODUCT}/[Content_Types].xml" << 'XMLEOF'
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
-  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
-  <Default Extension="xml" ContentType="application/xml"/>
-  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.template.main+xml"/>
-  <Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>
-</Types>
-XMLEOF
-              
-              # Create Word relationships
-              cat > "temp-${PRODUCT}/_rels/.rels" << 'XMLEOF'
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
-</Relationships>
-XMLEOF
+              # Copy Word OOXML structure files
+              cp "${BASELINE_DIR}/word-content-types.xml" "temp-${PRODUCT}/[Content_Types].xml"
+              cp "${BASELINE_DIR}/word-rels.xml" "temp-${PRODUCT}/_rels/.rels"
               
             elif [ "$PRODUCT" == "xltx" ]; then
               # Create Excel template with A4 + Grid
@@ -136,34 +121,10 @@ XMLEOF
               # Apply tokens to OpenOffice-style clean styles
               python3 tools/template_patcher.py "${BASELINE_DIR}/oo-style-excel-styles.xml" "temp-${PRODUCT}/xl/styles.xml" resolved-tokens.json
               
-              # Create Excel Content_Types.xml
-              cat > "temp-${PRODUCT}/[Content_Types].xml" << 'XMLEOF'
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
-  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
-  <Default Extension="xml" ContentType="application/xml"/>
-  <Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.template.main+xml"/>
-  <Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
-  <Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>
-</Types>
-XMLEOF
-              
-              # Create Excel relationships
-              cat > "temp-${PRODUCT}/_rels/.rels" << 'XMLEOF'
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>
-</Relationships>
-XMLEOF
-              
-              # Create workbook relationships
-              cat > "temp-${PRODUCT}/xl/_rels/workbook.xml.rels" << 'XMLEOF'
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
-  <Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
-</Relationships>
-XMLEOF
+              # Copy Excel OOXML structure files
+              cp "${BASELINE_DIR}/excel-content-types.xml" "temp-${PRODUCT}/[Content_Types].xml"
+              cp "${BASELINE_DIR}/excel-rels.xml" "temp-${PRODUCT}/_rels/.rels"
+              cp "${BASELINE_DIR}/excel-workbook-rels.xml" "temp-${PRODUCT}/xl/_rels/workbook.xml.rels"
             fi
             
             # Create final OOXML package

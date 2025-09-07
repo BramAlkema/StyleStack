@@ -135,7 +135,7 @@ for key, value in sorted(color_tokens.items()):
           echo "✅ Token documentation generated"
       
       - name: Upload token artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: resolved-tokens
           path: |

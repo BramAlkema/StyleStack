@@ -72,7 +72,7 @@ jobs:
         continue-on-error: true
       
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: templates-${{ matrix.layers }}
           path: dist/
@@ -96,7 +96,7 @@ jobs:
           pip install lxml colorama pillow || echo "Installing validation dependencies"
       
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: artifacts/
       
@@ -145,9 +145,11 @@ jobs:
       - name: Check for macros
         run: |
           echo "🔍 Checking templates contain no executable macros..."
-          if find . -name "*.potx" -o -name "*.dotx" -o -name "*.xltx" | xargs grep -l "vba\|macro" 2>/dev/null || true; then
-            echo "❌ Macros detected in templates!"
+          # Check for actual macro files inside OOXML packages (vbaProject.bin)
+          MACRO_FILES=$(find . -name "*.potx" -o -name "*.dotx" -o -name "*.xltx" | xargs -I {} unzip -l {} 2>/dev/null | grep -c "vbaProject.bin" || echo "0")
+          if [ "$MACRO_FILES" -gt 0 ]; then
+            echo "❌ Actual macro files detected in templates!"
             exit 1
           else
-            echo "✅ No macros found in templates"
+            echo "✅ No executable macros found in templates"
           fi
