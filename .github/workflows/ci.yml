@@ -20,6 +20,84 @@ jobs:
         run: |
           find core/ -name "*.xml" -exec xmllint --noout {} \; || echo "No XML files found yet"
 
+  test-formula-parser:
+    name: Test Formula Parser Engine
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov
+      
+      - name: Run formula parser tests
+        run: |
+          echo "🧪 Testing Formula Parser Engine..."
+          python -m pytest tests/test_formula_parser.py -v --tb=short --cov=tools.formula_parser --cov-report=term-missing
+      
+      - name: Test formula parser examples
+        run: |
+          echo "📊 Testing formula evaluation examples..."
+          python -c "
+          from tools.formula_parser import FormulaParser
+          parser = FormulaParser()
+          
+          # Test grid system formulas
+          context = {
+              'SLIDE_W': 12192000, 'SLIDE_H': 6858000,
+              'SAFE_L': 1219200, 'SAFE_T': 685800,
+              'COL_W': 673100, 'GUT': 152400
+          }
+          
+          test_cases = [
+              ('42', 42),
+              ('SLIDE_W + SLIDE_H', 12192000 + 6858000),
+              ('SAFE_L + (2 - 1) * (COL_W + GUT)', 1219200 + 1 * (673100 + 152400)),
+              ('SLIDE_W * 0.1', 1219200.0)
+          ]
+          
+          for expr, expected in test_cases:
+              try:
+                  ast = parser.parse(expr)
+                  result = parser.evaluate(ast, context)
+                  print(f'✅ {expr} = {result} (expected: {expected})')
+                  assert abs(result - expected) < 1e-6, f'Expected {expected}, got {result}'
+              except Exception as e:
+                  print(f'❌ {expr} failed: {e}')
+                  raise
+          
+          print('🎉 All formula parser examples passed!')
+          "
+      
+      - name: Test formula dependency extraction
+        run: |
+          echo "🔍 Testing dependency extraction..."
+          python -c "
+          from tools.formula_parser import FormulaParser
+          parser = FormulaParser()
+          
+          test_cases = [
+              ('SLIDE_W', {'SLIDE_W'}),
+              ('SLIDE_W + SLIDE_H', {'SLIDE_W', 'SLIDE_H'}),
+              ('SAFE_L + (col - 1) * (COL_W + GUT)', {'SAFE_L', 'col', 'COL_W', 'GUT'}),
+              ('x(col + 1)', {'col'}),
+              ('42', set())
+          ]
+          
+          for expr, expected in test_cases:
+              deps = parser.extract_dependencies(expr)
+              print(f'✅ {expr} -> {deps}')
+              assert deps == expected, f'Expected {expected}, got {deps}'
+          
+          print('🎉 All dependency extraction tests passed!')
+          "
+
   build-templates:
     name: Build Template Matrix
     runs-on: ubuntu-latest

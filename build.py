@@ -1,24 +1,39 @@
 #!/usr/bin/env python3
 """
-StyleStack OOXML patcher (PowerPoint/Word/Excel)
-- Input: baseline template files (.potx/.dotx/.pptx from baseline-templates/)
-- Tokens: YAML files merged core→channel→org→user
-- Patches: YAML files merged core→channel→org→user (order matters)
-- Output: deterministic .potx/.dotx/.xltx templates with comprehensive error handling
+StyleStack OOXML Extension Variable System
+- Input: OOXML template files (.potx/.dotx/.xltx) with embedded extension variables
+- Processing: Variable resolution with hierarchical precedence (core→channel→org→user)
+- Output: Customized templates with variables substituted
 
 Usage examples:
-  python build.py --baseline Normal.dotm --patch core/typography.yaml --tokens tokens/core.yaml --out dist/out.dotx
-  python build.py --org acme --channel present --products potx,dotx,xltx --version 1.0.0
+  python build.py --src template.potx --out customized.potx --org acme --channel present
 """
 
-import argparse, io, os, re, shutil, sys, tempfile, zipfile, pathlib, hashlib, time
+import os, shutil, sys, tempfile, zipfile, pathlib
 import traceback, logging
-from typing import List, Dict, Any, Optional, Union
+from typing import Dict, Any, Optional
 from dataclasses import dataclass, field
 from enum import Enum
 from lxml import etree as ET
-import yaml
 import click
+
+# Import OOXML Extension Variable System components
+try:
+    from tools.variable_resolver import VariableResolver
+    from tools.ooxml_processor import OOXMLProcessor
+    from tools.theme_resolver import ThemeResolver
+    from tools.variable_substitution import VariableSubstitutionPipeline
+    from tools.extension_schema_validator import ExtensionSchemaValidator
+    EXTENSION_SYSTEM_AVAILABLE = True
+except ImportError as e:
+    print(f"Warning: Could not import OOXML Extension Variable System components: {e}")
+    print("Extension variable features will be disabled.")
+    VariableResolver = None
+    OOXMLProcessor = None
+    ThemeResolver = None
+    VariableSubstitutionPipeline = None
+    ExtensionSchemaValidator = None
+    EXTENSION_SYSTEM_AVAILABLE = False
 
 # ---------- Error Handling System ----------
 class StyleStackError(Exception):
@@ -32,46 +47,36 @@ class StyleStackError(Exception):
 class ErrorCode(Enum):
     # File System Errors (1xxx)
     SOURCE_NOT_FOUND = 1001
-    SOURCE_NOT_READABLE = 1002
-    OUTPUT_PATH_INVALID = 1003
-    TEMP_DIR_FAILED = 1004
     ZIP_EXTRACTION_FAILED = 1005
     ZIP_CREATION_FAILED = 1006
     
-    # YAML/Token Errors (2xxx)
-    YAML_PARSE_ERROR = 2001
-    TOKEN_NOT_FOUND = 2002
-    TOKEN_CIRCULAR_REF = 2003
-    PATCH_FILE_INVALID = 2004
-    
     # XML/OOXML Errors (3xxx)
     XML_PARSE_ERROR = 3001
-    XML_XPATH_INVALID = 3002
-    XML_NAMESPACE_ERROR = 3003
-    OOXML_STRUCTURE_INVALID = 3004
     CONTENT_TYPE_ERROR = 3005
     
     # Validation Errors (4xxx)
-    TEMPLATE_VALIDATION_FAILED = 4001
     BANNED_EFFECT_DETECTED = 4002
     BROKEN_RELATIONSHIP = 4003
     MISSING_REQUIRED_PARTS = 4004
     
-    # Build Process Errors (5xxx)
-    PATCH_APPLICATION_FAILED = 5001
-    TOKEN_RESOLUTION_FAILED = 5002
-    LAYER_MERGE_FAILED = 5003
+    # Extension Variable Errors (5xxx)
+    EXTENSION_PROCESSING_FAILED = 5001
 
 @dataclass
 class BuildContext:
-    """Build context with comprehensive error tracking"""
+    """Build context with extension variable system support"""
     source_path: pathlib.Path
     output_path: pathlib.Path
     temp_dir: pathlib.Path
-    tokens: Dict[str, Any] = field(default_factory=dict)
-    patches_applied: List[str] = field(default_factory=list)
-    errors: List[StyleStackError] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
+    errors: list = field(default_factory=list)
+    warnings: list = field(default_factory=list)
+    
+    # Extension variable system components
+    variable_resolver: Optional[VariableResolver] = None
+    ooxml_processor: Optional[OOXMLProcessor] = None
+    theme_resolver: Optional[ThemeResolver] = None
+    substitution_pipeline: Optional[VariableSubstitutionPipeline] = None
+    extension_validator: Optional[ExtensionSchemaValidator] = None
     
     def add_error(self, error: StyleStackError):
         self.errors.append(error)
@@ -82,22 +87,8 @@ class BuildContext:
     def has_errors(self) -> bool:
         return len(self.errors) > 0
 
-# ---------- Namespaces ----------
-NS = {
-    "a": "http://schemas.openxmlformats.org/drawingml/2006/main",
-    "p": "http://schemas.openxmlformats.org/presentationml/2006/main",
-    "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
-    "c": "http://schemas.openxmlformats.org/drawingml/2006/chart",
-    "w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
-    "w14": "http://schemas.microsoft.com/office/word/2010/wordml",
-    "w15": "http://schemas.microsoft.com/office/word/2012/wordml",
-    "s": "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
-    "ct": "http://schemas.openxmlformats.org/package/2006/content-types",
-    "rel": "http://schemas.openxmlformats.org/package/2006/relationships",
-}
-
-EMU_PER_IN = 914400
-def inch(x: float) -> int: return int(round(x * EMU_PER_IN))
+# ---------- Constants ----------
+EPOCH_1980 = (1980,1,1,0,0,0)
 
 # ---------- Safe File Operations ----------
 def safe_unzip(src_zip: pathlib.Path, dst_dir: pathlib.Path, context: BuildContext):
@@ -126,7 +117,6 @@ def safe_unzip(src_zip: pathlib.Path, dst_dir: pathlib.Path, context: BuildConte
             {"file": str(src_zip), "error": str(e)}
         )
 
-EPOCH_1980 = (1980,1,1,0,0,0)
 def safe_zip_dir(src_dir: pathlib.Path, out_zip: pathlib.Path, context: BuildContext):
     """Create deterministic ZIP with error handling"""
     try:
@@ -145,151 +135,6 @@ def safe_zip_dir(src_dir: pathlib.Path, out_zip: pathlib.Path, context: BuildCon
             {"output": str(out_zip), "error": str(e)}
         )
 
-# ---------- Enhanced Token System ----------
-_TOKEN_RX = re.compile(r"\{tokens\.([a-zA-Z0-9_.-]+)\}")
-
-def load_tokens_safe(paths: List[pathlib.Path], context: BuildContext) -> Dict[str, Any]:
-    """Load and merge token files with comprehensive error handling"""
-    merged: Dict[str, Any] = {}
-    
-    for p in paths:
-        try:
-            if not p.exists():
-                context.add_warning(f"Token file not found: {p}")
-                continue
-                
-            with open(p, "r", encoding="utf-8") as f:
-                content = f.read()
-                if not content.strip():
-                    context.add_warning(f"Empty token file: {p}")
-                    continue
-                    
-                layer = yaml.safe_load(content)
-                if layer is None:
-                    context.add_warning(f"No tokens found in: {p}")
-                    continue
-                    
-                merged = deep_merge(merged, layer)
-                
-        except yaml.YAMLError as e:
-            raise StyleStackError(
-                f"YAML parse error in {p}: {e}",
-                ErrorCode.YAML_PARSE_ERROR.value,
-                {"file": str(p), "error": str(e)}
-            )
-        except Exception as e:
-            raise StyleStackError(
-                f"Failed to load token file {p}: {e}",
-                ErrorCode.YAML_PARSE_ERROR.value,
-                {"file": str(p), "error": str(e)}
-            )
-    
-    # Flatten tokens with circular reference detection
-    flat = {}
-    try:
-        flatten_tokens_safe(merged, flat, prefix=[], visited=set())
-    except RecursionError:
-        raise StyleStackError(
-            "Circular reference detected in tokens",
-            ErrorCode.TOKEN_CIRCULAR_REF.value
-        )
-    
-    return flat
-
-def deep_merge(a, b):
-    """Deep merge two dictionaries"""
-    if isinstance(a, dict) and isinstance(b, dict):
-        out = dict(a)
-        for k, v in b.items():
-            out[k] = deep_merge(a.get(k), v)
-        return out
-    return b
-
-def flatten_tokens_safe(node, out: Dict[str, Any], prefix: List[str], visited: set):
-    """Flatten tokens with circular reference detection"""
-    key = ".".join(prefix)
-    if key in visited:
-        raise RecursionError(f"Circular reference: {key}")
-    
-    visited.add(key)
-    
-    try:
-        if isinstance(node, dict) and "value" in node and len(node) <= 3:  # { value, type?, description? }
-            out[key] = node["value"]
-            return
-            
-        if isinstance(node, dict):
-            for k, v in node.items():
-                flatten_tokens_safe(v, out, prefix + [k], visited.copy())
-        else:
-            out[key] = node
-    finally:
-        visited.discard(key)
-
-def resolve_tokens_safe(s: Any, tokens: Dict[str, Any], context: BuildContext) -> Any:
-    """Resolve tokens with comprehensive error handling"""
-    if not isinstance(s, str): 
-        return s
-        
-    def repl(m):
-        key = m.group(1)
-        if key not in tokens:
-            error = StyleStackError(
-                f"Missing token: {key}",
-                ErrorCode.TOKEN_NOT_FOUND.value,
-                {"token": key, "available": list(tokens.keys())[:10]}
-            )
-            context.add_error(error)
-            return f"{{MISSING:{key}}}"  # Fail gracefully
-        return str(tokens[key])
-    
-    try:
-        return _TOKEN_RX.sub(repl, s)
-    except Exception as e:
-        raise StyleStackError(
-            f"Token resolution failed: {e}",
-            ErrorCode.TOKEN_RESOLUTION_FAILED.value,
-            {"string": s, "error": str(e)}
-        )
-
-# ---------- Enhanced XML Operations ----------
-def load_xml_safe(path: pathlib.Path, context: BuildContext) -> Optional[ET._ElementTree]:
-    """Load XML with comprehensive error handling"""
-    try:
-        if not path.exists():
-            raise StyleStackError(
-                f"XML file not found: {path}",
-                ErrorCode.SOURCE_NOT_FOUND.value,
-                {"file": str(path)}
-            )
-        
-        return ET.parse(str(path))
-        
-    except ET.XMLSyntaxError as e:
-        raise StyleStackError(
-            f"XML parse error in {path}: {e}",
-            ErrorCode.XML_PARSE_ERROR.value,
-            {"file": str(path), "line": e.lineno, "error": str(e)}
-        )
-    except Exception as e:
-        raise StyleStackError(
-            f"Failed to load XML {path}: {e}",
-            ErrorCode.XML_PARSE_ERROR.value,
-            {"file": str(path), "error": str(e)}
-        )
-
-def save_xml_safe(tree: ET._ElementTree, path: pathlib.Path, context: BuildContext):
-    """Save XML with error handling"""
-    try:
-        path.parent.mkdir(parents=True, exist_ok=True)
-        xml_bytes = ET.tostring(tree, xml_declaration=True, encoding="utf-8", standalone=True)
-        path.write_bytes(xml_bytes)
-    except Exception as e:
-        raise StyleStackError(
-            f"Failed to save XML {path}: {e}",
-            ErrorCode.XML_PARSE_ERROR.value,
-            {"file": str(path), "error": str(e)}
-        )
 
 # ---------- Template Content-Type Management ----------
 CONTENT_TYPES = {
@@ -303,6 +148,8 @@ CONTENT_TYPES = {
 
 def flip_content_type(content_types_path: pathlib.Path, target_format: str, context: BuildContext):
     """Convert between document and template formats with error handling"""
+    import re
+    
     try:
         if not content_types_path.exists():
             raise StyleStackError(
@@ -349,194 +196,12 @@ def flip_content_type(content_types_path: pathlib.Path, target_format: str, cont
                 {"format": target_format, "error": str(e)}
             )
 
-# ---------- Enhanced Patch Engine ----------
-def apply_patches_safe(root: pathlib.Path, patch_files: List[pathlib.Path], tokens: Dict[str, Any], context: BuildContext):
-    """Apply patches with comprehensive error handling"""
-    for patch_path in patch_files:
-        try:
-            if not patch_path.exists():
-                context.add_warning(f"Patch file not found: {patch_path}")
-                continue
-                
-            spec = yaml.safe_load(patch_path.read_text(encoding="utf-8"))
-            if not spec:
-                context.add_warning(f"Empty patch file: {patch_path}")
-                continue
-                
-            for tgt in spec.get("targets", []):
-                try:
-                    apply_single_patch_target(root, tgt, tokens, context, patch_path)
-                    context.patches_applied.append(f"{patch_path.name}:{tgt.get('file', 'unknown')}")
-                except StyleStackError as e:
-                    e.context.update({"patch_file": str(patch_path), "target": tgt.get("file", "unknown")})
-                    context.add_error(e)
-                except Exception as e:
-                    error = StyleStackError(
-                        f"Patch application failed: {e}",
-                        ErrorCode.PATCH_APPLICATION_FAILED.value,
-                        {"patch_file": str(patch_path), "target": tgt.get("file", "unknown"), "error": str(e)}
-                    )
-                    context.add_error(error)
-                    
-        except yaml.YAMLError as e:
-            raise StyleStackError(
-                f"Invalid patch file {patch_path}: {e}",
-                ErrorCode.PATCH_FILE_INVALID.value,
-                {"file": str(patch_path), "error": str(e)}
-            )
-        except Exception as e:
-            raise StyleStackError(
-                f"Failed to process patch {patch_path}: {e}",
-                ErrorCode.PATCH_APPLICATION_FAILED.value,
-                {"file": str(patch_path), "error": str(e)}
-            )
 
-def apply_single_patch_target(root: pathlib.Path, tgt: Dict, tokens: Dict[str, Any], context: BuildContext, patch_path: pathlib.Path):
-    """Apply a single patch target with error handling"""
-    rel_file = tgt.get("file")
-    if not rel_file:
-        raise StyleStackError("Patch target missing 'file' field", ErrorCode.PATCH_FILE_INVALID.value)
-    
-    file_path = root / rel_file
-    if not file_path.exists():
-        raise StyleStackError(f"Patch target not found: {rel_file}", ErrorCode.SOURCE_NOT_FOUND.value)
-    
-    # Load XML with enhanced namespaces
-    ns = dict(NS)
-    ns.update(tgt.get("ns", {}))
-    tree = load_xml_safe(file_path, context)
-    
-    # Check if strict mode is enabled
-    strict = bool(tgt.get("strict", False))
-    
-    # Apply operations
-    for op in tgt.get("ops", []):
-        try:
-            if "set" in op:
-                _op_set_safe(tree, ns, op["set"], tokens, context, strict)
-            elif "insert" in op:
-                _op_insert_safe(tree, ns, op["insert"], tokens, context, strict)
-            elif "remove" in op:
-                _op_remove_safe(tree, ns, op["remove"], context, strict)
-            elif "relsAdd" in op:
-                _op_rels_add_safe(root / op["relsAdd"]["file"], op["relsAdd"]["items"], context)
-            else:
-                raise StyleStackError(f"Unknown operation: {list(op.keys())}", ErrorCode.PATCH_FILE_INVALID.value)
-        except Exception as e:
-            if not isinstance(e, StyleStackError):
-                raise StyleStackError(
-                    f"Operation failed: {e}",
-                    ErrorCode.PATCH_APPLICATION_FAILED.value,
-                    {"operation": list(op.keys())[0], "error": str(e)}
-                )
-            raise
-    
-    save_xml_safe(tree, file_path, context)
-
-def _xpath_safe(tree, xp, ns, strict, context):
-    """Safe XPath execution with error handling"""
-    try:
-        nodes = tree.xpath(xp, namespaces=ns)
-        if strict and len(nodes) == 0:
-            raise StyleStackError(f"XPath matched 0 nodes: {xp}", ErrorCode.XML_XPATH_INVALID.value)
-        return nodes
-    except ET.XPathEvalError as e:
-        raise StyleStackError(f"Invalid XPath expression: {xp} - {e}", ErrorCode.XML_XPATH_INVALID.value)
-
-def _op_set_safe(tree, ns, args, tokens, context, strict):
-    """Safe set operation with error handling"""
-    xp = args.get("xpath")
-    if not xp:
-        raise StyleStackError("Set operation missing 'xpath'", ErrorCode.PATCH_FILE_INVALID.value)
-    
-    val = resolve_tokens_safe(args.get("value", ""), tokens, context)
-    nodes = _xpath_safe(tree, xp, ns, strict, context)
-    
-    for node in nodes:
-        if isinstance(node, ET._ElementUnicodeResult) and node.is_attribute:
-            parent = node.getparent()
-            attrname = node.attrname
-            parent.set(attrname, val)
-        elif isinstance(node, ET._Element):
-            node.text = val
-        else:
-            # Fallback: try to set attribute if xpath ends with /@attr
-            m = re.search(r"/@([A-Za-z0-9:_-]+)$", xp)
-            if m and isinstance(node, ET._Element):
-                node.set(m.group(1), val)
-
-def _op_insert_safe(tree, ns, args, tokens, context, strict):
-    """Safe insert operation with error handling"""
-    xp = args.get("xpath")
-    if not xp:
-        raise StyleStackError("Insert operation missing 'xpath'", ErrorCode.PATCH_FILE_INVALID.value)
-    
-    position = args.get("position", "last")
-    xml_content = resolve_tokens_safe(args.get("xml", ""), tokens, context)
-    
-    try:
-        frag = ET.fromstring(xml_content.encode("utf-8"))
-    except ET.XMLSyntaxError as e:
-        raise StyleStackError(f"Invalid XML fragment: {e}", ErrorCode.XML_PARSE_ERROR.value)
-    
-    targets = _xpath_safe(tree, xp, ns, strict, context)
-    for t in targets:
-        if position == "first":
-            t.insert(0, frag)
-        elif position == "before":
-            t.addprevious(frag)
-        elif position == "after":
-            t.addnext(frag)
-        else:
-            t.append(frag)
-
-def _op_remove_safe(tree, ns, args, context, strict):
-    """Safe remove operation with error handling"""
-    xp = args.get("xpath")
-    if not xp:
-        raise StyleStackError("Remove operation missing 'xpath'", ErrorCode.PATCH_FILE_INVALID.value)
-    
-    for node in _xpath_safe(tree, xp, ns, strict, context):
-        parent = node.getparent()
-        if parent is not None:
-            parent.remove(node)
-
-def _op_rels_add_safe(rels_path: pathlib.Path, items: List[Dict[str,str]], context: BuildContext):
-    """Safe relationship addition with error handling"""
-    try:
-        if rels_path.exists():
-            tree = ET.parse(str(rels_path))
-            root = tree.getroot()
-        else:
-            root = ET.Element("Relationships", xmlns="http://schemas.openxmlformats.org/package/2006/relationships")
-            tree = ET.ElementTree(root)
-        
-        existing = {rel.get("Id") for rel in root.findall("{*}Relationship")}
-        
-        for item in items:
-            if not all(k in item for k in ["id", "type", "target"]):
-                raise StyleStackError("Relationship item missing required fields", ErrorCode.PATCH_FILE_INVALID.value)
-            
-            if item["id"] in existing:
-                continue
-                
-            rel = ET.SubElement(root, "Relationship")
-            rel.set("Id", item["id"])
-            rel.set("Type", item["type"])
-            rel.set("Target", item["target"])
-        
-        save_xml_safe(tree, rels_path, context)
-        
-    except Exception as e:
-        if not isinstance(e, StyleStackError):
-            raise StyleStackError(f"Failed to add relationships: {e}", ErrorCode.PATCH_APPLICATION_FAILED.value)
-        raise
-
-# ---------- Enhanced Validators ----------
+# ---------- Validators ----------
 BANNED_EFFECTS = (b"<a:glow", b"<a:bevel", b"<a:outerShdw", b"<a:reflection")
 
 def validate_package_safe(root: pathlib.Path, context: BuildContext):
-    """Comprehensive package validation with detailed error reporting"""
+    """Package validation with detailed error reporting"""
     
     # 1) Well-formed XML validation
     xml_files = list(root.rglob("*.xml"))
@@ -607,18 +272,115 @@ def validate_package_safe(root: pathlib.Path, context: BuildContext):
             {"broken": broken_rels[:10]}  # Limit to first 10
         )
 
+# ---------- Extension Variable System Integration ----------
+def initialize_extension_system(context: BuildContext, org: str = None, channel: str = None):
+    """Initialize extension variable system components if available"""
+    if not EXTENSION_SYSTEM_AVAILABLE:
+        return False
+    
+    try:
+        # Initialize variable resolver with hierarchical precedence
+        context.variable_resolver = VariableResolver()
+        
+        # Initialize OOXML processor with dual engine support
+        context.ooxml_processor = OOXMLProcessor()
+        
+        # Initialize theme resolver for Office compatibility
+        context.theme_resolver = ThemeResolver()
+        
+        # Initialize substitution pipeline with transaction support
+        context.substitution_pipeline = VariableSubstitutionPipeline(
+            variable_resolver=context.variable_resolver,
+            ooxml_processor=context.ooxml_processor,
+            theme_resolver=context.theme_resolver
+        )
+        
+        # Initialize extension schema validator
+        context.extension_validator = ExtensionSchemaValidator()
+        
+        # Load org and channel specific variables if provided
+        if org:
+            org_variables_path = pathlib.Path(f"org/{org}/extension-variables.json")
+            if org_variables_path.exists():
+                context.variable_resolver.load_org_variables(str(org_variables_path))
+        
+        if channel:
+            channel_variables_path = pathlib.Path(f"channels/{channel}-extension-variables.json")
+            if channel_variables_path.exists():
+                context.variable_resolver.load_channel_variables(str(channel_variables_path))
+        
+        context.use_extension_variables = True
+        return True
+        
+    except Exception as e:
+        context.add_warning(f"Failed to initialize extension variable system: {e}")
+        return False
+
+def process_extension_variables(context: BuildContext, pkg_dir: pathlib.Path):
+    """Process extension variables using the substitution pipeline"""
+    if not context.substitution_pipeline:
+        return
+    
+    try:
+        # Look for OOXML files that may have extension variables
+        ooxml_files = []
+        for ext in ["*.xml"]:
+            ooxml_files.extend(pkg_dir.rglob(ext))
+        
+        if not ooxml_files:
+            return
+        
+        # Process variables in each OOXML file
+        for xml_file in ooxml_files:
+            try:
+                # Check if file contains extension variables
+                content = xml_file.read_text(encoding='utf-8')
+                if 'stylestack.extension.variables' not in content:
+                    continue
+                
+                # Process the file with the substitution pipeline
+                result = context.substitution_pipeline.substitute_variables_in_document(
+                    str(xml_file),
+                    backup_original=True,
+                    validate_result=True
+                )
+                
+                if not result.success:
+                    context.add_error(StyleStackError(
+                        f"Extension variable processing failed for {xml_file}: {result.error_message}",
+                        ErrorCode.EXTENSION_PROCESSING_FAILED.value,
+                        {"file": str(xml_file), "errors": result.validation_errors}
+                    ))
+                else:
+                    context.add_warning(f"Processed extension variables in {xml_file.relative_to(pkg_dir)}")
+                    
+            except Exception as e:
+                context.add_error(StyleStackError(
+                    f"Failed to process extension variables in {xml_file}: {e}",
+                    ErrorCode.EXTENSION_PROCESSING_FAILED.value,
+                    {"file": str(xml_file), "error": str(e)}
+                ))
+    
+    except Exception as e:
+        context.add_error(StyleStackError(
+            f"Extension variable processing failed: {e}",
+            ErrorCode.EXTENSION_PROCESSING_FAILED.value,
+            {"error": str(e)}
+        ))
+
+
 # ---------- Main CLI Implementation ----------
 @click.command()
 @click.option('--src', help='Source .pptx/.docx/.xlsx or directory with OOXML parts')
-@click.option('--patch', multiple=True, help='Patch YAML files in order (core→channel→org→user)')
-@click.option('--tokens', multiple=True, help='Token YAML files in order (core→channel→org→user)')
 @click.option('--as-potx', is_flag=True, help='Convert to PowerPoint template (.potx)')
 @click.option('--as-dotx', is_flag=True, help='Convert to Word template (.dotx)')
 @click.option('--as-xltx', is_flag=True, help='Convert to Excel template (.xltx)')
 @click.option('--out', required=True, help='Output file path')
 @click.option('--verbose', '-v', is_flag=True, help='Verbose output with detailed error reporting')
-def main(src, patch, tokens, as_potx, as_dotx, as_xltx, out, verbose):
-    """StyleStack OOXML Template Build System with Comprehensive Error Handling"""
+@click.option('--org', help='Organization name for extension variable lookup')
+@click.option('--channel', help='Channel name for extension variable lookup')
+def main(src, as_potx, as_dotx, as_xltx, out, verbose, org, channel):
+    """StyleStack OOXML Extension Variable System"""
     
     # Configure logging
     log_level = logging.DEBUG if verbose else logging.INFO
@@ -654,6 +416,16 @@ def main(src, patch, tokens, as_potx, as_dotx, as_xltx, out, verbose):
             temp_dir=tmp_dir
         )
         
+        # Initialize extension variable system
+        if verbose:
+            click.echo("🔧 Initializing extension variable system...")
+        
+        success = initialize_extension_system(context, org, channel)
+        if success and verbose:
+            click.echo("   Extension variable system initialized")
+        elif not success:
+            click.echo("⚠️  Extension variable system not available")
+        
         try:
             # Stage 1: Extract/Copy source
             if verbose:
@@ -669,26 +441,17 @@ def main(src, patch, tokens, as_potx, as_dotx, as_xltx, out, verbose):
                     ErrorCode.SOURCE_NOT_FOUND.value
                 )
             
-            # Stage 2: Load tokens
-            if verbose and tokens:
-                click.echo("🎨 Loading design tokens...")
+            # Stage 2: Extension variables are loaded by the variable resolver
+            # No separate token loading needed
             
-            token_paths = [pathlib.Path(t) for t in tokens]
-            context.tokens = load_tokens_safe(token_paths, context) if token_paths else {}
+            # Stage 3: Process extension variables
+            if verbose:
+                click.echo("🎨 Processing extension variables...")
             
-            if verbose and context.tokens:
-                click.echo(f"   Loaded {len(context.tokens)} tokens")
-            
-            # Stage 3: Apply patches
-            if verbose and patch:
-                click.echo("🔧 Applying patches...")
-            
-            patch_paths = [pathlib.Path(p) for p in patch]
-            if patch_paths:
-                apply_patches_safe(pkg_dir, patch_paths, context.tokens, context)
+            process_extension_variables(context, pkg_dir)
             
             if verbose:
-                click.echo(f"   Applied {len(context.patches_applied)} patches")
+                click.echo("   Extension variables processed")
             
             # Stage 4: Convert to template format
             if target_format:
@@ -727,8 +490,11 @@ def main(src, patch, tokens, as_potx, as_dotx, as_xltx, out, verbose):
                 if verbose:
                     size_mb = out_path.stat().st_size / (1024 * 1024)
                     click.echo(f"   Size: {size_mb:.2f} MB")
-                    click.echo(f"   Tokens: {len(context.tokens)}")
-                    click.echo(f"   Patches: {len(context.patches_applied)}")
+                    click.echo(f"   Extension System: Enabled")
+                    if org:
+                        click.echo(f"   Organization: {org}")
+                    if channel:
+                        click.echo(f"   Channel: {channel}")
         
         except StyleStackError as e:
             click.echo(f"❌ [E{e.error_code:04d}] {e.message}")

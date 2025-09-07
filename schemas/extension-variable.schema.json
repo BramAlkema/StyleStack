@@ -1,0 +1,373 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://stylestack.dev/schemas/extension-variable.schema.json",
+  "title": "StyleStack OOXML Extension Variable Schema",
+  "description": "Schema for defining variables that can be embedded in OOXML templates using extension lists",
+  "version": "1.0.0",
+  
+  "definitions": {
+    "variableId": {
+      "type": "string",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9._]*$",
+      "minLength": 1,
+      "maxLength": 64,
+      "description": "Unique identifier for the variable, must start with letter and contain only letters, numbers, dots, and underscores"
+    },
+    
+    "variableType": {
+      "type": "string",
+      "enum": ["color", "font", "dimension", "position", "text", "boolean", "number"],
+      "description": "The type of value this variable represents"
+    },
+    
+    "variableScope": {
+      "type": "string",
+      "enum": ["theme", "slide", "shape", "paragraph", "run", "document", "workbook", "worksheet"],
+      "description": "The scope within OOXML where this variable applies"
+    },
+    
+    "ooxmlValueType": {
+      "type": "string", 
+      "enum": ["direct", "schemeClr", "themeFont", "emu", "calculated", "percentage", "boolean"],
+      "description": "How the variable value should be applied to OOXML"
+    },
+    
+    "ooxmlNamespace": {
+      "type": "string",
+      "format": "uri",
+      "enum": [
+        "http://schemas.openxmlformats.org/drawingml/2006/main",
+        "http://schemas.openxmlformats.org/presentationml/2006/main", 
+        "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
+        "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+        "http://schemas.openxmlformats.org/package/2006/content-types"
+      ],
+      "description": "OOXML namespace URI for the target element"
+    },
+    
+    "xpath": {
+      "type": "string",
+      "minLength": 1,
+      "description": "XPath expression to locate the target element/attribute in OOXML",
+      "examples": [
+        "//a:clrScheme/a:accent1/a:srgbClr/@val",
+        "//a:fontScheme/a:majorFont/a:latin/@typeface", 
+        "//p:sldSz/@cx",
+        "//w:rPr/w:sz/@w:val"
+      ]
+    },
+    
+    "colorValue": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9A-Fa-f]{6}$",
+          "description": "6-digit hexadecimal color value"
+        },
+        {
+          "type": "string",
+          "enum": ["accent1", "accent2", "accent3", "accent4", "accent5", "accent6", "bg1", "bg2", "tx1", "tx2", "hlink", "folHlink"],
+          "description": "Theme color reference"
+        }
+      ]
+    },
+    
+    "dimensionValue": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^\\d+(\\.\\d+)?(pt|in|mm|cm|px|emu)$",
+          "description": "Dimension with units (pt, in, mm, cm, px, emu)"
+        },
+        {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Dimension in EMU units (1 inch = 914,400 EMU)"
+        }
+      ]
+    }
+  },
+  
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "#/definitions/variableId"
+    },
+    
+    "type": {
+      "$ref": "#/definitions/variableType"
+    },
+    
+    "scope": {
+      "$ref": "#/definitions/variableScope"
+    },
+    
+    "xpath": {
+      "$ref": "#/definitions/xpath"
+    },
+    
+    "ooxml": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "$ref": "#/definitions/ooxmlNamespace"
+        },
+        "element": {
+          "type": "string",
+          "minLength": 1,
+          "description": "OOXML element name (without namespace prefix)"
+        },
+        "attribute": {
+          "type": "string",
+          "minLength": 1,
+          "description": "OOXML attribute name (without namespace prefix)"
+        },
+        "valueType": {
+          "$ref": "#/definitions/ooxmlValueType"
+        }
+      },
+      "required": ["namespace", "element", "valueType"],
+      "additionalProperties": false
+    },
+    
+    "defaultValue": {
+      "description": "Default value used when token is not provided"
+    },
+    
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/variableId"
+      },
+      "uniqueItems": true,
+      "description": "List of variable IDs this variable depends on"
+    },
+    
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of what this variable controls"
+    },
+    
+    "validation": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether this variable must have a value"
+        },
+        "minValue": {
+          "type": "number",
+          "description": "Minimum allowed value (for numeric types)"
+        },
+        "maxValue": {
+          "type": "number", 
+          "description": "Maximum allowed value (for numeric types)"
+        },
+        "pattern": {
+          "type": "string",
+          "description": "Regular expression pattern for string validation"
+        },
+        "allowedValues": {
+          "type": "array",
+          "description": "List of allowed values"
+        }
+      },
+      "additionalProperties": false
+    },
+    
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string",
+          "enum": ["layout", "typography", "color", "branding", "accessibility"],
+          "description": "Category for organizing variables"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["critical", "high", "medium", "low"],
+          "default": "medium",
+          "description": "Priority level for variable application"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Semantic version when variable was introduced"
+        },
+        "deprecated": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether this variable is deprecated"
+        },
+        "replacement": {
+          "$ref": "#/definitions/variableId",
+          "description": "ID of replacement variable (if deprecated)"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  
+  "required": ["id", "type", "scope", "xpath", "ooxml"],
+  "additionalProperties": false,
+  
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": { "const": "color" }
+        }
+      },
+      "then": {
+        "properties": {
+          "defaultValue": { "$ref": "#/definitions/colorValue" },
+          "ooxml": {
+            "properties": {
+              "valueType": { "enum": ["direct", "schemeClr"] }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": { "const": "dimension" }
+        }
+      },
+      "then": {
+        "properties": {
+          "defaultValue": { "$ref": "#/definitions/dimensionValue" },
+          "ooxml": {
+            "properties": {
+              "valueType": { "enum": ["emu", "direct", "calculated"] }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": { "const": "font" }
+        }
+      },
+      "then": {
+        "properties": {
+          "defaultValue": { "type": "string" },
+          "ooxml": {
+            "properties": {
+              "valueType": { "enum": ["themeFont", "direct"] }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": { "const": "boolean" }
+        }
+      },
+      "then": {
+        "properties": {
+          "defaultValue": { "type": "boolean" },
+          "ooxml": {
+            "properties": {
+              "valueType": { "enum": ["boolean", "direct"] }
+            }
+          }
+        }
+      }
+    }
+  ],
+  
+  "examples": [
+    {
+      "id": "accent_primary",
+      "type": "color",
+      "scope": "theme",
+      "xpath": "//a:clrScheme/a:accent1/a:srgbClr/@val",
+      "ooxml": {
+        "namespace": "http://schemas.openxmlformats.org/drawingml/2006/main",
+        "element": "srgbClr",
+        "attribute": "val", 
+        "valueType": "schemeClr"
+      },
+      "defaultValue": "0066CC",
+      "description": "Primary accent color used throughout the theme",
+      "metadata": {
+        "category": "color",
+        "priority": "high",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "heading_font",
+      "type": "font", 
+      "scope": "theme",
+      "xpath": "//a:fontScheme/a:majorFont/a:latin/@typeface",
+      "ooxml": {
+        "namespace": "http://schemas.openxmlformats.org/drawingml/2006/main",
+        "element": "latin",
+        "attribute": "typeface",
+        "valueType": "themeFont"
+      },
+      "defaultValue": "Segoe UI",
+      "description": "Primary font for headings and display text",
+      "validation": {
+        "required": true
+      },
+      "metadata": {
+        "category": "typography",
+        "priority": "critical",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "slide_width",
+      "type": "dimension",
+      "scope": "slide", 
+      "xpath": "//p:sldSz/@cx",
+      "ooxml": {
+        "namespace": "http://schemas.openxmlformats.org/presentationml/2006/main",
+        "element": "sldSz",
+        "attribute": "cx",
+        "valueType": "emu"
+      },
+      "defaultValue": "9144000",
+      "description": "Width of slide in EMU units (default: 10 inches)",
+      "validation": {
+        "minValue": 914400,
+        "maxValue": 18288000
+      },
+      "metadata": {
+        "category": "layout",
+        "priority": "medium",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "calculated_title_size",
+      "type": "dimension",
+      "scope": "shape",
+      "xpath": "//a:r/a:rPr/@sz",
+      "dependencies": ["base_font_size", "title_scale_factor"],
+      "ooxml": {
+        "namespace": "http://schemas.openxmlformats.org/drawingml/2006/main", 
+        "element": "rPr",
+        "attribute": "sz",
+        "valueType": "calculated"
+      },
+      "defaultValue": "4400",
+      "description": "Calculated title font size based on base size and scale factor",
+      "metadata": {
+        "category": "typography",
+        "priority": "medium",
+        "version": "1.0.0"
+      }
+    }
+  ]
+}

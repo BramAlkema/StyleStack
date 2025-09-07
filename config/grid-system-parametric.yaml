@@ -1,0 +1,103 @@
+emu_per_in: 914400          # EMUs per inch
+emu_per_cm: 360000          # EMUs per cm (approx)
+
+slide:
+  # Default 16:9 screen
+  w_in: 13.333333           # 1920 px @ ~144 ppi
+  h_in: 7.5                 # 1080 px @ ~144 ppi
+  # Optional 16:10
+  # w_in: 13.333333
+  # h_in: 8.0
+  # Optional A4 direct
+  # w_cm: 21.0
+  # h_cm: 29.7
+
+safe:
+  inset_pct: 0.10           # 10% inset on all sides
+
+grid:
+  cols: 12
+  gutter_in: 0.166667       # 1/6 inch ≈ 32 px
+  baseline_px: 32           # if you want baseline guides
+
+formulas:
+  SLIDE_W = emu_per_in * slide.w_in   # or emu_per_cm * w_cm
+  SLIDE_H = emu_per_in * slide.h_in   # or emu_per_cm * h_cm
+  SAFE_L  = SLIDE_W * safe.inset_pct
+  SAFE_T  = SLIDE_H * safe.inset_pct
+  SAFE_R  = SLIDE_W - SAFE_L
+  SAFE_B  = SLIDE_H - SAFE_T
+  SAFE_W  = SAFE_R - SAFE_L
+  SAFE_H  = SAFE_B - SAFE_T
+  GUT     = emu_per_in * grid.gutter_in
+  COL_W   = (SAFE_W - (grid.cols - 1) * GUT) / grid.cols
+  x(c)    = SAFE_L + (c-1) * (COL_W + GUT)      # 1-based col left
+  w(n)    = n*COL_W + (n-1)*GUT                 # width across n cols
+
+text:
+  title:
+    size_pt: 56
+    kern_min_pt: 12
+    tracking_em: -0.01
+    autofit: norm(0.90)   # <a:normAutofit fontScale="90000"/>
+  subtitle:
+    size_pt: 32
+    kern_min_pt: 12
+    tracking_em: 0
+    autofit: off
+  body:
+    size_pt: 28
+    kern_min_pt: 12
+    tracking_em: 0
+    autofit: off
+  caption:
+    size_pt: 24
+    kern_min_pt: 12
+    tracking_em: 0
+  caps:
+    tracking_em: +0.01    # extra letterspace for ALLCAPS runs
+
+padding:
+  lIns: 30000
+  rIns: 30000
+  tIns: 18000
+  bIns: 18000
+overflow:
+  vert: clip
+  horz: clip
+
+guides:
+  col_guides: [ x(c) for c in 1..grid.cols ] + [SAFE_R]
+  row_guides: [ SAFE_T, SAFE_B ]
+  baseline_guides: [ SAFE_T + k*(baseline_px * emu_per_in / 96) for k in 0.. ]
+
+layouts:
+  Title:
+    - title: rect(x(2), SAFE_T, w(10), SAFE_H*0.18)
+    - subtitle: rect(x(2), SAFE_T+SAFE_H*0.22, w(10), SAFE_H*0.12)
+  TitleAndContent:
+    - title: rect(x(2), SAFE_T, w(10), SAFE_H*0.12)
+    - body: rect(x(2), SAFE_T+SAFE_H*0.20, w(10), SAFE_H*0.65)
+  SectionHeader:
+    - title: rect(x(2), SAFE_T+SAFE_H*0.12, w(7), SAFE_H*0.24)
+    - body: rect(x(9), SAFE_T+SAFE_H*0.12, w(3), SAFE_H*0.24)
+  TwoContent:
+    - title: rect(x(2), SAFE_T, w(10), SAFE_H*0.12)
+    - body1: rect(x(2), SAFE_T+SAFE_H*0.20, w(5), SAFE_H*0.65)
+    - body2: rect(x(7), SAFE_T+SAFE_H*0.20, w(5), SAFE_H*0.65)
+  Comparison:
+    - title: rect(x(2), SAFE_T, w(10), SAFE_H*0.12)
+    - heading1: rect(x(2), SAFE_T+SAFE_H*0.16, w(5), SAFE_H*0.08)
+    - heading2: rect(x(7), SAFE_T+SAFE_H*0.16, w(5), SAFE_H*0.08)
+    - body1: rect(x(2), SAFE_T+SAFE_H*0.24, w(5), SAFE_H*0.55)
+    - body2: rect(x(7), SAFE_T+SAFE_H*0.24, w(5), SAFE_H*0.55)
+  TitleOnly:
+    - title: rect(x(2), SAFE_T+SAFE_H*0.12, w(10), SAFE_H*0.18)
+  Blank: []
+  ContentWithCaption:
+    - title: rect(x(2), SAFE_T, w(10), SAFE_H*0.12)
+    - obj: rect(x(2), SAFE_T+SAFE_H*0.20, w(7), SAFE_H*0.65)
+    - body: rect(x(9), SAFE_T+SAFE_H*0.20, w(3), SAFE_H*0.65)
+  PictureWithCaption:
+    - pic: rect(0,0,SLIDE_W,SLIDE_H)
+    - body: rect(x(2), SAFE_B-SAFE_H*0.20, w(7), SAFE_H*0.12)
