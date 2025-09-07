@@ -252,7 +252,7 @@ jobs:
           # Test resolution with different column values
           test_cases = [
               ({'col': 1, 'span': 1}, 'GRID_X', 1219200),  # First column
-              ({'col': 2, 'span': 1}, 'GRID_X', 1219200 + 825500),  # Second column  
+              ({'col': 2, 'span': 1}, 'GRID_X', 1219200 + (673100 + 152400)),  # Second column  
               ({'col': 1, 'span': 2}, 'GRID_W', 673100 * 2 + 152400),  # Two columns
               ({'col': 3, 'span': 3}, 'GRID_W', 673100 * 3 + 152400 * 2)  # Three columns
           ]
