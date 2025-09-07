@@ -22,7 +22,7 @@ jobs:
             channel: "present"
             args: "--channel present --products potx,dotx,xltx"
           - name: "document"
-            channel: "document"
+            channel: "doc"
             args: "--channel doc --products potx,dotx,xltx"
           - name: "finance"
             channel: "finance"
@@ -43,6 +43,7 @@ jobs:
         run: |
           echo "🔧 Setting up OOXML build environment"
           echo "Using native zip command for OOXML packaging"
+          pip3 install pyyaml click
       
       - name: Resolve design tokens for channel
         run: |
