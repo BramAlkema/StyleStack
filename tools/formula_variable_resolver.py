@@ -153,11 +153,23 @@ class FormulaVariableResolver:
             # Extract dependencies if value is a formula
             dependencies = set()
             if isinstance(value, str):
-                try:
-                    dependencies = self.parser.extract_dependencies(value)
-                except Exception:
-                    # If parsing fails, treat as literal string
-                    pass
+                # Check if this string looks like a formula (not a literal value)
+                is_likely_formula = (
+                    # Contains mathematical operators or parentheses
+                    any(char in value for char in '+-*/()')
+                    # OR looks like a variable reference (uppercase, underscores, numbers)
+                    or (value.replace('_', '').replace('.', '').isalnum() 
+                        and value.isupper() 
+                        and not value.startswith('#')
+                        and len(value) > 1)
+                )
+                
+                if is_likely_formula:
+                    try:
+                        dependencies = self.parser.extract_dependencies(value)
+                    except Exception:
+                        # If parsing fails, treat as literal string
+                        pass
             
             # Override existing variable or create new one
             self.variables[name] = VariableDefinition(
@@ -233,26 +245,31 @@ class FormulaVariableResolver:
             elif isinstance(value, EMUValue):
                 result = value
             elif isinstance(value, str):
-                # Parse and evaluate formula
-                try:
-                    ast = self.parser.parse(value)
-                    
-                    # Build evaluation context with resolved dependencies
-                    eval_context = {}
-                    for dep_name in var_def.dependencies:
-                        dep_value = self.resolve_variable(dep_name, context)
-                        eval_context[dep_name] = dep_value
-                    
-                    # Add runtime context
-                    if context:
-                        eval_context.update(context)
-                    
-                    result = self.parser.evaluate(ast, eval_context)
-                except CircularDependencyError:
-                    # Re-raise circular dependency errors without wrapping
-                    raise
-                except Exception as e:
-                    raise ValueError(f"Failed to evaluate formula for variable '{name}': {value}. Error: {e}")
+                # Check if this looks like a formula (has dependencies) or is a literal string
+                if var_def.dependencies:
+                    # Has dependencies, try to parse and evaluate as formula
+                    try:
+                        ast = self.parser.parse(value)
+                        
+                        # Build evaluation context with resolved dependencies
+                        eval_context = {}
+                        for dep_name in var_def.dependencies:
+                            dep_value = self.resolve_variable(dep_name, context)
+                            eval_context[dep_name] = dep_value
+                        
+                        # Add runtime context
+                        if context:
+                            eval_context.update(context)
+                        
+                        result = self.parser.evaluate(ast, eval_context)
+                    except CircularDependencyError:
+                        # Re-raise circular dependency errors without wrapping
+                        raise
+                    except Exception as e:
+                        raise ValueError(f"Failed to evaluate formula for variable '{name}': {value}. Error: {e}")
+                else:
+                    # No dependencies, treat as literal string value
+                    result = value
             else:
                 raise ValueError(f"Unsupported value type for variable '{name}': {type(value)}")
             

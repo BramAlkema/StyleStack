@@ -406,19 +406,19 @@ class TestFormulaVariableResolver(unittest.TestCase):
         variables = {
             "COLOR": "blue",
             "FONT": "Arial",
-            "INVALID_FORMULA": "not a valid formula @#$"
+            "HEX_COLOR": "#FF6600"
         }
         self.resolver.add_layer("core", variables)
         
-        # These should be treated as literal strings and cause evaluation errors
-        with self.assertRaises(ValueError):
-            self.resolver.resolve_variable("COLOR")
+        # These should be treated as literal strings (no dependencies = literal)
+        result = self.resolver.resolve_variable("COLOR")
+        self.assertEqual(result, "blue")
         
-        with self.assertRaises(ValueError):
-            self.resolver.resolve_variable("FONT")
+        result = self.resolver.resolve_variable("FONT")
+        self.assertEqual(result, "Arial")
         
-        with self.assertRaises(ValueError):
-            self.resolver.resolve_variable("INVALID_FORMULA")
+        result = self.resolver.resolve_variable("HEX_COLOR")
+        self.assertEqual(result, "#FF6600")
 
 
 if __name__ == "__main__":
