@@ -194,7 +194,8 @@ class PerformanceIntegrationTestCase(unittest.TestCase):
         
         # Verify stats exist
         stats_before = self.processor.get_comprehensive_stats()
-        self.assertGreater(len([k for k, v in stats_before.items() if v > 0]), 0, "Should have some non-zero stats")
+        non_zero_stats = [k for k, v in stats_before.items() if isinstance(v, (int, float)) and v > 0]
+        self.assertGreater(len(non_zero_stats), 0, "Should have some non-zero stats")
         
         # Reset stats
         self.processor.reset_stats()
