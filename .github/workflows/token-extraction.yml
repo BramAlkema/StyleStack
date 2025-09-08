@@ -16,6 +16,9 @@ on:
       - 'extract/**/*.ott'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   extract-tokens:
     runs-on: ubuntu-latest
@@ -95,15 +98,22 @@ jobs:
           fi
         done
     
-    - name: Display extraction summary
+    - name: Commit extracted tokens
       if: steps.changed-files.outputs.any_changed == 'true' || github.event_name == 'workflow_dispatch'
       run: |
-        echo "🎉 Design token extraction completed successfully!"
-        echo "📁 Generated files:"
-        find extract/extracted -type f 2>/dev/null | head -20 || echo "   No extracted files found"
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
         
-        echo ""
-        echo "💡 To commit these files:"
-        echo "   git add extract/extracted/"
-        echo "   git commit -m 'Add extracted design tokens and assets'"
-        echo "   git push"
+        git add extract/extracted/ || echo "No files to add"
+        
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "🤖 Extract design tokens and assets
+
+          Automatically extracted design tokens and brand assets
+          
+          🔍 Generated with StyleStack Design Token Extractor"
+          
+          git push
+        fi
