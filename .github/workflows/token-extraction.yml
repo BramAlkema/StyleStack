@@ -52,9 +52,16 @@ jobs:
           extract/**/*.ott
     
     - name: Extract design tokens
-      if: steps.changed-files.outputs.any_changed == 'true'
+      if: steps.changed-files.outputs.any_changed == 'true' || github.event_name == 'workflow_dispatch'
       run: |
-        readarray -t files <<< "${{ steps.changed-files.outputs.all_changed_files }}"
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ "${{ steps.changed-files.outputs.any_changed }}" != "true" ]; then
+          # Manual trigger - process all files in extract/ folder
+          readarray -t files < <(find extract/ -name "*.pptx" -o -name "*.potx" -o -name "*.ppsx" -o -name "*.odp" -o -name "*.otp" -o -name "*.ods" -o -name "*.ots" -o -name "*.odt" -o -name "*.ott")
+        else
+          # Push trigger - process changed files
+          readarray -t files <<< "${{ steps.changed-files.outputs.all_changed_files }}"
+        fi
+        
         for file in "${files[@]}"; do
           if [ -z "$file" ]; then continue; fi
           echo "🔍 Processing $file"
@@ -89,7 +96,7 @@ jobs:
         done
     
     - name: Commit extracted tokens
-      if: steps.changed-files.outputs.any_changed == 'true'
+      if: steps.changed-files.outputs.any_changed == 'true' || github.event_name == 'workflow_dispatch'
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
