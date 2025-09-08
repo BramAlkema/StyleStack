@@ -54,7 +54,9 @@ jobs:
     - name: Extract design tokens
       if: steps.changed-files.outputs.any_changed == 'true'
       run: |
-        for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+        readarray -t files <<< "${{ steps.changed-files.outputs.all_changed_files }}"
+        for file in "${files[@]}"; do
+          if [ -z "$file" ]; then continue; fi
           echo "🔍 Processing $file"
           
           # Get relative path without extension (support all formats)
