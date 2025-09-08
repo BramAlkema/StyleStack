@@ -16,38 +16,104 @@ from pathlib import Path
 import re
 
 from .formula_parser import FormulaParser, FormulaError
-from .emu_types import EMUValue, EMUOverflowError, EMUConversionError
+from .emu_types import EMUValue, EMUOverflowError, EMUConversionError, EMU_PER_POINT, EMU_PER_INCH, EMU_PER_CM
 from .yaml_ooxml_processor import YAMLPatchProcessor
+from .variable_resolver import VariableResolver as ProductionVariableResolver
+from .formula_variable_resolver import FormulaVariableResolver
 
 # Configure logging
 logger = logging.getLogger(__name__)
 
-# Simple EMU Type System for integration
-class EMUTypeSystem:
-    """Simple EMU type system for token integration."""
+# Production EMU Type System for integration
+class ProductionEMUTypeSystem:
+    """Production EMU type system with comprehensive format support."""
     
+    def __init__(self):
+        """Initialize with format conversion support."""
+        self.formula_parser = FormulaParser()
+        
     def parse_value(self, expression: str) -> EMUValue:
-        """Parse an EMU expression into an EMUValue."""
-        emu_val = EMUValue(expression)
-        # Add format methods if they don't exist
-        if not hasattr(emu_val, 'to_presentation_format'):
-            emu_val.to_presentation_format = lambda: str(emu_val)
-        if not hasattr(emu_val, 'to_document_format'):
-            emu_val.to_document_format = lambda: str(emu_val)
-        if not hasattr(emu_val, 'to_spreadsheet_format'):
-            emu_val.to_spreadsheet_format = lambda: str(emu_val)
-        return emu_val
-
-# Create EMUError alias
-EMUError = EMUConversionError
-
-# Simple Variable Resolver for integration
-class VariableResolver:
-    """Simple variable resolver for token integration."""
+        """
+        Parse an EMU expression into an EMUValue with format support.
+        
+        Supports:
+        - Direct values: "12700" -> 12700 EMU
+        - Unit expressions: "1pt" -> 12700 EMU, "1in" -> 914400 EMU
+        - Formulas: "=A1 + 10pt" -> computed EMU value
+        """
+        try:
+            # Try parsing as formula first
+            if expression.strip().startswith('='):
+                result = self.formula_parser.parse_formula(expression[1:])
+                if hasattr(result, 'value'):
+                    emu_val = EMUValue(result.value)
+                else:
+                    emu_val = EMUValue(result)
+            else:
+                # Parse as unit expression or direct EMU value
+                parsed_value = self._parse_unit_expression(expression)
+                emu_val = EMUValue(parsed_value)
+            
+            # Add format methods for different OOXML contexts
+            self._add_format_methods(emu_val)
+            return emu_val
+            
+        except (ValueError, EMUConversionError, FormulaError) as e:
+            raise EMUConversionError(f"Failed to parse EMU expression '{expression}': {e}")
     
-    def resolve_variable(self, name: str, context: Dict[str, Any]) -> Any:
-        """Resolve a variable from the context."""
-        return context.get(name, f"${{{name}}}")
+    def _parse_unit_expression(self, expression: str) -> int:
+        """Parse unit expression like '12pt', '1in', '2cm' into EMU value."""
+        expr = expression.strip()
+        
+        # Try to extract number and unit
+        import re
+        match = re.match(r'^([0-9]*\.?[0-9]+)\s*(pt|in|cm|emu)?$', expr, re.IGNORECASE)
+        
+        if not match:
+            # Try parsing as direct number
+            try:
+                return int(float(expr))
+            except ValueError:
+                raise ValueError(f"Invalid unit expression: '{expr}'")
+        
+        value_str, unit = match.groups()
+        value = float(value_str)
+        
+        if unit is None or unit.lower() == 'emu':
+            return int(value)
+        elif unit.lower() == 'pt':
+            return int(value * EMU_PER_POINT)
+        elif unit.lower() == 'in':
+            return int(value * EMU_PER_INCH)
+        elif unit.lower() == 'cm':
+            return int(value * EMU_PER_CM)
+        else:
+            raise ValueError(f"Unsupported unit: '{unit}'")
+    
+    def _add_format_methods(self, emu_val: EMUValue):
+        """Add context-specific format methods to EMUValue."""
+        def to_presentation_format():
+            """Format for PowerPoint presentation contexts (points)."""
+            points = emu_val.value / EMU_PER_POINT
+            return f"{points:.0f}pt"
+            
+        def to_document_format():
+            """Format for Word document contexts (points).""" 
+            points = emu_val.value / EMU_PER_POINT
+            return f"{points:.0f}pt"
+            
+        def to_spreadsheet_format():
+            """Format for Excel spreadsheet contexts (EMU)."""
+            return str(int(emu_val.value))
+            
+        # Dynamically add methods
+        emu_val.to_presentation_format = to_presentation_format
+        emu_val.to_document_format = to_document_format  
+        emu_val.to_spreadsheet_format = to_spreadsheet_format
+
+# Create aliases for backward compatibility
+EMUError = EMUConversionError
+EMUTypeSystem = ProductionEMUTypeSystem
 
 
 class TokenScope(Enum):
@@ -98,12 +164,13 @@ class TokenIntegrationLayer:
     
     def __init__(self, 
                  formula_parser: Optional[FormulaParser] = None,
-                 emu_system: Optional[EMUTypeSystem] = None,
-                 variable_resolver: Optional[VariableResolver] = None):
-        """Initialize the token integration layer."""
+                 emu_system: Optional[ProductionEMUTypeSystem] = None,
+                 variable_resolver: Optional[ProductionVariableResolver] = None):
+        """Initialize the token integration layer with production systems."""
         self.formula_parser = formula_parser or FormulaParser()
-        self.emu_system = emu_system or EMUTypeSystem()
-        self.variable_resolver = variable_resolver or VariableResolver()
+        self.emu_system = emu_system or ProductionEMUTypeSystem()
+        self.variable_resolver = variable_resolver or ProductionVariableResolver()
+        self.formula_variable_resolver = FormulaVariableResolver()
         
         # Token pattern matching
         self.token_pattern = re.compile(r'\$\{([^}]+)\}')
@@ -122,9 +189,67 @@ class TokenIntegrationLayer:
         self.resolution_cache = {}
         self.cache_size_limit = 1000
         
+        # Production variable resolution cache
+        self._resolved_variables_cache: Dict[str, Any] = {}
+        self._cache_context: Optional[str] = None
+        
         # Integration hooks
         self.pre_resolution_hooks = []
         self.post_resolution_hooks = []
+        
+        # Statistics tracking
+        self.resolution_stats = {
+            'total_resolutions': 0,
+            'cache_hits': 0,
+            'formula_resolutions': 0,
+            'variable_resolutions': 0,
+            'emu_resolutions': 0,
+            'errors': 0
+        }
+    
+    def initialize_production_variables(self, 
+                                      org: Optional[str] = None,
+                                      channel: Optional[str] = None,
+                                      extension_sources: Optional[List[Union[str, Path]]] = None) -> None:
+        """
+        Initialize production variable resolution with specific context.
+        
+        This method pre-resolves all variables using the production VariableResolver
+        and caches them for efficient token resolution.
+        
+        Args:
+            org: Organization identifier for variable resolution
+            channel: Channel identifier for template-specific variables  
+            extension_sources: OOXML files with extension variables
+        """
+        context_key = f"org:{org}|channel:{channel}|ext:{len(extension_sources or [])}"
+        
+        if self._cache_context == context_key:
+            logger.debug("Using cached production variable resolution")
+            return
+            
+        logger.info(f"Initializing production variable resolution: {context_key}")
+        
+        try:
+            resolved_vars = self.variable_resolver.resolve_all_variables(
+                org=org,
+                channel=channel, 
+                extension_sources=extension_sources
+            )
+            
+            # Convert ResolvedVariable objects to simple values for token resolution
+            self._resolved_variables_cache = {}
+            for name, resolved_var in resolved_vars.items():
+                self._resolved_variables_cache[name] = resolved_var.final_value
+                
+            self._cache_context = context_key
+            logger.info(f"Cached {len(resolved_vars)} production variables")
+            
+        except Exception as e:
+            logger.error(f"Failed to initialize production variables: {e}")
+            # Fallback to empty cache
+            self._resolved_variables_cache = {}
+            self._cache_context = None
         
     def register_token(self, name: str, value: Any, scope: TokenScope, 
                       template_type: Optional[str] = None):
@@ -249,12 +374,18 @@ class TokenIntegrationLayer:
             if resolved_value is not None:
                 break
         
-        # Fallback to variable resolver
+        # Fallback to production variable resolver
         if resolved_value is None:
             try:
-                resolved_value = self.variable_resolver.resolve_variable(
-                    token_name, context.variables
-                )
+                # First try production resolved variables cache  
+                if token_name in self._resolved_variables_cache:
+                    resolved_value = self._resolved_variables_cache[token_name]
+                    logger.debug(f"Resolved variable '{token_name}' from production cache")
+                else:
+                    # Legacy fallback for backward compatibility
+                    resolved_value = context.variables.get(token_name, f"${{{token_name}}}")
+                    logger.debug(f"Variable '{token_name}' not found in production cache, using fallback")
+                    
             except Exception as e:
                 logger.warning(f"Failed to resolve variable token '{token_name}': {e}")
                 resolved_value = f"${{{token_name}}}"  # Return original if not found

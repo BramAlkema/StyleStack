@@ -264,8 +264,8 @@ class TestYAMLPatchProcessor(unittest.TestCase):
         italic = xml_doc.xpath('//w:rPr[1]/w:i', namespaces={
             'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'
         })
-        self.assertEqual(len(bold), 1)
-        self.assertEqual(len(italic), 1)
+        self.assertEqual(len(bold), 2)  # XPath //w:rPr[1] matches first w:rPr under each parent
+        self.assertEqual(len(italic), 2)  # Same XPath behavior for italic elements
 
     def test_relsadd_operation_relationships(self):
         """Test relsAdd operation for OOXML relationships."""
@@ -290,9 +290,7 @@ class TestYAMLPatchProcessor(unittest.TestCase):
         result = self.processor.apply_patch(xml_doc, patch)
         
         # Verify the new relationship was added
-        new_rel = xml_doc.xpath('//Relationship[@Id="rId2"]', namespaces={
-            '': 'http://schemas.openxmlformats.org/package/2006/relationships'
-        })
+        new_rel = xml_doc.xpath('//*[local-name()="Relationship"][@Id="rId2"]')
         self.assertEqual(len(new_rel), 1)
         self.assertEqual(new_rel[0].get('Target'), 'media/image1.png')
 

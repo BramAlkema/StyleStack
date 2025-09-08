@@ -80,6 +80,8 @@ class PatchResult:
     recovery_strategy: Optional[str] = None
     fallback_applied: bool = False
     exception_info: Optional[Dict[str, Any]] = None
+    affected_files: Optional[List[str]] = None  # For transaction rollback support
+    warnings: Optional[List[str]] = None  # For validation warnings
 
 
 @dataclass
@@ -285,36 +287,248 @@ class XPathTargetingSystem:
         # Namespace usage statistics for optimization
         self._namespace_stats = {}
     
-    def detect_document_namespaces(self, xml_doc: etree._Element) -> Dict[str, str]:
+    def detect_document_namespaces(self, xml_doc: etree._Element, custom_declarations: Dict[str, str] = None) -> Dict[str, str]:
         """
-        Automatically detect namespaces used in the document.
+        Advanced namespace detection with collision resolution and custom declarations.
         
         Args:
             xml_doc: The XML document element
+            custom_declarations: Custom namespace declarations from patches
             
         Returns:
-            Dictionary of namespace prefixes to URIs found in the document
+            Dictionary of namespace prefixes to URIs with collision resolution
         """
         doc_id = id(xml_doc)
-        if doc_id in self._namespace_cache:
-            return self._namespace_cache[doc_id]
+        custom_key = str(sorted(custom_declarations.items())) if custom_declarations else ""
+        cache_key = f"{doc_id}:{hash(custom_key)}"
         
-        # Collect all namespaces from the document
+        if cache_key in self._namespace_cache:
+            return self._namespace_cache[cache_key]
+        
+        # Start with base namespaces
         detected_namespaces = dict(self.base_namespaces)
         
-        # Extract namespace declarations from root and descendants
+        # Apply custom namespace declarations first (highest priority)
+        if custom_declarations:
+            for prefix, uri in custom_declarations.items():
+                if prefix in detected_namespaces and detected_namespaces[prefix] != uri:
+                    logger.warning(f"Custom namespace declaration overrides existing: {prefix} -> {uri}")
+                detected_namespaces[prefix] = uri
+        
+        # Extract namespace declarations from document with collision resolution
+        namespace_collisions = {}
+        
         for elem in xml_doc.iter():
-            # Add namespaces from this element
             if elem.nsmap:
                 for prefix, uri in elem.nsmap.items():
-                    if prefix is not None:  # Skip default namespace
-                        detected_namespaces[prefix] = uri
+                    if prefix is not None:
+                        # Handle namespace prefix collisions
+                        if prefix in detected_namespaces:
+                            if detected_namespaces[prefix] != uri:
+                                # Collision detected - resolve it
+                                original_uri = detected_namespaces[prefix]
+                                resolved_prefix = self._resolve_namespace_collision(
+                                    prefix, uri, original_uri, namespace_collisions
+                                )
+                                detected_namespaces[resolved_prefix] = uri
+                                namespace_collisions[prefix] = {
+                                    'original': original_uri,
+                                    'collision': uri,
+                                    'resolved_prefix': resolved_prefix
+                                }
+                        else:
+                            detected_namespaces[prefix] = uri
                     elif uri and 'default' not in detected_namespaces:
                         detected_namespaces['default'] = uri
         
-        # Cache the result
-        self._namespace_cache[doc_id] = detected_namespaces
+        # Validate namespace URIs
+        self._validate_namespace_uris(detected_namespaces)
+        
+        # Cache the result with collision information
+        result = {
+            'namespaces': detected_namespaces,
+            'collisions': namespace_collisions
+        }
+        self._namespace_cache[cache_key] = result
+        
         return detected_namespaces
+    
+    def _resolve_namespace_collision(self, prefix: str, new_uri: str, existing_uri: str, 
+                                   collisions: Dict[str, Any]) -> str:
+        """
+        Resolve namespace prefix collisions by generating unique prefixes.
+        
+        Args:
+            prefix: Original prefix with collision
+            new_uri: New namespace URI causing collision
+            existing_uri: Existing namespace URI
+            collisions: Dictionary tracking collisions
+            
+        Returns:
+            Resolved unique prefix for the new URI
+        """
+        # Generate unique prefix for the colliding namespace
+        counter = 1
+        resolved_prefix = f"{prefix}{counter}"
+        
+        while resolved_prefix in collisions or resolved_prefix in self.base_namespaces:
+            counter += 1
+            resolved_prefix = f"{prefix}{counter}"
+        
+        logger.debug(f"Resolved namespace collision: {prefix} -> {resolved_prefix} for URI {new_uri}")
+        return resolved_prefix
+    
+    def _validate_namespace_uris(self, namespaces: Dict[str, str]):
+        """
+        Validate namespace URIs for common issues.
+        
+        Args:
+            namespaces: Dictionary of namespace prefixes to URIs
+        """
+        for prefix, uri in namespaces.items():
+            # Check for invalid URIs
+            if not uri or not isinstance(uri, str):
+                logger.warning(f"Invalid namespace URI for prefix '{prefix}': {uri}")
+                continue
+            
+            # Check for common URI issues
+            if uri.startswith('http://') and 'schemas' not in uri:
+                logger.debug(f"Potentially invalid namespace URI for '{prefix}': {uri}")
+            
+            # Check for deprecated namespaces
+            if 'office/2003' in uri or 'office/2000' in uri:
+                logger.info(f"Deprecated namespace detected for '{prefix}': {uri}")
+    
+    def add_custom_namespace_declarations(self, patch_data: Dict[str, Any]) -> Dict[str, str]:
+        """
+        Extract custom namespace declarations from patch data.
+        
+        Args:
+            patch_data: YAML patch data that may contain namespace declarations
+            
+        Returns:
+            Dictionary of custom namespace declarations
+        """
+        custom_namespaces = {}
+        
+        # Check for namespace declarations in patch
+        if 'namespaces' in patch_data:
+            ns_declarations = patch_data['namespaces']
+            if isinstance(ns_declarations, dict):
+                for prefix, uri in ns_declarations.items():
+                    # Validate prefix format
+                    if self._is_valid_namespace_prefix(prefix):
+                        custom_namespaces[prefix] = uri
+                    else:
+                        logger.error(f"Invalid namespace prefix '{prefix}' in patch")
+        
+        # Check for xmlns attributes in xpath or value
+        xpath_expr = patch_data.get('xpath', '')
+        if 'xmlns:' in xpath_expr:
+            # Extract namespace declarations from XPath
+            import re
+            xmlns_pattern = r'xmlns:(\w+)=[\'"](.*?)[\'"]'
+            for match in re.finditer(xmlns_pattern, xpath_expr):
+                prefix, uri = match.groups()
+                custom_namespaces[prefix] = uri
+        
+        return custom_namespaces
+    
+    def _is_valid_namespace_prefix(self, prefix: str) -> bool:
+        """
+        Validate namespace prefix format.
+        
+        Args:
+            prefix: Namespace prefix to validate
+            
+        Returns:
+            True if prefix is valid, False otherwise
+        """
+        if not prefix or not isinstance(prefix, str):
+            return False
+        
+        # XML namespace prefix rules
+        if prefix.startswith('xml') or prefix.startswith('XML'):
+            return False
+        
+        # Must start with letter or underscore, followed by letters, digits, hyphens, dots, underscores
+        import re
+        return bool(re.match(r'^[a-zA-Z_][a-zA-Z0-9_.-]*$', prefix))
+    
+    def inherit_namespaces(self, parent_namespaces: Dict[str, str], 
+                          child_element: etree._Element) -> Dict[str, str]:
+        """
+        Implement namespace inheritance for nested operations.
+        
+        Args:
+            parent_namespaces: Namespace context from parent operation
+            child_element: Child XML element that may define additional namespaces
+            
+        Returns:
+            Combined namespace context with inheritance
+        """
+        # Start with parent namespaces
+        inherited_namespaces = dict(parent_namespaces)
+        
+        # Add child-specific namespaces (child takes precedence)
+        if child_element.nsmap:
+            for prefix, uri in child_element.nsmap.items():
+                if prefix is not None:
+                    if prefix in inherited_namespaces and inherited_namespaces[prefix] != uri:
+                        logger.debug(f"Child namespace overrides parent: {prefix} -> {uri}")
+                    inherited_namespaces[prefix] = uri
+                elif uri:
+                    # Handle default namespace inheritance
+                    inherited_namespaces['default'] = uri
+        
+        return inherited_namespaces
+    
+    def migrate_namespaces_for_format(self, namespaces: Dict[str, str], 
+                                    source_format: str, target_format: str) -> Dict[str, str]:
+        """
+        Migrate namespace declarations for format updates.
+        
+        Args:
+            namespaces: Original namespace declarations
+            source_format: Source OOXML format (potx, dotx, xltx)
+            target_format: Target OOXML format
+            
+        Returns:
+            Migrated namespace declarations for target format
+        """
+        if source_format == target_format:
+            return namespaces
+        
+        migrated = dict(namespaces)
+        
+        # Format-specific namespace migrations
+        format_migrations = {
+            ('potx', 'dotx'): {
+                'p': 'w',  # PowerPoint to Word main namespace
+                'a:dgm': 'w:drawing',  # Diagram namespace migration
+            },
+            ('dotx', 'potx'): {
+                'w': 'p',  # Word to PowerPoint main namespace
+                'w:drawing': 'a:dgm',  # Drawing namespace migration
+            },
+            ('xltx', 'potx'): {
+                'x': 'p',  # Excel to PowerPoint main namespace
+            },
+            ('xltx', 'dotx'): {
+                'x': 'w',  # Excel to Word main namespace
+            }
+        }
+        
+        migration_map = format_migrations.get((source_format, target_format), {})
+        
+        for old_prefix, new_prefix in migration_map.items():
+            if old_prefix in migrated:
+                uri = migrated[old_prefix]
+                del migrated[old_prefix]
+                migrated[new_prefix] = uri
+                logger.info(f"Migrated namespace: {old_prefix} -> {new_prefix} for {source_format} to {target_format}")
+        
+        return migrated
     
     def detect_document_format(self, xml_doc: etree._Element) -> str:
         """
@@ -505,22 +719,43 @@ class XPathTargetingSystem:
                             else:
                                 raise e
                         except XPathEvalError:
-                            # Final fallback: raise the original error with context
-                            self._update_namespace_stats(xpath_expr, 'failure')
-                            # Provide user-friendly error message based on the type of issue
-                            if "Undefined namespace prefix" in str(e):
-                                error_msg = f"Target not found: XPath '{xpath_expr}' uses undefined namespace"
-                            elif "no such child" in str(e) or "No matching nodes" in str(e):
-                                error_msg = f"Target not found: XPath '{xpath_expr}' matches no elements"
-                            else:
-                                error_msg = f"XPath resolution failed after all fallbacks: '{xpath_expr}'"
-                            
-                            raise XPathEvalError(
-                                f"{error_msg}. "
+                            # Fallback 5: Try local-name() for default namespace elements
+                            try:
+                                logger.warning("Format-specific injection failed, trying local-name() fallback")
+                                local_name_xpath = self._convert_to_local_name_xpath(xpath_expr)
+                                result = xml_doc.xpath(local_name_xpath, namespaces=namespaces)
+                                self._update_namespace_stats(xpath_expr, 'local_name_success')
+                                
+                            except XPathEvalError:
+                                # Final fallback: raise the original error with context
+                                self._update_namespace_stats(xpath_expr, 'failure')
+                                # Provide user-friendly error message based on the type of issue
+                                if "Undefined namespace prefix" in str(e):
+                                    error_msg = f"Target not found: XPath '{xpath_expr}' uses undefined namespace"
+                                elif "no such child" in str(e) or "No matching nodes" in str(e):
+                                    error_msg = f"Target not found: XPath '{xpath_expr}' matches no elements"
+                                else:
+                                    error_msg = f"XPath resolution failed after all fallbacks: '{xpath_expr}'"
+                                
+                                raise XPathEvalError(
+                                    f"{error_msg}. "
                                 f"Document format: {self.detect_document_format(xml_doc)}. "
                                 f"Available namespaces: {list(namespaces.keys())}. "
                                 f"Original error: {e}"
                             )
+        
+        # If result is empty and xpath doesn't have namespace prefixes, try local-name fallback
+        if not result and ':' not in xpath_expr and '//' in xpath_expr:
+            try:
+                logger.info(f"Empty result for XPath '{xpath_expr}', trying local-name fallback")
+                local_name_xpath = self._convert_to_local_name_xpath(xpath_expr)
+                result = xml_doc.xpath(local_name_xpath, namespaces=namespaces)
+                if result:
+                    self._update_namespace_stats(xpath_expr, 'local_name_empty_fallback_success')
+                    logger.info(f"Local-name fallback succeeded: {len(result)} elements found")
+            except XPathEvalError:
+                # If local-name fallback fails, stick with original empty result
+                pass
         
         # Cache successful result
         self._xpath_cache[cache_key] = result
@@ -544,6 +779,43 @@ class XPathTargetingSystem:
             simplified = simplified.replace(prefix, '')
         
         return simplified
+    
+    def _convert_to_local_name_xpath(self, xpath_expr: str) -> str:
+        """
+        Convert XPath to use local-name() for elements without namespace prefixes.
+        
+        This handles cases like //Relationships where the element has a default namespace.
+        Converts: //Relationships -> //*[local-name()='Relationships']
+        
+        Args:
+            xpath_expr: Original XPath expression
+            
+        Returns:
+            XPath using local-name() for namespace-agnostic matching
+        """
+        import re
+        
+        # Pattern to match element names without namespace prefixes
+        # Matches things like //ElementName or /path/ElementName but not //ns:ElementName
+        pattern = r'//([A-Za-z][A-Za-z0-9_-]*(?!\:))'
+        
+        def replace_with_local_name(match):
+            element_name = match.group(1)
+            return f"//*[local-name()='{element_name}']"
+        
+        # Replace all matches
+        local_name_xpath = re.sub(pattern, replace_with_local_name, xpath_expr)
+        
+        # Also handle single path segments like /Relationships
+        pattern_single = r'/([A-Za-z][A-Za-z0-9_-]*(?!\:))'
+        
+        def replace_single_with_local_name(match):
+            element_name = match.group(1)
+            return f"/*[local-name()='{element_name}']"
+        
+        local_name_xpath = re.sub(pattern_single, replace_single_with_local_name, local_name_xpath)
+        
+        return local_name_xpath
     
     def _inject_format_namespaces(self, xpath_expr: str, format_type: str) -> str:
         """
@@ -1377,22 +1649,28 @@ class YAMLPatchProcessor:
         try:
             # Time the patch operation for performance metrics
             with self.performance_optimizer.time_operation('patch_application'):
+                # Advanced namespace handling: register custom namespaces for this patch
+                custom_namespaces = patch_data.get('namespaces', {})
+                if custom_namespaces:
+                    extracted_ns = self.xpath_system.add_custom_namespace_declarations(patch_data)
+                    self.xpath_system.base_namespaces.update(extracted_ns)
+                
                 # Create and validate patch operation
                 patch_op = PatchOperation.from_dict(patch_data)
                 patch_op.validate()
                 
-                # Apply the specific operation
+                # Apply the specific operation with namespace context
                 result = None
                 if patch_op.operation == PatchOperationType.SET.value:
-                    result = self._apply_set_operation(xml_doc, patch_op)
+                    result = self._apply_set_operation(xml_doc, patch_op, custom_namespaces)
                 elif patch_op.operation == PatchOperationType.INSERT.value:
-                    result = self._apply_insert_operation(xml_doc, patch_op)
+                    result = self._apply_insert_operation(xml_doc, patch_op, custom_namespaces)
                 elif patch_op.operation == PatchOperationType.EXTEND.value:
-                    result = self._apply_extend_operation(xml_doc, patch_op)
+                    result = self._apply_extend_operation(xml_doc, patch_op, custom_namespaces)
                 elif patch_op.operation == PatchOperationType.MERGE.value:
-                    result = self._apply_merge_operation(xml_doc, patch_op)
+                    result = self._apply_merge_operation(xml_doc, patch_op, custom_namespaces)
                 elif patch_op.operation == PatchOperationType.RELSADD.value:
-                    result = self._apply_relsadd_operation(xml_doc, patch_op)
+                    result = self._apply_relsadd_operation(xml_doc, patch_op, custom_namespaces)
                 else:
                     raise PatchError(f"Unknown operation: {patch_op.operation}")
                 
@@ -1432,7 +1710,7 @@ class YAMLPatchProcessor:
     
     def apply_patches(self, xml_doc: etree._Element, patches: List[Dict[str, Any]]) -> List[PatchResult]:
         """
-        Apply multiple YAML patches to an OOXML document.
+        Apply multiple YAML patches to an OOXML document with advanced namespace handling.
         
         Args:
             xml_doc: The OOXML document as lxml Element
@@ -1442,6 +1720,19 @@ class YAMLPatchProcessor:
             List of PatchResult objects for each patch
         """
         results = []
+        
+        # Advanced namespace handling: collect custom namespace declarations from all patches
+        custom_namespaces = {}
+        for patch_data in patches:
+            if 'namespaces' in patch_data:
+                patch_namespaces = self.xpath_system.add_custom_namespace_declarations(patch_data)
+                custom_namespaces.update(patch_namespaces)
+        
+        # Register custom namespace declarations with XPath system globally
+        if custom_namespaces:
+            # Add to base namespaces for this processing session
+            self.xpath_system.base_namespaces.update(custom_namespaces)
+            logger.info(f"Registered {len(custom_namespaces)} custom namespace declarations")
         
         # Performance optimization: precompile XPath expressions
         self.performance_optimizer.precompile_xpaths(patches)
@@ -1462,6 +1753,16 @@ class YAMLPatchProcessor:
         with self.performance_optimizer.time_operation('batch_processing'):
             for i, patch_data in enumerate(optimized_patches):
                 logger.debug(f"Applying patch {i+1}/{len(optimized_patches)}: {patch_data.get('operation')} on {patch_data.get('target')}")
+                
+                # Advanced namespace handling: inherit namespaces for nested operations
+                if i > 0 and patch_data.get('inherit_namespaces', True):
+                    parent_patch = optimized_patches[i-1] if i > 0 else None
+                    if parent_patch and 'namespaces' in parent_patch:
+                        inherited_ns = self.xpath_system.inherit_namespaces(parent_patch['namespaces'])
+                        if 'namespaces' not in patch_data:
+                            patch_data['namespaces'] = {}
+                        patch_data['namespaces'].update(inherited_ns)
+                
                 result = self.apply_patch(xml_doc, patch_data)
                 results.append(result)
                 
@@ -1537,10 +1838,10 @@ class YAMLPatchProcessor:
             'unrecoverable_errors': 0
         }
     
-    def _apply_set_operation(self, xml_doc: etree._Element, patch_op: PatchOperation) -> PatchResult:
-        """Apply set operation to replace attribute or text values using advanced XPath targeting."""
+    def _apply_set_operation(self, xml_doc: etree._Element, patch_op: PatchOperation, custom_namespaces: Dict[str, str] = None) -> PatchResult:
+        """Apply set operation to replace attribute or text values using advanced XPath targeting with namespace support."""
         try:
-            # Use advanced XPath targeting system
+            # Use advanced XPath targeting system  
             targets = self.xpath_system.resolve_xpath_target(xml_doc, patch_op.target)
             
             if not targets:
@@ -1604,9 +1905,13 @@ class YAMLPatchProcessor:
         except XPathEvalError as e:
             raise PatchError(f"XPath error in set operation: {e}")
     
-    def _apply_insert_operation(self, xml_doc: etree._Element, patch_op: PatchOperation) -> PatchResult:
-        """Apply insert operation to add new XML elements."""
+    def _apply_insert_operation(self, xml_doc: etree._Element, patch_op: PatchOperation, custom_namespaces: Dict[str, str] = None) -> PatchResult:
+        """Apply insert operation to add new XML elements with namespace support."""
         try:
+            # Register custom namespaces if provided
+            if custom_namespaces:
+                self.xpath_system.add_custom_namespace_declarations(xml_doc, custom_namespaces)
+            
             # Find target parent elements
             parent_elements = self.xpath_system.resolve_xpath_target(xml_doc, patch_op.target)
             
@@ -1681,10 +1986,14 @@ class YAMLPatchProcessor:
         except XPathEvalError as e:
             raise PatchError(f"XPath error in insert operation: {e}")
     
-    def _apply_extend_operation(self, xml_doc: etree._Element, patch_op: PatchOperation) -> PatchResult:
-        """Apply extend operation to add multiple elements (array-like operation)."""
+    def _apply_extend_operation(self, xml_doc: etree._Element, patch_op: PatchOperation, custom_namespaces: Dict[str, str] = None) -> PatchResult:
+        """Apply extend operation to add multiple elements (array-like operation) with namespace support."""
         if not isinstance(patch_op.value, list):
             raise PatchError("Extend operation requires array/list value")
+        
+        # Register custom namespaces if provided
+        if custom_namespaces:
+            self.xpath_system.add_custom_namespace_declarations(xml_doc, custom_namespaces)
         
         total_affected = 0
         
@@ -1697,7 +2006,7 @@ class YAMLPatchProcessor:
                 position=patch_op.position or 'append'
             )
             
-            result = self._apply_insert_operation(xml_doc, insert_patch)
+            result = self._apply_insert_operation(xml_doc, insert_patch, custom_namespaces)
             if result.success:
                 total_affected += result.affected_elements
             else:
@@ -1711,18 +2020,18 @@ class YAMLPatchProcessor:
             affected_elements=total_affected
         )
     
-    def _apply_merge_operation(self, xml_doc: etree._Element, patch_op: PatchOperation) -> PatchResult:
-        """Apply merge operation to combine attributes/elements while preserving existing content."""
+    def _apply_merge_operation(self, xml_doc: etree._Element, patch_op: PatchOperation, custom_namespaces: Dict[str, str] = None) -> PatchResult:
+        """Apply merge operation to combine attributes/elements while preserving existing content with namespace support."""
         try:
+            # Register custom namespaces if provided
+            if custom_namespaces:
+                self.xpath_system.add_custom_namespace_declarations(xml_doc, custom_namespaces)
+            
             # Find target elements
             target_elements = self.xpath_system.resolve_xpath_target(xml_doc, patch_op.target)
             
             if not target_elements:
-                # Get context info for better error reporting
-                context_info = self.xpath_system.get_xpath_context_info(xml_doc, patch_op.target)
-                suggestions = context_info.get('suggestions', [])
-                suggestion_text = f" Suggestions: {'; '.join(suggestions)}" if suggestions else ""
-                raise PatchError(f"Target not found for merge: {patch_op.target}.{suggestion_text}")
+                raise PatchError(f"Target not found for merge: {patch_op.target}")
             
             if not isinstance(patch_op.value, dict):
                 raise PatchError("Merge operation requires dictionary value")
@@ -1732,10 +2041,34 @@ class YAMLPatchProcessor:
             for target_element in target_elements:
                 for key, value in patch_op.value.items():
                     if isinstance(value, dict):
-                        # Create new child element with attributes
-                        child_element = etree.SubElement(target_element, key)
+                        # Handle namespaced element names properly
+                        if ':' in key:
+                            # Resolve namespace prefix to full namespace URI
+                            prefix, local_name = key.split(':', 1)
+                            namespace_uri = target_element.nsmap.get(prefix)
+                            if namespace_uri:
+                                # Use the qualified name format {namespace}localname
+                                qualified_tag_name = f"{{{namespace_uri}}}{local_name}"
+                                child_element = etree.SubElement(target_element, qualified_tag_name)
+                            else:
+                                # Fallback to original name if namespace not found
+                                child_element = etree.SubElement(target_element, key)
+                        else:
+                            child_element = etree.SubElement(target_element, key)
+                        
+                        # Set attributes with namespace handling
                         for attr_name, attr_value in value.items():
-                            child_element.set(attr_name, str(attr_value))
+                            if ':' in attr_name:
+                                # Handle namespaced attributes
+                                prefix, local_name = attr_name.split(':', 1)
+                                namespace_uri = target_element.nsmap.get(prefix)
+                                if namespace_uri:
+                                    qualified_attr_name = f"{{{namespace_uri}}}{local_name}"
+                                    child_element.set(qualified_attr_name, str(attr_value))
+                                else:
+                                    child_element.set(attr_name, str(attr_value))
+                            else:
+                                child_element.set(attr_name, str(attr_value))
                     else:
                         # Set attribute directly
                         target_element.set(key, str(value))
@@ -1756,18 +2089,18 @@ class YAMLPatchProcessor:
         except XPathEvalError as e:
             raise PatchError(f"XPath error in merge operation: {e}")
     
-    def _apply_relsadd_operation(self, xml_doc: etree._Element, patch_op: PatchOperation) -> PatchResult:
-        """Apply relsAdd operation for OOXML relationship entries."""
+    def _apply_relsadd_operation(self, xml_doc: etree._Element, patch_op: PatchOperation, custom_namespaces: Dict[str, str] = None) -> PatchResult:
+        """Apply relsAdd operation for OOXML relationship entries with namespace support."""
         try:
+            # Register custom namespaces if provided
+            if custom_namespaces:
+                self.xpath_system.add_custom_namespace_declarations(xml_doc, custom_namespaces)
+            
             # Find relationships container
             rel_elements = self.xpath_system.resolve_xpath_target(xml_doc, patch_op.target)
             
             if not rel_elements:
-                # Get context info for better error reporting
-                context_info = self.xpath_system.get_xpath_context_info(xml_doc, patch_op.target)
-                suggestions = context_info.get('suggestions', [])
-                suggestion_text = f" Suggestions: {'; '.join(suggestions)}" if suggestions else ""
-                raise PatchError(f"Relationships container not found: {patch_op.target}.{suggestion_text}")
+                raise PatchError(f"Relationships container not found: {patch_op.target}")
             
             if not isinstance(patch_op.value, dict):
                 raise PatchError("relsAdd operation requires dictionary value with Id, Type, Target")
@@ -1806,6 +2139,112 @@ class YAMLPatchProcessor:
             
         except XPathEvalError as e:
             raise PatchError(f"XPath error in relsAdd operation: {e}")
+    
+    def apply_patches_to_file(self, file_path: str, patches: List[Dict[str, Any]], output_path: Optional[str] = None) -> PatchResult:
+        """
+        Apply patches directly to an OOXML file (for transaction pipeline integration).
+        
+        Args:
+            file_path: Path to the OOXML file to process
+            patches: List of patch operations
+            output_path: Optional output file path (overwrites input if not provided)
+            
+        Returns:
+            PatchResult with operation details including affected files
+        """
+        from pathlib import Path
+        import zipfile
+        import tempfile
+        import shutil
+        
+        try:
+            file_path_obj = Path(file_path)
+            if not file_path_obj.exists():
+                return PatchResult(
+                    success=False,
+                    operation="apply_patches_to_file",
+                    target=file_path,
+                    message=f"File not found: {file_path}",
+                    affected_files=[file_path]
+                )
+            
+            # Determine output location
+            if output_path:
+                output_path_obj = Path(output_path)
+            else:
+                output_path_obj = file_path_obj
+            
+            affected_files = [str(output_path_obj)]
+            
+            # Process OOXML file with patches
+            with tempfile.TemporaryDirectory() as temp_dir:
+                temp_path = Path(temp_dir) / "temp_processing.ooxml"
+                
+                # Copy input to temp location
+                shutil.copy2(file_path_obj, temp_path)
+                
+                # Process each XML file within the OOXML archive
+                patch_results = []
+                with zipfile.ZipFile(temp_path, 'a') as zipf:
+                    xml_files = [f for f in zipf.namelist() if f.endswith('.xml') and not f.endswith('.rels')]
+                    
+                    for xml_file in xml_files:
+                        try:
+                            # Read XML content
+                            xml_content = zipf.read(xml_file)
+                            xml_doc = etree.fromstring(xml_content)
+                            
+                            # Apply patches to this XML document
+                            xml_patch_results = self.apply_patches(xml_doc, patches)
+                            patch_results.extend(xml_patch_results)
+                            
+                            # If any patches succeeded, update the XML in the archive
+                            if any(pr.success for pr in xml_patch_results):
+                                # Create new ZIP info to preserve metadata
+                                zip_info = zipfile.ZipInfo(xml_file)
+                                zip_info.external_attr = 0o644 << 16
+                                
+                                # Write updated XML back to archive
+                                updated_content = etree.tostring(xml_doc, encoding='utf-8', xml_declaration=True, pretty_print=False)
+                                zipf.writestr(zip_info, updated_content)
+                        
+                        except Exception as e:
+                            logger.debug(f"Skipping {xml_file} due to processing error: {e}")
+                            continue
+                
+                # Copy processed file to output location
+                shutil.copy2(temp_path, output_path_obj)
+            
+            # Summarize results
+            successful_patches = [pr for pr in patch_results if pr.success]
+            total_affected_elements = sum(pr.affected_elements for pr in successful_patches)
+            
+            if successful_patches:
+                return PatchResult(
+                    success=True,
+                    operation="apply_patches_to_file",
+                    target=file_path,
+                    message=f"Successfully applied {len(successful_patches)} patches to {output_path_obj}",
+                    affected_elements=total_affected_elements,
+                    affected_files=affected_files
+                )
+            else:
+                return PatchResult(
+                    success=False,
+                    operation="apply_patches_to_file", 
+                    target=file_path,
+                    message="No patches were successfully applied",
+                    affected_files=affected_files
+                )
+                
+        except Exception as e:
+            return PatchResult(
+                success=False,
+                operation="apply_patches_to_file",
+                target=file_path, 
+                message=f"File processing failed: {e}",
+                affected_files=[file_path]
+            )
     
     def get_statistics(self) -> Dict[str, int]:
         """Get processing statistics."""

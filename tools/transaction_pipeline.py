@@ -25,6 +25,7 @@ import json
 
 from .multi_format_ooxml_handler import MultiFormatOOXMLHandler, ProcessingResult, OOXMLFormat
 from .token_integration_layer import TokenIntegrationLayer, TokenScope, TokenContext
+from .yaml_ooxml_processor import YAMLPatchProcessor, PatchResult
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -405,15 +406,93 @@ class Transaction:
             metadata=params.get('metadata')
         )
     
-    def _execute_apply_patches(self, operation: TransactionOperation) -> List[Any]:
-        """Execute patch application operation."""
+    def _execute_apply_patches(self, operation: TransactionOperation) -> List[PatchResult]:
+        """Execute patch application operation with real XML processing and state capture for rollback."""
         params = operation.parameters
-        format_type = OOXMLFormat.from_path(params['template_path'])
-        processor = self.pipeline.ooxml_handler.processors[format_type]
+        template_path = params['template_path']
+        patches = params.get('patches', [])
+        output_path = params.get('output_path')
         
-        # This would need XML document loading logic
-        # For now, return a mock result
-        return [{'success': True, 'patch_applied': True}]
+        logger.info(f"Applying {len(patches)} patches to template: {template_path}")
+        
+        try:
+            # Capture original file state for rollback before making any changes
+            original_files = {}
+            modified_files = []
+            
+            # Initialize YAML-OOXML processor for real XML processing
+            processor = YAMLPatchProcessor()
+            
+            # Load the template file 
+            if not Path(template_path).exists():
+                raise FileNotFoundError(f"Template file not found: {template_path}")
+            
+            # Capture original content before applying patches
+            files_to_modify = [template_path]
+            if output_path and output_path != template_path:
+                files_to_modify.append(output_path)
+            
+            for file_path in files_to_modify:
+                if Path(file_path).exists():
+                    with open(file_path, 'rb') as f:
+                        original_files[file_path] = f.read()
+                    logger.debug(f"Captured original state for rollback: {file_path}")
+            
+            # Apply patches to the template
+            results = []
+            for patch in patches:
+                try:
+                    # Process each patch against the template
+                    result = processor.apply_patches_to_file(template_path, [patch], output_path)
+                    results.append(result)
+                    
+                    # Track modified files for rollback
+                    if result.success and result.affected_files:
+                        for affected_file in result.affected_files:
+                            if affected_file not in modified_files:
+                                modified_files.append(affected_file)
+                                # Capture original state if not already captured
+                                if affected_file not in original_files and Path(affected_file).exists():
+                                    with open(affected_file, 'rb') as f:
+                                        original_files[affected_file] = f.read()
+                    
+                    logger.debug(f"Applied patch successfully: {patch.get('operation', 'unknown')}")
+                    
+                except Exception as patch_error:
+                    # Create failed result for this patch
+                    failed_result = PatchResult(
+                        success=False,
+                        error=str(patch_error),
+                        affected_files=[template_path]
+                    )
+                    results.append(failed_result)
+                    logger.error(f"Failed to apply patch: {patch_error}")
+            
+            # Store rollback data in the operation for potential rollback
+            if not operation.rollback_data:
+                operation.rollback_data = {}
+            operation.rollback_data.update({
+                'original_files': original_files,
+                'modified_files': modified_files,
+                'template_path': template_path,
+                'output_path': output_path
+            })
+            
+            logger.info(f"Completed patch application. {len([r for r in results if r.success])} succeeded, "
+                       f"{len([r for r in results if not r.success])} failed")
+            logger.debug(f"Captured rollback data for {len(original_files)} files")
+            
+            return results
+            
+        except Exception as e:
+            logger.error(f"Failed to execute patch application: {e}")
+            # Return single failed result
+            failed_result = PatchResult(
+                success=False,
+                error=str(e),
+                affected_files=[template_path]
+            )
+            return [failed_result]
     
     def _execute_register_tokens(self, operation: TransactionOperation) -> bool:
         """Execute token registration operation."""
@@ -578,24 +657,121 @@ class Transaction:
                 return self._create_transaction_result(success=False, rollback_performed=False)
     
     def _rollback_operation(self, operation: TransactionOperation):
-        """Rollback a specific operation using its rollback data."""
+        """Rollback a specific operation using its rollback data with comprehensive ACID support."""
+        logger.debug(f"Rolling back operation {operation.operation_id} ({operation.operation_type.value})")
+        
         try:
             rollback_data = operation.rollback_data
+            if not rollback_data:
+                logger.warning(f"No rollback data for operation {operation.operation_id}")
+                return
             
             if operation.operation_type == OperationType.PROCESS_TEMPLATE:
-                # Remove created output file
-                output_path = rollback_data.get('output_path')
-                if output_path and Path(output_path).exists():
-                    Path(output_path).unlink()
-            
+                self._rollback_process_template(rollback_data)
+                
+            elif operation.operation_type == OperationType.APPLY_PATCHES:
+                self._rollback_apply_patches(rollback_data)
+                
             elif operation.operation_type == OperationType.REGISTER_TOKENS:
-                # Would need token unregistration logic
-                pass
+                self._rollback_register_tokens(rollback_data)
+                
+            elif operation.operation_type == OperationType.VALIDATE_STRUCTURE:
+                self._rollback_validate_structure(rollback_data)
+                
+            elif operation.operation_type == OperationType.BACKUP_STATE:
+                self._rollback_backup_state(rollback_data)
+                
+            elif operation.operation_type == OperationType.RESTORE_STATE:
+                self._rollback_restore_state(rollback_data)
+                
+            else:
+                logger.warning(f"Unknown operation type for rollback: {operation.operation_type}")
             
-            # Add more rollback logic for other operation types as needed
+            logger.debug(f"Successfully rolled back operation {operation.operation_id}")
             
         except Exception as e:
-            logger.warning(f"Failed to rollback operation {operation.operation_id}: {e}")
+            logger.error(f"Failed to rollback operation {operation.operation_id}: {e}")
+            raise  # Re-raise to ensure transaction failure is properly handled
+    
+    def _rollback_process_template(self, rollback_data: Dict[str, Any]):
+        """Rollback template processing operation."""
+        output_path = rollback_data.get('output_path')
+        if output_path and Path(output_path).exists():
+            Path(output_path).unlink()
+            logger.debug(f"Removed output file: {output_path}")
+    
+    def _rollback_apply_patches(self, rollback_data: Dict[str, Any]):
+        """Rollback patch application by restoring original files."""
+        original_files = rollback_data.get('original_files', {})
+        modified_files = rollback_data.get('modified_files', [])
+        
+        for file_path in modified_files:
+            if file_path in original_files:
+                # Restore original file content
+                original_content = original_files[file_path]
+                try:
+                    with open(file_path, 'wb') as f:
+                        f.write(original_content)
+                    logger.debug(f"Restored original content for: {file_path}")
+                except Exception as e:
+                    logger.error(f"Failed to restore file {file_path}: {e}")
+                    raise
+            else:
+                logger.warning(f"No original content available for rollback: {file_path}")
+    
+    def _rollback_register_tokens(self, rollback_data: Dict[str, Any]):
+        """Rollback token registration by removing registered tokens."""
+        registered_tokens = rollback_data.get('registered_tokens', [])
+        format_type = rollback_data.get('format_type')
+        
+        if format_type:
+            format_type_enum = OOXMLFormat(format_type)
+            token_layer = self.pipeline.ooxml_handler.token_layers.get(format_type_enum)
+            
+            if token_layer:
+                for token_info in registered_tokens:
+                    token_name = token_info.get('name')
+                    token_scope = TokenScope(token_info.get('scope', 'GLOBAL'))
+                    if token_name:
+                        # Remove token from registry
+                        scope_registry = token_layer.token_registry.get(token_scope, {})
+                        if token_name in scope_registry:
+                            del scope_registry[token_name]
+                            logger.debug(f"Unregistered token: {token_name} from scope {token_scope}")
+    
+    def _rollback_validate_structure(self, rollback_data: Dict[str, Any]):
+        """Rollback structure validation (typically no-op)."""
+        # Structure validation doesn't modify files, so rollback is typically a no-op
+        logger.debug("Structure validation rollback completed (no-op)")
+    
+    def _rollback_backup_state(self, rollback_data: Dict[str, Any]):
+        """Rollback state backup by removing backup files."""
+        backup_files = rollback_data.get('backup_files', [])
+        
+        for backup_file in backup_files:
+            try:
+                if Path(backup_file).exists():
+                    Path(backup_file).unlink()
+                    logger.debug(f"Removed backup file: {backup_file}")
+            except Exception as e:
+                logger.warning(f"Failed to remove backup file {backup_file}: {e}")
+    
+    def _rollback_restore_state(self, rollback_data: Dict[str, Any]):
+        """Rollback state restoration by re-applying previous state."""
+        previous_state = rollback_data.get('previous_state')
+        restored_files = rollback_data.get('restored_files', [])
+        
+        if previous_state:
+            # Re-apply the previous state to undo the restoration
+            for file_path, file_content in previous_state.items():
+                try:
+                    if file_path in restored_files:
+                        with open(file_path, 'wb') as f:
+                            f.write(file_content)
+                        logger.debug(f"Re-applied previous state for: {file_path}")
+                except Exception as e:
+                    logger.error(f"Failed to re-apply previous state for {file_path}: {e}")
+                    raise
     
     def _create_transaction_result(self, success: bool, rollback_performed: bool = False) -> TransactionResult:
         """Create a transaction result summary."""

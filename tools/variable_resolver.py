@@ -22,9 +22,9 @@ import xml.etree.ElementTree as ET
 import logging
 
 # Import existing components
-from token_resolver import TokenResolver
-from token_parser import TokenParser, VariableToken, TokenScope, TokenType
-from ooxml_extension_manager import OOXMLExtensionManager, StyleStackExtension
+from .token_resolver import TokenResolver
+from .token_parser import TokenParser, VariableToken, TokenScope, TokenType
+from .ooxml_extension_manager import OOXMLExtensionManager, StyleStackExtension
 
 logger = logging.getLogger(__name__)
 

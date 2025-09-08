@@ -329,7 +329,35 @@ class MultiFormatOOXMLHandler:
                           entry_path: str,
                           patches: List[Dict[str, Any]],
                           processor: YAMLPatchProcessor) -> Dict[str, Any]:
-        """Process a single XML file within the OOXML archive."""
+        """Process a single XML file within the OOXML archive with streaming optimization."""
+        result = {'errors': [], 'warnings': []}
+        
+        try:
+            # Get file info for memory optimization
+            zip_info_entry = zip_file.getinfo(entry_path)
+            file_size = zip_info_entry.file_size
+            
+            # Use streaming processing for large files (>10MB)
+            if file_size > 10 * 1024 * 1024:  # 10MB threshold
+                logger.debug(f"Using streaming processing for large file: {entry_path} ({file_size} bytes)")
+                result.update(self._process_large_zip_entry(zip_file, entry_path, patches, processor, zip_info_entry))
+            else:
+                # Standard processing for smaller files
+                result.update(self._process_standard_zip_entry(zip_file, entry_path, patches, processor, zip_info_entry))
+            
+        except Exception as e:
+            result['errors'].append(f"Failed to process {entry_path}: {e}")
+            logger.error(f"ZIP entry processing failed for {entry_path}: {e}")
+        
+        return result
+    
+    def _process_standard_zip_entry(self, 
+                                   zip_file: zipfile.ZipFile, 
+                                   entry_path: str,
+                                   patches: List[Dict[str, Any]], 
+                                   processor: YAMLPatchProcessor,
+                                   zip_info_entry: zipfile.ZipInfo) -> Dict[str, Any]:
+        """Standard processing for smaller ZIP entries."""
         result = {'errors': [], 'warnings': []}
         
         try:
@@ -347,24 +375,137 @@ class MultiFormatOOXMLHandler:
                 if patch_result.warnings:
                     result['warnings'].extend([f"{entry_path}: {w}" for w in patch_result.warnings])
             
-            # Write back the modified XML
-            modified_content = etree.tostring(xml_doc, encoding='utf-8', xml_declaration=True)
-            
-            # Update the ZIP file
-            with tempfile.NamedTemporaryFile() as temp_file:
-                temp_file.write(modified_content)
-                temp_file.flush()
-                
-                # Replace the entry in the ZIP
-                zip_info = zipfile.ZipInfo(entry_path)
-                zip_info.external_attr = 0o644 << 16
-                zip_file.writestr(zip_info, modified_content)
+            # Write back the modified XML with memory-efficient serialization
+            self._update_zip_entry_optimized(zip_file, entry_path, xml_doc, zip_info_entry)
             
         except Exception as e:
-            result['errors'].append(f"Failed to process {entry_path}: {e}")
-            logger.error(f"ZIP entry processing failed for {entry_path}: {e}")
+            result['errors'].append(f"Standard processing failed for {entry_path}: {e}")
+            logger.error(f"Standard ZIP entry processing failed for {entry_path}: {e}")
         
         return result
+    
+    def _process_large_zip_entry(self,
+                                zip_file: zipfile.ZipFile,
+                                entry_path: str,
+                                patches: List[Dict[str, Any]],
+                                processor: YAMLPatchProcessor,
+                                zip_info_entry: zipfile.ZipInfo) -> Dict[str, Any]:
+        """Streaming processing for large ZIP entries to minimize memory usage."""
+        result = {'errors': [], 'warnings': []}
+        
+        try:
+            # Use streaming XML parsing for large files
+            with tempfile.NamedTemporaryFile() as temp_input:
+                # Extract to temporary file for streaming processing
+                with zip_file.open(entry_path, 'r') as zip_entry:
+                    # Stream copy in chunks to avoid loading entire file into memory
+                    chunk_size = 64 * 1024  # 64KB chunks
+                    while True:
+                        chunk = zip_entry.read(chunk_size)
+                        if not chunk:
+                            break
+                        temp_input.write(chunk)
+                
+                temp_input.flush()
+                temp_input.seek(0)
+                
+                # Parse XML incrementally for large documents
+                try:
+                    # Use iterparse for memory-efficient XML parsing
+                    events = ("start", "end")
+                    context = etree.iterparse(temp_input.name, events=events)
+                    context = iter(context)
+                    
+                    # Get root element
+                    event, root = next(context)
+                    
+                    # Apply patches using streaming approach
+                    patch_results = processor.apply_patches(root, patches)
+                    
+                    # Collect results
+                    for patch_result in patch_results:
+                        if not patch_result.success:
+                            result['errors'].append(f"{entry_path}: {patch_result.error}")
+                        if patch_result.warnings:
+                            result['warnings'].extend([f"{entry_path}: {w}" for w in patch_result.warnings])
+                    
+                    # Write back with streaming serialization
+                    self._update_zip_entry_streaming(zip_file, entry_path, root, zip_info_entry)
+                    
+                except etree.XMLSyntaxError as xml_err:
+                    # Fall back to standard processing if streaming fails
+                    logger.warning(f"Streaming XML parsing failed for {entry_path}, falling back to standard processing: {xml_err}")
+                    temp_input.seek(0)
+                    xml_content = temp_input.read()
+                    xml_doc = etree.fromstring(xml_content)
+                    
+                    patch_results = processor.apply_patches(xml_doc, patches)
+                    for patch_result in patch_results:
+                        if not patch_result.success:
+                            result['errors'].append(f"{entry_path}: {patch_result.error}")
+                        if patch_result.warnings:
+                            result['warnings'].extend([f"{entry_path}: {w}" for w in patch_result.warnings])
+                    
+                    self._update_zip_entry_optimized(zip_file, entry_path, xml_doc, zip_info_entry)
+                    
+        except Exception as e:
+            result['errors'].append(f"Streaming processing failed for {entry_path}: {e}")
+            logger.error(f"Streaming ZIP entry processing failed for {entry_path}: {e}")
+        
+        return result
+    
+    def _update_zip_entry_optimized(self, 
+                                   zip_file: zipfile.ZipFile,
+                                   entry_path: str,
+                                   xml_doc: etree._Element,
+                                   original_zip_info: zipfile.ZipInfo):
+        """Update ZIP entry with memory-optimized XML serialization."""
+        # Create new ZIP info preserving original metadata
+        zip_info = zipfile.ZipInfo(entry_path)
+        zip_info.external_attr = original_zip_info.external_attr or (0o644 << 16)
+        zip_info.compress_type = original_zip_info.compress_type
+        
+        # Serialize XML with memory optimization
+        with tempfile.SpooledTemporaryFile(max_size=1024*1024) as temp_buffer:  # 1MB in-memory buffer
+            # Write XML to temporary buffer
+            temp_buffer.write(b'<?xml version="1.0" encoding="UTF-8"?>\n')
+            etree.ElementTree(xml_doc).write(temp_buffer, encoding='utf-8', xml_declaration=False)
+            
+            temp_buffer.seek(0)
+            modified_content = temp_buffer.read()
+            
+            # Update ZIP with optimized content
+            zip_file.writestr(zip_info, modified_content)
+    
+    def _update_zip_entry_streaming(self,
+                                   zip_file: zipfile.ZipFile,
+                                   entry_path: str, 
+                                   xml_root: etree._Element,
+                                   original_zip_info: zipfile.ZipInfo):
+        """Update ZIP entry using streaming approach for large documents."""
+        # Create new ZIP info preserving original metadata
+        zip_info = zipfile.ZipInfo(entry_path)
+        zip_info.external_attr = original_zip_info.external_attr or (0o644 << 16) 
+        zip_info.compress_type = original_zip_info.compress_type
+        
+        # Stream XML serialization to minimize memory usage
+        with tempfile.NamedTemporaryFile() as temp_file:
+            # Write XML declaration
+            temp_file.write(b'<?xml version="1.0" encoding="UTF-8"?>\n')
+            
+            # Stream XML content
+            etree.ElementTree(xml_root).write(
+                temp_file, 
+                encoding='utf-8', 
+                xml_declaration=False,
+                pretty_print=False  # Disable pretty printing to save memory
+            )
+            
+            temp_file.flush()
+            
+            # Stream content back to ZIP
+            with open(temp_file.name, 'rb') as temp_read:
+                zip_file.writestr(zip_info, temp_read.read())
     
     def validate_template_structure(self, 
                                   template_path: Union[str, Path],

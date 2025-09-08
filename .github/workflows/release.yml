@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false  # Don't cancel release builds
+
 permissions:
   contents: write
   packages: write
@@ -48,7 +52,7 @@ jobs:
         run: |
           echo "🔧 Setting up OOXML build environment"
           echo "Using native zip command for OOXML packaging"
-          pip3 install pyyaml click
+          pip3 install --no-cache-dir pyyaml click
       
       - name: Resolve design tokens for channel
         run: |
