@@ -5,6 +5,8 @@ on:
     branches: [ main ]
     paths:
       - 'website/**'
+      - 'docusaurus/**'
+      - 'docs/**/*.md'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -27,6 +29,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        working-directory: ./docusaurus
+        run: npm install
+      
+      - name: Build Docusaurus
+        working-directory: ./docusaurus
+        run: npm run build
+        env:
+          NODE_ENV: production
+      
+      - name: Prepare combined site
+        run: |
+          # Copy main website
+          mkdir -p _site
+          cp -r website/* _site/
+          # Copy Docusaurus build to docs subdirectory
+          mkdir -p _site/docs
+          cp -r docusaurus/build/* _site/docs/
+        
       - name: Setup Pages
         uses: actions/configure-pages@v3
         with:
@@ -35,7 +61,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'website/'
+          path: '_site/'
           
       - name: Deploy to GitHub Pages
         id: deployment
