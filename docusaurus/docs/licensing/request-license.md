@@ -16,7 +16,16 @@ In your forked repository, go to:
 - **Actions** tab → **Request StyleStack License** workflow
 - Click **"Run workflow"**
 
-![License Request Workflow](../assets/license-request-workflow.png)
+```mermaid
+graph TD
+    A[Fork Repository] --> B[Submit License Request]
+    B --> C{Organization Verified?}
+    C -->|Yes| D[Payment Processing]
+    C -->|No| E[Identity Verification]
+    E --> D
+    D --> F[License Key Generated]
+    F --> G[Access Granted]
+```
 
 ### 2. Select License Tier
 

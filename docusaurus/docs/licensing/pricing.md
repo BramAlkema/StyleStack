@@ -220,23 +220,6 @@ Estimate your monthly StyleStack costs:
 
 </div>
 
-<script>
-function updateCost() {
-  const users = document.getElementById('users').value;
-  const tier = document.getElementById('tier').value;
-  const billing = document.getElementById('billing').value;
-  
-  let basePrice = tier === 'enterprise' ? 50 : 25;
-  let totalMonthly = users * basePrice;
-  
-  if (billing === 'annual') {
-    totalMonthly *= 0.8; // 20% discount
-  }
-  
-  document.getElementById('cost').textContent = Math.round(totalMonthly);
-}
-
-document.getElementById('users').addEventListener('input', updateCost);
-document.getElementById('tier').addEventListener('change', updateCost);
-document.getElementById('billing').addEventListener('change', updateCost);
-</script>
+:::note Interactive Calculator
+The pricing calculator above requires JavaScript to function. In a production environment, this would be implemented as a React component.
+:::
