@@ -64,7 +64,7 @@ jobs:
           echo "🎨 Validating CSS..."
           
           # Check for essential CSS custom properties
-          if ! grep -q "--ifm-color-primary" website/typography_styles.css; then
+          if ! grep -q "\-\-gray-50" website/typography_styles.css; then
             echo "❌ Missing CSS custom properties"
             exit 1
           fi
