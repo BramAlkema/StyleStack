@@ -35,6 +35,19 @@ except ImportError as e:
     ExtensionSchemaValidator = None
     EXTENSION_SYSTEM_AVAILABLE = False
 
+# Import YAML-to-OOXML Processing Engine components
+try:
+    from tools.patch_execution_engine import PatchExecutionEngine, ExecutionMode
+    from tools.yaml_patch_parser import ValidationLevel
+    YAML_OOXML_ENGINE_AVAILABLE = True
+except ImportError as e:
+    print(f"Warning: Could not import YAML-to-OOXML Processing Engine: {e}")
+    print("YAML patch processing features will be disabled.")
+    PatchExecutionEngine = None
+    ExecutionMode = None
+    ValidationLevel = None
+    YAML_OOXML_ENGINE_AVAILABLE = False
+
 # ---------- Error Handling System ----------
 class StyleStackError(Exception):
     """Base exception for StyleStack with error codes"""
@@ -68,6 +81,7 @@ class BuildContext:
     source_path: pathlib.Path
     output_path: pathlib.Path
     temp_dir: pathlib.Path
+    verbose: bool = False
     errors: list = field(default_factory=list)
     warnings: list = field(default_factory=list)
     
@@ -316,6 +330,111 @@ def initialize_extension_system(context: BuildContext, org: str = None, channel:
         context.add_warning(f"Failed to initialize extension variable system: {e}")
         return False
 
+def process_yaml_patches(context: BuildContext, pkg_dir: pathlib.Path, org: Optional[str] = None, channel: Optional[str] = None):
+    """Apply YAML patches to OOXML documents using the processing engine"""
+    if not YAML_OOXML_ENGINE_AVAILABLE:
+        if context.verbose:
+            click.echo("   Skipping YAML patch processing - engine not available")
+        return
+    
+    try:
+        # Find YAML patch files
+        patch_files = []
+        
+        # Look for org-specific patches
+        if org:
+            org_patches = pathlib.Path(f"org/{org}").glob("*.yaml")
+            patch_files.extend(org_patches)
+            
+        # Look for channel-specific patches
+        if channel:
+            channel_patches = pathlib.Path(f"channels/{channel}").glob("*.yaml")
+            patch_files.extend(channel_patches)
+        
+        # Look for core patches
+        core_patches = pathlib.Path("core").glob("*.yaml")
+        patch_files.extend(core_patches)
+        
+        if not patch_files:
+            if context.verbose:
+                click.echo("   No YAML patch files found")
+            return
+        
+        # Initialize patch execution engine
+        engine = PatchExecutionEngine(ValidationLevel.LENIENT)
+        
+        # Process OOXML documents in the package
+        ooxml_files = []
+        for ext in ["*.xml"]:
+            ooxml_files.extend(pkg_dir.rglob(ext))
+        
+        if not ooxml_files:
+            if context.verbose:
+                click.echo("   No OOXML files found to patch")
+            return
+        
+        patches_applied = 0
+        errors_encountered = 0
+        
+        # Apply patches to each OOXML document
+        for xml_file in ooxml_files:
+            try:
+                # Load XML document
+                with open(xml_file, 'rb') as f:
+                    xml_content = f.read()
+                
+                # Parse XML with lxml
+                xml_doc = ET.fromstring(xml_content)
+                
+                # Apply patches in batch
+                if patch_files:
+                    batch_result = engine.execute_batch(
+                        [str(pf) for pf in patch_files],
+                        xml_doc,
+                        ExecutionMode.NORMAL,
+                        shared_context=True
+                    )
+                    
+                    if batch_result.success:
+                        # Get the final modified document from the last successful result
+                        final_doc = None
+                        for result in reversed(batch_result.results):
+                            if result.success and result.modified_document is not None:
+                                final_doc = result.modified_document
+                                break
+                        
+                        if final_doc is not None:
+                            # Write back the modified XML
+                            xml_str = ET.tostring(final_doc, encoding='utf-8', xml_declaration=True)
+                            with open(xml_file, 'wb') as f:
+                                f.write(xml_str)
+                            patches_applied += batch_result.successful_patches
+                        
+                    else:
+                        errors_encountered += batch_result.failed_patches
+                        for result in batch_result.results:
+                            if not result.success:
+                                for error in result.errors:
+                                    context.add_warning(f"YAML patch error in {xml_file.name}: {error}")
+            
+            except Exception as e:
+                context.add_warning(f"Failed to process YAML patches for {xml_file.name}: {e}")
+                errors_encountered += 1
+        
+        if context.verbose:
+            if patches_applied > 0:
+                click.echo(f"   Applied {patches_applied} YAML patches successfully")
+            if errors_encountered > 0:
+                click.echo(f"   Encountered {errors_encountered} patch errors")
+        
+    except Exception as e:
+        context.add_error(StyleStackError(
+            f"YAML patch processing failed: {e}",
+            ErrorCode.PROCESSING_FAILED.value,
+            {"error": str(e)}
+        ))
+
+
 def process_extension_variables(context: BuildContext, pkg_dir: pathlib.Path):
     """Process extension variables using the substitution pipeline"""
     if not context.substitution_pipeline:
@@ -413,7 +532,8 @@ def main(src, as_potx, as_dotx, as_xltx, out, verbose, org, channel):
         context = BuildContext(
             source_path=src_path,
             output_path=out_path,
-            temp_dir=tmp_dir
+            temp_dir=tmp_dir,
+            verbose=verbose
         )
         
         # Initialize extension variable system
@@ -452,6 +572,15 @@ def main(src, as_potx, as_dotx, as_xltx, out, verbose, org, channel):
             
             if verbose:
                 click.echo("   Extension variables processed")
+            
+            # Stage 3.5: Apply YAML patches
+            if verbose:
+                click.echo("🔧 Applying YAML patches...")
+            
+            process_yaml_patches(context, pkg_dir, org, channel)
+            
+            if verbose:
+                click.echo("   YAML patches applied")
             
             # Stage 4: Convert to template format
             if target_format:

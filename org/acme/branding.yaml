@@ -1,0 +1,26 @@
+version: "1.0"  
+description: "Acme Corp branding patches"
+author: "Acme IT Department"
+target_formats:
+  - potx
+  - dotx
+
+variables:
+  brand_primary: "CC3300"
+  brand_secondary: "FF6633"
+  company_name: "Acme Corporation"
+
+patches:
+  # Apply Acme brand colors
+  - operation: set
+    target: "//a:dk1/a:srgbClr/@val"
+    value: "${brand_primary}"
+    
+  - operation: set  
+    target: "//a:lt1/a:srgbClr/@val"
+    value: "${brand_secondary}"
+    
+  # Update company name in document properties if present
+  - operation: set
+    target: "//w:company"
+    value: "${company_name}"
