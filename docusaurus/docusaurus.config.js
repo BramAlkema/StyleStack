@@ -6,9 +6,9 @@ const config = {
   tagline: 'Typography as a Service - Design Tokens for Professional Office Templates',
   favicon: 'img/favicon.ico',
 
-  // GitHub Pages deployment config
+  // GitHub Pages deployment config  
   url: 'https://BramAlkema.github.io',
-  baseUrl: '/StyleStack/docs/',
+  baseUrl: '/StyleStack/',
   
   // GitHub deployment config
   organizationName: 'BramAlkema',
