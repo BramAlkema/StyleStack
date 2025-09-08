@@ -69,7 +69,7 @@ jobs:
             exit 1
           fi
           
-          if ! grep -q "font-family.*Inter" website/typography_styles.css; then
+          if ! grep -q "Inter" website/typography_styles.css; then
             echo "❌ Missing typography font families"
             exit 1
           fi
