@@ -70,18 +70,18 @@ Instead of using pre-built templates, organizations:
 
 ## Getting Started
 
-Choose your path:
+Documentation sections coming soon:
 
-### 🚀 [Quick Start](/getting-started/quick-start)
+### 🚀 Quick Start
 Get templates running in 5 minutes
 
-### 🏗️ [Installation Guide](/getting-started/installation)
+### 🏗️ Installation Guide
 Set up your institutional fork
 
-### 🎨 [Design Tokens](/design-tokens/overview)
+### 🎨 Design Tokens
 Understand the token system
 
-### 🔧 [Customization](/customization/branding)
+### 🔧 Customization
 Make StyleStack your own
 
 ## Support
