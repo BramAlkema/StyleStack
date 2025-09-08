@@ -1,0 +1,396 @@
+name: Deploy Main Website
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'website/**'
+      - '.github/workflows/website-deploy.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'website/**'
+  workflow_dispatch:
+
+concurrency:
+  group: website-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    name: Build Main Website
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Validate HTML
+        run: |
+          echo "🔍 Validating HTML structure..."
+          
+          # Check for required HTML elements
+          if ! grep -q "<title>" website/new_index.html; then
+            echo "❌ Missing <title> tag"
+            exit 1
+          fi
+          
+          if ! grep -q 'href="typography_styles.css"' website/new_index.html; then
+            echo "❌ Missing CSS reference"
+            exit 1
+          fi
+          
+          if ! grep -q 'src="typography_script.js"' website/new_index.html; then
+            echo "❌ Missing JavaScript reference"
+            exit 1
+          fi
+          
+          echo "✅ HTML validation passed"
+
+      - name: Validate CSS
+        run: |
+          echo "🎨 Validating CSS..."
+          
+          # Check for essential CSS custom properties
+          if ! grep -q "--ifm-color-primary" website/typography_styles.css; then
+            echo "❌ Missing CSS custom properties"
+            exit 1
+          fi
+          
+          if ! grep -q "font-family.*Inter" website/typography_styles.css; then
+            echo "❌ Missing typography font families"
+            exit 1
+          fi
+          
+          if ! grep -q "@media.*max-width" website/typography_styles.css; then
+            echo "❌ Missing responsive breakpoints"
+            exit 1
+          fi
+          
+          echo "✅ CSS validation passed"
+
+      - name: Validate JavaScript
+        run: |
+          echo "⚡ Validating JavaScript..."
+          
+          # Check for essential JavaScript functions
+          if ! grep -q "DOMContentLoaded" website/typography_script.js; then
+            echo "❌ Missing DOM ready handler"
+            exit 1
+          fi
+          
+          if ! grep -q "IntersectionObserver" website/typography_script.js; then
+            echo "❌ Missing intersection observer"
+            exit 1
+          fi
+          
+          echo "✅ JavaScript validation passed"
+
+      - name: Optimize assets
+        run: |
+          echo "🚀 Optimizing website assets..."
+          
+          cd website
+          
+          # Create optimized build directory
+          mkdir -p build
+          
+          # Copy and optimize HTML
+          cp new_index.html build/index.html
+          
+          # Copy CSS with basic optimization (remove comments, minimize whitespace)
+          sed '/^\/\*/,/\*\//d' typography_styles.css | \
+          sed '/^[[:space:]]*$/d' > build/typography_styles.css
+          
+          # Copy JavaScript with basic optimization
+          sed '/^\/\*/,/\*\//d' typography_script.js | \
+          sed '/^[[:space:]]*$/d' > build/typography_script.js
+          
+          # Create robots.txt
+          cat > build/robots.txt << EOF
+          User-agent: *
+          Allow: /
+          
+          Sitemap: https://BramAlkema.github.io/StyleStack/sitemap.xml
+          EOF
+          
+          # Create sitemap.xml
+          cat > build/sitemap.xml << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+            <url>
+              <loc>https://BramAlkema.github.io/StyleStack/</loc>
+              <lastmod>$(date -u +%Y-%m-%d)</lastmod>
+              <changefreq>weekly</changefreq>
+              <priority>1.0</priority>
+            </url>
+            <url>
+              <loc>https://BramAlkema.github.io/StyleStack/docs/</loc>
+              <lastmod>$(date -u +%Y-%m-%d)</lastmod>
+              <changefreq>weekly</changefreq>
+              <priority>0.8</priority>
+            </url>
+          </urlset>
+          EOF
+          
+          # Create manifest.json for PWA features
+          cat > build/manifest.json << EOF
+          {
+            "name": "StyleStack - Typography as a Service",
+            "short_name": "StyleStack",
+            "description": "Professional Office templates with modern design tokens",
+            "start_url": "/",
+            "display": "standalone",
+            "background_color": "#fafafa",
+            "theme_color": "#2563eb",
+            "icons": [
+              {
+                "src": "data:image/svg+xml,%3Csvg width='192' height='192' viewBox='0 0 192 192' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='192' height='192' fill='%232563eb' rx='24'/%3E%3Ctext x='96' y='130' text-anchor='middle' fill='%23ffffff' font-family='Playfair Display' font-size='120' font-weight='700'%3ES%3C/text%3E%3C/svg%3E",
+                "sizes": "192x192",
+                "type": "image/svg+xml"
+              }
+            ]
+          }
+          EOF
+          
+          echo "✅ Asset optimization complete"
+
+      - name: Generate build info
+        run: |
+          cd website/build
+          
+          cat > build-info.json << EOF
+          {
+            "build_time": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "git_commit": "${{ github.sha }}",
+            "git_ref": "${{ github.ref }}",
+            "github_actor": "${{ github.actor }}",
+            "version": "$(date +%Y.%m.%d)",
+            "features": {
+              "typography_system": true,
+              "design_tokens": true,
+              "responsive_design": true,
+              "accessibility": true,
+              "animations": true
+            }
+          }
+          EOF
+
+      - name: Upload build artifacts
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: website/build
+
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+
+  lighthouse:
+    name: Lighthouse Performance Audit
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      - name: Audit website performance
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            https://BramAlkema.github.io/StyleStack/
+          configPath: ./.github/lighthouse/config.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      - name: Create Lighthouse config
+        run: |
+          mkdir -p .github/lighthouse
+          cat > .github/lighthouse/config.json << EOF
+          {
+            "ci": {
+              "collect": {
+                "numberOfRuns": 3,
+                "settings": {
+                  "chromeFlags": ["--no-sandbox", "--headless"]
+                }
+              },
+              "assert": {
+                "assertions": {
+                  "categories:performance": ["error", {"minScore": 0.9}],
+                  "categories:accessibility": ["error", {"minScore": 0.95}],
+                  "categories:best-practices": ["error", {"minScore": 0.9}],
+                  "categories:seo": ["error", {"minScore": 0.9}]
+                }
+              },
+              "upload": {
+                "target": "temporary-public-storage"
+              }
+            }
+          }
+          EOF
+
+  test-website:
+    name: Test Website Functionality
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      - name: Test website accessibility and functionality
+        run: |
+          sleep 30  # Allow deployment to propagate
+          
+          BASE_URL="https://BramAlkema.github.io/StyleStack"
+          
+          echo "🌐 Testing website: $BASE_URL"
+          
+          # Test main page loads
+          if curl -sSf "$BASE_URL/" > /dev/null; then
+            echo "✅ Main page loads successfully"
+          else
+            echo "❌ Main page failed to load"
+            exit 1
+          fi
+          
+          # Test CSS loads
+          if curl -sSf "$BASE_URL/typography_styles.css" > /dev/null; then
+            echo "✅ CSS file loads successfully"
+          else
+            echo "❌ CSS file failed to load"
+            exit 1
+          fi
+          
+          # Test JavaScript loads
+          if curl -sSf "$BASE_URL/typography_script.js" > /dev/null; then
+            echo "✅ JavaScript file loads successfully"
+          else
+            echo "❌ JavaScript file failed to load"
+            exit 1
+          fi
+          
+          # Test sitemap
+          if curl -sSf "$BASE_URL/sitemap.xml" > /dev/null; then
+            echo "✅ Sitemap accessible"
+          else
+            echo "❌ Sitemap not found"
+            exit 1
+          fi
+          
+          # Test robots.txt
+          if curl -sSf "$BASE_URL/robots.txt" > /dev/null; then
+            echo "✅ Robots.txt accessible"
+          else
+            echo "❌ Robots.txt not found"
+            exit 1
+          fi
+          
+          echo "🎉 All website tests passed!"
+
+  notify:
+    name: Notify Deployment Status
+    runs-on: ubuntu-latest
+    needs: [build, deploy, lighthouse, test-website]
+    if: always()
+    
+    steps:
+      - name: Generate deployment summary
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << EOF
+          # 🌐 Main Website Deployment
+          
+          ## Deployment Status
+          
+          | Step | Status |
+          |------|--------|
+          | Build & Optimize | ${{ needs.build.result == 'success' && '✅ Success' || '❌ Failed' }} |
+          | Deploy to Pages | ${{ needs.deploy.result == 'success' && '✅ Success' || '⏭️ Skipped' }} |
+          | Lighthouse Audit | ${{ needs.lighthouse.result == 'success' && '✅ Success' || '⚠️ Partial' }} |
+          | Functionality Tests | ${{ needs.test-website.result == 'success' && '✅ Success' || '⏭️ Skipped' }} |
+          
+          ## Website URL
+          🚀 **Live Website**: https://BramAlkema.github.io/StyleStack/
+          
+          ## Features Deployed
+          - 🎨 **Typography-First Design**: Professional typography with Inter, Playfair Display, and JetBrains Mono
+          - 🎯 **Design Token Showcase**: Hierarchical design system visualization
+          - 📱 **Responsive Design**: Optimized for all device sizes
+          - ♿ **Accessibility**: WCAG AAA compliant design
+          - ⚡ **Performance**: Optimized assets and lazy loading
+          - 🌙 **Dark Mode**: Advanced theming support
+          - 🎭 **Animations**: Smooth transitions and micro-interactions
+          
+          ## Technical Stack
+          - **HTML**: Semantic structure with modern best practices
+          - **CSS**: Custom properties, Grid, Flexbox, advanced typography
+          - **JavaScript**: Vanilla JS with modern APIs (Intersection Observer, etc.)
+          - **Fonts**: Google Fonts with advanced OpenType features
+          - **Performance**: Optimized for Core Web Vitals
+          
+          ## Documentation Integration
+          - 📚 **Documentation**: https://BramAlkema.github.io/StyleStack/docs/
+          - 🔗 **Navigation**: Seamless integration between main site and docs
+          - 📖 **API Reference**: Complete extraction API documentation
+          
+          ---
+          *Website automatically updated with every commit to main branch*
+          EOF
+
+      - name: Comment on PR (if applicable)
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const buildStatus = '${{ needs.build.result }}';
+            
+            let message = '## 🌐 Website Preview\n\n';
+            
+            if (buildStatus === 'success') {
+              message += '✅ **Build Status**: Successful\n';
+              message += '🎨 **Design**: Typography-first design system deployed\n\n';
+              message += '### Key Features:\n';
+              message += '- Professional typography with Golden Ratio scaling\n';
+              message += '- Advanced CSS with custom properties and modern layouts\n';
+              message += '- Interactive JavaScript with accessibility features\n';
+              message += '- Responsive design for all device sizes\n';
+              message += '- SEO optimized with sitemap and meta tags\n\n';
+              message += '### Performance:\n';
+              message += '- Optimized assets and CSS\n';
+              message += '- Modern font loading strategies\n';
+              message += '- Accessibility compliant (WCAG AAA)\n\n';
+              message += '### Next Steps:\n';
+              message += '1. Review the website changes\n';
+              message += '2. Merge to deploy to production\n';
+              message += '3. Website will be live at: https://BramAlkema.github.io/StyleStack/\n';
+            } else {
+              message += '❌ **Build Status**: Failed\n';
+              message += 'Please check the build logs for errors.\n';
+            }
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            })

@@ -24,6 +24,7 @@ try:
     from tools.theme_resolver import ThemeResolver
     from tools.variable_substitution import VariableSubstitutionPipeline
     from tools.extension_schema_validator import ExtensionSchemaValidator
+    from tools.github_license_manager import GitHubLicenseManager, GitHubLicenseEnforcer, LicenseError
     EXTENSION_SYSTEM_AVAILABLE = True
 except ImportError as e:
     print(f"Warning: Could not import OOXML Extension Variable System components: {e}")
@@ -33,6 +34,9 @@ except ImportError as e:
     ThemeResolver = None
     VariableSubstitutionPipeline = None
     ExtensionSchemaValidator = None
+    GitHubLicenseManager = None
+    GitHubLicenseEnforcer = None
+    LicenseError = None
     EXTENSION_SYSTEM_AVAILABLE = False
 
 # Import YAML-to-OOXML Processing Engine components
@@ -500,6 +504,18 @@ def process_extension_variables(context: BuildContext, pkg_dir: pathlib.Path):
 @click.option('--channel', help='Channel name for extension variable lookup')
 def main(src, as_potx, as_dotx, as_xltx, out, verbose, org, channel):
     """StyleStack OOXML Extension Variable System"""
+    
+    # License validation for commercial use (GitHub-native)
+    if org and EXTENSION_SYSTEM_AVAILABLE and GitHubLicenseManager:
+        license_manager = GitHubLicenseManager()
+        license_enforcer = GitHubLicenseEnforcer(license_manager)
+        
+        try:
+            # Check if org requires licensing
+            license_enforcer.enforce(org, 'build')
+        except LicenseError as e:
+            click.echo(str(e))
+            sys.exit(1)
     
     # Configure logging
     log_level = logging.DEBUG if verbose else logging.INFO

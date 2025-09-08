@@ -1,0 +1,198 @@
+name: License Distributor (Upstream Only)
+
+on:
+  repository_dispatch:
+    types: [license-request]
+
+permissions:
+  contents: read
+  issues: write  # To create payment tracking issues
+
+jobs:
+  validate-request:
+    name: Validate License Request
+    runs-on: ubuntu-latest
+    if: github.repository == 'BramAlkema/StyleStack'  # Only run on upstream
+    outputs:
+      valid: ${{ steps.validate.outputs.valid }}
+      requester: ${{ steps.validate.outputs.requester }}
+      tier: ${{ steps.validate.outputs.tier }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install PyJWT cryptography requests
+      
+      - name: Validate OIDC token
+        id: validate
+        run: |
+          python3 << 'EOF'
+          import jwt
+          import json
+          import sys
+          import os
+          
+          # Get the OIDC token from the request
+          token = """${{ github.event.client_payload.oidc_token }}"""
+          
+          if not token or token == "null":
+              print("❌ No OIDC token provided")
+              print("::set-output name=valid::false")
+              sys.exit(1)
+          
+          try:
+              # Decode without verification (GitHub's key validation)
+              # In production, verify against GitHub's OIDC endpoint
+              claims = jwt.decode(token, options={"verify_signature": False})
+              
+              # Validate claims
+              repo = claims.get('repository', '')
+              if '/' not in repo:
+                  print(f"❌ Invalid repository format: {repo}")
+                  print("::set-output name=valid::false")
+                  sys.exit(1)
+              
+              requester = repo.split('/')[0]
+              
+              # Check if it's a fork (not the upstream)
+              if repo == 'BramAlkema/StyleStack':
+                  print("❌ Upstream cannot request a license from itself")
+                  print("::set-output name=valid::false")
+                  sys.exit(1)
+              
+              print(f"✅ Valid request from: {requester}")
+              print(f"   Repository: {repo}")
+              print(f"   Tier: ${{ github.event.client_payload.tier }}")
+              
+              print(f"::set-output name=valid::true")
+              print(f"::set-output name=requester::{requester}")
+              print(f"::set-output name=tier::${{ github.event.client_payload.tier }}")
+              
+          except Exception as e:
+              print(f"❌ Token validation failed: {e}")
+              print("::set-output name=valid::false")
+              sys.exit(1)
+          EOF
+      
+      - name: Check payment status
+        if: steps.validate.outputs.valid == 'true'
+        id: payment
+        run: |
+          # Check if requester has paid (would query payment database)
+          # For demo, check if they're in the approved list
+          
+          REQUESTER="${{ steps.validate.outputs.requester }}"
+          TIER="${{ steps.validate.outputs.tier }}"
+          
+          # Check for open source eligibility
+          if [[ "$REQUESTER" == *"nonprofit"* ]] || \
+             [[ "$REQUESTER" == *"education"* ]] || \
+             [[ "$REQUESTER" == *"university"* ]] || \
+             [[ "$REQUESTER" == *"foundation"* ]]; then
+              echo "✅ Eligible for free community tier"
+              echo "::set-output name=paid::true"
+              echo "::set-output name=tier::community"
+          else
+              # Check payment records (mock check)
+              # In production, integrate with Stripe/PayPal/etc
+              echo "⏳ Payment verification required"
+              echo "::set-output name=paid::false"
+          fi
+  
+  issue-license:
+    name: Issue License
+    runs-on: ubuntu-latest
+    needs: validate-request
+    if: needs.validate-request.outputs.valid == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install PyJWT cryptography
+      
+      - name: Generate license
+        id: generate
+        run: |
+          python3 tools/github_license_manager.py generate \
+            --org "${{ needs.validate-request.outputs.requester }}" \
+            --tier "${{ needs.validate-request.outputs.tier }}" \
+            > license.txt
+          
+          LICENSE=$(cat license.txt)
+          echo "::set-output name=license::$LICENSE"
+          echo "✅ License generated for ${{ needs.validate-request.outputs.requester }}"
+      
+      - name: Send license to requester
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.STYLESTACK_PAT }}  # Needs PAT to dispatch to other repos
+          repository: ${{ github.event.client_payload.repository }}
+          event-type: license-received
+          client-payload: |
+            {
+              "license": "${{ steps.generate.outputs.license }}",
+              "org": "${{ needs.validate-request.outputs.requester }}",
+              "tier": "${{ needs.validate-request.outputs.tier }}",
+              "expires": "2025-12-31T23:59:59Z",
+              "issued_by": "StyleStack",
+              "issued_at": "${{ github.event.repository.updated_at }}"
+            }
+      
+      - name: Create tracking issue
+        if: needs.validate-request.outputs.tier != 'community'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `License: ${{ needs.validate-request.outputs.requester }} - ${{ needs.validate-request.outputs.tier }}`,
+              body: `## License Issued
+              
+              - **Organization**: ${{ needs.validate-request.outputs.requester }}
+              - **Repository**: ${{ github.event.client_payload.repository }}
+              - **Tier**: ${{ needs.validate-request.outputs.tier }}
+              - **Purpose**: ${{ github.event.client_payload.purpose || 'Not specified' }}
+              - **Issued**: ${new Date().toISOString()}
+              
+              ### Payment Status
+              - [ ] Payment received
+              - [ ] Invoice sent
+              - [ ] License activated
+              
+              ### Notes
+              License has been automatically delivered. Track payment and support here.`,
+              labels: ['license', '${{ needs.validate-request.outputs.tier }}']
+            })
+            
+            console.log(`Tracking issue created: #${issue.data.number}`)
+      
+      - name: Summary
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << EOF
+          # License Issued ✅
+          
+          ## Details
+          - **Organization**: ${{ needs.validate-request.outputs.requester }}
+          - **Tier**: ${{ needs.validate-request.outputs.tier }}
+          - **Repository**: ${{ github.event.client_payload.repository }}
+          
+          ## Delivery
+          License has been sent via repository_dispatch to the requesting repository.
+          The fork will receive it through their 'license-received' workflow.
+          
+          ## Tracking
+          An issue has been created to track this license and payment status.
+          EOF

@@ -25,6 +25,25 @@ from lxml import etree as ET
 import colorsys
 import re
 
+# Import existing StyleStack tools for comprehensive analysis
+try:
+    from .theme_resolver import ThemeResolver, Theme
+    from .template_analyzer import TemplateAnalyzer, AnalysisResult
+    from .ooxml_processor import OOXMLProcessor
+except ImportError:
+    # Fallback for standalone usage
+    import sys
+    sys.path.append(str(Path(__file__).parent))
+    try:
+        from theme_resolver import ThemeResolver, Theme
+        from template_analyzer import TemplateAnalyzer, AnalysisResult
+        from ooxml_processor import OOXMLProcessor
+    except ImportError:
+        print("⚠️  Warning: StyleStack analysis tools not available, using basic extraction only")
+        ThemeResolver = None
+        TemplateAnalyzer = None
+        OOXMLProcessor = None
+
 class DesignTokenExtractor:
     """Extract design tokens from Office and OpenOffice files"""
     
@@ -56,6 +75,13 @@ class DesignTokenExtractor:
         self.theme_info = {}
         self.extracted_images = []
         self.image_usage = Counter()
+        
+        # Initialize StyleStack analysis tools if available
+        self.theme_resolver = ThemeResolver() if ThemeResolver else None
+        self.template_analyzer = TemplateAnalyzer() if TemplateAnalyzer else None
+        self.ooxml_processor = OOXMLProcessor() if OOXMLProcessor else None
+        
+        self.use_advanced_extraction = bool(self.theme_resolver and self.template_analyzer)
         
     def _detect_file_format(self, file_path: Path) -> str:
         """Detect file format based on extension and content"""
@@ -101,6 +127,28 @@ class DesignTokenExtractor:
 
     def _extract_from_ooxml(self, file_path: Path, format_type: str) -> Dict:
         """Extract tokens from OOXML formats (Microsoft Office)"""
+        if self.use_advanced_extraction:
+            return self._extract_with_stylestack_tools(file_path, format_type)
+        else:
+            return self._extract_basic_ooxml(file_path, format_type)
+
+    def _extract_with_stylestack_tools(self, file_path: Path, format_type: str) -> Dict:
+        """Enhanced extraction using StyleStack's advanced analysis tools"""
+        print(f"🚀 Using advanced StyleStack extraction tools...")
+        
+        # Use TemplateAnalyzer for comprehensive analysis
+        analysis_result = self.template_analyzer.analyze_complete_template(str(file_path))
+        
+        # Use ThemeResolver to extract theme information
+        theme = self.theme_resolver.extract_theme_from_ooxml_file(file_path)
+        
+        # Convert analysis results to design tokens
+        tokens = self._convert_analysis_to_tokens(analysis_result, theme, file_path)
+        
+        return tokens
+
+    def _extract_basic_ooxml(self, file_path: Path, format_type: str) -> Dict:
+        """Basic extraction (fallback when advanced tools unavailable)"""
         with tempfile.TemporaryDirectory() as temp_dir:
             # Extract OOXML file
             with zipfile.ZipFile(file_path, 'r') as zip_file:
@@ -117,6 +165,222 @@ class DesignTokenExtractor:
             
             # Compile final token set
             return self._compile_tokens()
+
+    def _convert_analysis_to_tokens(self, analysis: 'AnalysisResult', theme: Optional['Theme'], file_path: Path) -> Dict:
+        """Convert StyleStack analysis results to design tokens format"""
+        tokens = {
+            "stylestack": {
+                "version": "1.0.0",
+                "extracted": True,
+                "extraction_timestamp": "",
+                "extraction_method": "advanced_stylestack_analysis",
+                "tokens": {}
+            }
+        }
+        
+        token_data = tokens["stylestack"]["tokens"]
+        
+        # Debug: Check what we got from analysis
+        print(f"📊 Analysis result type: {type(analysis)}")
+        if hasattr(analysis, '__dict__'):
+            print(f"📊 Analysis attributes: {list(analysis.__dict__.keys())}")
+        print(f"🎨 Theme type: {type(theme)}")
+        if theme and hasattr(theme, '__dict__'):
+            print(f"🎨 Theme attributes: {list(theme.__dict__.keys())}")
+        
+        # Extract theme colors from advanced analysis
+        if theme:
+            color_tokens = {}
+            # Try different possible attribute names
+            colors_attr = None
+            for attr_name in ['colors', 'color_scheme', 'theme_colors']:
+                if hasattr(theme, attr_name):
+                    colors_attr = getattr(theme, attr_name)
+                    print(f"🎨 Found colors in theme.{attr_name}: {type(colors_attr)}")
+                    break
+            
+            if colors_attr:
+                if isinstance(colors_attr, dict):
+                    for slot, color_info in colors_attr.items():
+                        color_value = None
+                        if isinstance(color_info, str):
+                            color_value = color_info
+                        elif hasattr(color_info, 'rgb_value'):
+                            color_value = color_info.rgb_value
+                        elif hasattr(color_info, 'value'):
+                            color_value = color_info.value
+                        
+                        if color_value:
+                            color_tokens[slot] = {
+                                "value": color_value,
+                                "type": "color",
+                                "source": f"theme_slot_{slot}"
+                            }
+                
+                if color_tokens:
+                    token_data["colors"] = color_tokens
+                    print(f"✅ Extracted {len(color_tokens)} color tokens")
+        
+        # Extract colors from design_elements
+        if hasattr(analysis, 'design_elements') and analysis.design_elements:
+            design_elements = analysis.design_elements
+            print(f"🎨 Found {len(design_elements)} design elements")
+            
+            # Extract colors
+            color_elements = [elem for elem in design_elements if elem.get('type') == 'color']
+            if color_elements:
+                color_tokens = {}
+                for i, color_elem in enumerate(color_elements):
+                    color_value = color_elem.get('value', color_elem.get('color'))
+                    if color_value:
+                        token_name = f"color_{i+1}"
+                        if 'name' in color_elem:
+                            token_name = color_elem['name']
+                        elif 'theme_slot' in color_elem:
+                            token_name = color_elem['theme_slot']
+                        
+                        color_tokens[token_name] = {
+                            "value": color_value,
+                            "type": "color",
+                            "source": "design_elements_analysis"
+                        }
+                
+                if color_tokens:
+                    token_data["colors"] = color_tokens
+                    print(f"✅ Extracted {len(color_tokens)} color tokens from design elements")
+            
+            # Extract typography
+            font_elements = [elem for elem in design_elements if elem.get('type') in ['font', 'typography', 'text']]
+            if font_elements:
+                typography_tokens = {}
+                font_families = set()
+                font_sizes = Counter()
+                
+                for font_elem in font_elements:
+                    if 'font_family' in font_elem:
+                        font_families.add(font_elem['font_family'])
+                    if 'font_size' in font_elem:
+                        font_sizes[font_elem['font_size']] += 1
+                    if 'size' in font_elem:
+                        font_sizes[font_elem['size']] += 1
+                
+                if font_families:
+                    primary_font = list(font_families)[0]
+                    typography_tokens["font_family"] = {
+                        "value": primary_font,
+                        "type": "fontFamily",
+                        "source": "design_elements_analysis"
+                    }
+                
+                if font_sizes:
+                    size_tokens = {}
+                    for i, (size, count) in enumerate(font_sizes.most_common()):
+                        size_tokens[f"size_{i+1}"] = {
+                            "value": str(size),
+                            "type": "fontSizes",
+                            "usage_count": count,
+                            "source": "design_elements_analysis"
+                        }
+                    typography_tokens["sizes"] = size_tokens
+                
+                if typography_tokens:
+                    token_data["typography"] = typography_tokens
+                    print(f"✅ Extracted typography tokens: {list(typography_tokens.keys())}")
+        
+        # Extract typography from analysis (fallback)
+        if hasattr(analysis, 'fonts') and analysis.fonts:
+            typography_tokens = {}
+            
+            # Process font families
+            font_families = set()
+            font_sizes = Counter()
+            
+            for font_info in analysis.fonts:
+                if hasattr(font_info, 'font_family') and font_info.font_family:
+                    font_families.add(font_info.font_family)
+                if hasattr(font_info, 'font_size') and font_info.font_size:
+                    font_sizes[font_info.font_size] += 1
+            
+            if font_families:
+                primary_font = list(font_families)[0]  # Most common or first found
+                typography_tokens["font_family"] = {
+                    "value": primary_font,
+                    "type": "fontFamily",
+                    "source": "template_analysis"
+                }
+            
+            if font_sizes:
+                size_tokens = {}
+                for i, (size, count) in enumerate(font_sizes.most_common()):
+                    size_tokens[f"size_{i+1}"] = {
+                        "value": size,
+                        "type": "fontSizes",
+                        "usage_count": count,
+                        "source": "content_analysis"
+                    }
+                typography_tokens["sizes"] = size_tokens
+            
+            if typography_tokens:
+                token_data["typography"] = typography_tokens
+        
+        # Extract spacing and layout from analysis
+        if hasattr(analysis, 'layout_metrics'):
+            spacing_tokens = {
+                "note": "Extracted from comprehensive layout analysis"
+            }
+            # Add specific spacing values based on analysis
+            token_data["spacing"] = spacing_tokens
+        
+        # Extract brand assets (keep existing image extraction)
+        with tempfile.TemporaryDirectory() as temp_dir:
+            with zipfile.ZipFile(file_path, 'r') as zip_file:
+                zip_file.extractall(temp_dir)
+            temp_path = Path(temp_dir)
+            self._extract_logos_and_images(temp_path)
+        
+        if self.extracted_images:
+            brand_assets = self._organize_brand_assets()
+            if brand_assets:
+                token_data["brand_assets"] = brand_assets
+        
+        return tokens
+
+    def _organize_brand_assets(self) -> Dict:
+        """Organize extracted images into brand asset categories"""
+        logos = {}
+        icons = {}
+        other_images = {}
+        
+        for image_info in self.extracted_images:
+            classification = image_info.get('classification', 'image')
+            stem = image_info.get('stem', 'unknown')
+            
+            asset_data = {
+                'filename': image_info['filename'],
+                'format': image_info['format'],
+                'size_bytes': image_info['size_bytes'],
+                'relative_path': image_info['relative_path']
+            }
+            
+            if 'dimensions' in image_info:
+                asset_data['dimensions'] = image_info['dimensions']
+            
+            if classification in ['primary_logo', 'secondary_logo']:
+                logos[stem] = asset_data
+            elif classification in ['functional_icon', 'decorative_icon']:
+                icons[stem] = asset_data
+            else:
+                other_images[stem] = asset_data
+        
+        brand_assets = {}
+        if logos:
+            brand_assets['logos'] = logos
+        if icons:
+            brand_assets['icons'] = icons  
+        if other_images:
+            brand_assets['images'] = other_images
+            
+        return brand_assets
 
     def _extract_from_odf(self, file_path: Path, format_type: str) -> Dict:
         """Extract tokens from ODF formats (OpenOffice/LibreOffice)"""

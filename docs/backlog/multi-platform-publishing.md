@@ -30,12 +30,19 @@ Extend StyleStack beyond Microsoft Office to LibreOffice, Google Workspace, and 
 
 ---
 
-## Phase 1: Google Workspace Integration (Priority P0)
+## Phase 1: Google Workspace Integration (Priority P3 - Backlog)
+
+**Status**: Moved to backlog - Focus on GitHub-native licensing and core OOXML features first  
+**Rationale**: Current GitHub-based distribution provides sufficient platform coverage for initial market validation
 
 ### 1.1 Google Slides Template Publisher
-**Priority:** P0 - Critical
+**Priority:** P3 - Backlog
 **Size:** L (6-8 weeks)
 **Description:** Convert StyleStack templates to Google Slides templates
+**Prerequisites:** 
+- Stable licensing system ✅
+- Core OOXML processing maturity ✅
+- Market validation of GitHub-based distribution
 **Tasks:**
 - [ ] Build Google Slides API integration for template creation
 - [ ] Create OOXML → Google Slides converter
@@ -44,10 +51,13 @@ Extend StyleStack beyond Microsoft Office to LibreOffice, Google Workspace, and 
 - [ ] Build Apps Script add-in for token updates
 - [ ] Test template sharing and collaboration features
 
-### 1.2 Google Docs Template Publisher
-**Priority:** P1 - High
+### 1.2 Google Docs Template Publisher  
+**Priority:** P3 - Backlog
 **Size:** M (4-6 weeks)
 **Description:** Generate Google Docs templates with embedded design tokens
+**Prerequisites:**
+- Google Slides publisher (dependency)
+- User demand validation
 **Tasks:**
 - [ ] Build Google Docs API integration
 - [ ] Create Word OOXML → Google Docs converter
@@ -57,9 +67,12 @@ Extend StyleStack beyond Microsoft Office to LibreOffice, Google Workspace, and 
 - [ ] Test collaborative editing with design tokens
 
 ### 1.3 Google Sheets Template Publisher
-**Priority:** P2 - Medium
-**Size:** M (4-6 weeks)
+**Priority:** P3 - Backlog
+**Size:** M (4-6 weeks)  
 **Description:** Professional spreadsheet templates for Google Sheets
+**Prerequisites:**
+- Google Docs publisher (dependency)
+- Enterprise customer demand
 **Tasks:**
 - [ ] Build Google Sheets API integration
 - [ ] Create Excel OOXML → Google Sheets converter

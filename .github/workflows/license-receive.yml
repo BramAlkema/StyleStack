@@ -1,0 +1,160 @@
+name: Receive StyleStack License
+
+on:
+  repository_dispatch:
+    types: [license-received]
+
+permissions:
+  contents: write  # To save encrypted license file
+
+jobs:
+  save-license:
+    name: Save and Encrypt License
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install cryptography
+      
+      - name: Save license
+        run: |
+          # Create licenses directory
+          mkdir -p .github/licenses
+          
+          # Save the license (will be encrypted)
+          echo "${{ github.event.client_payload.license }}" > license.tmp
+          
+          # Use the GitHub license manager to save encrypted
+          python3 tools/github_license_manager.py save \
+            --org "${{ github.event.client_payload.org }}" \
+            --license "${{ github.event.client_payload.license }}"
+          
+          # Clean up temp file
+          rm -f license.tmp
+          
+          echo "✅ License saved and encrypted"
+      
+      - name: Update repository secret
+        run: |
+          # Also save as repository secret for CI/CD use
+          # This requires GitHub CLI with appropriate permissions
+          
+          LICENSE="${{ github.event.client_payload.license }}"
+          ORG_UPPER=$(echo "${{ github.event.client_payload.org }}" | tr '[:lower:]' '[:upper:]' | tr '-' '_')
+          
+          # Note: This would require gh auth and appropriate permissions
+          # gh secret set "LICENSE_${ORG_UPPER}" --body "${LICENSE}" || true
+          
+          echo "💡 To use in CI/CD, set this as a repository secret:"
+          echo "   Name: LICENSE_${ORG_UPPER}"
+          echo "   Value: [Provided license string]"
+      
+      - name: Commit encrypted license
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          git add .github/licenses/*.enc
+          git commit -m "chore: Save encrypted license for ${{ github.event.client_payload.org }}
+          
+          Tier: ${{ github.event.client_payload.tier }}
+          Expires: ${{ github.event.client_payload.expires }}
+          Issued by: ${{ github.event.client_payload.issued_by }}
+          
+          [skip ci]" || echo "No changes to commit"
+          
+          git push
+      
+      - name: Create summary
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << EOF
+          # 🎉 License Received and Activated!
+          
+          ## License Details
+          - **Organization**: ${{ github.event.client_payload.org }}
+          - **Tier**: ${{ github.event.client_payload.tier }}
+          - **Expires**: ${{ github.event.client_payload.expires }}
+          - **Issued by**: ${{ github.event.client_payload.issued_by }}
+          
+          ## ✅ Automatic Activation
+          The license has been encrypted and saved to your repository.
+          It will be automatically used when building templates.
+          
+          ## Usage
+          
+          ### In GitHub Actions
+          \`\`\`yaml
+          - name: Build template
+            run: python build.py --org ${{ github.event.client_payload.org }} --out template.potx
+            # License is automatically detected from encrypted file
+          \`\`\`
+          
+          ### Locally
+          \`\`\`bash
+          # Set environment variable (optional, for CI/CD)
+          export STYLESTACK_LICENSE="${{ github.event.client_payload.license }}"
+          
+          # Or just run - will use encrypted file
+          python build.py --org ${{ github.event.client_payload.org }} --out template.potx
+          \`\`\`
+          
+          ## Features Unlocked
+          EOF
+          
+          # Add tier-specific features
+          case "${{ github.event.client_payload.tier }}" in
+            professional)
+              cat >> $GITHUB_STEP_SUMMARY << EOF
+          - ✅ Unlimited forks
+          - ✅ Custom design tokens
+          - ✅ Multi-platform deployment
+          - ✅ Email support
+          - ✅ Commercial use
+          EOF
+              ;;
+            enterprise)
+              cat >> $GITHUB_STEP_SUMMARY << EOF
+          - ✅ Everything in Professional
+          - ✅ White-label branding
+          - ✅ Priority support with SLA
+          - ✅ Custom integrations
+          - ✅ Dedicated success manager
+          EOF
+              ;;
+            community)
+              cat >> $GITHUB_STEP_SUMMARY << EOF
+          - ✅ Basic design tokens
+          - ✅ GitHub deployment
+          - ✅ Community support
+          - ✅ Up to 5 forks
+          EOF
+              ;;
+          esac
+          
+          cat >> $GITHUB_STEP_SUMMARY << EOF
+          
+          ## Support
+          - Documentation: https://stylestack.dev/docs
+          - Issues: https://github.com/BramAlkema/StyleStack/issues
+          EOF
+          
+          if [ "${{ github.event.client_payload.tier }}" != "community" ]; then
+            echo "- Premium Support: support@stylestack.dev" >> $GITHUB_STEP_SUMMARY
+          fi
+      
+      - name: Test license
+        run: |
+          # Validate that the license works
+          python3 tools/github_license_manager.py validate \
+            --org "${{ github.event.client_payload.org }}"
+          
+          echo "✅ License validation successful!"

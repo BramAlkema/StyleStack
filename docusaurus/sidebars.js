@@ -20,12 +20,31 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: 'Licensing',
+      items: [
+        'licensing/overview',
+        'licensing/request-license',
+        'licensing/pricing',
+        'licensing/technical-implementation',
+        'licensing/troubleshooting',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Design Tokens',
       items: [
         'design-tokens/overview',
         'design-tokens/hierarchy',
         'design-tokens/customization',
         'design-tokens/variables',
+        'design-tokens/extraction',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Typography',
+      items: [
+        'typography/overview',
       ],
     },
     {
@@ -57,6 +76,7 @@ const sidebars = {
       label: 'API Reference',
       items: [
         'api/build-system',
+        'api/extraction-api',
       ],
     },
     {
@@ -65,6 +85,11 @@ const sidebars = {
       items: [
         'examples/university',
       ],
+    },
+    {
+      type: 'doc',
+      id: 'acknowledgements',
+      label: 'Acknowledgements',
     },
   ],
 };

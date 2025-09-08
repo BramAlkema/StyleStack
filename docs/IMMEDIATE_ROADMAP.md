@@ -1,6 +1,8 @@
-# StyleStack Immediate Development Roadmap
+# StyleStack Immediate Roadmap
 
-> **Focus:** High-impact, user-validated features for market entry in 2025 Q1
+**Focus**: GitHub-native licensing system and core OOXML maturity  
+**Timeline**: Next 3-6 months  
+**Goal**: Production-ready commercial licensing with robust template building
 
 ## Current State Assessment ✅
 
@@ -118,31 +120,22 @@
 
 ---
 
-## Priority 3: Google Workspace Support (Weeks 21-28)
+## Priority 3: Google Workspace Support (MOVED TO BACKLOG)
 
-### Goal: Multi-Platform Market Expansion
-**Target:** Capture Google Workspace enterprise customers
+### Status: 📋 Backlog - Prioritizing GitHub-native success first
 
-#### 7. Google Slides Template Converter (4 weeks)
-**User Story:** "As a Corporate Designer, I want our StyleStack templates to work in Google Slides with the same visual quality."
+**Rationale:** Current GitHub-based distribution provides sufficient platform coverage for initial market validation. Focus on perfecting GitHub-native licensing and OOXML maturity before expanding to additional platforms.
 
-**Implementation:**
-- OOXML → Google Slides API conversion
-- Design token mapping for Google Slides format
-- Apps Script add-in for token updates
-- Quality validation pipeline
-
-**Success Criteria:**
-- 95% visual fidelity between PowerPoint and Google Slides
-- Design tokens update automatically
-- Templates available in Google template gallery
-
-#### 8. Google Workspace Publishing (4 weeks)
-**Implementation:**
-- Automated publishing to Google Templates
-- Apps Script add-in deployment
+**Moved to backlog:**
+- Google Slides Template Converter  
+- Google Workspace Publishing
+- Apps Script add-in development
 - Cross-platform token synchronization
-- Enterprise access controls
+
+**Prerequisites for future consideration:**
+- Stable commercial customer base via GitHub licensing
+- Market validation of GitHub-native approach
+- Customer demand for Google Workspace integration
 
 ---
 
@@ -190,11 +183,11 @@
 - Office add-in framework
 
 **Buy/Integrate (SaaS services):**
-- User authentication (Auth0)
+- User authentication (GitHub native)
 - Payment processing (Stripe)
 - Email delivery (SendGrid)
-- Analytics (Mixpanel)
-- Hosting/CDN (Vercel + AWS)
+- Analytics (GitHub native + Mixpanel)
+- Hosting/CDN (GitHub Pages + CDN)
 
 ### Technology Stack
 

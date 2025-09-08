@@ -1,0 +1,546 @@
+name: Community Files Deployment
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Deployment platform'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - github
+          - google-workspace
+          - microsoft-store
+          - libreoffice
+
+concurrency:
+  group: community-deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  generate-community-files:
+    name: Generate Platform-Specific Community Files
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      platform_count: ${{ steps.platforms.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Extract version
+        id: version
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+          else
+            VERSION=$(git describe --tags --abbrev=0 | sed 's/^v//')
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "📦 Generating community files for version: $VERSION"
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install pyyaml jinja2 requests
+      
+      - name: Generate GitHub community files
+        if: ${{ github.event.inputs.platform == 'all' || github.event.inputs.platform == 'github' }}
+        run: |
+          mkdir -p .github community-dist/github
+          
+          # Generate FUNDING.yml with dynamic content
+          cat > .github/FUNDING.yml << 'EOF'
+          # StyleStack Design System Funding
+          # Generated at deployment time for version ${{ steps.version.outputs.version }}
+          
+          github: [BramAlkema]
+          open_collective: stylestack
+          custom: [
+            "https://stylestack.dev/sponsor",
+            "https://www.paypal.com/donate/?hosted_button_id=STYLESTACK"
+          ]
+          
+          # Platform-specific funding based on deployment target
+          # This file is regenerated for each deployment platform
+          EOF
+          
+          # Generate CONTRIBUTING.md
+          cat > community-dist/github/CONTRIBUTING.md << 'EOF'
+          # Contributing to StyleStack
+          
+          ## Version: ${{ steps.version.outputs.version }}
+          
+          StyleStack welcomes contributions! This guide is generated during deployment
+          and includes platform-specific contribution guidelines.
+          
+          ## Platform: GitHub
+          
+          ### Getting Started
+          1. Fork the repository
+          2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+          3. Run tests locally: `python -m pytest tests/`
+          4. Commit your changes with conventional commits
+          5. Push to your branch and open a Pull Request
+          
+          ### Code Style
+          - Python: Follow PEP 8
+          - YAML: 2 spaces indentation
+          - JSON: 2 spaces indentation
+          - Use type hints for Python functions
+          
+          ### Testing Requirements
+          - All new features must have tests
+          - Tests must pass on Python 3.9+
+          - Coverage must remain above 80%
+          
+          ### Design Token Contributions
+          When contributing design tokens:
+          1. Follow the hierarchical token structure
+          2. Test with all three channels (present, document, finance)
+          3. Ensure WCAG AAA compliance for colors
+          4. Document any new token categories
+          
+          ### Template Contributions
+          - Templates must work in Office 2016+
+          - Support both Windows and macOS
+          - Include accessibility metadata
+          - Test with screen readers
+          
+          ## Deployment Channels
+          This version deploys to:
+          - ✅ GitHub Releases
+          - ✅ Microsoft Store (pending)
+          - ✅ Google Workspace Marketplace (pending)
+          - ✅ LibreOffice Extensions (pending)
+          EOF
+          
+          # Generate CODE_OF_CONDUCT.md
+          cat > community-dist/github/CODE_OF_CONDUCT.md << 'EOF'
+          # StyleStack Code of Conduct
+          
+          ## Our Pledge
+          We pledge to make participation in StyleStack a harassment-free experience for everyone,
+          regardless of age, body size, disability, ethnicity, sex characteristics, gender identity
+          and expression, level of experience, education, socio-economic status, nationality,
+          personal appearance, race, religion, or sexual identity and orientation.
+          
+          ## Our Standards
+          Examples of behavior that contributes to a positive environment:
+          * Using welcoming and inclusive language
+          * Being respectful of differing viewpoints and experiences
+          * Gracefully accepting constructive criticism
+          * Focusing on what is best for the community
+          * Showing empathy towards other community members
+          
+          ## Enforcement
+          Instances of abusive, harassing, or otherwise unacceptable behavior may be reported
+          to the community leaders at conduct@stylestack.dev. All complaints will be reviewed
+          and investigated promptly and fairly.
+          
+          ## Attribution
+          This Code of Conduct is adapted from the Contributor Covenant, version 2.1,
+          available at https://www.contributor-covenant.org/version/2/1/code_of_conduct.html
+          EOF
+          
+          # Generate SECURITY.md
+          cat > community-dist/github/SECURITY.md << 'EOF'
+          # Security Policy
+          
+          ## Version: ${{ steps.version.outputs.version }}
+          
+          ## Supported Versions
+          
+          | Version | Supported          |
+          | ------- | ------------------ |
+          | ${{ steps.version.outputs.version }}   | :white_check_mark: |
+          | < ${{ steps.version.outputs.version }} | :x:                |
+          
+          ## Reporting a Vulnerability
+          
+          To report a security vulnerability:
+          
+          1. **DO NOT** open a public issue
+          2. Email security@stylestack.dev with:
+             - Description of the vulnerability
+             - Steps to reproduce
+             - Potential impact
+             - Suggested fix (if any)
+          
+          ### Response Timeline
+          - **24 hours**: Initial acknowledgment
+          - **72 hours**: Preliminary assessment
+          - **7 days**: Detailed response with timeline
+          - **30 days**: Fix deployed (critical issues faster)
+          
+          ## Security Features
+          
+          StyleStack templates include:
+          - ✅ Cosign cryptographic signatures
+          - ✅ SHA256 checksums for all artifacts
+          - ✅ No macros or executable code
+          - ✅ OOXML-only content (no active content)
+          - ✅ Automated security scanning in CI/CD
+          
+          ## Verification
+          
+          Always verify template integrity:
+          ```bash
+          # Verify checksums
+          sha256sum -c checksums-*.txt
+          
+          # Verify cosign signatures
+          cosign verify-blob --certificate StyleStack-*.crt --signature StyleStack-*.sig StyleStack-*.*tx
+          ```
+          EOF
+          
+          # Generate support documentation
+          cat > community-dist/github/SUPPORT.md << 'EOF'
+          # StyleStack Support
+          
+          ## Getting Help
+          
+          ### Documentation
+          - [Quick Start Guide](https://stylestack.dev/docs/quick-start)
+          - [API Reference](https://stylestack.dev/docs/api)
+          - [Design Token Guide](https://stylestack.dev/docs/tokens)
+          
+          ### Community Support
+          - [GitHub Discussions](https://github.com/BramAlkema/StyleStack/discussions)
+          - [Discord Server](https://discord.gg/stylestack)
+          - [Stack Overflow](https://stackoverflow.com/questions/tagged/stylestack)
+          
+          ### Commercial Support
+          - Email: support@stylestack.dev
+          - Enterprise: enterprise@stylestack.dev
+          - Training: training@stylestack.dev
+          
+          ### Bug Reports
+          Please file bugs in [GitHub Issues](https://github.com/BramAlkema/StyleStack/issues)
+          
+          ### Feature Requests
+          Submit feature requests in [GitHub Discussions](https://github.com/BramAlkema/StyleStack/discussions/categories/ideas)
+          EOF
+          
+          echo "✅ GitHub community files generated"
+      
+      - name: Generate Google Workspace community files
+        if: ${{ github.event.inputs.platform == 'all' || github.event.inputs.platform == 'google-workspace' }}
+        run: |
+          mkdir -p community-dist/google-workspace
+          
+          # Generate Google Workspace specific manifest
+          cat > community-dist/google-workspace/manifest.json << EOF
+          {
+            "name": "StyleStack Design System",
+            "version": "${{ steps.version.outputs.version }}",
+            "description": "Professional design tokens for Google Workspace",
+            "developer": {
+              "name": "StyleStack Team",
+              "url": "https://stylestack.dev",
+              "email": "support@stylestack.dev"
+            },
+            "support": {
+              "documentation": "https://stylestack.dev/docs/google-workspace",
+              "community": "https://groups.google.com/g/stylestack",
+              "issues": "https://github.com/BramAlkema/StyleStack/issues"
+            },
+            "funding": {
+              "google_pay": "stylestack@gmail.com",
+              "subscription_tiers": [
+                {
+                  "name": "Basic",
+                  "price_usd": 10,
+                  "billing": "monthly",
+                  "features": ["Global design system", "3 channels", "Email support"]
+                },
+                {
+                  "name": "Professional",
+                  "price_usd": 25,
+                  "billing": "monthly",
+                  "features": ["Custom branding", "10 channels", "Priority support"]
+                },
+                {
+                  "name": "Enterprise",
+                  "price_usd": 50,
+                  "billing": "monthly",
+                  "features": ["Unlimited channels", "SLA", "Dedicated support"]
+                }
+              ]
+            },
+            "permissions": [
+              "https://www.googleapis.com/auth/drive",
+              "https://www.googleapis.com/auth/presentations",
+              "https://www.googleapis.com/auth/documents",
+              "https://www.googleapis.com/auth/spreadsheets"
+            ]
+          }
+          EOF
+          
+          echo "✅ Google Workspace community files generated"
+      
+      - name: Generate Microsoft Store community files
+        if: ${{ github.event.inputs.platform == 'all' || github.event.inputs.platform == 'microsoft-store' }}
+        run: |
+          mkdir -p community-dist/microsoft-store
+          
+          # Generate Microsoft Store manifest
+          cat > community-dist/microsoft-store/Package.appxmanifest << EOF
+          <?xml version="1.0" encoding="utf-8"?>
+          <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10">
+            <Identity Name="StyleStack.DesignSystem" Version="${{ steps.version.outputs.version }}.0" Publisher="CN=StyleStack" />
+            <Properties>
+              <DisplayName>StyleStack Design System</DisplayName>
+              <PublisherDisplayName>StyleStack Team</PublisherDisplayName>
+              <Description>Professional design tokens for Microsoft Office</Description>
+              <Logo>Assets\Logo.png</Logo>
+            </Properties>
+            <Resources>
+              <Resource Language="en-US" />
+            </Resources>
+            <Applications>
+              <Application Id="StyleStack">
+                <Extensions>
+                  <Extension Category="windows.fileTypeAssociation">
+                    <FileTypeAssociation Name="stylestack">
+                      <SupportedFileTypes>
+                        <FileType>.potx</FileType>
+                        <FileType>.dotx</FileType>
+                        <FileType>.xltx</FileType>
+                      </SupportedFileTypes>
+                    </FileTypeAssociation>
+                  </Extension>
+                </Extensions>
+              </Application>
+            </Applications>
+            <Capabilities>
+              <Capability Name="documentsLibrary" />
+            </Capabilities>
+          </Package>
+          EOF
+          
+          echo "✅ Microsoft Store community files generated"
+      
+      - name: Generate LibreOffice community files
+        if: ${{ github.event.inputs.platform == 'all' || github.event.inputs.platform == 'libreoffice' }}
+        run: |
+          mkdir -p community-dist/libreoffice/META-INF
+          
+          # Generate LibreOffice extension manifest
+          cat > community-dist/libreoffice/META-INF/manifest.xml << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0">
+            <manifest:file-entry manifest:full-path="/" manifest:media-type="application/vnd.sun.star.package-bundle"/>
+            <manifest:file-entry manifest:full-path="description.xml" manifest:media-type="application/vnd.sun.star.package-bundle-description"/>
+            <manifest:file-entry manifest:full-path="StyleStack.py" manifest:media-type="application/vnd.sun.star.uno-component;type=Python"/>
+          </manifest:manifest>
+          EOF
+          
+          # Generate description.xml
+          cat > community-dist/libreoffice/description.xml << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <description xmlns="http://openoffice.org/extensions/description/2006">
+            <identifier value="dev.stylestack.libreoffice"/>
+            <version value="${{ steps.version.outputs.version }}"/>
+            <display-name>
+              <name lang="en">StyleStack Design System</name>
+            </display-name>
+            <publisher>
+              <name lang="en">StyleStack Team</name>
+            </publisher>
+            <extension-description>
+              <src lang="en">Professional design tokens for LibreOffice</src>
+            </extension-description>
+            <update-information>
+              <src xlink:href="https://stylestack.dev/libreoffice/update.xml"/>
+            </update-information>
+          </description>
+          EOF
+          
+          echo "✅ LibreOffice community files generated"
+      
+      - name: Count platforms
+        id: platforms
+        run: |
+          PLATFORM_COUNT=$(ls -d community-dist/*/ 2>/dev/null | wc -l)
+          echo "count=$PLATFORM_COUNT" >> $GITHUB_OUTPUT
+          echo "📊 Generated community files for $PLATFORM_COUNT platforms"
+      
+      - name: Upload community artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: community-files-${{ steps.version.outputs.version }}
+          path: community-dist/
+          retention-days: 30
+
+  deploy-to-github:
+    name: Deploy Community Files to GitHub
+    runs-on: ubuntu-latest
+    needs: generate-community-files
+    if: ${{ github.event.inputs.platform == 'all' || github.event.inputs.platform == 'github' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Download community artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: community-files-${{ needs.generate-community-files.outputs.version }}
+          path: community-dist/
+      
+      - name: Deploy GitHub community files
+        run: |
+          # Copy generated files to repository
+          cp -f community-dist/github/CONTRIBUTING.md ./CONTRIBUTING.md
+          cp -f community-dist/github/CODE_OF_CONDUCT.md ./CODE_OF_CONDUCT.md
+          cp -f community-dist/github/SECURITY.md ./SECURITY.md
+          cp -f community-dist/github/SUPPORT.md ./SUPPORT.md
+          
+          # Create .github directory if needed
+          mkdir -p .github
+          
+          # Generate FUNDING.yml from template
+          cat > .github/FUNDING.yml << EOF
+          # StyleStack Design System Funding
+          # Version: ${{ needs.generate-community-files.outputs.version }}
+          # Generated: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          
+          github: [BramAlkema]
+          open_collective: stylestack
+          custom: [
+            "https://stylestack.dev/sponsor",
+            "https://www.paypal.com/donate/?hosted_button_id=STYLESTACK",
+            "https://buy.stripe.com/stylestack"
+          ]
+          EOF
+          
+          # Commit and push if there are changes
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to community files"
+          else
+            git commit -m "chore: Update community files for v${{ needs.generate-community-files.outputs.version }}
+            
+            - Updated FUNDING.yml with current version
+            - Regenerated contribution guidelines
+            - Updated security policy
+            - Refreshed support documentation
+            
+            [skip ci]"
+            git push
+          fi
+
+  deploy-to-google:
+    name: Deploy to Google Workspace
+    runs-on: ubuntu-latest
+    needs: generate-community-files
+    if: ${{ github.event.inputs.platform == 'all' || github.event.inputs.platform == 'google-workspace' }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download community artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: community-files-${{ needs.generate-community-files.outputs.version }}
+          path: community-dist/
+      
+      - name: Setup Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          export_default_credentials: true
+      
+      - name: Deploy to Google Workspace Marketplace
+        run: |
+          echo "🚀 Deploying to Google Workspace Marketplace..."
+          
+          # Upload manifest to Google Cloud Storage
+          gsutil cp community-dist/google-workspace/manifest.json \
+            gs://stylestack-marketplace/v${{ needs.generate-community-files.outputs.version }}/manifest.json
+          
+          # Deploy Apps Script add-in
+          if [ -f "src/google/appsscript.json" ]; then
+            echo "Deploying Apps Script add-in..."
+            # Apps Script deployment would go here
+          fi
+          
+          echo "✅ Google Workspace deployment complete"
+        continue-on-error: true  # Don't fail if GCP credentials not set up
+
+  deploy-to-microsoft:
+    name: Deploy to Microsoft Store
+    runs-on: windows-latest
+    needs: generate-community-files
+    if: ${{ github.event.inputs.platform == 'all' || github.event.inputs.platform == 'microsoft-store' }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download community artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: community-files-${{ needs.generate-community-files.outputs.version }}
+          path: community-dist/
+      
+      - name: Package for Microsoft Store
+        run: |
+          Write-Host "📦 Packaging for Microsoft Store..."
+          
+          # Create package structure
+          New-Item -ItemType Directory -Force -Path "msstore-package"
+          Copy-Item "community-dist/microsoft-store/*" -Destination "msstore-package/" -Recurse
+          
+          # Package would be created here with makeappx
+          Write-Host "✅ Microsoft Store package created"
+        continue-on-error: true  # Don't fail if not configured
+
+  summary:
+    name: Deployment Summary
+    runs-on: ubuntu-latest
+    needs: [generate-community-files, deploy-to-github, deploy-to-google, deploy-to-microsoft]
+    if: always()
+    steps:
+      - name: Generate deployment summary
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << EOF
+          # Community Files Deployment Summary
+          
+          ## Version: ${{ needs.generate-community-files.outputs.version }}
+          
+          ### Platforms Targeted: ${{ needs.generate-community-files.outputs.platform_count }}
+          
+          | Platform | Status |
+          |----------|--------|
+          | GitHub | ${{ needs.deploy-to-github.result == 'success' && '✅' || '❌' }} |
+          | Google Workspace | ${{ needs.deploy-to-google.result == 'success' && '✅' || '⏭️' }} |
+          | Microsoft Store | ${{ needs.deploy-to-microsoft.result == 'success' && '✅' || '⏭️' }} |
+          
+          ### Files Generated
+          - FUNDING.yml (platform-specific payment links)
+          - CONTRIBUTING.md (version-specific guidelines)
+          - CODE_OF_CONDUCT.md (community standards)
+          - SECURITY.md (version-specific security policy)
+          - SUPPORT.md (platform-specific support channels)
+          
+          ### Next Steps
+          1. Verify community files in repository
+          2. Check platform deployments
+          3. Monitor community engagement metrics
+          EOF

@@ -1,0 +1,559 @@
+name: Fork Setup - Initialize Community Configuration
+
+on:
+  workflow_dispatch:
+    inputs:
+      org_name:
+        description: 'Organization name'
+        required: true
+        type: string
+      org_type:
+        description: 'Organization type'
+        required: true
+        type: choice
+        options:
+          - enterprise
+          - nonprofit
+          - education
+          - government
+          - community
+      enable_funding:
+        description: 'Enable funding/sponsorship'
+        required: true
+        type: boolean
+        default: false
+      github_sponsors:
+        description: 'GitHub Sponsors username (optional)'
+        required: false
+        type: string
+      open_collective:
+        description: 'Open Collective username (optional)'
+        required: false
+        type: string
+      custom_funding_url:
+        description: 'Custom funding URL (optional)'
+        required: false
+        type: string
+      support_email:
+        description: 'Support email address'
+        required: true
+        type: string
+      discord_invite:
+        description: 'Discord invite link (optional)'
+        required: false
+        type: string
+      deployment_platforms:
+        description: 'Deployment platforms (comma-separated: github,google,microsoft,libreoffice)'
+        required: true
+        type: string
+        default: 'github'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  setup-fork:
+    name: Initialize Fork Community Configuration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Validate fork status
+        id: fork_check
+        run: |
+          # Check if this is a fork
+          IS_FORK=$(gh repo view --json isFork --jq '.isFork')
+          if [ "$IS_FORK" != "true" ]; then
+            echo "⚠️ Warning: This doesn't appear to be a fork. Proceeding anyway..."
+          fi
+          
+          # Get repository info
+          REPO_OWNER=$(gh repo view --json owner --jq '.owner.login')
+          REPO_NAME=$(gh repo view --json name --jq '.name')
+          echo "repo_owner=$REPO_OWNER" >> $GITHUB_OUTPUT
+          echo "repo_name=$REPO_NAME" >> $GITHUB_OUTPUT
+          echo "📦 Setting up fork for: $REPO_OWNER/$REPO_NAME"
+        env:
+          GH_TOKEN: ${{ github.token }}
+      
+      - name: Generate organization configuration
+        run: |
+          mkdir -p .github orgs/${{ github.event.inputs.org_name }}
+          
+          # Create organization metadata
+          cat > orgs/${{ github.event.inputs.org_name }}/config.yaml << EOF
+          # StyleStack Fork Configuration
+          # Organization: ${{ github.event.inputs.org_name }}
+          # Generated: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          
+          organization:
+            name: "${{ github.event.inputs.org_name }}"
+            type: "${{ github.event.inputs.org_type }}"
+            repository: "${{ steps.fork_check.outputs.repo_owner }}/${{ steps.fork_check.outputs.repo_name }}"
+            
+          deployment:
+            platforms: [${{ github.event.inputs.deployment_platforms }}]
+            auto_release: true
+            sign_artifacts: true
+            
+          support:
+            email: "${{ github.event.inputs.support_email }}"
+            discord: "${{ github.event.inputs.discord_invite }}"
+            documentation: "https://${{ steps.fork_check.outputs.repo_owner }}.github.io/${{ steps.fork_check.outputs.repo_name }}"
+            
+          branding:
+            inherit_upstream: true
+            allow_customization: true
+            
+          compliance:
+            wcag_level: "AAA"
+            require_accessibility: true
+            audit_frequency: "quarterly"
+          EOF
+      
+      - name: Generate FUNDING.yml
+        if: ${{ github.event.inputs.enable_funding == 'true' }}
+        run: |
+          # Create custom FUNDING.yml for fork
+          cat > .github/FUNDING.yml << EOF
+          # ${{ github.event.inputs.org_name }} - StyleStack Fork Funding
+          # Generated during fork setup
+          
+          EOF
+          
+          # Add GitHub Sponsors if provided
+          if [ -n "${{ github.event.inputs.github_sponsors }}" ]; then
+            echo "github: [${{ github.event.inputs.github_sponsors }}]" >> .github/FUNDING.yml
+          fi
+          
+          # Add Open Collective if provided
+          if [ -n "${{ github.event.inputs.open_collective }}" ]; then
+            echo "open_collective: ${{ github.event.inputs.open_collective }}" >> .github/FUNDING.yml
+          fi
+          
+          # Add custom funding URL if provided
+          if [ -n "${{ github.event.inputs.custom_funding_url }}" ]; then
+            echo "custom: [\"${{ github.event.inputs.custom_funding_url }}\"]" >> .github/FUNDING.yml
+          fi
+          
+          # Add upstream reference
+          cat >> .github/FUNDING.yml << EOF
+          
+          # Support upstream StyleStack development
+          # github: [BramAlkema]
+          # custom: ["https://stylestack.dev/sponsor"]
+          EOF
+      
+      - name: Generate CONTRIBUTING.md
+        run: |
+          cat > CONTRIBUTING.md << 'EOF'
+          # Contributing to ${{ github.event.inputs.org_name }} StyleStack Fork
+          
+          This is a fork of [StyleStack](https://github.com/BramAlkema/StyleStack) customized for ${{ github.event.inputs.org_name }}.
+          
+          ## Fork-Specific Guidelines
+          
+          ### Contribution Flow
+          1. **Upstream First**: Consider if your change should go to upstream StyleStack
+          2. **Fork-Specific**: Only fork-specific customizations should be contributed here
+          3. **Sync Regularly**: We sync with upstream monthly
+          
+          ### What Belongs in This Fork
+          - Organization-specific design tokens
+          - Custom channels for ${{ github.event.inputs.org_name }}
+          - Organization branding and templates
+          - Deployment configurations for ${{ github.event.inputs.org_type }}
+          
+          ### What Should Go Upstream
+          - Bug fixes to core functionality
+          - New features that benefit all users
+          - Performance improvements
+          - Documentation improvements
+          
+          ## Getting Started
+          
+          1. Fork this repository (yes, a fork of a fork!)
+          2. Create a feature branch: `git checkout -b feature/your-feature`
+          3. Make your changes
+          4. Test locally: `python -m pytest tests/`
+          5. Commit with conventional commits: `feat:`, `fix:`, `docs:`, etc.
+          6. Push and create a Pull Request
+          
+          ## Testing Requirements
+          
+          - All tests must pass: `python -m pytest`
+          - Maintain 80%+ code coverage
+          - Test with organization's standard templates
+          - Verify design token inheritance works correctly
+          
+          ## Design Token Guidelines
+          
+          When modifying design tokens for ${{ github.event.inputs.org_name }}:
+          
+          1. Preserve upstream token structure
+          2. Use organization's brand guidelines
+          3. Document any overrides in `orgs/${{ github.event.inputs.org_name }}/README.md`
+          4. Test across all deployment platforms: ${{ github.event.inputs.deployment_platforms }}
+          
+          ## Release Process
+          
+          This fork follows its own release schedule:
+          1. Sync with upstream StyleStack monthly
+          2. Release organization updates as needed
+          3. All releases are tagged as `${{ github.event.inputs.org_name }}-v*`
+          
+          ## Support
+          
+          - Organization Support: ${{ github.event.inputs.support_email }}
+          EOF
+          
+          # Add Discord if provided
+          if [ -n "${{ github.event.inputs.discord_invite }}" ]; then
+            echo "- Discord Community: ${{ github.event.inputs.discord_invite }}" >> CONTRIBUTING.md
+          fi
+          
+          echo "- Upstream StyleStack: https://github.com/BramAlkema/StyleStack" >> CONTRIBUTING.md
+      
+      - name: Generate CODE_OF_CONDUCT.md
+        run: |
+          cat > CODE_OF_CONDUCT.md << 'EOF'
+          # Code of Conduct - ${{ github.event.inputs.org_name }}
+          
+          ## Our Pledge
+          
+          We as members, contributors, and leaders of ${{ github.event.inputs.org_name }} pledge to make 
+          participation in our community a harassment-free experience for everyone.
+          
+          ## Our Standards
+          
+          Examples of behavior that contributes to a positive environment:
+          * Using welcoming and inclusive language
+          * Being respectful of differing viewpoints
+          * Gracefully accepting constructive criticism
+          * Focusing on what is best for the community
+          * Showing empathy towards other community members
+          
+          Examples of unacceptable behavior:
+          * Harassment of any kind
+          * Discriminatory language or actions
+          * Publishing others' private information
+          * Other conduct which could reasonably be considered inappropriate
+          
+          ## Enforcement Responsibilities
+          
+          Community leaders are responsible for clarifying and enforcing our standards of
+          acceptable behavior and will take appropriate and fair corrective action in
+          response to any behavior that they deem inappropriate, threatening, offensive,
+          or harmful.
+          
+          ## Enforcement
+          
+          Instances of abusive, harassing, or otherwise unacceptable behavior may be
+          reported to: ${{ github.event.inputs.support_email }}
+          
+          All complaints will be reviewed and investigated promptly and fairly.
+          
+          ## Attribution
+          
+          This Code of Conduct is adapted from the Contributor Covenant, version 2.1.
+          
+          ## Fork-Specific Additions
+          
+          As a ${{ github.event.inputs.org_type }} organization, we additionally commit to:
+          EOF
+          
+          # Add org-type specific commitments
+          case "${{ github.event.inputs.org_type }}" in
+            enterprise)
+              cat >> CODE_OF_CONDUCT.md << 'EOF'
+          * Maintaining professional standards in all interactions
+          * Protecting proprietary information and trade secrets
+          * Ensuring compliance with corporate policies
+          EOF
+              ;;
+            nonprofit)
+              cat >> CODE_OF_CONDUCT.md << 'EOF'
+          * Advancing our mission through collaborative development
+          * Ensuring accessibility for all communities we serve
+          * Maintaining transparency in our development process
+          EOF
+              ;;
+            education)
+              cat >> CODE_OF_CONDUCT.md << 'EOF'
+          * Creating a safe learning environment for students
+          * Supporting educational goals and academic integrity
+          * Fostering knowledge sharing and mentorship
+          EOF
+              ;;
+            government)
+              cat >> CODE_OF_CONDUCT.md << 'EOF'
+          * Ensuring compliance with government regulations
+          * Maintaining security and privacy standards
+          * Promoting transparency and public accountability
+          EOF
+              ;;
+            community)
+              cat >> CODE_OF_CONDUCT.md << 'EOF'
+          * Building an inclusive and diverse community
+          * Supporting contributors of all skill levels
+          * Celebrating community achievements and contributions
+          EOF
+              ;;
+          esac
+      
+      - name: Generate SECURITY.md
+        run: |
+          cat > SECURITY.md << 'EOF'
+          # Security Policy - ${{ github.event.inputs.org_name }}
+          
+          ## Reporting Security Vulnerabilities
+          
+          **DO NOT** open public issues for security vulnerabilities.
+          
+          ### For Fork-Specific Issues
+          Report to: ${{ github.event.inputs.support_email }}
+          
+          ### For Upstream Issues
+          Report to: security@stylestack.dev
+          
+          ## Response Timeline
+          
+          - **24 hours**: Initial acknowledgment
+          - **72 hours**: Preliminary assessment
+          - **7 days**: Detailed response with timeline
+          
+          ## Supported Versions
+          
+          We support the latest release and one version back.
+          Security patches may be backported to older versions for
+          ${{ github.event.inputs.org_type }} compliance requirements.
+          
+          ## Security Measures
+          
+          This fork maintains all upstream security features:
+          - Cryptographic signatures on releases
+          - No executable code in templates
+          - Regular dependency updates
+          - Automated security scanning
+          
+          ## Additional ${{ github.event.inputs.org_type }} Requirements
+          EOF
+          
+          # Add org-type specific security requirements
+          case "${{ github.event.inputs.org_type }}" in
+            enterprise)
+              echo "- SOC 2 compliance monitoring" >> SECURITY.md
+              echo "- Regular penetration testing" >> SECURITY.md
+              ;;
+            government)
+              echo "- FISMA compliance requirements" >> SECURITY.md
+              echo "- Regular security audits" >> SECURITY.md
+              ;;
+            education)
+              echo "- FERPA compliance for student data" >> SECURITY.md
+              echo "- Regular security training" >> SECURITY.md
+              ;;
+          esac
+      
+      - name: Create sync workflow
+        run: |
+          # Create workflow to sync with upstream
+          cat > .github/workflows/sync-upstream.yml << 'EOF'
+          name: Sync with Upstream StyleStack
+          
+          on:
+            schedule:
+              - cron: '0 0 1 * *'  # Monthly on the 1st
+            workflow_dispatch:
+          
+          permissions:
+            contents: write
+            pull-requests: write
+          
+          jobs:
+            sync:
+              name: Sync Fork with Upstream
+              runs-on: ubuntu-latest
+              steps:
+                - uses: actions/checkout@v4
+                  with:
+                    fetch-depth: 0
+                
+                - name: Configure Git
+                  run: |
+                    git config user.name "github-actions[bot]"
+                    git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                
+                - name: Add upstream remote
+                  run: |
+                    git remote add upstream https://github.com/BramAlkema/StyleStack.git || true
+                    git fetch upstream
+                
+                - name: Create sync branch
+                  run: |
+                    SYNC_BRANCH="sync-upstream-$(date +%Y%m%d)"
+                    git checkout -b $SYNC_BRANCH
+                    
+                    # Merge upstream changes
+                    git merge upstream/main --no-edit || {
+                      echo "Merge conflicts detected. Manual intervention required."
+                      git merge --abort
+                      exit 1
+                    }
+                    
+                    # Push sync branch
+                    git push origin $SYNC_BRANCH
+                    
+                    # Create PR
+                    gh pr create \
+                      --title "Sync with upstream StyleStack" \
+                      --body "Monthly sync with upstream StyleStack repository. Please review changes carefully." \
+                      --base main \
+                      --head $SYNC_BRANCH
+                  env:
+                    GH_TOKEN: ${{ github.token }}
+          EOF
+      
+      - name: Create deployment configuration
+        run: |
+          # Parse deployment platforms
+          IFS=',' read -ra PLATFORMS <<< "${{ github.event.inputs.deployment_platforms }}"
+          
+          # Create deployment secrets documentation
+          cat > .github/DEPLOYMENT_SECRETS.md << 'EOF'
+          # Deployment Secrets Required
+          
+          Configure these secrets in your repository settings based on your deployment platforms:
+          
+          EOF
+          
+          for platform in "${PLATFORMS[@]}"; do
+            case "$platform" in
+              google)
+                cat >> .github/DEPLOYMENT_SECRETS.md << 'EOF'
+          ## Google Workspace Deployment
+          - `GCP_SA_KEY`: Google Cloud Service Account JSON key
+          - `GCP_PROJECT_ID`: Google Cloud Project ID
+          - Setup: https://stylestack.dev/docs/deploy/google-workspace
+          
+          EOF
+                ;;
+              microsoft)
+                cat >> .github/DEPLOYMENT_SECRETS.md << 'EOF'
+          ## Microsoft Store Deployment
+          - `AZURE_TENANT_ID`: Azure AD Tenant ID
+          - `AZURE_CLIENT_ID`: Azure App Registration Client ID
+          - `AZURE_CLIENT_SECRET`: Azure App Registration Secret
+          - Setup: https://stylestack.dev/docs/deploy/microsoft-store
+          
+          EOF
+                ;;
+              libreoffice)
+                cat >> .github/DEPLOYMENT_SECRETS.md << 'EOF'
+          ## LibreOffice Extensions Deployment
+          - `LIBREOFFICE_API_KEY`: Extensions store API key
+          - Setup: https://stylestack.dev/docs/deploy/libreoffice
+          
+          EOF
+                ;;
+            esac
+          done
+      
+      - name: Create PR with fork setup
+        run: |
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Create branch
+          BRANCH_NAME="fork-setup-${{ github.event.inputs.org_name }}"
+          git checkout -b $BRANCH_NAME
+          
+          # Add all generated files
+          git add .
+          git commit -m "feat: Initialize ${{ github.event.inputs.org_name }} fork configuration
+          
+          - Organization type: ${{ github.event.inputs.org_type }}
+          - Deployment platforms: ${{ github.event.inputs.deployment_platforms }}
+          - Support email: ${{ github.event.inputs.support_email }}
+          - Funding enabled: ${{ github.event.inputs.enable_funding }}
+          
+          This is a one-time setup for the forked repository.
+          Please review and merge to complete fork initialization."
+          
+          # Push branch
+          git push origin $BRANCH_NAME
+          
+          # Create PR
+          gh pr create \
+            --title "🚀 Initialize ${{ github.event.inputs.org_name }} Fork Configuration" \
+            --body "## Fork Setup Complete!
+          
+          This PR initializes your StyleStack fork with organization-specific configuration.
+          
+          ### Configuration Summary
+          - **Organization**: ${{ github.event.inputs.org_name }}
+          - **Type**: ${{ github.event.inputs.org_type }}
+          - **Platforms**: ${{ github.event.inputs.deployment_platforms }}
+          - **Support**: ${{ github.event.inputs.support_email }}
+          
+          ### Files Created
+          - \`orgs/${{ github.event.inputs.org_name }}/config.yaml\` - Organization configuration
+          - \`CONTRIBUTING.md\` - Fork-specific contribution guidelines
+          - \`CODE_OF_CONDUCT.md\` - Community standards
+          - \`SECURITY.md\` - Security policy
+          - \`.github/workflows/sync-upstream.yml\` - Upstream sync automation
+          - \`.github/DEPLOYMENT_SECRETS.md\` - Required secrets documentation
+          $([ "${{ github.event.inputs.enable_funding }}" == "true" ] && echo "- \`.github/FUNDING.yml\` - Funding configuration" || echo "")
+          
+          ### Next Steps
+          1. Review and merge this PR
+          2. Configure deployment secrets (see \`.github/DEPLOYMENT_SECRETS.md\`)
+          3. Customize design tokens in \`orgs/${{ github.event.inputs.org_name }}/\`
+          4. Run your first release with \`git tag ${{ github.event.inputs.org_name }}-v1.0.0\`
+          
+          ### Maintenance
+          - Monthly upstream sync will run automatically
+          - Update organization config as needed
+          - Contribute improvements back to upstream when possible
+          
+          ---
+          *Generated by StyleStack Fork Setup Workflow*" \
+            --base main \
+            --head $BRANCH_NAME
+        env:
+          GH_TOKEN: ${{ github.token }}
+      
+      - name: Summary
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << EOF
+          # Fork Setup Complete! 🎉
+          
+          ## Organization: ${{ github.event.inputs.org_name }}
+          
+          ### Configuration
+          - **Type**: ${{ github.event.inputs.org_type }}
+          - **Repository**: ${{ steps.fork_check.outputs.repo_owner }}/${{ steps.fork_check.outputs.repo_name }}
+          - **Deployment Platforms**: ${{ github.event.inputs.deployment_platforms }}
+          - **Support Email**: ${{ github.event.inputs.support_email }}
+          
+          ### Pull Request Created
+          A pull request has been created with all necessary configuration files.
+          Please review and merge to complete setup.
+          
+          ### Required Actions
+          1. ✅ Review and merge the setup PR
+          2. 📝 Configure deployment secrets (see PR for details)
+          3. 🎨 Customize design tokens for your organization
+          4. 🚀 Create your first release
+          
+          ### Ongoing Maintenance
+          - Upstream sync: Monthly (automated)
+          - Security updates: As needed
+          - Design token updates: Per organization schedule
+          
+          Thank you for using StyleStack! 🚀
+          EOF

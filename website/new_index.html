@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleStack - Typography as a Service</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="typography_styles.css">
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="title-accent">Style</span><span class="title-primary">Stack</span>
+            </h1>
+            <p class="hero-subtitle">Typography as a Service</p>
+            <div class="hero-description">
+                <p class="lead">Transform Office templates through hierarchical design tokens delivered via intelligent Office add-ins.</p>
+                <p class="tagline">Professional typography • Accessible design • Brand compliance</p>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#design-tokens">Design Tokens</a></li>
+                <li><a href="#typography">Typography</a></li>
+                <li><a href="#templates">Templates</a></li>
+                <li><a href="#api">API</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="design-tokens" class="section section-tokens">
+            <div class="container">
+                <header class="section-header">
+                    <h2 class="section-title">Design Tokens as a Service</h2>
+                    <p class="section-subtitle">Hierarchical design systems that scale across your entire organization</p>
+                </header>
+                
+                <div class="token-hierarchy">
+                    <div class="token-layer" data-layer="system">
+                        <h3 class="layer-title">Design System 2025</h3>
+                        <p class="layer-description">Global foundation layer with typography, accessibility, and grid systems</p>
+                        <div class="token-examples">
+                            <div class="token-card">
+                                <span class="token-name">--typography-scale</span>
+                                <span class="token-value">1.618 (Golden Ratio)</span>
+                            </div>
+                            <div class="token-card">
+                                <span class="token-name">--baseline-grid</span>
+                                <span class="token-value">24px</span>
+                            </div>
+                            <div class="token-card">
+                                <span class="token-name">--contrast-ratio</span>
+                                <span class="token-value">7:1 (WCAG AAA)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="token-layer" data-layer="corporate">
+                        <h3 class="layer-title">Corporate Layer</h3>
+                        <p class="layer-description">Brand overrides for colors, fonts, and identity elements</p>
+                        <div class="token-examples">
+                            <div class="token-card">
+                                <span class="token-name">--brand-primary</span>
+                                <span class="token-value">#0066CC</span>
+                            </div>
+                            <div class="token-card">
+                                <span class="token-name">--brand-font</span>
+                                <span class="token-value">Inter, sans-serif</span>
+                            </div>
+                            <div class="token-card">
+                                <span class="token-name">--brand-radius</span>
+                                <span class="token-value">8px</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="token-layer" data-layer="channel">
+                        <h3 class="layer-title">Channel Layer</h3>
+                        <p class="layer-description">Use-case specialization for presentations, documents, and reports</p>
+                        <div class="token-examples">
+                            <div class="token-card">
+                                <span class="token-name">--slide-margin</span>
+                                <span class="token-value">72pt</span>
+                            </div>
+                            <div class="token-card">
+                                <span class="token-name">--title-size</span>
+                                <span class="token-value">44pt</span>
+                            </div>
+                            <div class="token-card">
+                                <span class="token-name">--body-leading</span>
+                                <span class="token-value">1.5x</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="token-layer" data-layer="template">
+                        <h3 class="layer-title">Template Layer</h3>
+                        <p class="layer-description">Final resolved variables in OOXML extension format</p>
+                        <div class="token-examples">
+                            <div class="token-card">
+                                <span class="token-name">{{title.fontSize}}</span>
+                                <span class="token-value">1128000 EMU</span>
+                            </div>
+                            <div class="token-card">
+                                <span class="token-name">{{brand.color}}</span>
+                                <span class="token-value">accent1</span>
+                            </div>
+                            <div class="token-card">
+                                <span class="token-name">{{layout.margin}}</span>
+                                <span class="token-value">1828800 EMU</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="typography" class="section section-typography">
+            <div class="container">
+                <header class="section-header">
+                    <h2 class="section-title">Professional Typography Intelligence</h2>
+                    <p class="section-subtitle">EMU-based precision with InDesign-level control</p>
+                </header>
+                
+                <div class="typography-showcase">
+                    <div class="type-specimen">
+                        <h3 class="specimen-label">Display Typography</h3>
+                        <h1 class="specimen-display">Professional Typography</h1>
+                        <p class="specimen-details">Playfair Display • 72pt • Leading 1.1 • Tracking -0.02em</p>
+                    </div>
+                    
+                    <div class="type-specimen">
+                        <h3 class="specimen-label">Heading Hierarchy</h3>
+                        <div class="heading-stack">
+                            <h1 class="h1-demo">Heading Level 1</h1>
+                            <h2 class="h2-demo">Heading Level 2</h2>
+                            <h3 class="h3-demo">Heading Level 3</h3>
+                            <h4 class="h4-demo">Heading Level 4</h4>
+                        </div>
+                    </div>
+                    
+                    <div class="type-specimen">
+                        <h3 class="specimen-label">Body Text & Code</h3>
+                        <p class="body-demo">This is body text set in Inter at 16px with a line height of 1.5. It demonstrates optimal reading comfort with professional typography settings including proper character spacing and color contrast that meets WCAG AAA standards.</p>
+                        <pre class="code-demo"><code>// Design tokens in action
+const tokens = {
+  fontSize: 'var(--font-size-body)',
+  lineHeight: 'var(--leading-comfortable)',
+  fontFamily: 'var(--font-family-sans)'
+};</code></pre>
+                    </div>
+                </div>
+                
+                <div class="typography-features">
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4 class="feature-title">EMU Precision</h4>
+                            <p class="feature-description">English Metric Units provide pixel-perfect positioning matching Microsoft Office's native measurement system.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4 class="feature-title">Baseline Grids</h4>
+                            <p class="feature-description">Mathematical typography with automatic baseline alignment and vertical rhythm across all document elements.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4 class="feature-title">Optical Kerning</h4>
+                            <p class="feature-description">Professional character spacing adjustments for improved readability and visual aesthetics.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4 class="feature-title">WCAG AAA</h4>
+                            <p class="feature-description">Accessibility-first design with 7:1 contrast ratios and font size validation built into every template.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="templates" class="section section-templates">
+            <div class="container">
+                <header class="section-header">
+                    <h2 class="section-title">Multi-Platform Template Distribution</h2>
+                    <p class="section-subtitle">Universal design systems across Office, LibreOffice, and Google Workspace</p>
+                </header>
+                
+                <div class="platform-grid">
+                    <div class="platform-card" data-platform="microsoft">
+                        <div class="platform-icon">📊</div>
+                        <h3 class="platform-name">Microsoft Office</h3>
+                        <p class="platform-description">Native OOXML templates with embedded Office.js add-ins for automatic design token updates</p>
+                        <ul class="platform-formats">
+                            <li>.pptx • PowerPoint presentations</li>
+                            <li>.dotx • Word document templates</li>
+                            <li>.xltx • Excel spreadsheet templates</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="platform-card" data-platform="libreoffice">
+                        <div class="platform-icon">📝</div>
+                        <h3 class="platform-name">LibreOffice</h3>
+                        <p class="platform-description">OpenDocument templates with UNO extensions for cross-platform compatibility</p>
+                        <ul class="platform-formats">
+                            <li>.odp • Impress presentations</li>
+                            <li>.odt • Writer documents</li>
+                            <li>.ods • Calc spreadsheets</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="platform-card" data-platform="google">
+                        <div class="platform-icon">☁️</div>
+                        <h3 class="platform-name">Google Workspace</h3>
+                        <p class="platform-description">Apps Script integration with Google Templates for cloud-native design systems</p>
+                        <ul class="platform-formats">
+                            <li>Google Slides templates</li>
+                            <li>Google Docs templates</li>
+                            <li>Google Sheets templates</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="api" class="section section-api">
+            <div class="container">
+                <header class="section-header">
+                    <h2 class="section-title">Developer API</h2>
+                    <p class="section-subtitle">Programmatic access to design tokens and template generation</p>
+                </header>
+                
+                <div class="api-demo">
+                    <div class="api-endpoint">
+                        <h3 class="endpoint-title">Token Extraction</h3>
+                        <pre class="code-block"><code>// Extract design tokens from existing templates
+curl -X POST https://api.stylestack.io/v1/extract \
+  -H "Content-Type: multipart/form-data" \
+  -F "file=@presentation.pptx" \
+  -F "format=yaml" \
+  -F "extract_assets=true"
+
+// Response
+{
+  "stylestack": {
+    "version": "1.0.0",
+    "tokens": {
+      "colors": {
+        "primary": "#0066CC",
+        "accent": "#FF6600"
+      },
+      "typography": {
+        "font_family": "Inter, sans-serif",
+        "sizes": {
+          "heading": "24pt",
+          "body": "12pt"
+        }
+      },
+      "brand_assets": {
+        "logos": {...},
+        "icons": {...}
+      }
+    }
+  }
+}</code></pre>
+                    </div>
+                    
+                    <div class="api-endpoint">
+                        <h3 class="endpoint-title">Template Generation</h3>
+                        <pre class="code-block"><code>// Generate templates with design tokens
+const response = await fetch('/api/v1/generate', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    template: 'presentation-corporate',
+    organization: 'acme-corp',
+    channel: 'quarterly-reports',
+    tokens: {
+      brand_primary: '#0066CC',
+      brand_font: 'Inter',
+      logo_url: 'https://cdn.acme.com/logo.svg'
+    },
+    formats: ['pptx', 'odp', 'google-slides']
+  })
+});
+
+// Returns multi-format template bundle
+const { templates } = await response.json();</code></pre>
+                    </div>
+                </div>
+                
+                <div class="api-features">
+                    <div class="feature-list">
+                        <div class="api-feature">
+                            <h4>RESTful API</h4>
+                            <p>Standard HTTP endpoints with JSON payloads</p>
+                        </div>
+                        <div class="api-feature">
+                            <h4>Webhook Support</h4>
+                            <p>Real-time notifications for template updates</p>
+                        </div>
+                        <div class="api-feature">
+                            <h4>Batch Processing</h4>
+                            <p>Process multiple templates simultaneously</p>
+                        </div>
+                        <div class="api-feature">
+                            <h4>Enterprise Auth</h4>
+                            <p>SSO integration with corporate identity systems</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3 class="footer-title">StyleStack</h3>
+                    <p class="footer-tagline">Design Tokens as a Service</p>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4>Product</h4>
+                        <ul>
+                            <li><a href="#design-tokens">Design Tokens</a></li>
+                            <li><a href="#typography">Typography</a></li>
+                            <li><a href="#templates">Templates</a></li>
+                        </ul>
+                    </div>
+                    <div class="link-group">
+                        <h4>Developers</h4>
+                        <ul>
+                            <li><a href="#api">API Documentation</a></li>
+                            <li><a href="https://github.com/BramAlkema/StyleStack">GitHub</a></li>
+                            <li><a href="/docs">Documentation</a></li>
+                        </ul>
+                    </div>
+                    <div class="link-group">
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="/about">About</a></li>
+                            <li><a href="/pricing">Pricing</a></li>
+                            <li><a href="/contact">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 StyleStack. Professional typography for the modern web.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="typography_script.js"></script>
+</body>
+</html>

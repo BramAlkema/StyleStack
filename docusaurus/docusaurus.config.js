@@ -2,8 +2,8 @@
 // Note: type annotations allow type checking and IDEs autocompletion
 
 const config = {
-  title: 'StyleStack Documentation',
-  tagline: 'Professional Office Templates with Modern Design Tokens',
+  title: 'StyleStack',
+  tagline: 'Typography as a Service - Design Tokens for Professional Office Templates',
   favicon: 'img/favicon.ico',
 
   // GitHub Pages deployment config
@@ -69,12 +69,12 @@ const config = {
             label: 'Documentation',
           },
           {
-            href: 'https://ynse.github.io/StyleStack/',
+            href: 'https://BramAlkema.github.io/StyleStack/',
             label: 'Downloads',
             position: 'left',
           },
           {
-            href: 'https://github.com/ynse/StyleStack',
+            href: 'https://github.com/BramAlkema/StyleStack',
             label: 'GitHub',
             position: 'right',
           },
@@ -105,15 +105,15 @@ const config = {
             items: [
               {
                 label: 'GitHub',
-                href: 'https://github.com/ynse/StyleStack',
+                href: 'https://github.com/BramAlkema/StyleStack',
               },
               {
                 label: 'Issues',
-                href: 'https://github.com/ynse/StyleStack/issues',
+                href: 'https://github.com/BramAlkema/StyleStack/issues',
               },
               {
                 label: 'Discussions',
-                href: 'https://github.com/ynse/StyleStack/discussions',
+                href: 'https://github.com/BramAlkema/StyleStack/discussions',
               },
             ],
           },
@@ -122,11 +122,11 @@ const config = {
             items: [
               {
                 label: 'Releases',
-                href: 'https://github.com/ynse/StyleStack/releases',
+                href: 'https://github.com/BramAlkema/StyleStack/releases',
               },
               {
                 label: 'Roadmap',
-                href: 'https://github.com/ynse/StyleStack/blob/main/docs/PRODUCT_BACKLOG.md',
+                href: 'https://github.com/BramAlkema/StyleStack/blob/main/docs/PRODUCT_BACKLOG.md',
               },
             ],
           },

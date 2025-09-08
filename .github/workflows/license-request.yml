@@ -1,0 +1,125 @@
+name: Request StyleStack License
+
+on:
+  workflow_dispatch:
+    inputs:
+      tier:
+        description: 'License tier'
+        required: true
+        type: choice
+        options:
+          - professional
+          - enterprise
+      purpose:
+        description: 'Usage purpose (helps with approval)'
+        required: false
+        type: string
+
+permissions:
+  id-token: write  # Required for OIDC
+  contents: write  # To save encrypted license
+
+jobs:
+  request-license:
+    name: Request License from Upstream
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install PyJWT cryptography requests
+      
+      - name: Get OIDC token
+        id: oidc
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Get OIDC token for identity verification
+            const token = await core.getIDToken('https://github.com/BramAlkema/StyleStack')
+            core.setSecret(token)
+            core.setOutput('token', token)
+            
+            // Extract claims for display
+            const payload = token.split('.')[1]
+            const claims = JSON.parse(Buffer.from(payload, 'base64').toString())
+            
+            console.log('OIDC Identity:')
+            console.log('  Repository:', claims.repository)
+            console.log('  Actor:', claims.actor)
+            console.log('  Workflow:', claims.workflow)
+            
+            return claims
+      
+      - name: Create license request
+        run: |
+          cat > .github/licenses/request.json << EOF
+          {
+            "requester": "${{ github.repository_owner }}",
+            "repository": "${{ github.repository }}",
+            "tier": "${{ inputs.tier }}",
+            "purpose": "${{ inputs.purpose }}",
+            "oidc_claims": {
+              "sub": "${{ steps.oidc.outputs.sub }}",
+              "repository": "${{ github.repository }}",
+              "ref": "${{ github.ref }}",
+              "sha": "${{ github.sha }}"
+            },
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          EOF
+          
+          echo "📝 License request created for ${{ inputs.tier }} tier"
+      
+      - name: Send request to upstream
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: BramAlkema/StyleStack
+          event-type: license-request
+          client-payload: |
+            {
+              "requester": "${{ github.repository_owner }}",
+              "repository": "${{ github.repository }}",
+              "tier": "${{ inputs.tier }}",
+              "purpose": "${{ inputs.purpose }}",
+              "oidc_token": "${{ steps.oidc.outputs.token }}",
+              "response_workflow": "license-receive"
+            }
+      
+      - name: Create placeholder
+        run: |
+          # Create a placeholder file to track request
+          mkdir -p .github/licenses
+          echo "License requested on $(date)" > .github/licenses/.request-${{ inputs.tier }}
+          
+          cat >> $GITHUB_STEP_SUMMARY << EOF
+          # License Request Submitted ✅
+          
+          ## Request Details
+          - **Organization**: ${{ github.repository_owner }}
+          - **Tier**: ${{ inputs.tier }}
+          - **Purpose**: ${{ inputs.purpose || 'Not specified' }}
+          
+          ## Next Steps
+          1. Request sent to upstream StyleStack
+          2. Upstream will validate your identity via OIDC
+          3. You'll receive payment instructions (if applicable)
+          4. License will be automatically delivered after payment
+          
+          ## Pricing
+          - **Professional**: $25/user/month - Unlimited forks, custom tokens
+          - **Enterprise**: $50/user/month - White label, priority support, SLA
+          
+          ## While You Wait
+          - Community tier is free for open source projects
+          - Add 'nonprofit' or 'education' to your org name for free access
+          - Ensure your repository has an OSS LICENSE file for automatic approval
+          
+          Monitor the 'license-receive' workflow for your license delivery.
+          EOF
