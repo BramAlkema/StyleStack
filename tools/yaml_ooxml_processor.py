@@ -14,11 +14,13 @@ Supports five patch operations:
 Integration with StyleStack's design token system and Variable Resolution System.
 """
 
-from typing import Dict, List, Any, Optional, Union, Callable
+from typing import Dict, List, Any, Optional, Union, Callable, Set, Tuple
 from dataclasses import dataclass
 from enum import Enum
 import logging
 import traceback
+import time
+from collections import defaultdict
 from lxml import etree
 from lxml.etree import XPathEvalError
 
@@ -602,6 +604,225 @@ class XPathTargetingSystem:
         return dict(self._namespace_stats)
 
 
+class PerformanceOptimizer:
+    """
+    Performance optimization system for YAML patch operations.
+    
+    Provides caching, batch processing, and performance monitoring
+    to maximize throughput and minimize processing overhead.
+    """
+    
+    def __init__(self):
+        """Initialize the performance optimizer."""
+        # Operation result caching
+        self.operation_cache = {}
+        self.cache_hits = 0
+        self.cache_misses = 0
+        
+        # Batch processing state
+        self.batch_targets = defaultdict(list)  # Group patches by target
+        self.batch_operations = defaultdict(list)  # Group patches by operation type
+        
+        # Performance metrics
+        self.timing_stats = {
+            'xpath_resolution': [],
+            'patch_application': [],
+            'namespace_detection': [],
+            'batch_processing': []
+        }
+        
+        # Optimization flags
+        self.enable_caching = True
+        self.enable_batch_processing = True
+        self.enable_xpath_precompilation = True
+        
+        # Precompiled XPath cache
+        self.compiled_xpath_cache = {}
+    
+    def get_cache_key(self, operation: str, target: str, value: Any, doc_id: int) -> str:
+        """Generate a cache key for an operation."""
+        # Create a hashable representation of the value
+        if isinstance(value, (dict, list)):
+            value_hash = str(hash(str(sorted(value.items()) if isinstance(value, dict) else value)))
+        else:
+            value_hash = str(hash(str(value)))
+        
+        return f"{operation}:{target}:{value_hash}:{doc_id}"
+    
+    def cache_result(self, cache_key: str, result: 'PatchResult') -> None:
+        """Cache a patch operation result."""
+        if not self.enable_caching:
+            return
+            
+        # Only cache successful results to avoid caching errors
+        if result.success:
+            self.operation_cache[cache_key] = {
+                'result': result,
+                'timestamp': time.time()
+            }
+            
+        # Limit cache size to prevent memory issues
+        if len(self.operation_cache) > 1000:
+            # Remove oldest entries
+            oldest_keys = sorted(self.operation_cache.keys(), 
+                               key=lambda k: self.operation_cache[k]['timestamp'])[:100]
+            for key in oldest_keys:
+                del self.operation_cache[key]
+    
+    def get_cached_result(self, cache_key: str) -> Optional['PatchResult']:
+        """Retrieve a cached result if available."""
+        if not self.enable_caching:
+            return None
+            
+        if cache_key in self.operation_cache:
+            self.cache_hits += 1
+            cached_data = self.operation_cache[cache_key]
+            
+            # Check cache age (expire after 5 minutes)
+            if time.time() - cached_data['timestamp'] < 300:
+                return cached_data['result']
+            else:
+                # Remove expired entry
+                del self.operation_cache[cache_key]
+        
+        self.cache_misses += 1
+        return None
+    
+    def analyze_batch_opportunities(self, patches: List[Dict[str, Any]]) -> Dict[str, List[int]]:
+        """Analyze patches to identify batch processing opportunities."""
+        if not self.enable_batch_processing:
+            return {}
+        
+        batch_groups = {
+            'same_target': defaultdict(list),
+            'same_operation': defaultdict(list),
+            'similar_xpath': defaultdict(list)
+        }
+        
+        for i, patch in enumerate(patches):
+            target = patch.get('target', '')
+            operation = patch.get('operation', '')
+            
+            # Group by exact target
+            batch_groups['same_target'][target].append(i)
+            
+            # Group by operation type
+            batch_groups['same_operation'][operation].append(i)
+            
+            # Group by similar XPath patterns (same root element)
+            xpath_root = target.split('/')[1] if '/' in target else target
+            batch_groups['similar_xpath'][xpath_root].append(i)
+        
+        # Filter groups that have multiple patches
+        optimizable_groups = {}
+        for group_type, groups in batch_groups.items():
+            for key, indices in groups.items():
+                if len(indices) > 1:
+                    optimizable_groups[f"{group_type}:{key}"] = indices
+        
+        return optimizable_groups
+    
+    def precompile_xpaths(self, patches: List[Dict[str, Any]]) -> None:
+        """Precompile XPath expressions for better performance."""
+        if not self.enable_xpath_precompilation:
+            return
+            
+        for patch in patches:
+            target = patch.get('target', '')
+            if target and target not in self.compiled_xpath_cache:
+                try:
+                    compiled_xpath = etree.XPath(target)
+                    self.compiled_xpath_cache[target] = compiled_xpath
+                except:
+                    # Skip invalid XPath expressions
+                    pass
+    
+    def get_compiled_xpath(self, target: str) -> Optional[etree.XPath]:
+        """Get a precompiled XPath expression."""
+        return self.compiled_xpath_cache.get(target)
+    
+    def time_operation(self, operation_type: str):
+        """Context manager for timing operations."""
+        return PerformanceTimer(self.timing_stats, operation_type)
+    
+    def get_performance_stats(self) -> Dict[str, Any]:
+        """Get comprehensive performance statistics."""
+        stats = {
+            'cache_hits': self.cache_hits,
+            'cache_misses': self.cache_misses,
+            'cache_hit_rate': self.cache_hits / max(self.cache_hits + self.cache_misses, 1),
+            'cached_operations': len(self.operation_cache),
+            'compiled_xpaths': len(self.compiled_xpath_cache)
+        }
+        
+        # Calculate timing statistics
+        for op_type, times in self.timing_stats.items():
+            if times:
+                stats[f'{op_type}_avg_time'] = sum(times) / len(times)
+                stats[f'{op_type}_total_time'] = sum(times)
+                stats[f'{op_type}_count'] = len(times)
+            else:
+                stats[f'{op_type}_avg_time'] = 0
+                stats[f'{op_type}_total_time'] = 0
+                stats[f'{op_type}_count'] = 0
+        
+        return stats
+    
+    def optimize_patch_order(self, patches: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Optimize the order of patch operations for better performance."""
+        if not patches:
+            return patches
+        
+        # Create weighted scores for patch ordering
+        scored_patches = []
+        
+        for i, patch in enumerate(patches):
+            score = 0
+            target = patch.get('target', '')
+            operation = patch.get('operation', '')
+            
+            # Prioritize simpler operations
+            operation_weights = {
+                'set': 1,      # Fastest
+                'insert': 3,   # Medium
+                'merge': 4,    # Slower
+                'extend': 5,   # Slower
+                'relsAdd': 6   # Slowest
+            }
+            score += operation_weights.get(operation, 10)
+            
+            # Prioritize shorter XPath expressions (likely faster)
+            score += len(target.split('/'))
+            
+            # Prioritize operations that might benefit from caching
+            if target in [p.get('target') for p in patches[:i]]:
+                score -= 2  # Boost operations on same targets
+            
+            scored_patches.append((score, i, patch))
+        
+        # Sort by score (lower is better) and return optimized order
+        scored_patches.sort(key=lambda x: x[0])
+        return [patch for _, _, patch in scored_patches]
+
+
+class PerformanceTimer:
+    """Context manager for timing operations."""
+    
+    def __init__(self, timing_stats: Dict[str, List[float]], operation_type: str):
+        self.timing_stats = timing_stats
+        self.operation_type = operation_type
+        self.start_time = None
+    
+    def __enter__(self):
+        self.start_time = time.time()
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.start_time:
+            duration = time.time() - self.start_time
+            self.timing_stats[self.operation_type].append(duration)
+
+
 class ErrorRecoveryHandler:
     """
     Comprehensive error recovery system for YAML patch operations.
@@ -1094,12 +1315,15 @@ class YAMLPatchProcessor:
     """
     
     def __init__(self, recovery_strategy: RecoveryStrategy = RecoveryStrategy.RETRY_WITH_FALLBACK):
-        """Initialize the patch processor with advanced XPath targeting and error recovery."""
+        """Initialize the patch processor with advanced XPath targeting, error recovery, and performance optimization."""
         # Initialize XPath targeting system
         self.xpath_system = XPathTargetingSystem()
         
         # Initialize error recovery system
         self.error_handler = ErrorRecoveryHandler(recovery_strategy)
+        
+        # Initialize performance optimizer
+        self.performance_optimizer = PerformanceOptimizer()
         
         # Quick access to namespaces for backward compatibility
         self.namespaces = self.xpath_system.base_namespaces
@@ -1112,12 +1336,14 @@ class YAMLPatchProcessor:
             'xpath_cache_hits': 0,
             'namespace_detections': 0,
             'recoveries_attempted': 0,
-            'recoveries_successful': 0
+            'recoveries_successful': 0,
+            'performance_optimizations': 0,
+            'batch_operations': 0
         }
     
     def apply_patch(self, xml_doc: etree._Element, patch_data: Dict[str, Any]) -> PatchResult:
         """
-        Apply a single YAML patch to an OOXML document.
+        Apply a single YAML patch to an OOXML document with performance optimization.
         
         Args:
             xml_doc: The OOXML document as lxml Element
@@ -1126,24 +1352,47 @@ class YAMLPatchProcessor:
         Returns:
             PatchResult indicating success/failure and details
         """
+        # Check cache first for performance boost
+        doc_id = id(xml_doc)
+        cache_key = self.performance_optimizer.get_cache_key(
+            patch_data.get('operation', ''),
+            patch_data.get('target', ''),
+            patch_data.get('value'),
+            doc_id
+        )
+        
+        cached_result = self.performance_optimizer.get_cached_result(cache_key)
+        if cached_result:
+            self.stats['xpath_cache_hits'] += 1
+            return cached_result
+        
         try:
-            # Create and validate patch operation
-            patch_op = PatchOperation.from_dict(patch_data)
-            patch_op.validate()
-            
-            # Apply the specific operation
-            if patch_op.operation == PatchOperationType.SET.value:
-                return self._apply_set_operation(xml_doc, patch_op)
-            elif patch_op.operation == PatchOperationType.INSERT.value:
-                return self._apply_insert_operation(xml_doc, patch_op)
-            elif patch_op.operation == PatchOperationType.EXTEND.value:
-                return self._apply_extend_operation(xml_doc, patch_op)
-            elif patch_op.operation == PatchOperationType.MERGE.value:
-                return self._apply_merge_operation(xml_doc, patch_op)
-            elif patch_op.operation == PatchOperationType.RELSADD.value:
-                return self._apply_relsadd_operation(xml_doc, patch_op)
-            else:
-                raise PatchError(f"Unknown operation: {patch_op.operation}")
+            # Time the patch operation for performance metrics
+            with self.performance_optimizer.time_operation('patch_application'):
+                # Create and validate patch operation
+                patch_op = PatchOperation.from_dict(patch_data)
+                patch_op.validate()
+                
+                # Apply the specific operation
+                result = None
+                if patch_op.operation == PatchOperationType.SET.value:
+                    result = self._apply_set_operation(xml_doc, patch_op)
+                elif patch_op.operation == PatchOperationType.INSERT.value:
+                    result = self._apply_insert_operation(xml_doc, patch_op)
+                elif patch_op.operation == PatchOperationType.EXTEND.value:
+                    result = self._apply_extend_operation(xml_doc, patch_op)
+                elif patch_op.operation == PatchOperationType.MERGE.value:
+                    result = self._apply_merge_operation(xml_doc, patch_op)
+                elif patch_op.operation == PatchOperationType.RELSADD.value:
+                    result = self._apply_relsadd_operation(xml_doc, patch_op)
+                else:
+                    raise PatchError(f"Unknown operation: {patch_op.operation}")
+                
+                # Cache successful results
+                if result and result.success:
+                    self.performance_optimizer.cache_result(cache_key, result)
+                
+                return result
                 
         except (PatchError, ValueError, XPathEvalError, Exception) as e:
             self.stats['errors_encountered'] += 1
@@ -1180,18 +1429,99 @@ class YAMLPatchProcessor:
         """
         results = []
         
-        for i, patch_data in enumerate(patches):
-            logger.debug(f"Applying patch {i+1}/{len(patches)}: {patch_data.get('operation')} on {patch_data.get('target')}")
-            result = self.apply_patch(xml_doc, patch_data)
-            results.append(result)
-            
-            # Log result
-            if result.success:
-                logger.info(f"Patch {i+1} succeeded: {result.message}")
-            else:
-                logger.warning(f"Patch {i+1} failed: {result.message}")
+        # Performance optimization: precompile XPath expressions
+        self.performance_optimizer.precompile_xpaths(patches)
+        
+        # Performance optimization: analyze batch opportunities  
+        batch_groups = self.performance_optimizer.analyze_batch_opportunities(patches)
+        if batch_groups:
+            logger.info(f"Identified {len(batch_groups)} batch optimization opportunities")
+            self.stats['batch_operations'] += len(batch_groups)
+        
+        # Performance optimization: optimize patch order
+        optimized_patches = self.performance_optimizer.optimize_patch_order(patches)
+        if optimized_patches != patches:
+            logger.info("Applied patch order optimization")
+            self.stats['performance_optimizations'] += 1
+        
+        # Time the entire batch operation
+        with self.performance_optimizer.time_operation('batch_processing'):
+            for i, patch_data in enumerate(optimized_patches):
+                logger.debug(f"Applying patch {i+1}/{len(optimized_patches)}: {patch_data.get('operation')} on {patch_data.get('target')}")
+                result = self.apply_patch(xml_doc, patch_data)
+                results.append(result)
+                
+                # Log result
+                if result.success:
+                    logger.info(f"Patch {i+1} succeeded: {result.message}")
+                    self.stats['patches_applied'] += 1
+                    self.stats['elements_modified'] += result.affected_elements
+                else:
+                    logger.warning(f"Patch {i+1} failed: {result.message}")
         
         return results
+    
+    def get_comprehensive_stats(self) -> Dict[str, Any]:
+        """
+        Get comprehensive performance and operation statistics.
+        
+        Returns:
+            Dictionary containing all performance metrics, timing data, and operation statistics
+        """
+        stats = dict(self.stats)
+        
+        # Add performance optimizer stats
+        perf_stats = self.performance_optimizer.get_performance_stats()
+        stats.update({f"perf_{k}": v for k, v in perf_stats.items()})
+        
+        # Add namespace stats
+        ns_stats = self.xpath_system.get_namespace_stats()
+        stats.update({f"namespace_{k}": v for k, v in ns_stats.items()})
+        
+        # Add error recovery stats
+        recovery_stats = self.error_handler.get_recovery_stats()
+        stats.update({f"recovery_{k}": v for k, v in recovery_stats.items()})
+        
+        # Calculate derived metrics
+        total_operations = stats.get('patches_applied', 0) + stats.get('errors_encountered', 0)
+        if total_operations > 0:
+            stats['success_rate'] = stats.get('patches_applied', 0) / total_operations
+            stats['error_rate'] = stats.get('errors_encountered', 0) / total_operations
+        else:
+            stats['success_rate'] = 0.0
+            stats['error_rate'] = 0.0
+        
+        # Add optimization effectiveness metrics
+        if stats.get('perf_cache_hits', 0) + stats.get('perf_cache_misses', 0) > 0:
+            stats['optimization_effectiveness'] = {
+                'cache_efficiency': stats.get('perf_cache_hit_rate', 0),
+                'batch_optimization_ratio': stats.get('batch_operations', 0) / max(total_operations, 1),
+                'avg_patch_time': stats.get('perf_patch_application_avg_time', 0),
+                'total_processing_time': stats.get('perf_batch_processing_total_time', 0)
+            }
+        
+        return stats
+    
+    def reset_stats(self):
+        """Reset all performance and operation statistics."""
+        # Reset processor stats
+        for key in self.stats:
+            self.stats[key] = 0
+        
+        # Reset performance optimizer
+        self.performance_optimizer = PerformanceOptimizer()
+        
+        # Reset namespace stats
+        self.xpath_system._namespace_stats = {}
+        self.xpath_system._xpath_cache = {}
+        
+        # Reset error recovery stats
+        self.error_handler.recovery_stats = {
+            'recovery_attempts': 0,
+            'successful_recoveries': 0,
+            'fallback_applications': 0,
+            'unrecoverable_errors': 0
+        }
     
     def _apply_set_operation(self, xml_doc: etree._Element, patch_op: PatchOperation) -> PatchResult:
         """Apply set operation to replace attribute or text values using advanced XPath targeting."""
