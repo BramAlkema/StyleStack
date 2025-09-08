@@ -101,7 +101,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         
-        git add extract/**/extracted/
+        git add extract/ || echo "No files to add"
         
         if git diff --staged --quiet; then
           echo "No changes to commit"
