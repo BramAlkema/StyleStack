@@ -529,6 +529,7 @@ class TestPatchOperation(unittest.TestCase):
         op = PatchOperation.from_dict(patch_data)
         
         self.assertEqual(op.position, 'after')
+    
 
 
 if __name__ == "__main__":

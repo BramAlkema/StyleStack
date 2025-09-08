@@ -124,16 +124,19 @@ class XPathTargetingSystem:
             # PowerPoint namespaces
             'p': 'http://schemas.openxmlformats.org/presentationml/2006/main',
             'p14': 'http://schemas.microsoft.com/office/powerpoint/2010/main',
+            'p15': 'http://schemas.microsoft.com/office/powerpoint/2012/main',
             
             # Word namespaces  
             'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main',
             'w14': 'http://schemas.microsoft.com/office/word/2010/wordml',
             'w15': 'http://schemas.microsoft.com/office/word/2012/wordml',
+            'w16': 'http://schemas.microsoft.com/office/word/2015/wordml',
             
             # Excel namespaces
             'x': 'http://schemas.openxmlformats.org/spreadsheetml/2006/main',
             'x14': 'http://schemas.microsoft.com/office/spreadsheetml/2009/9/main',
             'x15': 'http://schemas.microsoft.com/office/spreadsheetml/2010/11/main',
+            'xdr': 'http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing',
             
             # Package relationships
             'rel': 'http://schemas.openxmlformats.org/package/2006/relationships',
@@ -144,7 +147,109 @@ class XPathTargetingSystem:
             'mc': 'http://schemas.openxmlformats.org/markup-compatibility/2006',
             
             # Content types
-            'ct': 'http://schemas.openxmlformats.org/package/2006/content-types'
+            'ct': 'http://schemas.openxmlformats.org/package/2006/content-types',
+            
+            # Drawing Chart
+            'c': 'http://schemas.openxmlformats.org/drawingml/2006/chart',
+            'cdr': 'http://schemas.openxmlformats.org/drawingml/2006/chartDrawing',
+            
+            # Compatibility and extended namespaces
+            'cp': 'http://schemas.openxmlformats.org/package/2006/metadata/core-properties',
+            'dc': 'http://purl.org/dc/elements/1.1/',
+            'dcterms': 'http://purl.org/dc/terms/',
+            'dcmitype': 'http://purl.org/dc/dcmitype/',
+            'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+            
+            # LibreOffice/OpenOffice namespaces for cross-platform compatibility
+            'office': 'urn:oasis:names:tc:opendocument:xmlns:office:1.0',
+            'style': 'urn:oasis:names:tc:opendocument:xmlns:style:1.0',
+            'text': 'urn:oasis:names:tc:opendocument:xmlns:text:1.0',
+            'table': 'urn:oasis:names:tc:opendocument:xmlns:table:1.0',
+            'draw': 'urn:oasis:names:tc:opendocument:xmlns:drawing:1.0',
+            'fo': 'urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0',
+            'xlink': 'http://www.w3.org/1999/xlink',
+            'svg': 'urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0',
+            'chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
+            'dr3d': 'urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0',
+            'math': 'http://www.w3.org/1998/Math/MathML',
+            'form': 'urn:oasis:names:tc:opendocument:xmlns:form:1.0',
+            'script': 'urn:oasis:names:tc:opendocument:xmlns:script:1.0',
+            'config': 'urn:oasis:names:tc:opendocument:xmlns:config:1.0',
+            'manifest': 'urn:oasis:names:tc:opendocument:xmlns:manifest:1.0',
+            
+            # LibreOffice extended namespaces (newer versions)
+            'loext': 'urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0',
+            'calcext': 'urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0'
+        }
+        
+        # Namespace aliases for common patterns
+        self.namespace_aliases = {
+            # Drawing ML aliases
+            'drawing': 'a',
+            'drawingml': 'a',
+            
+            # Application-specific aliases
+            'powerpoint': 'p',
+            'ppt': 'p',
+            'presentation': 'p',
+            'word': 'w',
+            'doc': 'w',
+            'excel': 'x',
+            'xl': 'x',
+            'spreadsheet': 'x',
+            
+            # Relationship aliases
+            'relationship': 'r',
+            'rel': 'r',
+            'relationships': 'rel',
+            
+            # Chart aliases
+            'chart': 'c',
+            'chartdrawing': 'cdr',
+            
+            # OpenDocument/LibreOffice aliases
+            'libreoffice': 'office',
+            'openoffice': 'office',
+            'odf': 'office',
+            'opendocument': 'office',
+            'odt': 'text',        # Writer document
+            'ods': 'table',       # Calc spreadsheet  
+            'odp': 'draw',        # Impress presentation
+            'odg': 'draw',        # Draw graphics
+            'odc': 'chart',       # Chart document
+            'odb': 'office',      # Base database
+            'odf_text': 'text',
+            'odf_table': 'table',
+            'odf_draw': 'draw',
+            'odf_style': 'style',
+            'calc': 'table',
+            'writer': 'text',
+            'impress': 'draw'
+        }
+        
+        # Format-specific default namespaces for context-aware resolution
+        self.format_defaults = {
+            # Microsoft Office formats
+            'potx': ['p', 'a', 'r'],  # PowerPoint defaults
+            'pptx': ['p', 'a', 'r'], 
+            'dotx': ['w', 'a', 'r'],  # Word defaults
+            'docx': ['w', 'a', 'r'],
+            'xltx': ['x', 'a', 'r'],  # Excel defaults
+            'xlsx': ['x', 'a', 'r'],
+            
+            # OpenDocument/LibreOffice formats  
+            'odt': ['text', 'office', 'style'],    # Writer text document
+            'ods': ['table', 'office', 'style'],   # Calc spreadsheet
+            'odp': ['draw', 'office', 'style'],    # Impress presentation
+            'odg': ['draw', 'office', 'style'],    # Draw graphics
+            'odc': ['chart', 'office', 'style'],   # Chart document
+            'odb': ['office', 'form', 'script'],   # Base database
+            'odf': ['office', 'style', 'text'],    # Generic OpenDocument
+            
+            # Additional cross-platform formats
+            'rtf': ['w', 'a'],                     # Rich Text Format
+            'html': ['text', 'office'],            # HTML with ODF elements
+            'xml': ['office', 'style']             # Generic XML with ODF
         }
         
         # Cache for resolved namespaces per document
@@ -152,6 +257,9 @@ class XPathTargetingSystem:
         
         # XPath expression cache for performance
         self._xpath_cache = {}
+        
+        # Namespace usage statistics for optimization
+        self._namespace_stats = {}
     
     def detect_document_namespaces(self, xml_doc: etree._Element) -> Dict[str, str]:
         """
@@ -184,6 +292,132 @@ class XPathTargetingSystem:
         self._namespace_cache[doc_id] = detected_namespaces
         return detected_namespaces
     
+    def detect_document_format(self, xml_doc: etree._Element) -> str:
+        """
+        Detect the OOXML document format based on root element and namespaces.
+        
+        Args:
+            xml_doc: The XML document element
+            
+        Returns:
+            Format identifier (potx, dotx, xltx, etc.) or 'unknown'
+        """
+        root_tag = xml_doc.tag if xml_doc.tag else ""
+        namespaces = self.detect_document_namespaces(xml_doc)
+        
+        # Check based on root element namespace - OOXML formats first
+        if any(uri for prefix, uri in namespaces.items() 
+               if 'presentationml' in uri or prefix == 'p'):
+            return 'potx'
+        elif any(uri for prefix, uri in namespaces.items() 
+                 if 'wordprocessingml' in uri or prefix == 'w'):
+            return 'dotx'
+        elif any(uri for prefix, uri in namespaces.items() 
+                 if 'spreadsheetml' in uri or prefix == 'x'):
+            return 'xltx'
+        
+        # Check for OpenDocument/LibreOffice formats
+        elif any(uri for prefix, uri in namespaces.items() 
+                 if 'opendocument' in uri and 'text' in uri):
+            return 'odt'
+        elif any(uri for prefix, uri in namespaces.items() 
+                 if 'opendocument' in uri and 'spreadsheet' in uri):
+            return 'ods'
+        elif any(uri for prefix, uri in namespaces.items() 
+                 if 'opendocument' in uri and ('drawing' in uri or 'presentation' in uri)):
+            return 'odp'
+        elif any(uri for prefix, uri in namespaces.items() 
+                 if 'opendocument' in uri and 'chart' in uri):
+            return 'odc'
+        elif any(uri for prefix, uri in namespaces.items() 
+                 if 'opendocument' in uri):
+            return 'odf'  # Generic OpenDocument
+        
+        # Fallback: check root element local name
+        local_name = etree.QName(xml_doc).localname.lower()
+        
+        # OOXML root elements
+        if local_name in ['presentation', 'slide', 'slidelayout', 'slidemaster']:
+            return 'potx'
+        elif local_name in ['document', 'wordprocessingml']:
+            return 'dotx'  
+        elif local_name in ['workbook', 'worksheet', 'chartsheet']:
+            return 'xltx'
+        
+        # OpenDocument root elements
+        elif local_name == 'document-content':
+            # Need to check the office:mimetype or document type
+            office_elem = xml_doc.find('.//{urn:oasis:names:tc:opendocument:xmlns:office:1.0}body')
+            if office_elem is not None:
+                for child in office_elem:
+                    child_name = etree.QName(child).localname.lower()
+                    if child_name == 'text':
+                        return 'odt'
+                    elif child_name == 'spreadsheet':
+                        return 'ods'
+                    elif child_name == 'presentation':
+                        return 'odp'
+                    elif child_name == 'drawing':
+                        return 'odg'
+                    elif child_name == 'chart':
+                        return 'odc'
+            return 'odf'
+        elif local_name in ['office:document', 'office:document-content']:
+            return 'odf'
+            
+        return 'unknown'
+    
+    def resolve_namespace_alias(self, alias: str) -> str:
+        """
+        Resolve a namespace alias to its standard prefix.
+        
+        Args:
+            alias: The namespace alias to resolve
+            
+        Returns:
+            Standard namespace prefix, or the original alias if not found
+        """
+        return self.namespace_aliases.get(alias.lower(), alias)
+    
+    def normalize_xpath_with_context(self, xpath_expr: str, xml_doc: etree._Element) -> str:
+        """
+        Normalize XPath expression with document format context and alias resolution.
+        
+        Args:
+            xpath_expr: The original XPath expression
+            xml_doc: The XML document for context
+            
+        Returns:
+            Normalized XPath expression with proper namespace prefixes
+        """
+        format_type = self.detect_document_format(xml_doc)
+        
+        # Apply alias resolution
+        normalized_expr = xpath_expr
+        
+        # Replace namespace aliases in XPath
+        for alias, prefix in self.namespace_aliases.items():
+            alias_pattern = f"{alias}:"
+            prefix_pattern = f"{prefix}:"
+            if alias_pattern in normalized_expr:
+                normalized_expr = normalized_expr.replace(alias_pattern, prefix_pattern)
+        
+        # Add format-specific default namespace if path seems incomplete
+        if format_type in self.format_defaults and not any(
+            f"{prefix}:" in normalized_expr for prefix in ['a', 'p', 'w', 'x', 'r']
+        ):
+            # For simple element names, try adding the primary format namespace
+            if normalized_expr.startswith('//') and ':' not in normalized_expr:
+                primary_ns = self.format_defaults[format_type][0]
+                # Convert //element to //ns:element
+                if normalized_expr.count('/') >= 2:
+                    parts = normalized_expr.split('/')
+                    if len(parts) > 2 and parts[2] and not parts[2].startswith('@'):
+                        parts[2] = f"{primary_ns}:{parts[2]}"
+                        normalized_expr = '/'.join(parts)
+        
+        return normalized_expr
+    
     def resolve_xpath_target(self, xml_doc: etree._Element, xpath_expr: str) -> List[Any]:
         """
         Resolve XPath expression with automatic namespace detection and intelligent fallbacks.
@@ -200,31 +434,61 @@ class XPathTargetingSystem:
         """
         cache_key = (id(xml_doc), xpath_expr)
         if cache_key in self._xpath_cache:
+            self._update_namespace_stats(xpath_expr, 'cache_hit')
             return self._xpath_cache[cache_key]
         
         # Get document-specific namespaces
         namespaces = self.detect_document_namespaces(xml_doc)
         
+        # Normalize XPath with context-aware enhancements
+        normalized_xpath = self.normalize_xpath_with_context(xpath_expr, xml_doc)
+        
         try:
-            # First attempt: exact XPath with detected namespaces
-            result = xml_doc.xpath(xpath_expr, namespaces=namespaces)
+            # Attempt 1: Normalized XPath with full namespace context
+            result = xml_doc.xpath(normalized_xpath, namespaces=namespaces)
+            self._update_namespace_stats(xpath_expr, 'normalized_success')
             
         except XPathEvalError as e:
-            # Fallback 1: Try with base namespaces only
+            # Fallback 1: Original XPath with detected namespaces
             try:
-                logger.warning(f"XPath failed with detected namespaces, trying base namespaces: {e}")
-                result = xml_doc.xpath(xpath_expr, namespaces=self.base_namespaces)
+                logger.debug(f"Normalized XPath failed, trying original: {e}")
+                result = xml_doc.xpath(xpath_expr, namespaces=namespaces)
+                self._update_namespace_stats(xpath_expr, 'original_success')
                 
             except XPathEvalError:
-                # Fallback 2: Try without namespace prefixes (for simple paths)
+                # Fallback 2: Try with base namespaces only
                 try:
-                    logger.warning("XPath failed with base namespaces, trying without prefixes")
-                    simplified_xpath = self._simplify_xpath_namespaces(xpath_expr)
-                    result = xml_doc.xpath(simplified_xpath, namespaces=namespaces)
+                    logger.warning(f"XPath failed with detected namespaces, trying base namespaces: {e}")
+                    result = xml_doc.xpath(xpath_expr, namespaces=self.base_namespaces)
+                    self._update_namespace_stats(xpath_expr, 'base_ns_success')
                     
                 except XPathEvalError:
-                    # Final fallback: raise the original error
-                    raise e
+                    # Fallback 3: Try simplified XPath without namespace prefixes
+                    try:
+                        logger.warning("XPath failed with base namespaces, trying simplified version")
+                        simplified_xpath = self._simplify_xpath_namespaces(xpath_expr)
+                        result = xml_doc.xpath(simplified_xpath, namespaces=namespaces)
+                        self._update_namespace_stats(xpath_expr, 'simplified_success')
+                        
+                    except XPathEvalError:
+                        # Fallback 4: Try format-specific namespace injection
+                        try:
+                            format_type = self.detect_document_format(xml_doc)
+                            if format_type in self.format_defaults:
+                                format_xpath = self._inject_format_namespaces(xpath_expr, format_type)
+                                result = xml_doc.xpath(format_xpath, namespaces=namespaces)
+                                self._update_namespace_stats(xpath_expr, 'format_injection_success')
+                            else:
+                                raise e
+                        except XPathEvalError:
+                            # Final fallback: raise the original error with context
+                            self._update_namespace_stats(xpath_expr, 'failure')
+                            raise XPathEvalError(
+                                f"XPath resolution failed after all fallbacks: '{xpath_expr}'. "
+                                f"Document format: {self.detect_document_format(xml_doc)}. "
+                                f"Available namespaces: {list(namespaces.keys())}. "
+                                f"Original error: {e}"
+                            )
         
         # Cache successful result
         self._xpath_cache[cache_key] = result
@@ -248,6 +512,72 @@ class XPathTargetingSystem:
             simplified = simplified.replace(prefix, '')
         
         return simplified
+    
+    def _inject_format_namespaces(self, xpath_expr: str, format_type: str) -> str:
+        """
+        Inject format-specific namespace prefixes into XPath expression.
+        
+        Args:
+            xpath_expr: Original XPath expression
+            format_type: Document format (potx, dotx, xltx)
+            
+        Returns:
+            XPath expression with format-appropriate namespace prefixes injected
+        """
+        if format_type not in self.format_defaults:
+            return xpath_expr
+        
+        default_prefixes = self.format_defaults[format_type]
+        modified_xpath = xpath_expr
+        
+        # Inject primary namespace for unqualified element names
+        if '//' in modified_xpath and ':' not in modified_xpath.split('/')[-1]:
+            primary_ns = default_prefixes[0]
+            parts = modified_xpath.split('/')
+            
+            # Find element names and add namespace prefix
+            for i, part in enumerate(parts):
+                if part and not part.startswith('@') and ':' not in part:
+                    # Skip predicates in brackets
+                    if '[' not in part or part.index('[') > 0:
+                        element_name = part.split('[')[0] if '[' in part else part
+                        if element_name and element_name not in ['*', '..', '.']:
+                            remainder = part[len(element_name):]
+                            parts[i] = f"{primary_ns}:{element_name}{remainder}"
+            
+            modified_xpath = '/'.join(parts)
+        
+        return modified_xpath
+    
+    def _update_namespace_stats(self, xpath_expr: str, result_type: str) -> None:
+        """
+        Update namespace usage statistics for optimization.
+        
+        Args:
+            xpath_expr: The XPath expression that was resolved
+            result_type: Type of resolution result (success type or failure)
+        """
+        if result_type not in self._namespace_stats:
+            self._namespace_stats[result_type] = 0
+        self._namespace_stats[result_type] += 1
+        
+        # Track XPath patterns for optimization
+        pattern_key = f"pattern_{result_type}"
+        if pattern_key not in self._namespace_stats:
+            self._namespace_stats[pattern_key] = []
+        
+        # Store up to 10 examples of each pattern type
+        if len(self._namespace_stats[pattern_key]) < 10:
+            self._namespace_stats[pattern_key].append(xpath_expr)
+    
+    def get_namespace_stats(self) -> Dict[str, Any]:
+        """
+        Get namespace resolution statistics for performance analysis.
+        
+        Returns:
+            Dictionary with resolution statistics and performance metrics
+        """
+        return dict(self._namespace_stats)
     
     def validate_xpath_syntax(self, xpath_expr: str) -> bool:
         """
