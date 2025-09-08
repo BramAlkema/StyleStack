@@ -1,0 +1,48 @@
+stylestack:
+  extracted: true
+  extraction_timestamp: ''
+  tokens:
+    brand_assets:
+      images:
+        image15:
+          extracted_path: Colorful conference presentation-assets/images/image15.jpeg
+          filename: image15.jpeg
+          format: jpeg
+          relative_path: ppt/media/image15.jpeg
+          size_bytes: 59178
+        image23:
+          extracted_path: Colorful conference presentation-assets/images/image23.jpeg
+          filename: image23.jpeg
+          format: jpeg
+          relative_path: ppt/media/image23.jpeg
+          size_bytes: 180142
+        image37:
+          extracted_path: Colorful conference presentation-assets/images/image37.jpeg
+          filename: image37.jpeg
+          format: jpeg
+          relative_path: ppt/media/image37.jpeg
+          size_bytes: 278236
+        image44:
+          extracted_path: Colorful conference presentation-assets/images/image44.jpeg
+          filename: image44.jpeg
+          format: jpeg
+          relative_path: ppt/media/image44.jpeg
+          size_bytes: 540379
+        image56:
+          extracted_path: Colorful conference presentation-assets/images/image56.jpeg
+          filename: image56.jpeg
+          format: jpeg
+          relative_path: ppt/media/image56.jpeg
+          size_bytes: 498518
+        image62:
+          extracted_path: Colorful conference presentation-assets/images/image62.jpeg
+          filename: image62.jpeg
+          format: jpeg
+          relative_path: ppt/media/image62.jpeg
+          size_bytes: 65182
+    spacing:
+      margins:
+        left: 0pt
+        top: 0pt
+      note: Extracted from layout analysis
+  version: 1.0.0
