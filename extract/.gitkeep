@@ -1,0 +1,5 @@
+# This file ensures the extract/ directory is tracked by Git
+# Drop your Office or OpenOffice files in this folder:
+# - Microsoft Office: .pptx, .potx, .ppsx (PowerPoint)  
+# - OpenOffice/LibreOffice: .odp, .otp (Impress), .ods, .ots (Calc), .odt, .ott (Writer)
+# GitHub Actions will automatically extract design tokens and assets
