@@ -108,7 +108,7 @@ class PatchOperation:
             PatchOperationType(operation)
         except ValueError:
             valid_ops = [op.value for op in PatchOperationType]
-            raise ValueError(f"Invalid operation '{operation}'. Must be one of: {valid_ops}")
+            raise ValueError(f"Unknown operation '{operation}'. Must be one of: {valid_ops}")
         
         return cls(
             operation=operation,
@@ -507,8 +507,16 @@ class XPathTargetingSystem:
                         except XPathEvalError:
                             # Final fallback: raise the original error with context
                             self._update_namespace_stats(xpath_expr, 'failure')
+                            # Provide user-friendly error message based on the type of issue
+                            if "Undefined namespace prefix" in str(e):
+                                error_msg = f"Target not found: XPath '{xpath_expr}' uses undefined namespace"
+                            elif "no such child" in str(e) or "No matching nodes" in str(e):
+                                error_msg = f"Target not found: XPath '{xpath_expr}' matches no elements"
+                            else:
+                                error_msg = f"XPath resolution failed after all fallbacks: '{xpath_expr}'"
+                            
                             raise XPathEvalError(
-                                f"XPath resolution failed after all fallbacks: '{xpath_expr}'. "
+                                f"{error_msg}. "
                                 f"Document format: {self.detect_document_format(xml_doc)}. "
                                 f"Available namespaces: {list(namespaces.keys())}. "
                                 f"Original error: {e}"
@@ -1398,6 +1406,11 @@ class YAMLPatchProcessor:
             self.stats['errors_encountered'] += 1
             self.stats['recoveries_attempted'] += 1
             
+            # For FAIL_FAST strategy, raise immediately without recovery
+            if self.error_handler.recovery_strategy == RecoveryStrategy.FAIL_FAST:
+                logger.error(f"Patch operation failed (FAIL_FAST): {e}")
+                raise PatchError(f"Patch operation failed: {e}") from e
+            
             # Attempt error recovery
             recovery_result = self.error_handler.handle_error(
                 e, 
@@ -1411,10 +1424,11 @@ class YAMLPatchProcessor:
             if recovery_result.success:
                 self.stats['recoveries_successful'] += 1
                 logger.info(f"Successfully recovered from error: {recovery_result.message}")
+                return recovery_result
             else:
                 logger.error(f"Patch operation failed: {e}")
-                
-            return recovery_result
+                # Raise PatchError when recovery fails for proper error propagation
+                raise PatchError(f"Patch operation failed: {e}") from e
     
     def apply_patches(self, xml_doc: etree._Element, patches: List[Dict[str, Any]]) -> List[PatchResult]:
         """
@@ -1546,7 +1560,20 @@ class YAMLPatchProcessor:
                 attr_name = patch_op.target.split('@')[-1]
                 parent_elements = self.xpath_system.resolve_xpath_target(xml_doc, attr_xpath)
                 for parent in parent_elements:
-                    parent.set(attr_name, str(patch_op.value))
+                    # Handle namespaced attributes properly
+                    if ':' in attr_name:
+                        # Resolve namespace prefix to full namespace URI
+                        prefix, local_name = attr_name.split(':', 1)
+                        namespace_uri = parent.nsmap.get(prefix)
+                        if namespace_uri:
+                            # Use the qualified name format {namespace}localname
+                            qualified_attr_name = f"{{{namespace_uri}}}{local_name}"
+                            parent.set(qualified_attr_name, str(patch_op.value))
+                        else:
+                            # Fallback to original name if namespace not found
+                            parent.set(attr_name, str(patch_op.value))
+                    else:
+                        parent.set(attr_name, str(patch_op.value))
                     affected_count += 1
             else:
                 # Element or text targeting
@@ -1593,8 +1620,21 @@ class YAMLPatchProcessor:
             # Parse the value as XML
             if isinstance(patch_op.value, str):
                 try:
-                    # Wrap in temporary root to handle fragments
-                    wrapped_xml = f"<temp>{patch_op.value}</temp>"
+                    # Get namespace context from the first parent element
+                    namespace_declarations = ""
+                    if parent_elements:
+                        first_parent = parent_elements[0]
+                        # Build namespace declarations from the parent's nsmap
+                        nsmap = first_parent.nsmap
+                        if nsmap:
+                            for prefix, uri in nsmap.items():
+                                if prefix is None:  # Default namespace
+                                    namespace_declarations += f' xmlns="{uri}"'
+                                else:
+                                    namespace_declarations += f' xmlns:{prefix}="{uri}"'
+                    
+                    # Wrap in temporary root with namespace declarations
+                    wrapped_xml = f"<temp{namespace_declarations}>{patch_op.value}</temp>"
                     temp_tree = etree.fromstring(wrapped_xml)
                     new_elements = list(temp_tree)
                 except etree.XMLSyntaxError as e:
