@@ -7,11 +7,11 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // GitHub Pages deployment config
-  url: 'https://ynse.github.io',
+  url: 'https://BramAlkema.github.io',
   baseUrl: '/StyleStack/docs/',
   
   // GitHub deployment config
-  organizationName: 'ynse',
+  organizationName: 'BramAlkema',
   projectName: 'StyleStack',
   deploymentBranch: 'gh-pages',
   trailingSlash: false,
@@ -34,7 +34,7 @@ const config = {
         docs: {
           routeBasePath: '/',
           sidebarPath: './sidebars.js',
-          editUrl: 'https://github.com/ynse/StyleStack/tree/main/docusaurus/',
+          editUrl: 'https://github.com/BramAlkema/StyleStack/tree/main/docusaurus/',
           // Versioning configuration
           lastVersion: 'current',
           versions: {

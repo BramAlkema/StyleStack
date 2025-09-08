@@ -86,7 +86,7 @@ Make StyleStack your own
 
 ## Support
 
-- 📖 [GitHub Repository](https://github.com/ynse/StyleStack)
-- 🐛 [Report Issues](https://github.com/ynse/StyleStack/issues)
-- 💬 [Discussions](https://github.com/ynse/StyleStack/discussions)
-- 📦 [Releases](https://github.com/ynse/StyleStack/releases)
+- 📖 [GitHub Repository](https://github.com/BramAlkema/StyleStack)
+- 🐛 [Report Issues](https://github.com/BramAlkema/StyleStack/issues)
+- 💬 [Discussions](https://github.com/BramAlkema/StyleStack/discussions)
+- 📦 [Releases](https://github.com/BramAlkema/StyleStack/releases)
