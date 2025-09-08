@@ -45,60 +45,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Check for package.json
+      - name: Verify package.json exists
         run: |
           if [ ! -f package.json ]; then
-            echo "Creating package.json..."
-            cat > package.json << EOF
-            {
-              "name": "stylestack-docs",
-              "version": "1.0.0",
-              "private": true,
-              "scripts": {
-                "docusaurus": "docusaurus",
-                "start": "docusaurus start",
-                "build": "docusaurus build",
-                "swizzle": "docusaurus swizzle",
-                "deploy": "docusaurus deploy",
-                "clear": "docusaurus clear",
-                "serve": "docusaurus serve",
-                "write-translations": "docusaurus write-translations",
-                "write-heading-ids": "docusaurus write-heading-ids"
-              },
-              "dependencies": {
-                "@docusaurus/core": "^3.1.0",
-                "@docusaurus/preset-classic": "^3.1.0",
-                "@docusaurus/theme-mermaid": "^3.1.0",
-                "@mdx-js/react": "^3.0.0",
-                "clsx": "^2.0.0",
-                "prism-react-renderer": "^2.3.0",
-                "react": "^18.0.0",
-                "react-dom": "^18.0.0"
-              },
-              "devDependencies": {
-                "@docusaurus/module-type-aliases": "^3.1.0",
-                "@docusaurus/tsconfig": "^3.1.0",
-                "@docusaurus/types": "^3.1.0"
-              },
-              "browserslist": {
-                "production": [
-                  ">0.5%",
-                  "not dead",
-                  "not op_mini all"
-                ],
-                "development": [
-                  "last 3 chrome version",
-                  "last 3 firefox version",
-                  "last 5 safari version"
-                ]
-              },
-              "engines": {
-                "node": ">=18.0"
-              }
-            }
-            EOF
-            npm install
+            echo "❌ package.json not found in docusaurus directory"
+            exit 1
           fi
+          echo "✅ package.json found"
 
       - name: Create placeholder SVG assets
         run: |
