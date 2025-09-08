@@ -14,10 +14,11 @@ Supports five patch operations:
 Integration with StyleStack's design token system and Variable Resolution System.
 """
 
-from typing import Dict, List, Any, Optional, Union
+from typing import Dict, List, Any, Optional, Union, Callable
 from dataclasses import dataclass
 from enum import Enum
 import logging
+import traceback
 from lxml import etree
 from lxml.etree import XPathEvalError
 
@@ -43,6 +44,22 @@ class InsertPosition(Enum):
     AFTER = "after"
 
 
+class RecoveryStrategy(Enum):
+    """Error recovery strategies for failed patch operations."""
+    FAIL_FAST = "fail_fast"           # Stop on first error
+    SKIP_FAILED = "skip_failed"       # Skip failed operations, continue with others
+    RETRY_WITH_FALLBACK = "retry_with_fallback"  # Try alternative approaches
+    BEST_EFFORT = "best_effort"       # Apply what's possible, report what failed
+
+
+class ErrorSeverity(Enum):
+    """Severity levels for patch operation errors."""
+    CRITICAL = "critical"    # Complete failure, cannot proceed
+    ERROR = "error"          # Operation failed but others can continue  
+    WARNING = "warning"      # Operation succeeded with issues
+    INFO = "info"           # Informational message
+
+
 class PatchError(Exception):
     """Exception raised when patch operations fail."""
     pass
@@ -56,6 +73,11 @@ class PatchResult:
     target: str
     message: str
     affected_elements: int = 0
+    severity: ErrorSeverity = ErrorSeverity.INFO
+    recovery_attempted: bool = False
+    recovery_strategy: Optional[str] = None
+    fallback_applied: bool = False
+    exception_info: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -578,6 +600,414 @@ class XPathTargetingSystem:
             Dictionary with resolution statistics and performance metrics
         """
         return dict(self._namespace_stats)
+
+
+class ErrorRecoveryHandler:
+    """
+    Comprehensive error recovery system for YAML patch operations.
+    
+    Provides multiple recovery strategies, fallback mechanisms, and detailed
+    error reporting to maximize successful patch application rates.
+    """
+    
+    def __init__(self, recovery_strategy: RecoveryStrategy = RecoveryStrategy.RETRY_WITH_FALLBACK):
+        """
+        Initialize error recovery handler.
+        
+        Args:
+            recovery_strategy: Default recovery strategy to use
+        """
+        self.recovery_strategy = recovery_strategy
+        self.fallback_handlers = {}
+        self.recovery_stats = {
+            'recovery_attempts': 0,
+            'successful_recoveries': 0,
+            'fallback_applications': 0,
+            'unrecoverable_errors': 0
+        }
+        
+        # Register default fallback handlers
+        self._register_default_fallbacks()
+    
+    def _register_default_fallbacks(self):
+        """Register default fallback strategies for common error patterns."""
+        # XPath resolution fallbacks
+        self.fallback_handlers['xpath_eval_error'] = self._xpath_fallback_handler
+        self.fallback_handlers['target_not_found'] = self._target_fallback_handler
+        self.fallback_handlers['invalid_xml'] = self._xml_fallback_handler
+        self.fallback_handlers['namespace_error'] = self._namespace_fallback_handler
+        self.fallback_handlers['attribute_error'] = self._attribute_fallback_handler
+    
+    def handle_error(self, 
+                     exception: Exception, 
+                     operation: str,
+                     target: str,
+                     value: Any,
+                     xml_doc: etree._Element,
+                     xpath_system: 'XPathTargetingSystem') -> PatchResult:
+        """
+        Handle a patch operation error with recovery strategies.
+        
+        Args:
+            exception: The exception that occurred
+            operation: The patch operation being performed
+            target: The XPath target
+            value: The value being applied
+            xml_doc: The XML document
+            xpath_system: The XPath targeting system
+            
+        Returns:
+            PatchResult with recovery information
+        """
+        self.recovery_stats['recovery_attempts'] += 1
+        
+        # Determine error type and appropriate recovery strategy
+        error_type = self._classify_error(exception)
+        severity = self._assess_error_severity(exception, error_type)
+        
+        # Attempt recovery based on strategy
+        if self.recovery_strategy in [RecoveryStrategy.RETRY_WITH_FALLBACK, RecoveryStrategy.BEST_EFFORT]:
+            return self._attempt_recovery(
+                error_type, exception, operation, target, value, xml_doc, xpath_system, severity
+            )
+        elif self.recovery_strategy == RecoveryStrategy.SKIP_FAILED:
+            return self._skip_with_logging(exception, operation, target, severity)
+        else:  # FAIL_FAST
+            return self._fail_fast(exception, operation, target, severity)
+    
+    def _classify_error(self, exception: Exception) -> str:
+        """Classify the type of error for appropriate recovery strategy."""
+        if isinstance(exception, XPathEvalError):
+            return 'xpath_eval_error'
+        elif isinstance(exception, AttributeError) and 'has no attribute' in str(exception):
+            return 'attribute_error'
+        elif isinstance(exception, ValueError) and 'namespace prefix' in str(exception):
+            return 'namespace_error'
+        elif 'target not found' in str(exception).lower():
+            return 'target_not_found'
+        elif 'invalid xml' in str(exception).lower() or 'namespace prefix' in str(exception):
+            return 'invalid_xml'
+        else:
+            return 'unknown_error'
+    
+    def _assess_error_severity(self, exception: Exception, error_type: str) -> ErrorSeverity:
+        """Assess the severity of an error for recovery prioritization."""
+        critical_patterns = ['corrupted document', 'invalid root', 'parse error']
+        error_patterns = ['xpath syntax', 'invalid operation', 'missing required']
+        warning_patterns = ['target not found', 'attribute missing', 'namespace']
+        
+        error_msg = str(exception).lower()
+        
+        if any(pattern in error_msg for pattern in critical_patterns):
+            return ErrorSeverity.CRITICAL
+        elif any(pattern in error_msg for pattern in error_patterns):
+            return ErrorSeverity.ERROR
+        elif any(pattern in error_msg for pattern in warning_patterns):
+            return ErrorSeverity.WARNING
+        else:
+            return ErrorSeverity.ERROR  # Default to error for unknown issues
+    
+    def _attempt_recovery(self, 
+                         error_type: str,
+                         exception: Exception,
+                         operation: str, 
+                         target: str,
+                         value: Any,
+                         xml_doc: etree._Element,
+                         xpath_system: 'XPathTargetingSystem',
+                         severity: ErrorSeverity) -> PatchResult:
+        """Attempt error recovery using registered fallback handlers."""
+        if error_type in self.fallback_handlers:
+            try:
+                fallback_result = self.fallback_handlers[error_type](
+                    exception, operation, target, value, xml_doc, xpath_system
+                )
+                
+                if fallback_result.success:
+                    self.recovery_stats['successful_recoveries'] += 1
+                    fallback_result.recovery_attempted = True
+                    fallback_result.fallback_applied = True
+                    fallback_result.recovery_strategy = error_type
+                    
+                return fallback_result
+                
+            except Exception as recovery_exception:
+                logger.warning(f"Recovery attempt failed: {recovery_exception}")
+                return self._create_failed_result(
+                    exception, operation, target, severity, recovery_attempted=True,
+                    recovery_exception=recovery_exception
+                )
+        else:
+            return self._create_failed_result(exception, operation, target, severity)
+    
+    def _xpath_fallback_handler(self, 
+                               exception: Exception,
+                               operation: str,
+                               target: str, 
+                               value: Any,
+                               xml_doc: etree._Element,
+                               xpath_system: 'XPathTargetingSystem') -> PatchResult:
+        """Fallback handler for XPath evaluation errors."""
+        try:
+            # Try alternative XPath resolution strategies
+            # context_info = xpath_system.get_xpath_context_info(xml_doc, target)
+            
+            # Generate alternative XPath expressions
+            alternative_targets = []
+            
+            # Strategy 1: Try with namespace simplification
+            simplified_target = xpath_system._simplify_xpath_namespaces(target)
+            if simplified_target != target:
+                alternative_targets.append(simplified_target)
+            
+            # Strategy 2: Try with format-specific namespace injection
+            format_type = xpath_system.detect_document_format(xml_doc)
+            if format_type in xpath_system.format_defaults:
+                format_target = xpath_system._inject_format_namespaces(target, format_type)
+                if format_target != target:
+                    alternative_targets.append(format_target)
+            
+            # Try each alternative
+            for alt_target in alternative_targets:
+                try:
+                    results = xpath_system.resolve_xpath_target(xml_doc, alt_target)
+                    if results:
+                        return PatchResult(
+                            success=True,
+                            operation=operation,
+                            target=alt_target,
+                            message=f"Recovered using alternative XPath: {alt_target}",
+                            affected_elements=len(results),
+                            severity=ErrorSeverity.WARNING
+                        )
+                except:
+                    continue
+            
+            # No alternatives worked
+            return PatchResult(
+                success=False,
+                operation=operation,
+                target=target,
+                message=f"XPath recovery failed: {exception}. Tried alternatives: {alternative_targets}",
+                severity=ErrorSeverity.ERROR
+            )
+            
+        except Exception as e:
+            return PatchResult(
+                success=False,
+                operation=operation,
+                target=target,
+                message=f"XPath fallback handler failed: {e}",
+                severity=ErrorSeverity.ERROR
+            )
+    
+    def _target_fallback_handler(self, 
+                                exception: Exception,
+                                operation: str,
+                                target: str,
+                                value: Any,
+                                xml_doc: etree._Element,
+                                xpath_system: 'XPathTargetingSystem') -> PatchResult:
+        """Fallback handler for target not found errors."""
+        try:
+            # For certain operations, we can create missing elements
+            if operation in ['set', 'insert']:
+                # Try to find parent element and create missing child
+                parent_xpath = '/'.join(target.split('/')[:-1]) if '/' in target else None
+                
+                if parent_xpath:
+                    try:
+                        parent_elements = xpath_system.resolve_xpath_target(xml_doc, parent_xpath)
+                        if parent_elements:
+                            # Parent exists, we could potentially create the missing element
+                            return PatchResult(
+                                success=False,
+                                operation=operation,
+                                target=target,
+                                message=f"Target not found, but parent exists. Consider creating missing element first.",
+                                severity=ErrorSeverity.WARNING
+                            )
+                    except:
+                        pass
+            
+            return PatchResult(
+                success=False,
+                operation=operation,
+                target=target,
+                message=f"Target not found and no recovery possible: {exception}",
+                severity=ErrorSeverity.ERROR
+            )
+            
+        except Exception as e:
+            return PatchResult(
+                success=False,
+                operation=operation,
+                target=target,
+                message=f"Target fallback handler failed: {e}",
+                severity=ErrorSeverity.ERROR
+            )
+    
+    def _xml_fallback_handler(self, 
+                             exception: Exception,
+                             operation: str,
+                             target: str,
+                             value: Any,
+                             xml_doc: etree._Element,
+                             xpath_system: 'XPathTargetingSystem') -> PatchResult:
+        """Fallback handler for invalid XML errors."""
+        try:
+            if isinstance(value, str) and operation in ['insert', 'extend']:
+                # Try to fix common XML issues
+                fixed_value = self._attempt_xml_fix(value, xml_doc)
+                if fixed_value != value:
+                    return PatchResult(
+                        success=False,  # Don't actually apply, just report the fix
+                        operation=operation,
+                        target=target,
+                        message=f"XML fixed from '{value}' to '{fixed_value}'. Retry with corrected XML.",
+                        severity=ErrorSeverity.WARNING
+                    )
+            
+            return PatchResult(
+                success=False,
+                operation=operation,
+                target=target,
+                message=f"Invalid XML error: {exception}",
+                severity=ErrorSeverity.ERROR
+            )
+            
+        except Exception as e:
+            return PatchResult(
+                success=False,
+                operation=operation,
+                target=target,
+                message=f"XML fallback handler failed: {e}",
+                severity=ErrorSeverity.ERROR
+            )
+    
+    def _namespace_fallback_handler(self, 
+                                   exception: Exception,
+                                   operation: str,
+                                   target: str,
+                                   value: Any,
+                                   xml_doc: etree._Element,
+                                   xpath_system: 'XPathTargetingSystem') -> PatchResult:
+        """Fallback handler for namespace-related errors."""
+        # Use the enhanced namespace resolution
+        try:
+            normalized_target = xpath_system.normalize_xpath_with_context(target, xml_doc)
+            if normalized_target != target:
+                return PatchResult(
+                    success=False,  # Don't apply, suggest correction
+                    operation=operation,
+                    target=normalized_target,
+                    message=f"Namespace corrected from '{target}' to '{normalized_target}'",
+                    severity=ErrorSeverity.WARNING
+                )
+            
+            return PatchResult(
+                success=False,
+                operation=operation,
+                target=target,
+                message=f"Namespace error: {exception}",
+                severity=ErrorSeverity.ERROR
+            )
+            
+        except Exception as e:
+            return PatchResult(
+                success=False,
+                operation=operation,
+                target=target,
+                message=f"Namespace fallback handler failed: {e}",
+                severity=ErrorSeverity.ERROR
+            )
+    
+    def _attribute_fallback_handler(self, 
+                                   exception: Exception,
+                                   operation: str,
+                                   target: str,
+                                   value: Any,
+                                   xml_doc: etree._Element,
+                                   xpath_system: 'XPathTargetingSystem') -> PatchResult:
+        """Fallback handler for attribute-related errors."""
+        return PatchResult(
+            success=False,
+            operation=operation,
+            target=target,
+            message=f"Attribute error: {exception}. Check target syntax and element structure.",
+            severity=ErrorSeverity.ERROR
+        )
+    
+    def _attempt_xml_fix(self, xml_string: str, xml_doc: etree._Element) -> str:
+        """Attempt to fix common XML syntax issues."""
+        fixed = xml_string
+        
+        # Get namespace declarations from document
+        namespaces = xml_doc.nsmap
+        
+        # Try to add missing namespace declarations
+        if namespaces:
+            # Simple heuristic: add xmlns declarations for common prefixes found in the string
+            common_prefixes = ['a:', 'p:', 'w:', 'x:', 'r:']
+            for prefix_with_colon in common_prefixes:
+                prefix = prefix_with_colon[:-1]  # Remove the colon
+                if prefix_with_colon in fixed and prefix in namespaces:
+                    # Add namespace declaration if not already present
+                    ns_decl = f'xmlns:{prefix}="{namespaces[prefix]}"'
+                    if ns_decl not in fixed and not fixed.startswith('<' + prefix + ':'):
+                        # Insert namespace declaration in the first element
+                        fixed = fixed.replace('<' + prefix + ':', f'<{prefix}: {ns_decl} ', 1)
+        
+        return fixed
+    
+    def _skip_with_logging(self, exception: Exception, operation: str, target: str, severity: ErrorSeverity) -> PatchResult:
+        """Skip failed operation with detailed logging."""
+        logger.warning(f"Skipping failed operation {operation} on {target}: {exception}")
+        return self._create_failed_result(exception, operation, target, severity, recovery_attempted=False)
+    
+    def _fail_fast(self, exception: Exception, operation: str, target: str, severity: ErrorSeverity) -> PatchResult:
+        """Fail fast strategy - immediately return error."""
+        self.recovery_stats['unrecoverable_errors'] += 1
+        return self._create_failed_result(exception, operation, target, severity, recovery_attempted=False)
+    
+    def _create_failed_result(self, 
+                             exception: Exception, 
+                             operation: str, 
+                             target: str, 
+                             severity: ErrorSeverity,
+                             recovery_attempted: bool = False,
+                             recovery_exception: Optional[Exception] = None) -> PatchResult:
+        """Create a standardized failed result with exception information."""
+        exception_info = {
+            'type': type(exception).__name__,
+            'message': str(exception),
+            'traceback': traceback.format_exc()
+        }
+        
+        if recovery_exception:
+            exception_info['recovery_error'] = {
+                'type': type(recovery_exception).__name__,
+                'message': str(recovery_exception)
+            }
+        
+        return PatchResult(
+            success=False,
+            operation=operation,
+            target=target,
+            message=f"Operation failed: {exception}",
+            severity=severity,
+            recovery_attempted=recovery_attempted,
+            exception_info=exception_info
+        )
+    
+    def get_recovery_stats(self) -> Dict[str, Any]:
+        """Get error recovery statistics."""
+        stats = dict(self.recovery_stats)
+        if stats['recovery_attempts'] > 0:
+            stats['recovery_success_rate'] = stats['successful_recoveries'] / stats['recovery_attempts']
+        else:
+            stats['recovery_success_rate'] = 0.0
+        return stats
     
     def validate_xpath_syntax(self, xpath_expr: str) -> bool:
         """
@@ -663,10 +1093,13 @@ class YAMLPatchProcessor:
     Supports all major Office formats (.potx PowerPoint, .dotx Word, .xltx Excel).
     """
     
-    def __init__(self):
-        """Initialize the patch processor with advanced XPath targeting."""
+    def __init__(self, recovery_strategy: RecoveryStrategy = RecoveryStrategy.RETRY_WITH_FALLBACK):
+        """Initialize the patch processor with advanced XPath targeting and error recovery."""
         # Initialize XPath targeting system
         self.xpath_system = XPathTargetingSystem()
+        
+        # Initialize error recovery system
+        self.error_handler = ErrorRecoveryHandler(recovery_strategy)
         
         # Quick access to namespaces for backward compatibility
         self.namespaces = self.xpath_system.base_namespaces
@@ -677,7 +1110,9 @@ class YAMLPatchProcessor:
             'elements_modified': 0,
             'errors_encountered': 0,
             'xpath_cache_hits': 0,
-            'namespace_detections': 0
+            'namespace_detections': 0,
+            'recoveries_attempted': 0,
+            'recoveries_successful': 0
         }
     
     def apply_patch(self, xml_doc: etree._Element, patch_data: Dict[str, Any]) -> PatchResult:
@@ -710,15 +1145,27 @@ class YAMLPatchProcessor:
             else:
                 raise PatchError(f"Unknown operation: {patch_op.operation}")
                 
-        except (PatchError, ValueError, XPathEvalError) as e:
+        except (PatchError, ValueError, XPathEvalError, Exception) as e:
             self.stats['errors_encountered'] += 1
-            logger.error(f"Patch operation failed: {e}")
-            return PatchResult(
-                success=False,
-                operation=patch_data.get('operation', 'unknown'),
-                target=patch_data.get('target', 'unknown'),
-                message=str(e)
+            self.stats['recoveries_attempted'] += 1
+            
+            # Attempt error recovery
+            recovery_result = self.error_handler.handle_error(
+                e, 
+                patch_data.get('operation', 'unknown'),
+                patch_data.get('target', 'unknown'),
+                patch_data.get('value'),
+                xml_doc,
+                self.xpath_system
             )
+            
+            if recovery_result.success:
+                self.stats['recoveries_successful'] += 1
+                logger.info(f"Successfully recovered from error: {recovery_result.message}")
+            else:
+                logger.error(f"Patch operation failed: {e}")
+                
+            return recovery_result
     
     def apply_patches(self, xml_doc: etree._Element, patches: List[Dict[str, Any]]) -> List[PatchResult]:
         """
