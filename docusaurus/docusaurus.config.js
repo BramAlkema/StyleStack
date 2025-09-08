@@ -69,7 +69,7 @@ const config = {
             label: 'Documentation',
           },
           {
-            href: 'https://BramAlkema.github.io/StyleStack/',
+            href: 'https://github.com/BramAlkema/StyleStack/releases',
             label: 'Downloads',
             position: 'left',
           },
