@@ -204,22 +204,16 @@ Yes! After initial license delivery:
 
 Estimate your monthly StyleStack costs:
 
-<div class="cost-calculator">
+| Users | Professional (Monthly) | Professional (Annual*) | Enterprise (Monthly) | Enterprise (Annual*) |
+|-------|----------------------|------------------------|---------------------|----------------------|
+| 5     | $125/month          | $100/month            | $250/month         | $200/month          |
+| 10    | $250/month          | $200/month            | $500/month         | $400/month          |
+| 25    | $625/month          | $500/month            | $1,250/month       | $1,000/month        |
+| 50    | $1,250/month        | $1,000/month          | $2,500/month       | $2,000/month        |
+| 100   | $2,500/month        | $2,000/month          | $5,000/month       | $4,000/month        |
 
-**Number of users:** <input type="number" id="users" value="5" min="1" max="1000" />  
-**Tier:** <select id="tier">
-  <option value="professional">Professional ($25/user)</option>
-  <option value="enterprise">Enterprise ($50/user)</option>
-</select>  
-**Billing:** <select id="billing">
-  <option value="monthly">Monthly</option>  
-  <option value="annual">Annual (20% discount)</option>
-</select>
+*Annual billing includes 20% discount
 
-**Estimated cost: $<span id="cost">125</span>/month**
-
-</div>
-
-:::note Interactive Calculator
-The pricing calculator above requires JavaScript to function. In a production environment, this would be implemented as a React component.
+:::tip Custom Pricing
+For organizations with 500+ users, contact us for enterprise volume discounts and custom pricing.
 :::
