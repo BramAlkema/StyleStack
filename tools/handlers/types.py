@@ -40,6 +40,7 @@ class OOXMLStructure:
     content_types_path: str = "[Content_Types].xml"
     theme_paths: List[str] = None
     style_paths: List[str] = None
+    content_paths: List[str] = None  # Additional content files like slides, worksheets
     required_namespaces: Dict[str, str] = None
     
     def __post_init__(self):
@@ -47,6 +48,8 @@ class OOXMLStructure:
             self.theme_paths = []
         if self.style_paths is None:
             self.style_paths = []
+        if self.content_paths is None:
+            self.content_paths = []
         if self.required_namespaces is None:
             self.required_namespaces = {}
 

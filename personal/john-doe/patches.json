@@ -1,0 +1,87 @@
+{
+  "metadata": {
+    "personal": "john-doe",
+    "group": "marketing",
+    "org": "acme",
+    "description": "John's personal template preferences",
+    "version": "1.0.0"
+  },
+  "targets": [
+    {
+      "file": "ppt/theme/theme1.xml",
+      "ns": {
+        "a": "http://schemas.openxmlformats.org/drawingml/2006/main"
+      },
+      "ops": [
+        {
+          "set": {
+            "xpath": "//a:defRPr/@sz",
+            "value": "2000"
+          }
+        }
+      ]
+    },
+    {
+      "file": "ppt/slideMasters/slideMaster1.xml",
+      "ns": {
+        "p": "http://schemas.openxmlformats.org/presentationml/2006/main",
+        "a": "http://schemas.openxmlformats.org/drawingml/2006/main"
+      },
+      "ops": [
+        {
+          "set": {
+            "xpath": "//a:buChar/@char",
+            "value": "—"
+          }
+        },
+        {
+          "set": {
+            "xpath": "//a:lnSpc/a:spcPct/@val",
+            "value": "120000"
+          }
+        }
+      ]
+    },
+    {
+      "file": "ppt/slideMasters/slideMaster1.xml",
+      "ns": {
+        "p": "http://schemas.openxmlformats.org/presentationml/2006/main",
+        "a": "http://schemas.openxmlformats.org/drawingml/2006/main"
+      },
+      "ops": [
+        {
+          "set": {
+            "xpath": "//p:sp[p:nvSpPr/p:cNvPr[@name='Content Placeholder 2']]/p:spPr/a:xfrm/a:off/@x",
+            "value": "685800"
+          }
+        },
+        {
+          "set": {
+            "xpath": "//p:sp[p:nvSpPr/p:cNvPr[@name='Content Placeholder 2']]/p:spPr/a:xfrm/a:ext/@cx",
+            "value": "7772400"
+          }
+        }
+      ]
+    },
+    {
+      "file": "word/styles.xml",
+      "ns": {
+        "w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+      },
+      "ops": [
+        {
+          "set": {
+            "xpath": "//w:style[@w:styleId='Normal']/w:pPr/w:spacing/@w:line",
+            "value": "240"
+          }
+        },
+        {
+          "set": {
+            "xpath": "//w:style[@w:styleId='Normal']/w:pPr/w:spacing/@w:lineRule",
+            "value": "auto"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Advanced Integration Test Scenarios for StyleStack YAML-to-OOXML Processing Engine
+Advanced Integration Test Scenarios for StyleStack JSON-to-OOXML Processing Engine
 
 This test suite covers complex real-world scenarios and edge cases:
 - Cross-format template processing
@@ -44,8 +44,7 @@ from transaction_pipeline import (
     TransactionState, 
     OperationType
 )
-from yaml_ooxml_processor import (
-    YAMLPatchProcessor, 
+    JSONPatchProcessor, 
     RecoveryStrategy,
     PatchResult
 )

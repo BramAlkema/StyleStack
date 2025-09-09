@@ -3,7 +3,7 @@
 Token Integration and Production Workflow Tests
 
 This test suite validates the integration between the Design Token System and
-the YAML-to-OOXML Processing Engine with real-world production workflows.
+the JSON-to-OOXML Processing Engine with real-world production workflows.
 """
 
 import os
@@ -22,7 +22,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools"))
 
 from multi_format_ooxml_handler import MultiFormatOOXMLHandler, OOXMLFormat
 from token_integration_layer import TokenIntegrationLayer, TokenScope, TokenContext
-from yaml_ooxml_processor import YAMLPatchProcessor
 from transaction_pipeline import TransactionPipeline, OperationType
 
 # Configure logging for tests

@@ -136,7 +136,7 @@ const config = {
       prism: {
         theme: require('prism-react-renderer').themes.github,
         darkTheme: require('prism-react-renderer').themes.dracula,
-        additionalLanguages: ['python', 'yaml', 'xml-doc'],
+        additionalLanguages: ['python', 'json', 'xml-doc'],
       },
     }),
 };

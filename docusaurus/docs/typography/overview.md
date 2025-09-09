@@ -17,7 +17,7 @@ Typography is the foundation of professional documents. StyleStack's typography 
 
 StyleStack uses a mathematical approach to typography scaling based on the golden ratio:
 
-```yaml
+```json
 typography:
   scale: 1.618  # Golden Ratio
   base_size: 12pt  # Base text size
@@ -36,7 +36,7 @@ typography:
 
 English Metric Units (EMU) provide the most precise measurements for Office templates:
 
-```yaml
+```json
 # 1 point = 12,700 EMU
 # 1 pixel = 9,525 EMU (at 96 DPI)
 emu_conversions:
@@ -95,7 +95,7 @@ font-feature-settings:
 
 All typography aligns to a 24px baseline grid:
 
-```yaml
+```json
 baseline_grid: 24px
 line_heights:
   tight: 1.25      # Headlines
@@ -119,7 +119,7 @@ Consistent vertical spacing creates visual harmony:
 
 Different text sizes require different letter spacing:
 
-```yaml
+```json
 letter_spacing:
   display_text: -0.05em  # Large headings
   headings: -0.025em     # Standard headings  
@@ -198,7 +198,7 @@ Different platforms require subtle adjustments:
 
 Specialized typography for code and technical content:
 
-```yaml
+```json
 code_typography:
   font_family: "JetBrains Mono"
   font_size: 11pt        # Slightly smaller than body

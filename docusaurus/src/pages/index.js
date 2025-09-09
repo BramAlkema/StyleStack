@@ -110,7 +110,7 @@ export default function Home() {
 python tools/design_token_extractor.py extract/presentation.pptx
 
 # Generate branded templates with design tokens
-python build.py --tokens corporate-tokens.yaml --org acme --out branded.potx
+python build.py --tokens corporate-tokens.json --org acme --out branded.potx
 
 # Templates automatically update when users open documents`}</code>
                     </pre>

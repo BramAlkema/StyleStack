@@ -6,7 +6,7 @@ Tests unified handling and processing across different OOXML template formats:
 PowerPoint (.potx), Word (.dotx), and Excel (.xltx). Validates format detection,
 structure validation, and cross-format compatibility.
 
-Part of the StyleStack YAML-to-OOXML Processing Engine test suite.
+Part of the StyleStack JSON-to-OOXML Processing Engine test suite.
 """
 
 import unittest

@@ -1,0 +1,500 @@
+{
+  "$schema": "https://stylestack.dev/schemas/design-tokens.schema.json",
+  "space": {
+    "0.5": {
+      "value": "3pt",
+      "type": "dimension",
+      "description": "Micro spacing for fine adjustments",
+      "$extensions": {
+        "stylestack": {
+          "emu": 38100,
+          "category": "primitive"
+        }
+      }
+    },
+    "1": {
+      "value": "6pt",
+      "type": "dimension",
+      "description": "Small spacing unit",
+      "$extensions": {
+        "stylestack": {
+          "emu": 76200,
+          "category": "primitive"
+        }
+      }
+    },
+    "1.5": {
+      "value": "9pt",
+      "type": "dimension",
+      "description": "Small-medium spacing",
+      "$extensions": {
+        "stylestack": {
+          "emu": 114300,
+          "category": "primitive"
+        }
+      }
+    },
+    "2": {
+      "value": "12pt",
+      "type": "dimension",
+      "description": "Base spacing unit",
+      "$extensions": {
+        "stylestack": {
+          "emu": 152400,
+          "category": "primitive"
+        }
+      }
+    },
+    "3": {
+      "value": "18pt",
+      "type": "dimension",
+      "description": "Baseline grid unit (primary)",
+      "$extensions": {
+        "stylestack": {
+          "emu": 228600,
+          "category": "primitive"
+        }
+      }
+    },
+    "4": {
+      "value": "24pt",
+      "type": "dimension",
+      "description": "Medium spacing",
+      "$extensions": {
+        "stylestack": {
+          "emu": 304800,
+          "category": "primitive"
+        }
+      }
+    },
+    "5": {
+      "value": "30pt",
+      "type": "dimension",
+      "description": "Medium-large spacing",
+      "$extensions": {
+        "stylestack": {
+          "emu": 381000,
+          "category": "primitive"
+        }
+      }
+    },
+    "6": {
+      "value": "36pt",
+      "type": "dimension",
+      "description": "Large spacing (2× baseline)",
+      "$extensions": {
+        "stylestack": {
+          "emu": 457200,
+          "category": "primitive"
+        }
+      }
+    },
+    "8": {
+      "value": "48pt",
+      "type": "dimension",
+      "description": "Extra large spacing",
+      "$extensions": {
+        "stylestack": {
+          "emu": 609600,
+          "category": "primitive"
+        }
+      }
+    },
+    "10": {
+      "value": "60pt",
+      "type": "dimension",
+      "description": "Section spacing",
+      "$extensions": {
+        "stylestack": {
+          "emu": 762000,
+          "category": "primitive"
+        }
+      }
+    },
+    "12": {
+      "value": "72pt",
+      "type": "dimension",
+      "description": "Major section spacing (4× baseline)",
+      "$extensions": {
+        "stylestack": {
+          "emu": 914400,
+          "category": "primitive"
+        }
+      }
+    },
+    "16": {
+      "value": "96pt",
+      "type": "dimension",
+      "description": "Page section spacing",
+      "$extensions": {
+        "stylestack": {
+          "emu": 1219200,
+          "category": "primitive"
+        }
+      }
+    },
+    "20": {
+      "value": "120pt",
+      "type": "dimension",
+      "description": "Large page section spacing",
+      "$extensions": {
+        "stylestack": {
+          "emu": 1524000,
+          "category": "primitive"
+        }
+      }
+    }
+  },
+  "margins": {
+    "tight": {
+      "value": "36pt",
+      "type": "dimension",
+      "description": "Tight margins for dense layouts",
+      "$extensions": {
+        "stylestack": {
+          "emu": 457200,
+          "category": "primitive"
+        }
+      }
+    },
+    "normal": {
+      "value": "54pt",
+      "type": "dimension",
+      "description": "Standard margins for documents",
+      "$extensions": {
+        "stylestack": {
+          "emu": 685800,
+          "category": "primitive"
+        }
+      }
+    },
+    "comfortable": {
+      "value": "72pt",
+      "type": "dimension",
+      "description": "Comfortable margins for readability",
+      "$extensions": {
+        "stylestack": {
+          "emu": 914400,
+          "category": "primitive"
+        }
+      }
+    },
+    "spacious": {
+      "value": "90pt",
+      "type": "dimension",
+      "description": "Spacious margins for premium feel",
+      "$extensions": {
+        "stylestack": {
+          "emu": 1143000,
+          "category": "primitive"
+        }
+      }
+    }
+  },
+  "columns": {
+    "gutter": {
+      "tight": {
+        "value": "12pt",
+        "type": "dimension",
+        "description": "Tight column gutter",
+        "$extensions": {
+          "stylestack": {
+            "emu": 152400,
+            "category": "primitive"
+          }
+        }
+      },
+      "normal": {
+        "value": "18pt",
+        "type": "dimension",
+        "description": "Standard column gutter (baseline aligned)",
+        "$extensions": {
+          "stylestack": {
+            "emu": 228600,
+            "category": "primitive"
+          }
+        }
+      },
+      "wide": {
+        "value": "24pt",
+        "type": "dimension",
+        "description": "Wide column gutter for clarity",
+        "$extensions": {
+          "stylestack": {
+            "emu": 304800,
+            "category": "primitive"
+          }
+        }
+      }
+    }
+  },
+  "layout": {
+    "component": {
+      "padding": {
+        "xs": {
+          "value": "{space.1}",
+          "type": "dimension",
+          "description": "Extra small component padding",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        },
+        "sm": {
+          "value": "{space.2}",
+          "type": "dimension",
+          "description": "Small component padding",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        },
+        "md": {
+          "value": "{space.3}",
+          "type": "dimension",
+          "description": "Medium component padding",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        },
+        "lg": {
+          "value": "{space.4}",
+          "type": "dimension",
+          "description": "Large component padding",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        },
+        "xl": {
+          "value": "{space.6}",
+          "type": "dimension",
+          "description": "Extra large component padding",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        }
+      },
+      "gap": {
+        "sm": {
+          "value": "{space.1}",
+          "type": "dimension",
+          "description": "Small gap between related elements",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        },
+        "md": {
+          "value": "{space.2}",
+          "type": "dimension",
+          "description": "Medium gap between elements",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        },
+        "lg": {
+          "value": "{space.3}",
+          "type": "dimension",
+          "description": "Large gap between sections",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        }
+      }
+    },
+    "page": {
+      "margin": {
+        "top": {
+          "value": "{margins.comfortable}",
+          "type": "dimension",
+          "description": "Standard page top margin",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        },
+        "bottom": {
+          "value": "{margins.comfortable}",
+          "type": "dimension",
+          "description": "Standard page bottom margin",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        },
+        "left": {
+          "value": "{margins.normal}",
+          "type": "dimension",
+          "description": "Standard page left margin",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        },
+        "right": {
+          "value": "{margins.normal}",
+          "type": "dimension",
+          "description": "Standard page right margin",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        }
+      },
+      "section": {
+        "gap": {
+          "value": "{space.12}",
+          "type": "dimension",
+          "description": "Gap between major page sections",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        }
+      },
+      "header": {
+        "bottom": {
+          "value": "{space.8}",
+          "type": "dimension",
+          "description": "Space below page headers",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        }
+      },
+      "footer": {
+        "top": {
+          "value": "{space.8}",
+          "type": "dimension",
+          "description": "Space above page footers",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        }
+      }
+    },
+    "text": {
+      "paragraph": {
+        "gap": {
+          "value": "{space.3}",
+          "type": "dimension",
+          "description": "Space between paragraphs",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        }
+      },
+      "heading": {
+        "above": {
+          "value": "{space.6}",
+          "type": "dimension",
+          "description": "Space above headings",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        },
+        "below": {
+          "value": "{space.3}",
+          "type": "dimension",
+          "description": "Space below headings",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        }
+      },
+      "list": {
+        "item": {
+          "gap": {
+            "value": "{space.1}",
+            "type": "dimension",
+            "description": "Space between list items",
+            "$extensions": {
+              "stylestack": {
+                "category": "semantic"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "grid": {
+    "magazine": {
+      "column": {
+        "width": {
+          "value": "60pt",
+          "type": "dimension",
+          "description": "Column width for 12-column magazine grid",
+          "$extensions": {
+            "stylestack": {
+              "emu": 762000,
+              "category": "semantic"
+            }
+          }
+        },
+        "gutter": {
+          "value": "{columns.gutter.normal}",
+          "type": "dimension",
+          "description": "Gutter between magazine columns",
+          "$extensions": {
+            "stylestack": {
+              "category": "semantic"
+            }
+          }
+        }
+      }
+    },
+    "golden": {
+      "primary": {
+        "value": "365pt",
+        "type": "dimension",
+        "description": "Primary column in golden ratio grid",
+        "$extensions": {
+          "stylestack": {
+            "emu": 4628000,
+            "category": "semantic"
+          }
+        }
+      },
+      "secondary": {
+        "value": "225pt",
+        "type": "dimension",
+        "description": "Secondary column in golden ratio grid",
+        "$extensions": {
+          "stylestack": {
+            "emu": 2860000,
+            "category": "semantic"
+          }
+        }
+      }
+    }
+  }
+}

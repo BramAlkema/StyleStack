@@ -7,7 +7,6 @@ Provides detailed error reporting and validation utilities.
 """
 
 import json
-import yaml
 import re
 from pathlib import Path
 from typing import Dict, Any, List, Optional, Union, Tuple
@@ -472,13 +471,13 @@ class ExtensionSchemaValidator:
 
 
 def validate_variable_file(file_path: Path) -> List[ValidationResult]:
-    """Validate variables from YAML or JSON file"""
+    """Validate variables from JSON or JSON file"""
     validator = ExtensionSchemaValidator()
     
     try:
         with open(file_path, 'r') as f:
-            if file_path.suffix.lower() in ['.yaml', '.yml']:
-                data = yaml.safe_load(f)
+            if file_path.suffix.lower() in ['.json', '.yml']:
+                data = json.safe_load(f)
             else:
                 data = json.load(f)
         
@@ -512,7 +511,7 @@ if __name__ == "__main__":
     import sys
     
     if len(sys.argv) < 2:
-        print("Usage: python extension_schema_validator.py <variable_file.yaml>")
+        print("Usage: python extension_schema_validator.py <variable_file.json>")
         sys.exit(1)
     
     file_path = Path(sys.argv[1])

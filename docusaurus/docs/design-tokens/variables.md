@@ -10,7 +10,7 @@ Complete reference of all design tokens available in StyleStack. These variables
 
 ### Base Colors
 
-```yaml
+```json
 colors:
   # Primary brand colors
   primary: "#2563EB"           # Main brand color
@@ -30,7 +30,7 @@ colors:
 
 ### Text Colors
 
-```yaml
+```json
 colors:
   # Text hierarchy
   text_primary: "#0F172A"      # Primary text (high contrast)
@@ -46,7 +46,7 @@ colors:
 
 ### Semantic Colors
 
-```yaml
+```json
 colors:
   # Status colors
   success: "#059669"           # Success states (Emerald 600)
@@ -64,7 +64,7 @@ colors:
 
 ### UI Component Colors
 
-```yaml
+```json
 colors:
   # Borders
   border_default: "#E2E8F0"    # Default borders (Slate 200)
@@ -84,7 +84,7 @@ colors:
 
 ### Extended Color Palette
 
-```yaml
+```json
 colors:
   # Generated color scales (50-900)
   primary_50: "{primary.lighten(45%)}"
@@ -103,7 +103,7 @@ colors:
 
 ### Font Families
 
-```yaml
+```json
 fonts:
   # Core font stack
   heading: "Inter"             # Headlines and titles
@@ -118,7 +118,7 @@ fonts:
 
 ### Font Sizes
 
-```yaml
+```json
 typography:
   # Base settings
   base_size: "16pt"            # Base font size
@@ -139,7 +139,7 @@ typography:
 
 ### Font Weights
 
-```yaml
+```json
 typography:
   # Weight scale
   font_weight_thin: 100
@@ -154,7 +154,7 @@ typography:
 
 ### Line Heights
 
-```yaml
+```json
 typography:
   # Line height ratios
   line_height_none: 1          # Tight headings
@@ -167,7 +167,7 @@ typography:
 
 ### Letter Spacing
 
-```yaml
+```json
 typography:
   # Letter spacing (tracking)
   letter_spacing_tighter: "-0.05em"
@@ -182,7 +182,7 @@ typography:
 
 ### Base Spacing Scale
 
-```yaml
+```json
 spacing:
   # Base unit (8pt grid)
   unit: "8pt"
@@ -216,7 +216,7 @@ spacing:
 
 ### Semantic Spacing
 
-```yaml
+```json
 spacing:
   # Content spacing
   content_gap_xs: "{spacing_2}"      # 8pt - tight content
@@ -235,7 +235,7 @@ spacing:
 
 ### Page Layout
 
-```yaml
+```json
 layout:
   # Page dimensions
   page_width_letter: "8.5in"         # US Letter width
@@ -256,7 +256,7 @@ layout:
 
 ### Grid System
 
-```yaml
+```json
 layout:
   # Grid settings
   grid_columns: 12                   # 12-column grid
@@ -272,7 +272,7 @@ layout:
 
 ### Border and Radius
 
-```yaml
+```json
 layout:
   # Border widths
   border_width_0: "0pt"
@@ -294,7 +294,7 @@ layout:
 
 ## Shadow Variables
 
-```yaml
+```json
 shadows:
   # Elevation shadows
   shadow_sm: "0 1pt 2pt 0 rgba(0, 0, 0, 0.05)"           # Small shadow
@@ -308,7 +308,7 @@ shadows:
 
 ## Animation Variables
 
-```yaml
+```json
 animation:
   # Duration
   duration_75: "75ms"               # Very fast
@@ -329,7 +329,7 @@ animation:
 
 ## Asset Variables
 
-```yaml
+```json
 assets:
   # Default asset paths
   logo_path: "assets/logo.png"
@@ -351,7 +351,7 @@ assets:
 
 ## Accessibility Variables
 
-```yaml
+```json
 accessibility:
   # Contrast ratios
   contrast_ratio_aa: 4.5            # WCAG 2.1 AA standard
@@ -376,7 +376,7 @@ accessibility:
 
 ### PowerPoint Variables
 
-```yaml
+```json
 powerpoint:
   # Slide dimensions
   slide_width: "10in"               # Standard slide width
@@ -398,7 +398,7 @@ powerpoint:
 
 ### Word Variables
 
-```yaml
+```json
 word:
   # Document settings
   line_height_body: 1.15            # Single line spacing
@@ -423,7 +423,7 @@ word:
 
 ### Excel Variables
 
-```yaml
+```json
 excel:
   # Cell settings
   cell_height: "15pt"               # Default row height
@@ -447,7 +447,7 @@ excel:
 
 ### Token References
 
-```yaml
+```json
 # Reference other tokens
 colors:
   primary: "#2563EB"
@@ -467,7 +467,7 @@ typography:
 
 ### Custom Variables
 
-```yaml
+```json
 # Add custom variables
 custom:
   brand_gradient: "linear-gradient(45deg, {primary}, {secondary})"

@@ -12,7 +12,7 @@ Learn how to safely customize your StyleStack fork for organizational branding w
 
 1. **Never modify core files** - Keep `core/` directory untouched
 2. **Only customize in org directory** - All changes go in `org/your-org/`
-3. **Use the patch system** - Leverage YAML-based overrides
+3. **Use the patch system** - Leverage JSON-based overrides
 4. **Document everything** - Explain rationale for customizations
 5. **Test thoroughly** - Validate across Office versions
 
@@ -21,10 +21,10 @@ Learn how to safely customize your StyleStack fork for organizational branding w
 ✅ **Safe (encouraged):**
 ```
 org/your-org/
-├─ patches.yaml          # Brand customizations
+├─ patches.json          # Brand customizations
 ├─ assets/              # Logo, images, fonts
 ├─ channels/            # Custom use cases
-└─ governance.yaml      # Approval rules
+└─ governance.json      # Approval rules
 ```
 
 ❌ **Unsafe (avoid):**
@@ -38,8 +38,8 @@ tools/                  # Build system utilities
 
 ### Logo and Visual Identity
 
-```yaml
-# org/your-org/patches.yaml
+```json
+# org/your-org/patches.json
 organization:
   name: "Acme Corporation"
   short_name: "acme"
@@ -110,8 +110,8 @@ python tools/generate-variants.py --org acme --logo "assets/logos/acme-logo.png"
 
 ### Font Selection Strategy
 
-```yaml
-# org/acme/patches.yaml
+```json
+# org/acme/patches.json
 fonts:
   # Web fonts (Google Fonts)
   heading: "Montserrat"
@@ -137,7 +137,7 @@ typography:
 
 ### Font Licensing Considerations
 
-```yaml
+```json
 # Document font licensing
 fonts:
   licensing:
@@ -154,8 +154,8 @@ fonts:
 
 ### Brand Color Palette
 
-```yaml
-# org/acme/patches.yaml
+```json
+# org/acme/patches.json
 colors:
   # Primary brand colors
   brand:
@@ -183,7 +183,7 @@ colors:
 
 ### Accessibility-First Colors
 
-```yaml
+```json
 colors:
   # Ensure WCAG compliance
   text_on_primary: auto         # Automatically white or black
@@ -204,8 +204,8 @@ accessibility:
 
 ### Grid System Customization
 
-```yaml
-# org/acme/patches.yaml
+```json
+# org/acme/patches.json
 layout:
   # Corporate grid system
   spacing_unit: "12pt"          # Larger base unit
@@ -224,8 +224,8 @@ layout:
 
 ### Slide Layouts
 
-```yaml
-# org/acme/channels/presentation.yaml
+```json
+# org/acme/channels/presentation.json
 layouts:
   # Title slide customization
   title_slide:
@@ -252,8 +252,8 @@ layouts:
 
 ### Presentation Channel
 
-```yaml
-# org/acme/channels/corporate-presentation.yaml
+```json
+# org/acme/channels/corporate-presentation.json
 name: "Corporate Presentations"
 description: "For executive presentations and client meetings"
 target_products: ["potx"]
@@ -282,8 +282,8 @@ templates:
 
 ### Document Channel
 
-```yaml
-# org/acme/channels/corporate-document.yaml  
+```json
+# org/acme/channels/corporate-document.json  
 name: "Corporate Documents"
 description: "For reports, memos, and formal documentation"
 target_products: ["dotx"]
@@ -310,8 +310,8 @@ templates:
 
 ### Finance Channel
 
-```yaml
-# org/acme/channels/finance.yaml
+```json
+# org/acme/channels/finance.json
 name: "Financial Templates"
 description: "For financial reports and analysis"
 target_products: ["xltx", "potx"]
@@ -338,8 +338,8 @@ colors:
 
 ### Regulatory Requirements
 
-```yaml
-# org/acme/patches.yaml
+```json
+# org/acme/patches.json
 compliance:
   # Industry regulations
   sox: true                    # Sarbanes-Oxley compliance
@@ -364,7 +364,7 @@ compliance:
 
 ### Legal and Privacy
 
-```yaml
+```json
 compliance:
   legal:
     # Copyright and trademark notices
@@ -382,8 +382,8 @@ compliance:
 
 ### Multi-Brand Support
 
-```yaml
-# org/acme/patches.yaml
+```json
+# org/acme/patches.json
 multi_brand:
   enabled: true
   
@@ -408,7 +408,7 @@ multi_brand:
 
 ### Conditional Customization
 
-```yaml
+```json
 # Different settings based on context
 customization:
   conditions:
@@ -433,8 +433,8 @@ customization:
 
 ### Dynamic Content
 
-```yaml
-# org/acme/dynamic.yaml
+```json
+# org/acme/dynamic.json
 dynamic_content:
   # Auto-updated elements
   quarterly_data:
@@ -511,13 +511,13 @@ git checkout -b feature/new-presentation-channel
 git checkout -b compliance/gdpr-requirements
 
 # Keep changes focused and atomic
-git add org/acme/patches.yaml
+git add org/acme/patches.json
 git commit -m "Update brand colors for Q1 2024 guidelines"
 ```
 
 ### Change Documentation
 
-```yaml
+```json
 # Document customization rationale
 # org/acme/CHANGELOG.md
 ## v2.1.0 - 2024-01-15
@@ -559,8 +559,8 @@ git fetch upstream
 git merge upstream/main
 
 # Resolve conflicts in org files only
-git checkout --ours org/acme/patches.yaml
-git add org/acme/patches.yaml
+git checkout --ours org/acme/patches.json
+git add org/acme/patches.json
 git commit -m "Resolve upstream merge, keep org customizations"
 ```
 

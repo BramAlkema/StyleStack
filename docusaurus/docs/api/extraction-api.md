@@ -47,7 +47,7 @@ Extract comprehensive design tokens from Office templates.
     }
   ],
   "options": {
-    "output_format": "yaml",
+    "output_format": "json",
     "extract_assets": true,
     "include_analytics": true,
     "accessibility_check": true,
@@ -72,7 +72,7 @@ curl -X POST https://api.stylestack.io/v1/extract \
       }
     ],
     "options": {
-      "output_format": "yaml",
+      "output_format": "json",
       "extract_assets": true
     }
   }'
@@ -161,14 +161,14 @@ Retrieve the extracted design tokens and assets.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `format` | string | `yaml` | Output format: `yaml`, `json`, `css` |
+| `format` | string | `json` | Output format: `json`, `css` |
 | `include_assets` | boolean | `true` | Include extracted assets in response |
 | `compress` | boolean | `false` | Return compressed archive |
 
-**Response - YAML Format**
+**Response - JSON Format**
 
-```yaml
-# Downloaded as: tokens.yaml
+```json
+# Downloaded as: tokens.json
 stylestack:
   version: "1.0.0"
   extracted_at: "2025-01-15T10:31:45Z"
@@ -478,7 +478,7 @@ client = ExtractionClient(api_key="sk_live_...")
 # Extract tokens from local file
 job = client.extract_file("template.pptx")
 result = client.wait_for_completion(job.id)
-tokens = result.download_yaml()
+tokens = result.download_json()
 ```
 
 ### Node.js
@@ -523,7 +523,7 @@ done
 # Download results
 curl https://api.stylestack.io/v1/extract/$JOB_ID/download \
   -H "Authorization: Bearer $API_KEY" \
-  -o extracted-tokens.yaml
+  -o extracted-tokens.json
 ```
 
 ## Best Practices

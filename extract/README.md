@@ -20,10 +20,10 @@ extract/
 ├── spreadsheet.ods              # LibreOffice Calc  
 ├── document.odt                 # LibreOffice Writer
 ├── extracted/                   # Auto-generated results
-│   ├── my-presentation-tokens.yaml
-│   ├── slides-tokens.yaml
-│   ├── spreadsheet-tokens.yaml
-│   ├── document-tokens.yaml
+│   ├── my-presentation-tokens.json
+│   ├── slides-tokens.json
+│   ├── spreadsheet-tokens.json
+│   ├── document-tokens.json
 │   └── [filename]-assets/
 │       ├── logos/
 │       ├── icons/
@@ -32,8 +32,8 @@ extract/
     ├── brand-deck.pptx          # Office formats
     ├── template.otp             # OpenOffice templates
     └── extracted/
-        ├── brand-deck-tokens.yaml
-        ├── template-tokens.yaml
+        ├── brand-deck-tokens.json
+        ├── template-tokens.json
         └── [filename]-assets/
 ```
 
@@ -49,7 +49,7 @@ extract/
 extract/
 ├── quarterly-report.pptx
 └── extracted/
-    ├── quarterly-report-tokens.yaml    # Design tokens
+    ├── quarterly-report-tokens.json    # Design tokens
     └── quarterly-report-assets/        # Brand assets
         ├── logos/
         ├── icons/
@@ -63,19 +63,19 @@ extract/
 ├── marketing/
 │   ├── campaign-deck.pptx
 │   └── extracted/
-│       ├── campaign-deck-tokens.yaml
+│       ├── campaign-deck-tokens.json
 │       └── campaign-deck-assets/
 └── sales/
     ├── pitch-deck.pptx
     └── extracted/
-        ├── pitch-deck-tokens.yaml
+        ├── pitch-deck-tokens.json
         └── pitch-deck-assets/
 ```
 
 ## Output Formats
 
-### Design Tokens (YAML)
-```yaml
+### Design Tokens (JSON)
+```json
 stylestack:
   version: 1.0.0
   extracted: true
@@ -106,7 +106,7 @@ stylestack:
 ## Features
 
 - ✅ **Automatic Processing** - No manual intervention needed
-- ✅ **YAML Output** - Human-readable design token format
+- ✅ **JSON Output** - Human-readable design token format
 - ✅ **Asset Classification** - Smart categorization of images
 - ✅ **Brand Consistency Analysis** - Automated quality scoring
 - ✅ **Git Integration** - Results automatically committed
@@ -122,7 +122,7 @@ python tools/design_token_extractor.py extract/my-file.pptx
 
 # Full extraction with assets
 python tools/design_token_extractor.py extract/my-file.pptx \
-  --output extract/extracted/my-tokens.yaml \
+  --output extract/extracted/my-tokens.json \
   --extract-assets \
   --assets-dir extract/extracted/my-assets \
   --analyze \

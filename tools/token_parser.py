@@ -22,7 +22,6 @@ Usage:
 
 import re
 import json
-import yaml
 from typing import Dict, List, Any, Optional, Set, Union
 from dataclasses import dataclass, field
 from enum import Enum
@@ -446,17 +445,14 @@ class TokenParser:
 
 
 def load_token_definitions(definitions_path: Union[str, Path]) -> Dict[str, Any]:
-    """Load token definitions from YAML or JSON file"""
+    """Load token definitions from JSON file"""
     path = Path(definitions_path)
     
     if not path.exists():
         return {}
     
     with open(path, 'r', encoding='utf-8') as f:
-        if path.suffix.lower() in ['.yaml', '.yml']:
-            data = yaml.safe_load(f)
-        else:
-            data = json.load(f)
+        data = json.load(f)
     
     # Flatten nested variable definitions
     definitions = {}
@@ -465,11 +461,11 @@ def load_token_definitions(definitions_path: Union[str, Path]) -> Dict[str, Any]
         if isinstance(obj, dict):
             for key, value in obj.items():
                 new_key = f"{prefix}.{key}" if prefix else key
-                if 'type' in value and 'scope' in value:
+                if isinstance(value, dict) and 'type' in value and 'scope' in value:
                     # This is a variable definition
                     var_key = f"{value['scope']}.{value.get('id', key)}"
                     definitions[var_key] = value
-                else:
+                elif isinstance(value, dict):
                     # Continue flattening
                     flatten_variables(value, new_key)
     

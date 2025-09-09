@@ -2,7 +2,7 @@
 StyleStack Variable Resolution Engine
 
 Unified resolution system that bridges:
-1. Existing 5-layer token system (YAML files) 
+1. Existing 5-layer token system (JSON files) 
 2. New OOXML extension variables (embedded in templates)
 3. XPath-based OOXML manipulation
 
@@ -12,7 +12,6 @@ Core → Fork → Org → Group → Personal → Channel → Extension Variables
 Integrates with existing token_resolver.py while adding OOXML-native capabilities.
 """
 
-import yaml
 import json
 import re
 from pathlib import Path
@@ -36,7 +35,7 @@ class ResolvedVariable:
     value: str
     type: TokenType
     scope: TokenScope
-    source: str  # 'yaml_tokens', 'extension_variables', 'computed'
+    source: str  # 'json_tokens', 'extension_variables', 'computed'
     xpath: Optional[str] = None
     ooxml_mapping: Optional[Dict[str, Any]] = None
     hierarchy_level: int = 0  # Higher = more specific
@@ -63,7 +62,7 @@ class ResolvedVariable:
 
 class VariableResolver:
     """
-    Advanced variable resolution engine that unifies YAML tokens with OOXML extension variables.
+    Advanced variable resolution engine that unifies JSON tokens with OOXML extension variables.
     
     Features:
     - 5-layer hierarchy resolution (existing + extensions)
@@ -80,7 +79,7 @@ class VariableResolver:
         self.extension_manager = OOXMLExtensionManager()
         
         # Resolution caches
-        self._yaml_tokens_cache: Dict[str, Dict[str, str]] = {}
+        self._json_tokens_cache: Dict[str, Dict[str, str]] = {}
         self._extension_variables_cache: Dict[str, List[StyleStackExtension]] = {}
         self._resolved_cache: Dict[str, ResolvedVariable] = {}
         
@@ -109,10 +108,10 @@ class VariableResolver:
                             extension_sources: Optional[List[Union[str, Path]]] = None
                             ) -> Dict[str, ResolvedVariable]:
         """
-        Resolve all variables from both YAML tokens and OOXML extensions.
+        Resolve all variables from both JSON tokens and OOXML extensions.
         
         Args:
-            fork, org, group, personal, channel: YAML token layers
+            fork, org, group, personal, channel: JSON token layers
             extension_sources: OOXML files or XML content with extension variables
             
         Returns:
@@ -123,11 +122,11 @@ class VariableResolver:
             
         resolved_variables = {}
         
-        # 1. Resolve YAML tokens (existing system)
-        yaml_variables = self._resolve_yaml_tokens(
+        # 1. Resolve JSON tokens (existing system)
+        json_variables = self._resolve_json_tokens(
             fork=fork, org=org, group=group, personal=personal, channel=channel
         )
-        resolved_variables.update(yaml_variables)
+        resolved_variables.update(json_variables)
         
         # 2. Resolve extension variables (new system) 
         if extension_sources:
@@ -147,36 +146,36 @@ class VariableResolver:
             
         return final_resolved
     
-    def _resolve_yaml_tokens(self, **layer_args) -> Dict[str, ResolvedVariable]:
-        """Resolve variables from existing YAML token system"""
+    def _resolve_json_tokens(self, **layer_args) -> Dict[str, ResolvedVariable]:
+        """Resolve variables from existing JSON token system"""
         if self.verbose:
-            logger.info("📄 Resolving YAML tokens...")
+            logger.info("📄 Resolving JSON tokens...")
             
         # Use existing token resolver
         resolved_tokens = self.token_resolver.resolve_tokens(**layer_args)
         
-        yaml_variables = {}
+        json_variables = {}
         
         for token_path, value in resolved_tokens.items():
             # Parse token path to determine scope and type
             scope, token_type = self._infer_scope_and_type_from_path(token_path)
-            hierarchy_level = self._get_hierarchy_level_for_yaml_token(token_path, **layer_args)
+            hierarchy_level = self._get_hierarchy_level_for_json_token(token_path, **layer_args)
             
             variable = ResolvedVariable(
                 id=token_path.replace('.', '_'),  # Convert to valid identifier
                 value=str(value),
                 type=token_type,
                 scope=scope,
-                source='yaml_tokens',
+                source='json_tokens',
                 hierarchy_level=hierarchy_level
             )
             
-            yaml_variables[variable.id] = variable
+            json_variables[variable.id] = variable
             
         if self.verbose:
-            logger.info(f"   Found {len(yaml_variables)} YAML token variables")
+            logger.info(f"   Found {len(json_variables)} JSON token variables")
             
-        return yaml_variables
+        return json_variables
     
     def _resolve_extension_variables(self, extension_sources: List[Union[str, Path]], 
                                    **context) -> Dict[str, ResolvedVariable]:
@@ -377,7 +376,7 @@ class VariableResolver:
         return re.sub(pattern, replace_reference, value)
     
     def _infer_scope_and_type_from_path(self, token_path: str) -> Tuple[TokenScope, TokenType]:
-        """Infer scope and type from YAML token path"""
+        """Infer scope and type from JSON token path"""
         parts = token_path.split('.')
         
         # Infer type from path
@@ -392,13 +391,13 @@ class VariableResolver:
         else:
             token_type = TokenType.TEXT
         
-        # Default scope (YAML tokens are typically core-level)
+        # Default scope (JSON tokens are typically core-level)
         scope = TokenScope.CORE
         
         return scope, token_type
     
-    def _get_hierarchy_level_for_yaml_token(self, token_path: str, **layer_args) -> int:
-        """Determine hierarchy level for YAML token based on which layers are active"""
+    def _get_hierarchy_level_for_json_token(self, token_path: str, **layer_args) -> int:
+        """Determine hierarchy level for JSON token based on which layers are active"""
         # Highest active layer determines the level
         if layer_args.get('channel'):
             return self.hierarchy_levels['channel']

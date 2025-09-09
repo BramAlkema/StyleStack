@@ -2,7 +2,7 @@
 """
 StyleStack Integration Test Runner
 
-Comprehensive test runner for the StyleStack YAML-to-OOXML Processing Engine integration tests.
+Comprehensive test runner for the StyleStack JSON-to-OOXML Processing Engine integration tests.
 Provides options for running different test suites, performance monitoring, and detailed reporting.
 """
 

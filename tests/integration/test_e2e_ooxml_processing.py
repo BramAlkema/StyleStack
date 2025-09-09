@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Comprehensive End-to-End Integration Tests for StyleStack YAML-to-OOXML Processing Engine
+Comprehensive End-to-End Integration Tests for StyleStack JSON-to-OOXML Processing Engine
 
 This test suite validates the complete system integration including:
 - MultiFormatOOXMLHandler
 - TransactionPipeline 
 - TokenIntegrationLayer
-- YAMLPatchProcessor
+- JSONPatchProcessor
 - Real OOXML template processing
 - Complete processing pipeline workflows
 - Production-ready validation and error recovery
@@ -41,8 +41,7 @@ from transaction_pipeline import (
     atomic_ooxml_operation
 )
 from token_integration_layer import TokenIntegrationLayer, TokenScope, TokenContext
-from yaml_ooxml_processor import (
-    YAMLPatchProcessor, 
+    JSONPatchProcessor, 
     PatchResult, 
     PatchOperationType,
     RecoveryStrategy
@@ -149,7 +148,7 @@ class TestEndToEndOOXMLProcessing:
         # Arrange: Get test template and define patches
         template_path = TestFixtures.create_temp_copy("test_presentation.potx")
         
-        yaml_patches = [
+        json_patches = [
             {
                 "operation": "set",
                 "target": "//p:sld//a:t[text()='Sample Presentation Title']",
@@ -199,7 +198,7 @@ class TestEndToEndOOXMLProcessing:
         # Act: Process template through complete pipeline
         result = self.handler.process_template(
             template_path=template_path,
-            patches=yaml_patches,
+            patches=json_patches,
             variables=variables,
             metadata=metadata
         )
@@ -234,7 +233,7 @@ class TestEndToEndOOXMLProcessing:
         # Arrange
         template_path = TestFixtures.create_temp_copy("test_document.dotx")
         
-        yaml_patches = [
+        json_patches = [
             {
                 "operation": "set",
                 "target": "//w:t[text()='Sample Document Title']",
@@ -259,7 +258,7 @@ class TestEndToEndOOXMLProcessing:
                             <w:color w:val="0000FF"/>
                             <w:b/>
                         </w:rPr>
-                        <w:t>This paragraph was inserted by StyleStack integration test. The system successfully processed YAML patches and applied them to the Word document structure.</w:t>
+                        <w:t>This paragraph was inserted by StyleStack integration test. The system successfully processed JSON patches and applied them to the Word document structure.</w:t>
                     </w:r>
                 </w:p>''',
                 "position": "append"
@@ -269,7 +268,7 @@ class TestEndToEndOOXMLProcessing:
         # Act
         result = self.handler.process_template(
             template_path=template_path,
-            patches=yaml_patches,
+            patches=json_patches,
             variables={"document_type": "integration_test"},
             metadata={"test_suite": "word_processing"}
         )
@@ -293,7 +292,7 @@ class TestEndToEndOOXMLProcessing:
         # Arrange
         template_path = TestFixtures.create_temp_copy("test_workbook.xltx")
         
-        yaml_patches = [
+        json_patches = [
             {
                 "operation": "set",
                 "target": "//worksheet//c[@r='A1']/v",
@@ -320,7 +319,7 @@ class TestEndToEndOOXMLProcessing:
         # Act
         result = self.handler.process_template(
             template_path=template_path,
-            patches=yaml_patches,
+            patches=json_patches,
             variables={"workbook_name": "test_integration"},
             metadata={"format": "excel"}
         )
@@ -616,7 +615,7 @@ class TestEndToEndOOXMLProcessing:
         
         # Act: Use RETRY_WITH_FALLBACK recovery strategy
         handler_with_recovery = MultiFormatOOXMLHandler()
-        processor = YAMLPatchProcessor(recovery_strategy=RecoveryStrategy.RETRY_WITH_FALLBACK)
+        processor = JSONPatchProcessor(recovery_strategy=RecoveryStrategy.RETRY_WITH_FALLBACK)
         handler_with_recovery.processors[OOXMLFormat.POWERPOINT] = processor
         
         result = handler_with_recovery.process_template(

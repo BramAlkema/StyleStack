@@ -1,0 +1,45 @@
+{
+  "powerpoint": {
+    "slide_size": {
+      "width": 7772400,
+      "height": 10986120,
+      "type": "custom"
+    },
+    "notes_size": {
+      "width": 10986120,
+      "height": 7772400
+    }
+  },
+  "word": {
+    "page_size": {
+      "width": 11906,
+      "height": 16838,
+      "code": 9
+    },
+    "margins": {
+      "top": 1134,
+      "right": 1134,
+      "bottom": 1134,
+      "left": 1134,
+      "header": 708,
+      "footer": 708,
+      "gutter": 0
+    }
+  },
+  "excel": {
+    "paper_size": 9,
+    "orientation": "portrait",
+    "margins": {
+      "left": 0.7,
+      "right": 0.7,
+      "top": 0.75,
+      "bottom": 0.75,
+      "header": 0.3,
+      "footer": 0.3
+    },
+    "dpi": {
+      "horizontal": 300,
+      "vertical": 300
+    }
+  }
+}

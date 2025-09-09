@@ -19,7 +19,7 @@ A comprehensive example of implementing StyleStack for a university environment,
 ### Phase 1: Assessment and Planning (Month 1-2)
 
 #### Brand Audit
-```yaml
+```json
 # Current state assessment
 brand_challenges:
   - "47 different PowerPoint templates in use"
@@ -37,7 +37,7 @@ improvement_opportunities:
 ```
 
 #### Stakeholder Mapping
-```yaml
+```json
 stakeholders:
   primary_sponsors:
     - "Chief Marketing Officer"
@@ -63,18 +63,18 @@ stakeholders:
 # University fork structure
 stylestack-university-of-example/
 ├─ org/uoe/
-│  ├─ patches.yaml           # Main university configuration
-│  ├─ governance.yaml        # Approval workflows
+│  ├─ patches.json           # Main university configuration
+│  ├─ governance.json        # Approval workflows
 │  ├─ assets/               # University brand assets
 │  │  ├─ logos/             # Official logos and seals
 │  │  ├─ backgrounds/       # Campus photos, textures
 │  │  └─ fonts/             # Licensed university fonts
 │  ├─ channels/             # Department-specific channels
-│  │  ├─ academic.yaml      # Academic presentations
-│  │  ├─ administrative.yaml # Admin documents
-│  │  ├─ research.yaml      # Research presentations
-│  │  ├─ student-life.yaml  # Student affairs
-│  │  └─ external.yaml      # Public/donor presentations
+│  │  ├─ academic.json      # Academic presentations
+│  │  ├─ administrative.json # Admin documents
+│  │  ├─ research.json      # Research presentations
+│  │  ├─ student-life.json  # Student affairs
+│  │  └─ external.json      # Public/donor presentations
 │  └─ departments/          # Department customizations
 │     ├─ engineering/       # Engineering college branding
 │     ├─ business/          # Business school branding
@@ -82,8 +82,8 @@ stylestack-university-of-example/
 ```
 
 #### University Brand Configuration
-```yaml
-# org/uoe/patches.yaml
+```json
+# org/uoe/patches.json
 organization:
   name: "University of Example"
   short_name: "UoE"
@@ -132,8 +132,8 @@ accessibility:
 ### Phase 3: Channel Development (Month 3-4)
 
 #### Academic Presentations Channel
-```yaml
-# org/uoe/channels/academic.yaml
+```json
+# org/uoe/channels/academic.json
 name: "Academic Presentations"
 description: "For lectures, conferences, and research presentations"
 target_products: ["potx"]
@@ -171,8 +171,8 @@ academic_features:
 ```
 
 #### Department Customization Example
-```yaml
-# org/uoe/departments/engineering/patches.yaml
+```json
+# org/uoe/departments/engineering/patches.json
 department:
   name: "College of Engineering"
   abbreviation: "CoE"
@@ -201,8 +201,8 @@ compliance:
 ### Phase 4: Governance Implementation (Month 4-5)
 
 #### Approval Workflow
-```yaml
-# org/uoe/governance.yaml
+```json
+# org/uoe/governance.json
 governance:
   approval_workflows:
     brand_changes:
@@ -233,7 +233,7 @@ governance:
 ```
 
 #### Committee Structure
-```yaml
+```json
 template_governance_committee:
   chair: "Brand Manager"
   members:
@@ -253,7 +253,7 @@ template_governance_committee:
 ### Phase 5: Rollout and Training (Month 5-6)
 
 #### Phased Deployment
-```yaml
+```json
 rollout_phases:
   phase_1_pilot:
     duration: "2 weeks"
@@ -277,7 +277,7 @@ rollout_phases:
 ```
 
 #### Training Program
-```yaml
+```json
 training_program:
   faculty_workshop:
     title: "Academic Presentation Excellence"
@@ -313,7 +313,7 @@ training_program:
 ### Quantitative Outcomes
 
 #### Brand Consistency Metrics
-```yaml
+```json
 metrics_before_after:
   brand_compliance:
     before: "40%"
@@ -337,7 +337,7 @@ metrics_before_after:
 ```
 
 #### Efficiency Gains
-```yaml
+```json
 efficiency_metrics:
   template_creation_time:
     before: "45 minutes average"
@@ -358,7 +358,7 @@ efficiency_metrics:
 ### Qualitative Feedback
 
 #### Faculty Response
-```yaml
+```json
 faculty_feedback:
   satisfaction_score: "4.3/5.0"
   
@@ -375,7 +375,7 @@ faculty_feedback:
 ```
 
 #### Administrative Staff Response  
-```yaml
+```json
 admin_feedback:
   satisfaction_score: "4.6/5.0"
   
@@ -406,7 +406,7 @@ python build.py --org uoe --dept business --channel external --products potx
 ```
 
 ### CI/CD Pipeline
-```yaml
+```json
 # .github/workflows/uoe-templates.yml
 name: UoE Template Build and Deploy
 
@@ -453,7 +453,7 @@ jobs:
 ```
 
 ### Integration Points
-```yaml
+```json
 university_integrations:
   # Learning Management System
   canvas_lms:
@@ -526,7 +526,7 @@ university_integrations:
 ### Future Enhancements
 
 #### Year 2 Roadmap
-```yaml
+```json
 year_2_priorities:
   - "Mobile presentation templates for iPad/Surface"
   - "Integration with Zoom/Teams for virtual presentations"  
@@ -541,7 +541,7 @@ technical_debt:
 ```
 
 #### Multi-Campus Expansion
-```yaml
+```json
 multi_campus_strategy:
   governance:
     - "Federated model with campus-specific customizations"
@@ -557,7 +557,7 @@ multi_campus_strategy:
 ## ROI Analysis
 
 ### Cost Savings
-```yaml
+```json
 annual_cost_savings:
   # Reduced design contractor costs
   design_services: "$180,000/year"

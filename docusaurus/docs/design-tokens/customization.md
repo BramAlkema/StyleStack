@@ -44,16 +44,16 @@ python tools/font-audit.py --fonts "YourBrandFont" --min-size "12pt"
 mkdir -p org/your-org/{assets,channels}
 
 # Create base configuration
-touch org/your-org/patches.yaml
-touch org/your-org/governance.yaml
+touch org/your-org/patches.json
+touch org/your-org/governance.json
 ```
 
 ## Color Customization
 
 ### Basic Color Override
 
-```yaml
-# org/your-org/patches.yaml
+```json
+# org/your-org/patches.json
 colors:
   # Brand colors
   primary: "#1E40AF"        # Your brand blue
@@ -67,7 +67,7 @@ colors:
 
 ### Advanced Color System
 
-```yaml
+```json
 colors:
   # Base brand colors
   brand:
@@ -93,7 +93,7 @@ colors:
 
 ### Color Accessibility
 
-```yaml
+```json
 # Automatic contrast checking
 colors:
   primary: "#1E40AF"
@@ -125,7 +125,7 @@ Output:
 
 ### Font Selection
 
-```yaml
+```json
 fonts:
   # Brand typography
   heading: "Montserrat"      # Modern, clean sans-serif
@@ -140,7 +140,7 @@ fonts:
 
 ### Typography Scale
 
-```yaml
+```json
 typography:
   # Base settings
   scale_ratio: 1.25          # Major third (5:4 ratio)
@@ -170,7 +170,7 @@ typography:
 
 ### Font Loading and Performance
 
-```yaml
+```json
 fonts:
   # Web fonts (Google Fonts)
   web_fonts:
@@ -195,7 +195,7 @@ fonts:
 
 ### Spacing System
 
-```yaml
+```json
 spacing:
   # Base unit (8pt grid)
   unit: "8pt"
@@ -222,7 +222,7 @@ spacing:
 
 ### Layout Customization
 
-```yaml
+```json
 layout:
   # Page settings
   margins:
@@ -249,7 +249,7 @@ layout:
 
 ### Logo Integration
 
-```yaml
+```json
 assets:
   # Primary logo
   logo:
@@ -289,8 +289,8 @@ python tools/validate-assets.py --org your-org
 
 ### Presentation Channel
 
-```yaml
-# org/your-org/channels/presentation.yaml
+```json
+# org/your-org/channels/presentation.json
 name: "Presentation Templates"
 target_products: ["potx"]
 
@@ -314,8 +314,8 @@ layout:
 
 ### Document Channel
 
-```yaml
-# org/your-org/channels/document.yaml
+```json
+# org/your-org/channels/document.json
 name: "Document Templates"
 target_products: ["dotx"]
 
@@ -337,7 +337,7 @@ layout:
 
 ### Conditional Customization
 
-```yaml
+```json
 # Different tokens based on context
 colors:
   primary:
@@ -354,7 +354,7 @@ typography:
 
 ### Dynamic Token Generation
 
-```yaml
+```json
 # Generate color palettes from base colors
 color_generation:
   base_colors:
@@ -375,7 +375,7 @@ color_generation:
 
 ### Token Validation and Testing
 
-```yaml
+```json
 # Token validation rules
 validation:
   colors:
@@ -440,7 +440,7 @@ python tools/visual-test.py --org your-org --baseline core --compare current
 ### Common Issues
 
 **Colors not applying:**
-```yaml
+```json
 # Ensure hex format is correct
 colors:
   primary: "#1E40AF"    # Correct
@@ -479,7 +479,7 @@ python tools/debug-tokens.py --org your-org --token "colors.primary"
 
 ### Token Organization
 
-```yaml
+```json
 # Group related tokens
 colors:
   # Brand colors
@@ -498,7 +498,7 @@ colors:
 
 ### Documentation
 
-```yaml
+```json
 # Document token purposes
 colors:
   primary: "#1E40AF"          # Main brand color for headers, buttons, links
@@ -510,7 +510,7 @@ colors:
 
 ```bash
 # Track token changes
-git add org/your-org/patches.yaml
+git add org/your-org/patches.json
 git commit -m "Update brand colors for Q4 2024 guidelines"
 
 # Tag major customization releases

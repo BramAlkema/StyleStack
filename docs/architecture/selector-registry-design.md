@@ -14,7 +14,7 @@ A variable-driven OOXML patching system that eliminates hardcoded element names,
 
 ## Architecture Components
 
-### 1. Selector Registry (`selectors.yaml`)
+### 1. Selector Registry (`selectors.json`)
 
 Central lookup table containing:
 - Namespace definitions
@@ -22,43 +22,39 @@ Central lookup table containing:
 - Attribute names
 - Reusable XPath patterns
 
-```yaml
-ns:
-  a: "http://schemas.openxmlformats.org/drawingml/2006/main"
-  p: "http://schemas.openxmlformats.org/presentationml/2006/main"
-  w: "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-
-el:
-  clrScheme: { name: "clrScheme", ns: "$ns.a" }
-  accent1:   { name: "accent1",   ns: "$ns.a" }
-  srgbClr:   { name: "srgbClr",   ns: "$ns.a" }
-  
-attr:
-  val:   "val"
-  type:  "type"
-  styleId: "styleId"
-
-paths:
-  accent1_color_attr: >
-    //*[local-name()=$clrScheme and namespace-uri()=$nsA]
-      /*[local-name()=$accent1 and namespace-uri()=$nsA]
-      /*[local-name()=$srgbClr and namespace-uri()=$nsA]/@*[local-name()=$val]
+```json
+{
+  "ns": {
+    "a": "http://schemas.openxmlformats.org/drawingml/2006/main",
+    "p": "http://schemas.openxmlformats.org/presentationml/2006/main",
+    "w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+  },
+  "el": {
+    "clrScheme": { "name": "clrScheme", "ns": "$ns.a" },
+    "accent1": { "name": "accent1", "ns": "$ns.a" },
+    "srgbClr": { "name": "srgbClr", "ns": "$ns.a" }
+  },
+  "attr": {
+    "val": "val",
+    "type": "type",
+    "styleId": "styleId"
+  },
+  "paths": {
+    "accent1_color_attr": "//*[local-name()=$clrScheme and namespace-uri()=$nsA]/*[local-name()=$accent1 and namespace-uri()=$nsA]/*[local-name()=$srgbClr and namespace-uri()=$nsA]/@*[local-name()=$val]"
+  }
+}
 ```
 
 ### 2. Fragment Library
 
 Reusable XML snippets for elements that may not exist:
 
-```yaml
-fragments:
-  footerPlaceholder: |
-    <p:sp xmlns:p="..." xmlns:a="...">
-      <p:nvSpPr>
-        <p:cNvPr id="{tokens.ids.footer}" name="Footer"/>
-        <p:nvPr><p:ph type="ftr" idx="1"/></p:nvPr>
-      </p:nvSpPr>
-      <!-- ... -->
-    </p:sp>
+```json
+{
+  "fragments": {
+    "footerPlaceholder": "<p:sp xmlns:p=\"...\" xmlns:a=\"...\">\n      <p:nvSpPr>\n        <p:cNvPr id=\"{tokens.ids.footer}\" name=\"Footer\"/>\n        <p:nvPr><p:ph type=\"ftr\" idx=\"1\"/></p:nvPr>\n      </p:nvSpPr>\n      <!-- ... -->\n    </p:sp>"
+  }
+}
 ```
 
 ### 3. Enhanced Patch Operations
@@ -138,17 +134,28 @@ Keep namespaces organized:
 
 ### Patch Using Registry
 
-```yaml
-targets:
-  - file: ppt/theme/theme1.xml
-    ops:
-      - set:
-          xpathRef: "accent1_color_attr"  # Reference from registry
-          value: "{tokens.colors.primary}"  # Token value
-          
-      - ensurePath:
-          xpathRef: "footer_placeholder"
-          anchorRef: "spTree_root"
+```json
+{
+  "targets": [
+    {
+      "file": "ppt/theme/theme1.xml",
+      "ops": [
+        {
+          "set": {
+            "xpathRef": "accent1_color_attr",
+            "value": "{tokens.colors.primary}"
+          }
+        },
+        {
+          "ensurePath": {
+            "xpathRef": "footer_placeholder",
+            "anchorRef": "spTree_root"
+          }
+        }
+      ]
+    }
+  ]
+}
           fragmentRef: "fragments.footerPlaceholder"
 ```
 

@@ -423,7 +423,7 @@ class PerformanceOptimizationSuite:
         # This would normally run actual StyleStack operations
         # For now, we simulate some work
         
-        # Simulate YAML processing
+        # Simulate JSON processing
         import json
         for i in range(100):
             data = {'operation': f'test_{i}', 'value': f'data_{i}'}

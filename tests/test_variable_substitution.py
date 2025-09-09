@@ -135,7 +135,7 @@ class TestVariableSubstitutionPipeline(unittest.TestCase):
                 'value': 'CC0000',
                 'xpath': '//w:style[@w:styleId="Heading1"]//w:color',
                 'scope': 'channel',
-                'source': 'yaml'
+                'source': 'json'
             }
         }
 
@@ -228,7 +228,7 @@ class TestEndToEndSubstitutionWorkflows(TestVariableSubstitutionPipeline):
                 'value': 'AAAAAA',
                 'xpath': '//a:accent1//a:srgbClr',
                 'scope': 'core',
-                'source': 'yaml',
+                'source': 'json',
                 'hierarchy_level': 1
             },
             'testColor_org': {

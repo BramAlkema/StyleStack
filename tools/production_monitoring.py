@@ -2,7 +2,7 @@
 """
 StyleStack Production Performance Monitoring and Alerting System
 
-Production-ready monitoring system for StyleStack YAML-to-OOXML processing pipeline.
+Production-ready monitoring system for StyleStack JSON-to-OOXML processing pipeline.
 Provides real-time metrics, alerting, health checks, and comprehensive observability
 for production deployments.
 """
@@ -31,12 +31,12 @@ try:
     from .performance_profiler import PerformanceProfiler
     from .advanced_cache_system import CacheManager
     from .memory_optimizer import MemoryManager
-    from .yaml_ooxml_processor import YAMLPatchProcessor
+    from .json_ooxml_processor import JSONPatchProcessor
 except ImportError:
     from performance_profiler import PerformanceProfiler
     from advanced_cache_system import CacheManager
     from memory_optimizer import MemoryManager
-    from yaml_ooxml_processor import YAMLPatchProcessor
+    from json_ooxml_processor import JSONPatchProcessor
 
 logger = logging.getLogger(__name__)
 
@@ -312,7 +312,7 @@ class MetricsCollector:
             # This would typically be tracked by the main application
             
             # Patch operation success rate
-            # This would come from the YAML processor
+            # This would come from the JSON processor
             
             # Average processing time per template
             # This would be tracked by batch processors

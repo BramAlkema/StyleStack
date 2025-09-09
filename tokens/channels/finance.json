@@ -1,0 +1,7 @@
+{
+  "overrides": {
+    "fonts.primary": "Liberation Sans",
+    "grid.font_size": 20,
+    "colors.accent": "#c9211e"
+  }
+}

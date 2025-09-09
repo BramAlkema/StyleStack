@@ -1,0 +1,47 @@
+{
+  "grid": {
+    "base_unit": 17,
+    "page": {
+      "width": 11906,
+      "height": 16838
+    },
+    "margins": {
+      "top": 85,
+      "bottom": 85,
+      "left": 68,
+      "right": 68
+    },
+    "header": 34,
+    "footer": 34
+  },
+  "typography": {
+    "line_heights": {
+      "body": 17,
+      "heading1": 34,
+      "heading2": 34,
+      "heading3": 17,
+      "caption": 17
+    },
+    "font_sizes": {
+      "body": 12,
+      "heading1": 20,
+      "heading2": 16,
+      "heading3": 14,
+      "caption": 10
+    }
+  },
+  "powerpoint": {
+    "base_unit_emu": 12700,
+    "margins": {
+      "top": 63500,
+      "bottom": 63500,
+      "left": 50800,
+      "right": 50800
+    }
+  },
+  "excel": {
+    "row_height": 12.75,
+    "left_margin": 0.85,
+    "right_margin": 0.85
+  }
+}

@@ -2,7 +2,7 @@
 """
 StyleStack Performance Profiling System
 
-Comprehensive profiling tools to identify bottlenecks in the YAML-to-OOXML processing pipeline.
+Comprehensive profiling tools to identify bottlenecks in the JSON-to-OOXML processing pipeline.
 Provides detailed analysis of CPU usage, memory consumption, I/O operations, and processing patterns.
 """
 
@@ -627,9 +627,9 @@ profiler = PerformanceProfiler()
 
 
 # Convenience functions for common profiling tasks
-def profile_yaml_processing(func: Callable) -> Callable:
-    """Decorator specifically for profiling YAML processing functions."""
-    return profiler.profile_function(func, name=f"yaml_processing.{func.__name__}", track_memory=True)
+def profile_json_processing(func: Callable) -> Callable:
+    """Decorator specifically for profiling JSON processing functions."""
+    return profiler.profile_function(func, name=f"json_processing.{func.__name__}", track_memory=True)
 
 
 def profile_ooxml_operations(func: Callable) -> Callable:

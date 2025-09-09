@@ -7,7 +7,6 @@ for the StyleStack OOXML Extension Variable System.
 """
 
 import pytest
-import yaml
 import json
 from pathlib import Path
 from typing import Dict, Any, List
@@ -529,7 +528,7 @@ class TestIntegration:
     
     def test_full_variable_config_validation(self):
         """Test validation of complete variable configuration"""
-        config = yaml.safe_load(SAMPLE_VARIABLES_CONFIG)
+        config = json.safe_load(SAMPLE_VARIABLES_CONFIG)
         
         # Should successfully validate the complete configuration
         assert self._validate_full_config(config) == True

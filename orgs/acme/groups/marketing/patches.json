@@ -1,0 +1,73 @@
+{
+  "metadata": {
+    "group": "marketing",
+    "org": "acme",
+    "description": "Marketing department brand-forward styling",
+    "version": "1.0.0"
+  },
+  "targets": [
+    {
+      "file": "ppt/theme/theme1.xml",
+      "ns": {
+        "a": "http://schemas.openxmlformats.org/drawingml/2006/main"
+      },
+      "ops": [
+        {
+          "set": {
+            "xpath": "//a:fontScheme/a:majorFont/a:latin/@typeface",
+            "value": "Montserrat"
+          }
+        },
+        {
+          "set": {
+            "xpath": "//a:fontScheme/a:minorFont/a:latin/@typeface",
+            "value": "Source Sans Pro"
+          }
+        }
+      ]
+    },
+    {
+      "file": "ppt/slideMasters/slideMaster1.xml",
+      "ns": {
+        "p": "http://schemas.openxmlformats.org/presentationml/2006/main",
+        "a": "http://schemas.openxmlformats.org/drawingml/2006/main"
+      },
+      "ops": [
+        {
+          "set": {
+            "xpath": "//p:sp[p:nvSpPr/p:cNvPr[@name='Title 1']]/p:spPr/a:xfrm/a:ext/@cy",
+            "value": "2000000"
+          }
+        },
+        {
+          "insert": {
+            "xpath": "//p:cSld",
+            "position": "first",
+            "xml": "<p:bg>\n  <p:bgPr>\n    <a:gradFill flip=\"none\" rotWithShape=\"1\">\n      <a:gsLst>\n        <a:gs pos=\"0\"><a:srgbClr val=\"FFFFFF\"/></a:gs>\n        <a:gs pos=\"100000\"><a:srgbClr val=\"F8F8F8\"/></a:gs>\n      </a:gsLst>\n      <a:lin ang=\"2700000\" scaled=\"1\"/>\n    </a:gradFill>\n    <a:effectLst/>\n  </p:bgPr>\n</p:bg>\n"
+          }
+        }
+      ]
+    },
+    {
+      "file": "ppt/slideMasters/slideMaster1.xml",
+      "ns": {
+        "p": "http://schemas.openxmlformats.org/presentationml/2006/main",
+        "a": "http://schemas.openxmlformats.org/drawingml/2006/main"
+      },
+      "ops": [
+        {
+          "set": {
+            "xpath": "//a:buChar/@char",
+            "value": "▸"
+          }
+        },
+        {
+          "set": {
+            "xpath": "//a:buClr/a:srgbClr/@val",
+            "value": "E31B23"
+          }
+        }
+      ]
+    }
+  ]
+}

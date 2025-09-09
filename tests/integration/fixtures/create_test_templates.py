@@ -3,7 +3,7 @@
 Create Real OOXML Template Files for Integration Testing
 
 This script creates actual .potx, .dotx, and .xltx template files with real Office structure
-for comprehensive end-to-end integration testing of the StyleStack YAML-to-OOXML Processing Engine.
+for comprehensive end-to-end integration testing of the StyleStack JSON-to-OOXML Processing Engine.
 """
 
 import os
@@ -398,7 +398,7 @@ def create_word_template():
                     <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/>
                     <w:sz w:val="22"/>
                 </w:rPr>
-                <w:t>This is a sample paragraph for testing StyleStack integration. The text formatting demonstrates how YAML patches can modify Word document styles and content.</w:t>
+                <w:t>This is a sample paragraph for testing StyleStack integration. The text formatting demonstrates how JSON patches can modify Word document styles and content.</w:t>
             </w:r>
         </w:p>
         <w:sectPr>

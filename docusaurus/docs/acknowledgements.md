@@ -41,7 +41,7 @@ GitHub didn't just build a git hosting service - they built **the backbone of mo
 **Python Ecosystem** - The foundation of StyleStack's processing engine:
 - **lxml** - XML processing that makes OOXML manipulation possible
 - **Click** - Elegant command-line interfaces
-- **PyYAML** - Human-readable configuration
+- **PyJSON** - Human-readable configuration
 - **Jinja2** - Template rendering engine
 - **Cryptography** - Secure license encryption
 
@@ -249,7 +249,7 @@ This project includes and builds upon numerous open source projects. See [THIRD_
 - Python 3.x - Python Software Foundation License
 - lxml - BSD License
 - Click - BSD License  
-- PyYAML - MIT License
+- PyJSON - MIT License
 - Jinja2 - BSD License
 - Cryptography - Apache/BSD License
 - Docusaurus - MIT License

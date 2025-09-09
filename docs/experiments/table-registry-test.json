@@ -1,0 +1,402 @@
+{
+  "selectors": {
+    "ns": {
+      "a": "http://schemas.openxmlformats.org/drawingml/2006/main",
+      "p": "http://schemas.openxmlformats.org/presentationml/2006/main",
+      "w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+    },
+    "el": {
+      "graphicFrame": {
+        "name": "graphicFrame",
+        "ns": "$ns.p"
+      },
+      "graphic": {
+        "name": "graphic",
+        "ns": "$ns.a"
+      },
+      "graphicData": {
+        "name": "graphicData",
+        "ns": "$ns.a"
+      },
+      "tbl": {
+        "name": "tbl",
+        "ns": "$ns.a"
+      },
+      "tblPr": {
+        "name": "tblPr",
+        "ns": "$ns.a"
+      },
+      "tblStyle": {
+        "name": "tblStyle",
+        "ns": "$ns.a"
+      },
+      "tblGrid": {
+        "name": "tblGrid",
+        "ns": "$ns.a"
+      },
+      "gridCol": {
+        "name": "gridCol",
+        "ns": "$ns.a"
+      },
+      "tr": {
+        "name": "tr",
+        "ns": "$ns.a"
+      },
+      "tc": {
+        "name": "tc",
+        "ns": "$ns.a"
+      },
+      "tcPr": {
+        "name": "tcPr",
+        "ns": "$ns.a"
+      },
+      "txBody": {
+        "name": "txBody",
+        "ns": "$ns.a"
+      },
+      "w_tbl": {
+        "name": "tbl",
+        "ns": "$ns.w"
+      },
+      "w_tblPr": {
+        "name": "tblPr",
+        "ns": "$ns.w"
+      },
+      "w_tblStyle": {
+        "name": "tblStyle",
+        "ns": "$ns.w"
+      },
+      "w_tblGrid": {
+        "name": "tblGrid",
+        "ns": "$ns.w"
+      },
+      "w_gridCol": {
+        "name": "gridCol",
+        "ns": "$ns.w"
+      },
+      "w_tr": {
+        "name": "tr",
+        "ns": "$ns.w"
+      },
+      "w_tc": {
+        "name": "tc",
+        "ns": "$ns.w"
+      },
+      "w_tcPr": {
+        "name": "tcPr",
+        "ns": "$ns.w"
+      },
+      "w_p": {
+        "name": "p",
+        "ns": "$ns.w"
+      },
+      "wholeTbl": {
+        "name": "wholeTbl",
+        "ns": "$ns.a"
+      },
+      "band1H": {
+        "name": "band1H",
+        "ns": "$ns.a"
+      },
+      "band2H": {
+        "name": "band2H",
+        "ns": "$ns.a"
+      },
+      "band1V": {
+        "name": "band1V",
+        "ns": "$ns.a"
+      },
+      "band2V": {
+        "name": "band2V",
+        "ns": "$ns.a"
+      },
+      "firstRow": {
+        "name": "firstRow",
+        "ns": "$ns.a"
+      },
+      "firstCol": {
+        "name": "firstCol",
+        "ns": "$ns.a"
+      },
+      "lastRow": {
+        "name": "lastRow",
+        "ns": "$ns.a"
+      },
+      "lastCol": {
+        "name": "lastCol",
+        "ns": "$ns.a"
+      }
+    },
+    "attr": {
+      "styleId": "styleId",
+      "val": "val",
+      "w": "w",
+      "h": "h",
+      "uri": "uri",
+      "firstRow": "firstRow",
+      "firstCol": "firstCol",
+      "bandRow": "bandRow",
+      "bandCol": "bandCol"
+    },
+    "paths": {
+      "ppt_tables": "//*[local-name()=$graphicFrame and namespace-uri()=$nsP]\n  /*[local-name()=$graphic and namespace-uri()=$nsA]\n  /*[local-name()=$graphicData and namespace-uri()=$nsA]\n  /*[local-name()=$tbl and namespace-uri()=$nsA]\n  \n",
+      "ppt_table_by_style": "//*[local-name()=$graphicFrame and namespace-uri()=$nsP]\n  /*[local-name()=$graphic and namespace-uri()=$nsA]\n  /*[local-name()=$graphicData and namespace-uri()=$nsA]\n  /*[local-name()=$tbl and namespace-uri()=$nsA]\n  [*[local-name()=$tblPr and namespace-uri()=$nsA]\n    /*[local-name()=$tblStyle and namespace-uri()=$nsA and @*[local-name()=$styleId]=$tableStyleId]]\n    \n",
+      "ppt_table_grid": "//*[local-name()=$tbl and namespace-uri()=$nsA]\n  /*[local-name()=$tblGrid and namespace-uri()=$nsA]\n  \n",
+      "word_tables": "//*[local-name()=$w_tbl and namespace-uri()=$nsW]\n",
+      "word_table_style": "//*[local-name()=$w_tbl and namespace-uri()=$nsW]\n  /*[local-name()=$w_tblPr and namespace-uri()=$nsW]\n  /*[local-name()=$w_tblStyle and namespace-uri()=$nsW]/@*[local-name()=$val]\n"
+    }
+  },
+  "fragments": {
+    "ppt_table_3x3": "<p:graphicFrame xmlns:p=\"{$ns.p}\" xmlns:a=\"{$ns.a}\">\n  <p:nvGraphicFramePr>\n    <p:cNvPr id=\"{tokens.table.id}\" name=\"{tokens.table.name}\"/>\n    <p:cNvGraphicFramePr>\n      <a:graphicFrameLocks noGrp=\"1\"/>\n    </p:cNvGraphicFramePr>\n    <p:nvPr/>\n  </p:nvGraphicFramePr>\n  <p:xfrm>\n    <a:off x=\"{tokens.table.x}\" y=\"{tokens.table.y}\"/>\n    <a:ext cx=\"{tokens.table.width}\" cy=\"{tokens.table.height}\"/>\n  </p:xfrm>\n  <a:graphic>\n    <a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/table\">\n      <a:tbl>\n        <a:tblPr firstRow=\"{tokens.table.style.firstRow}\" \n                 firstCol=\"{tokens.table.style.firstCol}\"\n                 bandRow=\"{tokens.table.style.bandRow}\" \n                 bandCol=\"{tokens.table.style.bandCol}\">\n          <a:tblStyle styleId=\"{tokens.table.style.id}\"/>\n        </a:tblPr>\n        <a:tblGrid>\n          <a:gridCol w=\"{tokens.table.col1.width}\"/>\n          <a:gridCol w=\"{tokens.table.col2.width}\"/>\n          <a:gridCol w=\"{tokens.table.col3.width}\"/>\n        </a:tblGrid>\n        <!-- Rows will be inserted here -->\n      </a:tbl>\n    </a:graphicData>\n  </a:graphic>\n</p:graphicFrame>\n",
+    "ppt_table_row": "<a:tr xmlns:a=\"{$ns.a}\" h=\"{tokens.table.row.height}\">\n  <a:tc>\n    <a:tcPr/>\n    <a:txBody>\n      <a:bodyPr/>\n      <a:lstStyle/>\n      <a:p>\n        <a:r>\n          <a:rPr lang=\"en-US\" sz=\"{tokens.table.cell.fontSize}\">\n            <a:solidFill>\n              <a:srgbClr val=\"{tokens.table.cell.textColor}\"/>\n            </a:solidFill>\n          </a:rPr>\n          <a:t>{tokens.table.cell1.text}</a:t>\n        </a:r>\n      </a:p>\n    </a:txBody>\n  </a:tc>\n  <a:tc>\n    <a:tcPr/>\n    <a:txBody>\n      <a:bodyPr/>\n      <a:lstStyle/>\n      <a:p><a:r><a:t>{tokens.table.cell2.text}</a:t></a:r></a:p>\n    </a:txBody>\n  </a:tc>\n  <a:tc>\n    <a:tcPr/>\n    <a:txBody>\n      <a:bodyPr/>\n      <a:lstStyle/>\n      <a:p><a:r><a:t>{tokens.table.cell3.text}</a:t></a:r></a:p>\n    </a:txBody>\n  </a:tc>\n</a:tr>\n",
+    "word_table_3x3": "<w:tbl xmlns:w=\"{$ns.w}\">\n  <w:tblPr>\n    <w:tblStyle w:val=\"{tokens.table.style.id}\"/>\n    <w:tblW w:w=\"{tokens.table.width.twips}\" w:type=\"dxa\"/>\n    <w:tblLook w:firstRow=\"{tokens.table.style.firstRow}\" \n               w:firstCol=\"{tokens.table.style.firstCol}\"\n               w:noHBand=\"{tokens.table.style.noHBand}\" \n               w:noVBand=\"{tokens.table.style.noVBand}\"/>\n  </w:tblPr>\n  <w:tblGrid>\n    <w:gridCol w:w=\"{tokens.table.col1.width.twips}\"/>\n    <w:gridCol w:w=\"{tokens.table.col2.width.twips}\"/>\n    <w:gridCol w:w=\"{tokens.table.col3.width.twips}\"/>\n  </w:tblGrid>\n  <!-- Rows will be inserted here -->\n</w:tbl>\n"
+  },
+  "table_styles": {
+    "modern_grid": {
+      "id": "{B7F9E0FF-B1A1-4E8C-9B52-2A4C7F9CF9F3}",
+      "name": "Modern Grid",
+      "wholeTbl": {
+        "fill": "none",
+        "borders": {
+          "top": {
+            "weight": 1,
+            "color": "{tokens.colors.border.light}"
+          },
+          "bottom": {
+            "weight": 1,
+            "color": "{tokens.colors.border.light}"
+          },
+          "left": {
+            "weight": 1,
+            "color": "{tokens.colors.border.light}"
+          },
+          "right": {
+            "weight": 1,
+            "color": "{tokens.colors.border.light}"
+          },
+          "insideH": {
+            "weight": 0.5,
+            "color": "{tokens.colors.border.light}"
+          },
+          "insideV": {
+            "weight": 0.5,
+            "color": "{tokens.colors.border.light}"
+          }
+        }
+      },
+      "firstRow": {
+        "fill": "{tokens.colors.accent1}",
+        "text": {
+          "color": "FFFFFF",
+          "bold": true,
+          "size": "{tokens.typography.table.header.size}"
+        }
+      },
+      "band1H": {
+        "fill": "{tokens.colors.background.alt1}"
+      },
+      "band2H": {
+        "fill": "{tokens.colors.background.alt2}"
+      }
+    }
+  },
+  "tokens": {
+    "table": {
+      "default_width": 9144000,
+      "default_height": 4572000,
+      "default_x": 457200,
+      "default_y": 1524000,
+      "col_equal": 3048000,
+      "col_wide": 4572000,
+      "col_narrow": 2286000,
+      "row_header": 635000,
+      "row_normal": 457200,
+      "row_compact": 304800,
+      "style": {
+        "id": "ModernGrid",
+        "firstRow": "1",
+        "firstCol": "0",
+        "bandRow": "1",
+        "bandCol": "0"
+      },
+      "cell": {
+        "fontSize": 240,
+        "headerFontSize": 280,
+        "textColor": "2C3E50",
+        "headerTextColor": "FFFFFF"
+      }
+    }
+  },
+  "patches": {
+    "add_modern_table": {
+      "targets": [
+        {
+          "file": "ppt/slides/slide1.xml",
+          "vars": {
+            "tableStyleId": "ModernGrid"
+          },
+          "ops": [
+            {
+              "ensurePath": {
+                "xpathRef": "slide_content_area",
+                "anchorRef": "slide_root",
+                "fragmentRef": "fragments.content_area"
+              }
+            },
+            {
+              "insert": {
+                "xpathRef": "slide_content_area",
+                "position": "last",
+                "fragmentRef": "fragments.ppt_table_3x3"
+              }
+            },
+            {
+              "insert": {
+                "xpath": "(//*[local-name()=$tbl and namespace-uri()=$nsA])[last()]\n",
+                "position": "last",
+                "fragmentRef": "fragments.ppt_table_row",
+                "repeat": 3
+              }
+            }
+          ]
+        },
+        {
+          "file": "word/document.xml",
+          "ops": [
+            {
+              "ensurePath": {
+                "xpath": "//*[local-name()='body' and namespace-uri()=$nsW] /*[local-name()='p' and namespace-uri()=$nsW][last()]\n",
+                "anchorRef": "document_body",
+                "fragmentRef": "fragments.paragraph"
+              }
+            },
+            {
+              "insert": {
+                "xpath": "//*[local-name()='body' and namespace-uri()=$nsW] /*[local-name()='p' and namespace-uri()=$nsW][last()]\n",
+                "position": "after",
+                "fragmentRef": "fragments.word_table_3x3"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "table_style_definition": {
+    "targets": [
+      {
+        "file": "ppt/tableStyles.xml",
+        "ops": [
+          {
+            "ensurePart": {
+              "path": "ppt/tableStyles.xml",
+              "contentType": "application/vnd.openxmlformats-officedocument.presentationml.tableStyles+xml",
+              "relFrom": "ppt/_rels/presentation.xml.rels",
+              "relId": "rIdTableStyles",
+              "relType": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/tableStyles",
+              "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<a:tblStyleLst xmlns:a=\"{$ns.a}\" def=\"{tokens.table.style.default}\">\n  <!-- Table styles will be added here -->\n</a:tblStyleLst>\n"
+            }
+          },
+          {
+            "insert": {
+              "xpath": "//*[local-name()='tblStyleLst']",
+              "position": "last",
+              "xml": "<a:tblStyle xmlns:a=\"{$ns.a}\" styleId=\"{tokens.table.style.id}\" styleName=\"{tokens.table.style.name}\">\n  <a:wholeTbl>\n    <a:tcStyle>\n      <a:fill>\n        <a:noFill/>\n      </a:fill>\n      <a:tcBdr>\n        <a:top>\n          <a:ln w=\"12700\" cmpd=\"sng\">\n            <a:solidFill>\n              <a:schemeClr val=\"tx1\">\n                <a:alpha val=\"20000\"/>\n              </a:schemeClr>\n            </a:solidFill>\n          </a:ln>\n        </a:top>\n        <!-- More borders... -->\n      </a:tcBdr>\n    </a:tcStyle>\n  </a:wholeTbl>\n  <a:band1H>\n    <a:tcStyle>\n      <a:fill>\n        <a:solidFill>\n          <a:schemeClr val=\"accent1\">\n            <a:alpha val=\"10000\"/>\n          </a:schemeClr>\n        </a:solidFill>\n      </a:fill>\n    </a:tcStyle>\n  </a:band1H>\n  <!-- More style parts... -->\n</a:tblStyle>\n"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "issues_discovered": {
+    "1_verbose_xpaths": {
+      "problem": "XPath with local-name() and namespace-uri() is extremely verbose",
+      "example": "//*[local-name()=$graphicFrame and namespace-uri()=$nsP]\n  /*[local-name()=$graphic and namespace-uri()=$nsA]\n  /*[local-name()=$graphicData and namespace-uri()=$nsA]\n  /*[local-name()=$tbl and namespace-uri()=$nsA]\n",
+      "impact": "Hard to read and maintain even with variables"
+    },
+    "2_table_style_complexity": {
+      "problem": "Table styles have 9+ parts (wholeTbl, band1H, band2H, firstRow, etc.)",
+      "details": "Each part can have fill, borders, text effects, spacing",
+      "impact": "Single table style becomes massive fragment"
+    },
+    "3_cross_product_differences": {
+      "problem": "PowerPoint and Word tables are completely different structures",
+      "powerpoint": "graphicFrame > graphic > graphicData > tbl",
+      "word": "Just w:tbl directly",
+      "impact": "Need separate fragments and paths for each product"
+    },
+    "4_dynamic_content": {
+      "problem": "Tables have variable rows/columns",
+      "challenge": "Can't use static fragments for dynamic structures",
+      "workaround": "Need 'repeat' operation or dynamic fragment generation"
+    },
+    "5_style_references": {
+      "problem": "Table styles referenced by GUID in PowerPoint",
+      "example": "{B7F9E0FF-B1A1-4E8C-9B52-2A4C7F9CF9F3}",
+      "challenge": "Need to ensure style exists in tableStyles.xml"
+    },
+    "6_unit_conversions": {
+      "problem": "Different units for same concept",
+      "powerpoint": "EMU for dimensions",
+      "word": "Twips for widths, different for spacing",
+      "impact": "Need unit conversion in tokens or fragments"
+    },
+    "7_fragment_size": {
+      "problem": "Table fragments are huge even for simple 3x3",
+      "lines": "50+ lines for basic structure",
+      "cells": "10+ lines per cell with formatting",
+      "impact": "Fragment library becomes unwieldy"
+    },
+    "8_variable_binding_overhead": {
+      "problem": "Need to bind 20+ variables for table operations",
+      "example": "$graphicFrame, $graphic, $graphicData, $tbl, $tblPr, $tblStyle...",
+      "impact": "Variable map setup is complex"
+    }
+  },
+  "solutions": {
+    "1_xpath_helpers": {
+      "approach": "Create higher-level XPath builder functions",
+      "example": "xpath = build_table_xpath(product=\"ppt\", style=\"ModernGrid\")\n",
+      "benefit": "Hide local-name() complexity"
+    },
+    "2_table_builder": {
+      "approach": "Programmatic table builder instead of fragments",
+      "api": "table = TableBuilder(rows=3, cols=3)\ntable.set_style(\"ModernGrid\")\ntable.set_cell(0, 0, \"Header 1\")\nxml = table.to_ooxml(\"powerpoint\")\n",
+      "benefit": "Dynamic structure generation"
+    },
+    "3_style_registry": {
+      "approach": "Separate table style registry with inheritance",
+      "structure": "base_style -> modern_base -> modern_grid\n",
+      "benefit": "Reuse common style properties"
+    },
+    "4_product_adapters": {
+      "approach": "Product-specific adapters hide differences",
+      "interface": "adapter = get_adapter(\"powerpoint\")\nadapter.add_table(slide, table_config)\n",
+      "benefit": "Abstract away PowerPoint vs Word differences"
+    },
+    "5_macro_operations": {
+      "approach": "High-level operations that expand to multiple low-level ops",
+      "example": "- addTable:\n    type: \"modern_grid\"\n    rows: 3\n    cols: 3\n    data: [[...]]\n",
+      "benefit": "Single operation instead of multiple patches"
+    }
+  },
+  "verdict": {
+    "works_but_complex": [
+      "Registry pattern works for tables but reveals complexity",
+      "Variable-driven XPath eliminates hardcoding but is verbose",
+      "Fragments work but become huge for tables"
+    ],
+    "key_insights": [
+      "Tables are fundamentally different between products",
+      "Dynamic structures (variable rows/cols) don't fit fragment model",
+      "Style definitions are complex nested structures themselves",
+      "Need higher-level abstractions over raw patches"
+    ],
+    "recommendation": [
+      "Use registry for simple elements (fonts, colors, spacing)",
+      "Build programmatic generators for complex structures (tables, charts)",
+      "Keep fragments for static structures only",
+      "Layer high-level operations over low-level patches"
+    ]
+  }
+}

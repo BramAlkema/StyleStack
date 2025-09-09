@@ -4,7 +4,7 @@
 
 The token extraction workflow triggers on:
 
-```yaml
+```json
 on:
   push:
     paths:
@@ -39,9 +39,9 @@ extract/
 ├── slides.odp                 # LibreOffice Impress  
 ├── report.odt                 # LibreOffice Writer
 └── extracted/
-    ├── my-presentation-tokens.yaml
-    ├── slides-tokens.yaml
-    ├── report-tokens.yaml
+    ├── my-presentation-tokens.json
+    ├── slides-tokens.json
+    ├── report-tokens.json
     └── [filename]-assets/
         ├── logos/
         │   └── company-logo.png
@@ -96,7 +96,7 @@ For each input file `example.pptx`, creates:
 extract/
 ├── example.pptx                    # Original file
 └── extracted/
-    ├── example-tokens.yaml         # Design tokens
+    ├── example-tokens.json         # Design tokens
     └── example-assets/             # Brand assets
         ├── logos/                  # Company logos
         ├── icons/                  # UI/functional icons
@@ -116,20 +116,20 @@ gh workflow run token-extraction.yml
 
 ### Custom Asset Directory
 Modify the workflow to change asset organization:
-```yaml
+```json
 assets_dir="$output_dir/brand-assets/$base_name"
 ```
 
 ### Different Output Formats
-Change from YAML to JSON:
-```yaml
+Change from JSON to JSON:
+```json
 tokens_file="$output_dir/$base_name-tokens.json"
 # Remove --output flag to use default JSON
 ```
 
 ### Analysis Reports  
 Enable detailed analysis:
-```yaml
+```json
 python tools/design_token_extractor.py "$file" \
   --output "$tokens_file" \
   --extract-assets \

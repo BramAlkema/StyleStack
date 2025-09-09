@@ -1,12 +1,12 @@
 # StyleStack Integration Tests
 
-Comprehensive end-to-end integration tests for the StyleStack YAML-to-OOXML Processing Engine. These tests validate the complete system integration using actual OOXML template files and real-world customer workflows.
+Comprehensive end-to-end integration tests for the StyleStack JSON-to-OOXML Processing Engine. These tests validate the complete system integration using actual OOXML template files and real-world customer workflows.
 
 ## Overview
 
 The integration test suite validates:
 
-- **Complete Processing Pipeline**: YAML patches → XML processing → OOXML output
+- **Complete Processing Pipeline**: JSON patches → XML processing → OOXML output
 - **Multi-Format Support**: PowerPoint (.potx), Word (.dotx), and Excel (.xltx) templates
 - **Real OOXML Files**: Actual Office template files with proper structure and namespaces
 - **Production Workflows**: Transaction pipelines, token integration, and error recovery
@@ -145,7 +145,7 @@ pytest test_e2e_ooxml_processing.py::TestEndToEndOOXMLProcessing::test_complete_
 - Audit trail functionality
 - Multi-operation workflows
 
-### 3. YAMLPatchProcessor
+### 3. JSONPatchProcessor
 - XPath targeting with namespace support
 - Patch operations (set, insert, extend, merge, relsAdd)
 - Error recovery strategies
@@ -286,7 +286,7 @@ For new performance-sensitive features:
 
 ```
 ┌─────────────────────┐    ┌──────────────────────┐    ┌─────────────────────┐
-│   YAML Patches      │───▶│  Processing Engine   │───▶│   OOXML Output      │
+│   JSON Patches      │───▶│  Processing Engine   │───▶│   OOXML Output      │
 │                     │    │                      │    │                     │
 │ - Corporate patches │    │ - MultiFormat Handler│    │ - Modified templates│
 │ - Design tokens     │    │ - Transaction Pipeline│   │ - Validated structure│
@@ -296,10 +296,10 @@ For new performance-sensitive features:
 
 ### Integration Points Validated
 
-1. **YAML → XML Processing**: Patch application with XPath targeting
+1. **JSON → XML Processing**: Patch application with XPath targeting
 2. **XML → OOXML Packaging**: ZIP archive management and structure preservation  
 3. **Token → Value Resolution**: Design token substitution and formula evaluation
 4. **Transaction → State Management**: Atomic operations with rollback capability
 5. **Error → Recovery Handling**: Graceful degradation and informative reporting
 
-This comprehensive integration test suite ensures that the StyleStack YAML-to-OOXML Processing Engine works correctly with real Office files in production scenarios, providing confidence for customer deployments.
+This comprehensive integration test suite ensures that the StyleStack JSON-to-OOXML Processing Engine works correctly with real Office files in production scenarios, providing confidence for customer deployments.

@@ -1,0 +1,228 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://stylestack.dev/schemas/channel-config.schema.json",
+  "title": "StyleStack Channel Configuration Schema",
+  "description": "Schema for channel-specific OOXML operations and template targeting",
+  "version": "2.0.0",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "Reference to this JSON schema"
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["channel", "version"],
+      "properties": {
+        "channel": {
+          "type": "string",
+          "enum": ["present", "doc", "finance", "marketing", "legal", "custom"],
+          "description": "Channel identifier"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of the channel"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Semantic version number"
+        },
+        "author": {
+          "type": "string",
+          "description": "Channel configuration author"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp"
+        },
+        "updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp"
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_formats": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["potx", "dotx", "xltx", "pptx", "docx", "xlsx", "otp", "ott", "ots"]
+      },
+      "description": "Target Office template formats"
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/target"
+      },
+      "description": "Array of OOXML targets and operations"
+    },
+    "variables": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z][a-zA-Z0-9_]*$": {
+          "type": "string"
+        }
+      },
+      "description": "Channel-specific variables for token substitution"
+    }
+  },
+  "required": ["metadata", "targets"],
+  "additionalProperties": false,
+  "definitions": {
+    "target": {
+      "type": "object",
+      "required": ["file", "ops"],
+      "properties": {
+        "file": {
+          "type": "string",
+          "description": "Target OOXML file path within template"
+        },
+        "ns": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z][a-zA-Z0-9]*$": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "description": "XML namespace definitions"
+        },
+        "ops": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/operation"
+          },
+          "description": "Array of OOXML operations"
+        }
+      },
+      "additionalProperties": false
+    },
+    "operation": {
+      "type": "object",
+      "properties": {
+        "set": {
+          "$ref": "#/definitions/setValue",
+          "description": "Set element or attribute value"
+        },
+        "insert": {
+          "$ref": "#/definitions/insertElement",
+          "description": "Insert new XML element"
+        },
+        "remove": {
+          "$ref": "#/definitions/removeElement",
+          "description": "Remove XML element"
+        },
+        "replace": {
+          "$ref": "#/definitions/replaceElement",
+          "description": "Replace XML element"
+        },
+        "conditional": {
+          "$ref": "#/definitions/conditionalOperation",
+          "description": "Conditional operation"
+        }
+      },
+      "oneOf": [
+        {"required": ["set"]},
+        {"required": ["insert"]},
+        {"required": ["remove"]},
+        {"required": ["replace"]},
+        {"required": ["conditional"]}
+      ],
+      "additionalProperties": false
+    },
+    "setValue": {
+      "type": "object",
+      "required": ["xpath", "value"],
+      "properties": {
+        "xpath": {
+          "type": "string",
+          "description": "XPath expression to target element/attribute"
+        },
+        "value": {
+          "type": "string",
+          "description": "Value to set (supports token variables)"
+        },
+        "condition": {
+          "type": "string",
+          "description": "Optional condition for operation"
+        }
+      },
+      "additionalProperties": false
+    },
+    "insertElement": {
+      "type": "object",
+      "required": ["xpath", "element"],
+      "properties": {
+        "xpath": {
+          "type": "string",
+          "description": "XPath expression for insertion point"
+        },
+        "position": {
+          "type": "string",
+          "enum": ["before", "after", "inside", "replace"],
+          "default": "inside",
+          "description": "Insertion position relative to target"
+        },
+        "element": {
+          "type": "string",
+          "description": "XML element to insert (supports token variables)"
+        }
+      },
+      "additionalProperties": false
+    },
+    "removeElement": {
+      "type": "object",
+      "required": ["xpath"],
+      "properties": {
+        "xpath": {
+          "type": "string",
+          "description": "XPath expression to target element for removal"
+        },
+        "condition": {
+          "type": "string",
+          "description": "Optional condition for removal"
+        }
+      },
+      "additionalProperties": false
+    },
+    "replaceElement": {
+      "type": "object",
+      "required": ["xpath", "element"],
+      "properties": {
+        "xpath": {
+          "type": "string",
+          "description": "XPath expression to target element for replacement"
+        },
+        "element": {
+          "type": "string",
+          "description": "Replacement XML element (supports token variables)"
+        }
+      },
+      "additionalProperties": false
+    },
+    "conditionalOperation": {
+      "type": "object",
+      "required": ["condition", "then"],
+      "properties": {
+        "condition": {
+          "type": "string",
+          "description": "Condition expression to evaluate"
+        },
+        "then": {
+          "$ref": "#/definitions/operation",
+          "description": "Operation to execute if condition is true"
+        },
+        "else": {
+          "$ref": "#/definitions/operation",
+          "description": "Operation to execute if condition is false"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

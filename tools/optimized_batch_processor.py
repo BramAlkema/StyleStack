@@ -29,12 +29,12 @@ try:
     from .memory_optimizer import MemoryManager, StreamingOOXMLProcessor, ConcurrentMemoryManager
     from .advanced_cache_system import CacheManager
     from .performance_profiler import PerformanceProfiler
-    from .yaml_ooxml_processor import YAMLPatchProcessor
+    from .json_ooxml_processor import JSONPatchProcessor
 except ImportError:
     from memory_optimizer import MemoryManager, StreamingOOXMLProcessor, ConcurrentMemoryManager
     from advanced_cache_system import CacheManager
     from performance_profiler import PerformanceProfiler
-    from yaml_ooxml_processor import YAMLPatchProcessor
+    from json_ooxml_processor import JSONPatchProcessor
 
 logger = logging.getLogger(__name__)
 
@@ -355,8 +355,8 @@ class WorkerPool:
             )
             processor = StreamingOOXMLProcessor(memory_manager)
         else:
-            # Use regular YAML processor
-            processor = YAMLPatchProcessor()
+            # Use regular JSON processor
+            processor = JSONPatchProcessor()
         
         try:
             # Process template

@@ -94,8 +94,8 @@ Establish governance processes for your StyleStack fork to ensure quality, compl
 **Approval:** Single reviewer (domain expert)
 **Timeline:** 1-2 business days
 
-```yaml
-# org/your-org/governance.yaml
+```json
+# org/your-org/governance.json
 approval_workflows:
   minor_changes:
     criteria:
@@ -113,7 +113,7 @@ approval_workflows:
 **Approval:** Multi-stakeholder review
 **Timeline:** 3-5 business days
 
-```yaml
+```json
 approval_workflows:
   standard_changes:
     criteria:
@@ -132,7 +132,7 @@ approval_workflows:
 **Approval:** Executive review required
 **Timeline:** 1-2 weeks
 
-```yaml
+```json
 approval_workflows:
   major_changes:
     criteria:
@@ -154,7 +154,7 @@ approval_workflows:
 **Approval:** Expedited process
 **Timeline:** Same day
 
-```yaml
+```json
 approval_workflows:
   emergency_changes:
     criteria:
@@ -174,7 +174,7 @@ approval_workflows:
 
 #### GitHub-Based Workflow
 
-```yaml
+```json
 # .github/workflows/governance.yml
 name: Governance Review
 
@@ -200,7 +200,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Request Brand Approval
-        if: contains(github.event.pull_request.changed_files, 'patches.yaml')
+        if: contains(github.event.pull_request.changed_files, 'patches.json')
         uses: ./.github/actions/request-approval
         with:
           approver-team: 'brand-managers'
@@ -250,8 +250,8 @@ class GovernanceBot:
 
 ### Design Quality Criteria
 
-```yaml
-# org/your-org/quality-standards.yaml
+```json
+# org/your-org/quality-standards.json
 design_standards:
   branding:
     - "Logo placement follows brand guidelines"
@@ -355,7 +355,7 @@ Approved by: [Name, Title, Date]
 
 #### Technical vs Business Conflicts
 
-```yaml
+```json
 # Decision priority framework
 conflict_resolution:
   priorities:
@@ -373,7 +373,7 @@ conflict_resolution:
 
 #### Quarterly Release Cycle
 
-```yaml
+```json
 # Release planning calendar
 release_schedule:
   Q1:
@@ -420,7 +420,7 @@ Questions? Contact: template-support@your-org.com
 
 #### User Training Program
 
-```yaml
+```json
 training_program:
   audience_segments:
     executives:
@@ -441,7 +441,7 @@ training_program:
 
 #### Adoption Metrics
 
-```yaml
+```json
 success_metrics:
   adoption:
     target: "80% adoption within 90 days"
@@ -488,7 +488,7 @@ success_metrics:
 
 ### Risk Monitoring
 
-```yaml
+```json
 # .github/workflows/risk-monitoring.yml
 name: Risk Monitoring
 
@@ -529,7 +529,7 @@ jobs:
 
 #### Metrics and KPIs
 
-```yaml
+```json
 governance_metrics:
   efficiency:
     - "Average approval time by change class"
@@ -551,7 +551,7 @@ governance_metrics:
 
 #### Multi-Organization Federation
 
-```yaml
+```json
 # For large enterprises with multiple business units
 federation_governance:
   structure:

@@ -17,7 +17,7 @@ on:
       - 'exemplars/**/*.potx'
       - 'exemplars/**/*.dotx'
       - 'exemplars/**/*.xltx'
-      - 'variables/**/*.yaml'
+      - 'variables/**/*.json'
       - 'variables/**/*.yml'
   pull_request:
     branches: [ main ]
@@ -50,7 +50,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install jsonschema lxml pyyaml pytest
+          pip install jsonschema lxml jsonschema pytest
       
       - name: Validate schema syntax
         run: |
@@ -110,7 +110,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install jsonschema lxml pyyaml pytest
+          pip install jsonschema lxml jsonschema pytest
       
       - name: Run token parser tests
         run: |
@@ -275,17 +275,17 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install jsonschema lxml pyyaml
+          pip install jsonschema lxml jsonschema
       
       - name: Find variable files
         id: find-files
         run: |
           echo "Finding variable definition files..."
-          FILES=$(find . -name "*.yaml" -o -name "*.yml" | grep -E "(variable|var)" | head -10)
+          FILES=$(find . -name "*.json" -o -name "*.yml" | grep -E "(variable|var)" | head -10)
           if [ -z "$FILES" ]; then
             echo "No variable files found - creating test file"
             mkdir -p variables/test
-            cat > variables/test/sample-variables.yaml << EOF
+            cat > variables/test/sample-variables.json << EOF
           variables:
             theme_colors:
               accent_primary:
@@ -301,7 +301,7 @@ jobs:
                 defaultValue: "0066CC"
                 description: "Primary accent color"
           EOF
-            FILES="variables/test/sample-variables.yaml"
+            FILES="variables/test/sample-variables.json"
           fi
           echo "files=$FILES" >> $GITHUB_OUTPUT
           
@@ -439,11 +439,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install lxml jsonschema pyyaml pytest click
+          pip install lxml jsonschema jsonschema pytest click
       
       - name: Test unified variable resolution
         run: |
-          echo "🔧 Testing unified YAML + Extension variable resolution..."
+          echo "🔧 Testing unified JSON + Extension variable resolution..."
           python -c "
           import sys
           sys.path.append('tools')
@@ -469,9 +469,9 @@ jobs:
               }
           }
           
-          with open('tokens/core/design.yaml', 'w') as f:
-              import yaml
-              yaml.dump(core_tokens, f)
+          with open('tokens/core/design.json', 'w') as f:
+              import json
+              json.dump(core_tokens, f)
           
           # Mock org overrides
           org_tokens = {
@@ -481,8 +481,8 @@ jobs:
               }
           }
           
-          with open('tokens/org/test-org.yaml', 'w') as f:
-              yaml.dump(org_tokens, f)
+          with open('tokens/org/test-org.json', 'w') as f:
+              json.dump(org_tokens, f)
           
           # Mock channel overrides
           channel_tokens = {
@@ -491,16 +491,16 @@ jobs:
               }
           }
           
-          with open('tokens/channels/present.yaml', 'w') as f:
-              yaml.dump(channel_tokens, f)
+          with open('tokens/channels/present.json', 'w') as f:
+              json.dump(channel_tokens, f)
           
           print('✅ Mock token structure created')
           "
       
-      - name: Test YAML token resolution
+      - name: Test JSON token resolution
         run: |
-          echo "📄 Testing YAML token resolution..."
-          python tools/variable_resolver.py --test-yaml-resolution || {
+          echo "📄 Testing JSON token resolution..."
+          python tools/variable_resolver.py --test-json-resolution || {
             echo "Testing with direct import..."
             python -c "
             import sys
@@ -511,7 +511,7 @@ jobs:
             
             try:
                 variables = resolver.resolve_all_variables(org='test-org', channel='present')
-                print(f'✅ YAML resolution successful: {len(variables)} variables')
+                print(f'✅ JSON resolution successful: {len(variables)} variables')
                 
                 # Check for expected overrides
                 if 'colors_primary' in variables:
@@ -527,7 +527,7 @@ jobs:
                         print(f'❌ Channel override failed: got {variables[\"colors_secondary\"].value}')
                         
             except Exception as e:
-                print(f'ℹ️ YAML resolution test skipped (no token files): {e}')
+                print(f'ℹ️ JSON resolution test skipped (no token files): {e}')
             "
           }
       
@@ -620,12 +620,12 @@ jobs:
           
           # Create test variables with conflicting IDs at different hierarchy levels
           test_variables = {
-              'testVar_yaml': ResolvedVariable(
+              'testVar_json': ResolvedVariable(
                   id='testVar',
-                  value='yaml_value',
+                  value='json_value',
                   type=TokenType.COLOR,
                   scope=TokenScope.CORE,
-                  source='yaml_tokens',
+                  source='json_tokens',
                   hierarchy_level=3  # Org level
               ),
               'testVar_extension': ResolvedVariable(
@@ -645,7 +645,7 @@ jobs:
           if len(resolved) == 1 and 'testVar' in resolved:
               winning_var = resolved['testVar']
               if winning_var.value == 'extension_value' and winning_var.hierarchy_level == 9:
-                  print('✅ Hierarchy precedence working: extension variables override YAML')
+                  print('✅ Hierarchy precedence working: extension variables override JSON')
                   print(f'   Winner: {winning_var.source} (level {winning_var.hierarchy_level})')
               else:
                   print(f'❌ Precedence failed: got {winning_var.value} from {winning_var.source}')
@@ -722,7 +722,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install lxml jsonschema pyyaml pytest
+          pip install lxml jsonschema jsonschema pytest
       
       - name: Run theme resolver tests
         run: |
@@ -904,7 +904,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install lxml jsonschema pyyaml pytest psutil
+          pip install lxml jsonschema jsonschema pytest psutil
       
       - name: Run variable substitution tests
         run: |
@@ -1190,7 +1190,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install lxml jsonschema pyyaml pytest
+          pip install lxml jsonschema jsonschema pytest
       
       - name: Run OOXML processor tests
         run: |
@@ -1481,7 +1481,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install lxml jsonschema pyyaml pytest
+          pip install lxml jsonschema jsonschema pytest
       
       - name: Run OOXML extension manager tests
         run: |
@@ -1651,14 +1651,14 @@ jobs:
       - name: Install dependencies  
         run: |
           python -m pip install --upgrade pip
-          pip install lxml jsonschema pyyaml
+          pip install lxml jsonschema jsonschema
           
       - name: Validate OOXML namespace usage
         run: |
           echo "🔍 Validating OOXML namespace usage in variables..."
           python -c "
           from tools.extension_schema_validator import ExtensionSchemaValidator
-          import yaml
+          import json
           import json
           from pathlib import Path
           
@@ -1671,7 +1671,7 @@ jobs:
           }
           
           # Check variables for proper namespace usage
-          variable_files = list(Path('.').glob('variables/**/*.yaml')) + list(Path('.').glob('variables/**/*.yml'))
+          variable_files = list(Path('.').glob('variables/**/*.json')) + list(Path('.').glob('variables/**/*.yml'))
           
           if not variable_files:
               print('ℹ️  No variable files found - validation passed')
@@ -1682,7 +1682,7 @@ jobs:
               for var_file in variable_files:
                   try:
                       with open(var_file, 'r') as f:
-                          data = yaml.safe_load(f)
+                          data = json.safe_load(f)
                       
                       # Extract variables from different formats
                       variables = []
@@ -1728,7 +1728,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install jsonschema lxml pyyaml
+          pip install jsonschema lxml jsonschema
           
       - name: Generate comprehensive report
         run: |
@@ -1754,7 +1754,7 @@ jobs:
                   'ooxml_integration': '${{ needs.validate-ooxml-integration.result }}'
               },
               'files_processed': {
-                  'schema_files': ['schemas/extension-variable.schema.json', 'schemas/extension-variable.schema.yaml'],
+                  'schema_files': ['schemas/extension-variable.schema.json', 'schemas/extension-variable.schema.json'],
                   'validator_files': ['tools/extension_schema_validator.py'],
                   'parser_files': ['tools/token_parser.py', 'tests/test_token_parser.py'],
                   'extension_files': ['tools/ooxml_extension_manager.py', 'tests/test_ooxml_extension_manager.py'],

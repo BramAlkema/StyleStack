@@ -100,7 +100,7 @@ python build.py --org "my-company" --channel present --out presentation.potx
 
 For CI/CD environments, set as repository secret:
 
-```yaml
+```json
 # .github/workflows/build-templates.yml
 - name: Build templates
   run: python build.py --org "${{ secrets.ORG_NAME }}" --out template.potx
@@ -143,7 +143,7 @@ Expected output:
 **Cause**: Missing `id-token: write` permission in workflow
 
 **Solution**: Ensure your workflow has proper permissions:
-```yaml
+```json
 permissions:
   id-token: write  # Required for OIDC
   contents: write  # Required to save license

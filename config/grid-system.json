@@ -1,0 +1,350 @@
+{
+  "master": {
+    "slide_size": {
+      "cx": 12192000,
+      "cy": 6858000
+    },
+    "safe_box": {
+      "x": 1219200,
+      "y": 685800,
+      "cx": 9753600,
+      "cy": 5486400
+    },
+    "grid": {
+      "cols": 12,
+      "gutter": 152400,
+      "col_w": 673100,
+      "col_guides_vert": [
+        1219200,
+        2044700,
+        2870200,
+        3695700,
+        4521200,
+        5346700,
+        6172200,
+        6997700,
+        7823200,
+        8648700,
+        9474200,
+        10299700,
+        10972800
+      ],
+      "row_guides_horz": [
+        685800,
+        6172200
+      ]
+    },
+    "defaults": {
+      "bodyPr": {
+        "lIns": 30000,
+        "rIns": 30000,
+        "tIns": 18000,
+        "bIns": 18000,
+        "vertOverflow": "clip",
+        "horzOverflow": "clip"
+      },
+      "title_autofit": "norm(0.90)",
+      "body_autofit": false,
+      "rPr_title": {
+        "kern": 1200,
+        "spc": -100
+      },
+      "rPr_body": {
+        "kern": 1200,
+        "spc": 0
+      },
+      "rPr_caps_extra_spc": 100
+    }
+  },
+  "layouts": [
+    {
+      "name": "Title Slide",
+      "type": "title",
+      "ph": [
+        {
+          "kind": "title",
+          "rect": {
+            "x": 2044700,
+            "y": 1210000,
+            "cx": 7009800,
+            "cy": 987552
+          },
+          "text": {
+            "style": "title"
+          }
+        },
+        {
+          "kind": "subTitle",
+          "rect": {
+            "x": 2044700,
+            "y": 2275980,
+            "cx": 7009800,
+            "cy": 823040
+          },
+          "text": {
+            "style": "subtitle"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Title and Content",
+      "type": "titleAndTx",
+      "ph": [
+        {
+          "kind": "title",
+          "rect": {
+            "x": 2044700,
+            "y": 685800,
+            "cx": 7009800,
+            "cy": 658432
+          },
+          "text": {
+            "style": "title"
+          }
+        },
+        {
+          "kind": "body",
+          "rect": {
+            "x": 2044700,
+            "y": 1714500,
+            "cx": 7009800,
+            "cy": 3999600
+          },
+          "text": {
+            "style": "body"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Section Header",
+      "type": "sectionHeader",
+      "ph": [
+        {
+          "kind": "title",
+          "rect": {
+            "x": 2044700,
+            "y": 1470000,
+            "cx": 4691700,
+            "cy": 1316736
+          },
+          "text": {
+            "style": "title"
+          }
+        },
+        {
+          "kind": "body",
+          "rect": {
+            "x": 8648700,
+            "y": 1470000,
+            "cx": 4093800,
+            "cy": 1600200
+          },
+          "text": {
+            "style": "body"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Two Content",
+      "type": "twoTxTwoObj",
+      "ph": [
+        {
+          "kind": "title",
+          "rect": {
+            "x": 2044700,
+            "y": 685800,
+            "cx": 7009800,
+            "cy": 658432
+          },
+          "text": {
+            "style": "title"
+          }
+        },
+        {
+          "kind": "body",
+          "idx": 1,
+          "rect": {
+            "x": 2044700,
+            "y": 1714500,
+            "cx": 3175500,
+            "cy": 3999600
+          },
+          "text": {
+            "style": "body"
+          }
+        },
+        {
+          "kind": "body",
+          "idx": 2,
+          "rect": {
+            "x": 5346700,
+            "y": 1714500,
+            "cx": 3175500,
+            "cy": 3999600
+          },
+          "text": {
+            "style": "body"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comparison",
+      "type": "txTwoCol",
+      "ph": [
+        {
+          "kind": "title",
+          "rect": {
+            "x": 2044700,
+            "y": 685800,
+            "cx": 7009800,
+            "cy": 658432
+          },
+          "text": {
+            "style": "title"
+          }
+        },
+        {
+          "kind": "ctrTitle",
+          "idx": 1,
+          "rect": {
+            "x": 2044700,
+            "y": 1488240,
+            "cx": 3175500,
+            "cy": 571500
+          }
+        },
+        {
+          "kind": "ctrTitle",
+          "idx": 2,
+          "rect": {
+            "x": 5346700,
+            "y": 1488240,
+            "cx": 3175500,
+            "cy": 571500
+          }
+        },
+        {
+          "kind": "body",
+          "idx": 1,
+          "rect": {
+            "x": 2044700,
+            "y": 2131200,
+            "cx": 3175500,
+            "cy": 3582900
+          },
+          "text": {
+            "style": "body"
+          }
+        },
+        {
+          "kind": "body",
+          "idx": 2,
+          "rect": {
+            "x": 5346700,
+            "y": 2131200,
+            "cx": 3175500,
+            "cy": 3582900
+          },
+          "text": {
+            "style": "body"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Title Only",
+      "type": "titleOnly",
+      "ph": [
+        {
+          "kind": "title",
+          "rect": {
+            "x": 2044700,
+            "y": 1028700,
+            "cx": 7009800,
+            "cy": 1097280
+          },
+          "text": {
+            "style": "title"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Blank",
+      "type": "blank",
+      "ph": []
+    },
+    {
+      "name": "Content with Caption",
+      "type": "objTx",
+      "ph": [
+        {
+          "kind": "title",
+          "rect": {
+            "x": 2044700,
+            "y": 685800,
+            "cx": 7009800,
+            "cy": 658432
+          },
+          "text": {
+            "style": "title"
+          }
+        },
+        {
+          "kind": "obj",
+          "idx": 1,
+          "rect": {
+            "x": 2044700,
+            "y": 1714500,
+            "cx": 4691700,
+            "cy": 3999600
+          }
+        },
+        {
+          "kind": "body",
+          "idx": 2,
+          "rect": {
+            "x": 8648700,
+            "y": 1714500,
+            "cx": 4093800,
+            "cy": 3999600
+          },
+          "text": {
+            "style": "body"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Picture with Caption",
+      "type": "picTx",
+      "ph": [
+        {
+          "kind": "pic",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "cx": 12192000,
+            "cy": 6858000
+          }
+        },
+        {
+          "kind": "body",
+          "rect": {
+            "x": 2044700,
+            "y": 4762800,
+            "cx": 4691700,
+            "cy": 1097280
+          },
+          "text": {
+            "style": "body"
+          }
+        }
+      ]
+    }
+  ]
+}

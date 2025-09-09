@@ -35,8 +35,8 @@ org/your-org/assets/
 
 Create your organization's design token configuration:
 
-```yaml
-# org/your-org/patches.yaml
+```json
+# org/your-org/patches.json
 organization:
   name: "Acme Corporation"
   short_name: "acme"
@@ -64,8 +64,8 @@ typography:
 
 Define a custom channel for your organization's presentation style:
 
-```yaml
-# org/your-org/channels/corporate.yaml
+```json
+# org/your-org/channels/corporate.json
 name: "Corporate Presentations"
 description: "Standard template for business presentations"
 target_products: ["potx"]
@@ -137,10 +137,10 @@ python build.py --org acme --channel corporate --products potx --verbose
 ## Step 6: Customize Layouts
 
 ### Add Custom Slide Master
-Edit your patches.yaml to customize slide layouts:
+Edit your patches.json to customize slide layouts:
 
-```yaml
-# Add to org/your-org/patches.yaml
+```json
+# Add to org/your-org/patches.json
 slide_masters:
   corporate:
     title_slide:
@@ -169,7 +169,7 @@ python build.py --org acme --channel corporate --products potx
 
 ### Add Compliance Elements
 
-```yaml
+```json
 # Add regulatory compliance elements
 compliance:
   gdpr:
@@ -183,7 +183,7 @@ compliance:
 
 ### Multi-Language Support
 
-```yaml
+```json
 # Add localization
 localization:
   primary_language: "en-US"
@@ -200,7 +200,7 @@ localization:
 
 ### Accessibility Enhancements
 
-```yaml
+```json
 # Improve accessibility
 accessibility:
   high_contrast_mode: true
@@ -219,7 +219,7 @@ Create specialized variants for different use cases:
 
 ```bash
 # External presentation channel
-cat > org/acme/channels/external.yaml << EOF
+cat > org/acme/channels/external.json << EOF
 name: "External Presentations"
 description: "For client and public presentations"
 target_products: ["potx"]
@@ -314,12 +314,12 @@ mkdir -p org/acme/assets
 
 **"Asset file missing"**
 ```bash
-# Check asset paths in patches.yaml
+# Check asset paths in patches.json
 file org/acme/assets/logo.png
 ```
 
 **"Invalid color format"**
-```yaml
+```json
 # Use hex colors with # prefix
 primary_color: "#1E3A8A"  # Correct
 primary_color: "1E3A8A"   # Wrong
@@ -329,7 +329,7 @@ primary_color: "1E3A8A"   # Wrong
 
 **Logo not appearing:**
 - Verify PNG format and file size
-- Check asset path in patches.yaml
+- Check asset path in patches.json
 - Ensure transparency preserved
 
 **Colors not applying:**

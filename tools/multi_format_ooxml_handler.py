@@ -18,7 +18,6 @@ import tempfile
 import shutil
 import time
 
-from tools.yaml_ooxml_processor import YAMLPatchProcessor, RecoveryStrategy
 from tools.token_integration_layer import TokenIntegrationLayer, TokenScope, TokenContext
 
 # Import from split modules
@@ -60,8 +59,8 @@ class MultiFormatOOXMLHandler:
         self.format_processors = {}
         
         for format_type in OOXMLFormat:
-            # YAML patch processor for backward compatibility
-            processor = YAMLPatchProcessor(recovery_strategy)
+            # JSON patch processor for backward compatibility
+            processor = JSONPatchProcessor(recovery_strategy)
             processor.template_type = format_type.value
             self.processors[format_type] = processor
             
@@ -174,14 +173,14 @@ class MultiFormatOOXMLHandler:
         
         # Get format structure and processors
         structure = self.format_registry.get_structure(format_type)
-        yaml_processor = self.processors[format_type]
+        json_processor = self.processors[format_type]
         format_processor = self.format_processors[format_type]
         
         try:
             with zipfile.ZipFile(template_path, 'a') as zip_file:
                 # Process main document
                 main_doc_result = format_processor.process_zip_entry(
-                    zip_file, structure.main_document_path, patches, yaml_processor
+                    zip_file, structure.main_document_path, patches, json_processor
                 )
                 processed_files.append(structure.main_document_path)
                 errors.extend(main_doc_result.get('errors', []))
@@ -191,7 +190,7 @@ class MultiFormatOOXMLHandler:
                 for theme_path in structure.theme_paths:
                     if theme_path in zip_file.namelist():
                         theme_result = format_processor.process_zip_entry(
-                            zip_file, theme_path, patches, yaml_processor
+                            zip_file, theme_path, patches, json_processor
                         )
                         processed_files.append(theme_path)
                         errors.extend(theme_result.get('errors', []))
@@ -201,11 +200,35 @@ class MultiFormatOOXMLHandler:
                 for style_path in structure.style_paths:
                     if style_path in zip_file.namelist():
                         style_result = format_processor.process_zip_entry(
-                            zip_file, style_path, patches, yaml_processor
+                            zip_file, style_path, patches, json_processor
                         )
                         processed_files.append(style_path)
                         errors.extend(style_result.get('errors', []))
                         warnings.extend(style_result.get('warnings', []))
+                
+                # Process content files (e.g., slides, worksheets)
+                for content_pattern in structure.content_paths:
+                    if '*' in content_pattern:
+                        # Handle glob patterns like "ppt/slides/*.xml"
+                        import fnmatch
+                        matching_files = [f for f in zip_file.namelist() 
+                                        if fnmatch.fnmatch(f, content_pattern)]
+                        for content_path in matching_files:
+                            content_result = format_processor.process_zip_entry(
+                                zip_file, content_path, patches, json_processor
+                            )
+                            processed_files.append(content_path)
+                            errors.extend(content_result.get('errors', []))
+                            warnings.extend(content_result.get('warnings', []))
+                    else:
+                        # Handle exact file paths
+                        if content_pattern in zip_file.namelist():
+                            content_result = format_processor.process_zip_entry(
+                                zip_file, content_pattern, patches, json_processor
+                            )
+                            processed_files.append(content_pattern)
+                            errors.extend(content_result.get('errors', []))
+                            warnings.extend(content_result.get('warnings', []))
             
             # Compile statistics
             stats = format_processor.get_processing_statistics()

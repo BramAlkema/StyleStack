@@ -150,7 +150,7 @@ gh repo edit --description "StyleStack templates for Your Organization" \
 mkdir -p org/your-org/{assets,channels}
 
 # Create initial patches file
-cat > org/your-org/patches.yaml << EOF
+cat > org/your-org/patches.json << EOF
 organization:
   name: "Your Organization"
   short_name: "your-org"
@@ -197,8 +197,8 @@ ls -la BetterDefaults-your-org-present-*.potx
 
 ### Create Governance Configuration
 
-```yaml
-# org/your-org/governance.yaml
+```json
+# org/your-org/governance.json
 governance:
   # Approval requirements
   approvers:
@@ -215,7 +215,7 @@ governance:
   # Automatic approval for certain changes
   auto_approve:
     - "assets/*"              # Asset updates
-    - "channels/*.yaml"       # Channel modifications
+    - "channels/*.json"       # Channel modifications
   
   # Restricted changes requiring special approval
   restricted:
@@ -397,8 +397,8 @@ Configure who can:
 
 ### Versioning Strategy
 
-```yaml
-# .github/release-strategy.yaml
+```json
+# .github/release-strategy.json
 versioning:
   scheme: "semantic"        # major.minor.patch
   prefix: "v"              # v1.2.3

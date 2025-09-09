@@ -11,7 +11,7 @@ Transform StyleStack from hardcoded XPaths to a registry-based, variable-driven 
 ### 1.1 Selector Registry Schema
 **Priority:** P0 - Critical
 **Size:** M
-**Description:** Design and implement the selector registry YAML schema
+**Description:** Design and implement the selector registry JSON schema
 **Tasks:**
 - [ ] Define registry schema (namespaces, elements, attributes, paths)
 - [ ] Create JSON Schema validation for registry files
@@ -34,7 +34,7 @@ Transform StyleStack from hardcoded XPaths to a registry-based, variable-driven 
 **Size:** M
 **Description:** Load and validate selector registries
 **Tasks:**
-- [ ] Implement registry YAML loader
+- [ ] Implement registry JSON loader
 - [ ] Add schema validation on load
 - [ ] Create registry merger for layered configs
 - [ ] Add caching for compiled XPath expressions
@@ -245,7 +245,7 @@ Transform StyleStack from hardcoded XPaths to a registry-based, variable-driven 
 ## Dependencies
 
 - lxml for XPath evaluation
-- PyYAML for registry loading
+- JSON for registry loading
 - JSON Schema for validation
 - Existing token system must remain compatible
 

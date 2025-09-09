@@ -5,7 +5,7 @@ Provides atomic, reversible operations across the entire OOXML processing chain.
 Ensures data integrity through transactional semantics with rollback capabilities,
 operation batching, and comprehensive audit trails.
 
-Part of the StyleStack YAML-to-OOXML Processing Engine.
+Part of the StyleStack JSON-to-OOXML Processing Engine.
 """
 
 import logging
@@ -25,7 +25,6 @@ import json
 
 from tools.multi_format_ooxml_handler import MultiFormatOOXMLHandler, ProcessingResult, OOXMLFormat
 from tools.token_integration_layer import TokenIntegrationLayer, TokenScope, TokenContext
-from tools.yaml_ooxml_processor import YAMLPatchProcessor, PatchResult
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -420,8 +419,8 @@ class Transaction:
             original_files = {}
             modified_files = []
             
-            # Initialize YAML-OOXML processor for real XML processing
-            processor = YAMLPatchProcessor()
+            # Initialize JSON-OOXML processor for real XML processing
+            processor = JSONPatchProcessor()
             
             # Load the template file 
             if not Path(template_path).exists():

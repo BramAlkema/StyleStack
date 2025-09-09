@@ -48,14 +48,14 @@ Common issues and solutions for StyleStack's GitHub-native licensing system.
 **Solutions:**
 
 1. **Add proper permissions to workflow:**
-   ```yaml
+   ```json
    permissions:
      id-token: write  # Required for OIDC
      contents: write  # Required to save license
    ```
 
 2. **Check workflow context:**
-   ```yaml
+   ```json
    - name: Debug context
      run: |
        echo "GITHUB_ACTIONS: $GITHUB_ACTIONS"
@@ -129,7 +129,7 @@ Common issues and solutions for StyleStack's GitHub-native licensing system.
 **Cause:** Missing permissions or network issues.
 
 **Solution:**
-```yaml
+```json
 # Ensure proper permissions
 permissions:
   contents: read
@@ -142,7 +142,7 @@ permissions:
 **Cause:** Missing dependencies in workflow.
 
 **Solution:**
-```yaml
+```json
 - name: Install dependencies
   run: |
     pip install PyJWT cryptography requests
@@ -152,8 +152,8 @@ permissions:
 
 **Cause:** Malformed JSON in repository dispatch.
 
-**Solution:** Check workflow YAML syntax:
-```yaml
+**Solution:** Check workflow JSON syntax:
+```json
 client-payload: |
   {
     "requester": "${{ github.repository_owner }}",
@@ -195,7 +195,7 @@ client-payload: |
 **Cause:** No changes to commit or permission issues.
 
 **Solution:**
-```yaml
+```json
 - name: Commit with error handling
   run: |
     git add .github/licenses/*.enc || true
@@ -263,7 +263,7 @@ client-payload: |
 **Common solutions:**
 
 1. **Use repository secret:**
-   ```yaml
+   ```json
    # In repository settings → Secrets and variables → Actions
    # Create secret: STYLESTACK_LICENSE
    
@@ -274,14 +274,14 @@ client-payload: |
    ```
 
 2. **Use encrypted file (automatic):**
-   ```yaml
+   ```json
    # No environment variables needed
    - name: Build with encrypted license
      run: python build.py --org "your-org" --out template.potx
    ```
 
 3. **Check Actions logs:**
-   ```yaml
+   ```json
    - name: Debug license detection
      run: |
        python tools/github_license_manager.py validate --org "your-org"
@@ -298,7 +298,7 @@ client-payload: |
 **Solutions:**
 
 1. **Add timeout and retry:**
-   ```yaml
+   ```json
    - name: Request license with retry
      uses: nick-invision/retry@v2
      with:
@@ -309,7 +309,7 @@ client-payload: |
    ```
 
 2. **Use cached license:**
-   ```yaml
+   ```json
    - name: Cache license
      uses: actions/cache@v3
      with:
@@ -470,7 +470,7 @@ Additional Context:
 **Issue:** OIDC token validation fails during high traffic.
 
 **Workaround:**
-```yaml
+```json
 - name: Wait and retry
   run: |
     sleep $((RANDOM % 30 + 10))  # Random delay 10-40s

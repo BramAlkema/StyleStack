@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Office Shape Styles Definition with Complete OOXML Primitives -->
+<!-- This provides comprehensive shape styles that design tokens can patch against -->
+
+<!-- PowerPoint Shape with Complete Style Properties -->
+<p:sp xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"
+      xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+  
+  <!-- Shape Properties -->
+  <p:spPr>
+    <!-- Transform matrix for positioning and sizing -->
+    <a:xfrm>
+      <a:off x="{{shape.position.x}}" y="{{shape.position.y}}"/>
+      <a:ext cx="{{shape.size.width}}" cy="{{shape.size.height}}"/>
+    </a:xfrm>
+    
+    <!-- Predefined geometry - design tokens control shape type -->
+    <a:prstGeom prst="{{shape.geometry.preset}}">
+      <a:avLst>
+        <!-- Adjustment values for parametric shapes -->
+        <a:gd name="adj1" fmla="val {{shape.geometry.adjustment1}}"/>
+        <a:gd name="adj2" fmla="val {{shape.geometry.adjustment2}}"/>
+      </a:avLst>
+    </a:prstGeom>
+    
+    <!-- Fill Properties - design tokens control all fill aspects -->
+    <a:solidFill>
+      <a:srgbClr val="{{shape.fill.color}}">
+        <a:alpha val="{{shape.fill.transparency}}"/>
+        <a:tint val="{{shape.fill.tint}}"/>
+        <a:shade val="{{shape.fill.shade}}"/>
+      </a:srgbClr>
+    </a:solidFill>
+    
+    <!-- Alternative: Gradient Fill -->
+    <a:gradFill>
+      <a:gsLst>
+        <a:gs pos="0">
+          <a:srgbClr val="{{shape.gradient.start.color}}">
+            <a:alpha val="{{shape.gradient.start.alpha}}"/>
+          </a:srgbClr>
+        </a:gs>
+        <a:gs pos="100000">
+          <a:srgbClr val="{{shape.gradient.end.color}}">
+            <a:alpha val="{{shape.gradient.end.alpha}}"/>
+          </a:srgbClr>
+        </a:gs>
+      </a:gsLst>
+      <a:lin ang="{{shape.gradient.angle}}" scaled="0"/>
+    </a:gradFill>
+    
+    <!-- Line/Border Properties -->
+    <a:ln w="{{shape.border.width}}">
+      <a:solidFill>
+        <a:srgbClr val="{{shape.border.color}}"/>
+      </a:solidFill>
+      <a:prstDash val="{{shape.border.style}}"/>  <!-- solid, dash, dot, etc -->
+      <a:round/>  <!-- Line cap style -->
+    </a:ln>
+    
+    <!-- Shadow Effects -->
+    <a:effectLst>
+      <a:outerShdw blurRad="{{shape.shadow.blur}}" 
+                   dist="{{shape.shadow.distance}}" 
+                   dir="{{shape.shadow.angle}}">
+        <a:srgbClr val="{{shape.shadow.color}}">
+          <a:alpha val="{{shape.shadow.transparency}}"/>
+        </a:srgbClr>
+      </a:outerShdw>
+      
+      <!-- Glow Effect -->
+      <a:glow rad="{{shape.glow.radius}}">
+        <a:srgbClr val="{{shape.glow.color}}">
+          <a:alpha val="{{shape.glow.transparency}}"/>
+        </a:srgbClr>
+      </a:glow>
+      
+      <!-- Reflection Effect -->
+      <a:reflection blurRad="{{shape.reflection.blur}}" 
+                    stA="{{shape.reflection.start}}" 
+                    endA="{{shape.reflection.end}}" 
+                    endPos="{{shape.reflection.position}}"/>
+    </a:effectLst>
+    
+    <!-- 3D Properties -->
+    <a:scene3d>
+      <a:camera prst="{{shape.3d.camera.preset}}" 
+                fov="{{shape.3d.camera.fov}}">
+        <a:rot lat="{{shape.3d.camera.latitude}}" 
+               lon="{{shape.3d.camera.longitude}}" 
+               rev="{{shape.3d.camera.revolution}}"/>
+      </a:camera>
+      <a:lightRig rig="{{shape.3d.lighting.rig}}" dir="{{shape.3d.lighting.direction}}"/>
+    </a:scene3d>
+    
+    <a:sp3d extrusionH="{{shape.3d.extrusion.height}}" 
+            contourW="{{shape.3d.contour.width}}">
+      <a:bevelT w="{{shape.3d.bevel.top.width}}" h="{{shape.3d.bevel.top.height}}"/>
+      <a:bevelB w="{{shape.3d.bevel.bottom.width}}" h="{{shape.3d.bevel.bottom.height}}"/>
+      <a:extrusionClr>
+        <a:srgbClr val="{{shape.3d.extrusion.color}}"/>
+      </a:extrusionClr>
+      <a:contourClr>
+        <a:srgbClr val="{{shape.3d.contour.color}}"/>
+      </a:contourClr>
+    </a:sp3d>
+  </p:spPr>
+  
+  <!-- Shape Style Reference - links to theme-based quick styles -->
+  <p:style>
+    <a:lnRef idx="{{shape.style.line.index}}">
+      <a:schemeClr val="{{shape.style.line.scheme}}"/>
+    </a:lnRef>
+    <a:fillRef idx="{{shape.style.fill.index}}">
+      <a:schemeClr val="{{shape.style.fill.scheme}}"/>
+    </a:fillRef>
+    <a:effectRef idx="{{shape.style.effect.index}}">
+      <a:schemeClr val="{{shape.style.effect.scheme}}"/>
+    </a:effectRef>
+    <a:fontRef idx="{{shape.style.font.index}}">
+      <a:schemeClr val="{{shape.style.font.scheme}}"/>
+    </a:fontRef>
+  </p:style>
+  
+  <!-- Text Properties for Text Boxes and Shapes with Text -->
+  <p:txBody>
+    <a:bodyPr wrap="{{shape.text.wrap}}" 
+              lIns="{{shape.text.inset.left}}" 
+              tIns="{{shape.text.inset.top}}" 
+              rIns="{{shape.text.inset.right}}" 
+              bIns="{{shape.text.inset.bottom}}" 
+              anchor="{{shape.text.anchor}}" 
+              anchorCtr="{{shape.text.anchorCenter}}">
+      <a:autofit/>  <!-- Autofit text to shape -->
+    </a:bodyPr>
+    
+    <a:lstStyle>
+      <!-- List style for bulleted text in shapes -->
+      <a:lvl1pPr>
+        <a:defRPr sz="{{shape.text.font.size}}" b="{{shape.text.font.bold}}">
+          <a:solidFill>
+            <a:srgbClr val="{{shape.text.font.color}}"/>
+          </a:solidFill>
+          <a:latin typeface="{{shape.text.font.family}}"/>
+        </a:defRPr>
+      </a:lvl1pPr>
+    </a:lstStyle>
+    
+    <a:p>
+      <a:pPr algn="{{shape.text.alignment}}"/>
+      <a:r>
+        <a:rPr lang="{{shape.text.language}}" sz="{{shape.text.font.size}}" b="{{shape.text.font.bold}}">
+          <a:solidFill>
+            <a:srgbClr val="{{shape.text.font.color}}"/>
+          </a:solidFill>
+          <a:latin typeface="{{shape.text.font.family}}"/>
+        </a:rPr>
+        <a:t>{{content.shape.text}}</a:t>
+      </a:r>
+    </a:p>
+  </p:txBody>
+</p:sp>
+
+<!-- Word Drawing Shape (VML and DrawingML hybrid) -->
+<w:drawing xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+           xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing">
+  <wp:inline distT="{{shape.text.distance.top}}" 
+             distB="{{shape.text.distance.bottom}}" 
+             distL="{{shape.text.distance.left}}" 
+             distR="{{shape.text.distance.right}}">
+    
+    <wp:extent cx="{{shape.size.width}}" cy="{{shape.size.height}}"/>
+    <wp:effectExtent l="{{shape.effect.extent.left}}" 
+                     t="{{shape.effect.extent.top}}" 
+                     r="{{shape.effect.extent.right}}" 
+                     b="{{shape.effect.extent.bottom}}"/>
+    
+    <wp:docPr id="{{shape.id}}" name="{{shape.name}}"/>
+    
+    <wp:cNvGraphicFramePr>
+      <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1"/>
+    </wp:cNvGraphicFramePr>
+    
+    <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+      <a:graphicData uri="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+        <wps:wsp xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+          
+          <wps:cNvSpPr>
+            <a:cNvPr id="{{shape.id}}" name="{{shape.name}}"/>
+            <a:cNvSpPr/>
+          </wps:cNvSpPr>
+          
+          <wps:spPr>
+            <a:xfrm>
+              <a:off x="{{shape.position.x}}" y="{{shape.position.y}}"/>
+              <a:ext cx="{{shape.size.width}}" cy="{{shape.size.height}}"/>
+            </a:xfrm>
+            
+            <!-- Word-specific shape geometry -->
+            <a:prstGeom prst="{{shape.geometry.preset}}">
+              <a:avLst/>
+            </a:prstGeom>
+            
+            <!-- Fill properties -->
+            <a:solidFill>
+              <a:srgbClr val="{{shape.fill.color}}"/>
+            </a:solidFill>
+            
+            <!-- Border properties -->
+            <a:ln w="{{shape.border.width}}">
+              <a:solidFill>
+                <a:srgbClr val="{{shape.border.color}}"/>
+              </a:solidFill>
+            </a:ln>
+          </wps:spPr>
+          
+          <!-- Text body for Word shapes -->
+          <wps:txbx>
+            <w:txbxContent>
+              <w:p>
+                <w:pPr>
+                  <w:jc w:val="{{shape.text.alignment}}"/>
+                </w:pPr>
+                <w:r>
+                  <w:rPr>
+                    <w:rFonts w:ascii="{{shape.text.font.family}}" w:hAnsi="{{shape.text.font.family}}"/>
+                    <w:sz w:val="{{shape.text.font.size}}"/>
+                    <w:color w:val="{{shape.text.font.color}}"/>
+                  </w:rPr>
+                  <w:t>{{content.shape.text}}</w:t>
+                </w:r>
+              </w:p>
+            </w:txbxContent>
+          </wps:txbx>
+          
+          <wps:bodyPr rot="{{shape.text.rotation}}" 
+                      spcFirstLastPara="{{shape.text.spaceFirstLast}}" 
+                      vertOverflow="{{shape.text.verticalOverflow}}" 
+                      horzOverflow="{{shape.text.horizontalOverflow}}" 
+                      vert="{{shape.text.vertical}}" 
+                      wrap="{{shape.text.wrap}}" 
+                      lIns="{{shape.text.inset.left}}" 
+                      tIns="{{shape.text.inset.top}}" 
+                      rIns="{{shape.text.inset.right}}" 
+                      bIns="{{shape.text.inset.bottom}}" 
+                      anchor="{{shape.text.anchor}}"/>
+        </wps:wsp>
+      </a:graphicData>
+    </a:graphic>
+  </wp:inline>
+</w:drawing>
+
+<!-- Excel Shape (similar to PowerPoint but in worksheet context) -->
+<xdr:twoCellAnchor xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing"
+                   xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+                   editAs="{{shape.excel.editAs}}">
+  
+  <!-- Top-left anchor cell -->
+  <xdr:from>
+    <xdr:col>{{shape.anchor.from.col}}</xdr:col>
+    <xdr:colOff>{{shape.anchor.from.colOffset}}</xdr:colOff>
+    <xdr:row>{{shape.anchor.from.row}}</xdr:row>
+    <xdr:rowOff>{{shape.anchor.from.rowOffset}}</xdr:rowOff>
+  </xdr:from>
+  
+  <!-- Bottom-right anchor cell -->
+  <xdr:to>
+    <xdr:col>{{shape.anchor.to.col}}</xdr:col>
+    <xdr:colOff>{{shape.anchor.to.colOffset}}</xdr:colOff>
+    <xdr:row>{{shape.anchor.to.row}}</xdr:row>
+    <xdr:rowOff>{{shape.anchor.to.rowOffset}}</xdr:rowOff>
+  </xdr:to>
+  
+  <xdr:sp macro="{{shape.macro}}" textlink="{{shape.textlink}}">
+    <xdr:nvSpPr>
+      <xdr:cNvPr id="{{shape.id}}" name="{{shape.name}}"/>
+      <xdr:cNvSpPr/>
+    </xdr:nvSpPr>
+    
+    <xdr:spPr>
+      <!-- Excel shapes inherit same DrawingML structure -->
+      <a:prstGeom prst="{{shape.geometry.preset}}"/>
+      <a:solidFill>
+        <a:srgbClr val="{{shape.fill.color}}"/>
+      </a:solidFill>
+      <a:ln w="{{shape.border.width}}">
+        <a:solidFill>
+          <a:srgbClr val="{{shape.border.color}}"/>
+        </a:solidFill>
+      </a:ln>
+    </xdr:spPr>
+    
+    <!-- Text properties -->
+    <xdr:txBody>
+      <a:bodyPr vertOverflow="{{shape.text.verticalOverflow}}" 
+                horzOverflow="{{shape.text.horizontalOverflow}}" 
+                vert="{{shape.text.vertical}}" 
+                wrap="{{shape.text.wrap}}" 
+                anchor="{{shape.text.anchor}}"/>
+      
+      <a:lstStyle/>
+      
+      <a:p>
+        <a:pPr algn="{{shape.text.alignment}}"/>
+        <a:r>
+          <a:rPr lang="{{shape.text.language}}" sz="{{shape.text.font.size}}">
+            <a:solidFill>
+              <a:srgbClr val="{{shape.text.font.color}}"/>
+            </a:solidFill>
+            <a:latin typeface="{{shape.text.font.family}}"/>
+          </a:rPr>
+          <a:t>{{content.shape.text}}</a:t>
+        </a:r>
+      </a:p>
+    </xdr:txBody>
+  </xdr:sp>
+  
+  <xdr:clientData/>
+</xdr:twoCellAnchor>
+
+<!-- Common Shape Preset Geometries Available -->
+<!--
+  Rectangle: rect
+  Rounded Rectangle: roundRect  
+  Ellipse: ellipse
+  Diamond: diamond
+  Triangle: triangle
+  Pentagon: pentagon
+  Hexagon: hexagon
+  Octagon: octagon
+  Star 4-point: star4
+  Star 5-point: star5
+  Star 6-point: star6
+  Arrow Right: rightArrow
+  Arrow Left: leftArrow
+  Arrow Up: upArrow
+  Arrow Down: downArrow
+  Callout: wedgeRectCallout
+  Cloud: cloud
+  Heart: heart
+  Lightning: lightningBolt
+  Sun: sun
+  Moon: moon
+  Plus: plus
+  Minus: minus
+  Multiplication: multiply
+  Division: divide
+  Equal: equal
+  Not Equal: notEqual
+  Smiley Face: smileyFace
+  And many more...
+-->
+
+<!-- Quick Style Sets for Common Shape Categories -->
+
+<!-- Button Styles -->
+<QuickStyleSet category="buttons">
+  <Style name="PrimaryButton">
+    <fill>{{color.brand.primary}}</fill>
+    <border>{{color.brand.primary}}</border>
+    <text>{{color.text.inverse}}</text>
+    <font>{{typography.font.ui}}</font>
+    <effects>subtle</effects>
+  </Style>
+  
+  <Style name="SecondaryButton">
+    <fill>transparent</fill>
+    <border>{{color.brand.primary}}</border>
+    <text>{{color.brand.primary}}</text>
+    <font>{{typography.font.ui}}</font>
+    <effects>none</effects>
+  </Style>
+</QuickStyleSet>
+
+<!-- Diagram Styles -->
+<QuickStyleSet category="diagrams">
+  <Style name="ProcessBox">
+    <fill>{{color.neutral.100}}</fill>
+    <border>{{color.neutral.300}}</border>
+    <text>{{color.text.primary}}</text>
+    <font>{{typography.font.body}}</font>
+    <shadow>soft</shadow>
+  </Style>
+  
+  <Style name="DecisionDiamond">
+    <fill>{{color.warning.100}}</fill>
+    <border>{{color.warning.500}}</border>
+    <text>{{color.text.primary}}</text>
+    <font>{{typography.font.body}}</font>
+    <effects>none</effects>
+  </Style>
+</QuickStyleSet>
+
+<!-- Callout Styles -->
+<QuickStyleSet category="callouts">
+  <Style name="InfoCallout">
+    <fill>{{color.info.100}}</fill>
+    <border>{{color.info.500}}</border>
+    <text>{{color.info.900}}</text>
+    <font>{{typography.font.body}}</font>
+    <effects>glow</effects>
+  </Style>
+  
+  <Style name="WarningCallout">
+    <fill>{{color.warning.100}}</fill>
+    <border>{{color.warning.500}}</border>
+    <text>{{color.warning.900}}</text>
+    <font>{{typography.font.body}}</font>
+    <effects>shadow</effects>
+  </Style>
+</QuickStyleSet>
+
+<!-- SmartArt-Style Connector Lines -->
+<ConnectorStyle name="ProcessFlow">
+  <line>
+    <width>{{shape.connector.width}}</width>
+    <color>{{shape.connector.color}}</color>
+    <style>{{shape.connector.style}}</style>
+    <endArrow>{{shape.connector.endArrow}}</endArrow>
+    <startArrow>{{shape.connector.startArrow}}</startArrow>
+  </line>
+</ConnectorStyle>
+
+<!-- Design Token Controlled Shape Theme -->
+<ShapeTheme>
+  <!-- Theme colors that shapes can reference -->
+  <ThemeColors>
+    <accent1>{{color.brand.primary}}</accent1>
+    <accent2>{{color.brand.secondary}}</accent2>
+    <accent3>{{color.semantic.success}}</accent3>
+    <accent4>{{color.semantic.warning}}</accent4>
+    <accent5>{{color.semantic.error}}</accent5>
+    <accent6>{{color.semantic.info}}</accent6>
+    <hyperlink>{{color.link.primary}}</hyperlink>
+    <followedHyperlink>{{color.link.visited}}</followedHyperlink>
+  </ThemeColors>
+  
+  <!-- Theme fonts -->
+  <ThemeFonts>
+    <majorFont>{{typography.font.heading}}</majorFont>
+    <minorFont>{{typography.font.body}}</minorFont>
+  </ThemeFonts>
+  
+  <!-- Shape style matrix (combinations of fills, lines, effects) -->
+  <StyleMatrix>
+    <!-- Subtle styles -->
+    <StyleSet type="subtle" fillIndex="1" lineIndex="1" effectIndex="1"/>
+    <!-- Moderate styles -->  
+    <StyleSet type="moderate" fillIndex="2" lineIndex="2" effectIndex="2"/>
+    <!-- Intense styles -->
+    <StyleSet type="intense" fillIndex="3" lineIndex="3" effectIndex="3"/>
+  </StyleMatrix>
+</ShapeTheme>

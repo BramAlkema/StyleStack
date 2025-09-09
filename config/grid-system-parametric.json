@@ -1,0 +1,34 @@
+{
+  "$schema": "https://stylestack.dev/schemas/parametric-config.schema.json",
+  "constants": {
+    "emu_per_in": 914400,
+    "emu_per_cm": 360000
+  },
+  "slide": {
+    "w_in": 13.333333,
+    "h_in": 7.5,
+    "description": "Default 16:9 screen (1920px @ ~144 ppi)"
+  },
+  "safe": {
+    "inset_pct": 0.10,
+    "description": "10% inset on all sides"
+  },
+  "grid": {
+    "cols": 12,
+    "gutter_in": 0.166667,
+    "baseline_px": 32,
+    "description": "12-column grid with 1/6 inch gutter"
+  },
+  "formulas": {
+    "SLIDE_W": "emu_per_in * slide.w_in",
+    "SLIDE_H": "emu_per_in * slide.h_in", 
+    "SAFE_L": "SLIDE_W * safe.inset_pct",
+    "SAFE_T": "SLIDE_H * safe.inset_pct",
+    "SAFE_R": "SLIDE_W - SAFE_L",
+    "SAFE_B": "SLIDE_H - SAFE_T",
+    "SAFE_W": "SAFE_R - SAFE_L",
+    "SAFE_H": "SAFE_B - SAFE_T",
+    "COL_W": "SAFE_W / grid.cols",
+    "GUTTER_W": "emu_per_in * grid.gutter_in"
+  }
+}

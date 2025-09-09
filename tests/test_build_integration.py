@@ -4,7 +4,7 @@ StyleStack OOXML Extension Variable System - Build Integration Tests
 
 Comprehensive test suite for Phase 4.1: Build System Integration.
 Tests integration of extension variables with build.py CLI, backward compatibility
-with existing YAML patches, and org/channel variable override mechanisms.
+with existing JSON patches, and org/channel variable override mechanisms.
 
 Created: 2025-09-07
 Author: StyleStack Development Team  
@@ -18,7 +18,7 @@ import json
 import zipfile
 import xml.etree.ElementTree as ET
 import subprocess
-import yaml
+# import json  # Removed - now using JSON
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Tuple, Set
 
@@ -62,8 +62,8 @@ class TestBuildIntegration(unittest.TestCase):
           </a:themeElements>
         </a:theme>'''
         
-        # Sample YAML patch for backward compatibility testing
-        self.sample_yaml_patch = {
+        # Sample JSON patch for backward compatibility testing
+        self.sample_json_patch = {
             'targets': [
                 {
                     'file': 'ppt/theme/theme1.xml',
@@ -155,9 +155,9 @@ class TestCLIIntegration(TestBuildIntegration):
         output_path = Path(self.temp_dir) / 'output.potx'
         
         # Create token file
-        tokens_path = Path(self.temp_dir) / 'tokens.yaml'
+        tokens_path = Path(self.temp_dir) / 'tokens.json'
         with open(tokens_path, 'w') as f:
-            yaml.dump(self.sample_tokens, f)
+            json.dump(self.sample_tokens, f, indent=2)
             
         # Test CLI invocation
         result = subprocess.run([
@@ -201,9 +201,9 @@ class TestCLIIntegration(TestBuildIntegration):
             ]
         }
         
-        vars_path = Path(self.temp_dir) / 'extension_vars.yaml'
+        vars_path = Path(self.temp_dir) / 'extension_vars.json'
         with open(vars_path, 'w') as f:
-            yaml.dump(extension_vars, f)
+            json.dump(extension_vars, f, indent=2)
             
         # Test with new --extension-vars flag (to be implemented)
         # For now, test that the system handles it gracefully
@@ -233,9 +233,9 @@ class TestCLIIntegration(TestBuildIntegration):
             }
         }
         
-        org_path = Path(self.temp_dir) / 'org_acme.yaml'
+        org_path = Path(self.temp_dir) / 'org_acme.json'
         with open(org_path, 'w') as f:
-            yaml.dump(org_config, f)
+            json.dump(org_config, f, indent=2)
             
         channel_config = {
             'channel': 'present',
@@ -246,9 +246,9 @@ class TestCLIIntegration(TestBuildIntegration):
             }
         }
         
-        channel_path = Path(self.temp_dir) / 'channel_present.yaml'
+        channel_path = Path(self.temp_dir) / 'channel_present.json'
         with open(channel_path, 'w') as f:
-            yaml.dump(channel_config, f)
+            json.dump(channel_config, f, indent=2)
             
         # Test building multiple formats (simulated command structure)
         formats = ['potx', 'dotx', 'xltx']
@@ -284,12 +284,12 @@ class TestCLIIntegration(TestBuildIntegration):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('not found', result.stderr.lower())
         
-        # Test with invalid YAML tokens
+        # Test with invalid JSON tokens
         template_path = self.create_test_template('powerpoint')
-        invalid_tokens_path = Path(self.temp_dir) / 'invalid_tokens.yaml'
+        invalid_tokens_path = Path(self.temp_dir) / 'invalid_tokens.json'
         
         with open(invalid_tokens_path, 'w') as f:
-            f.write('invalid: yaml: content: [unclosed')
+            f.write('{"invalid": "json", "content": [unclosed}')
             
         result = subprocess.run([
             sys.executable, 'build.py', 
@@ -304,21 +304,21 @@ class TestCLIIntegration(TestBuildIntegration):
 
 
 class TestBackwardCompatibility(TestBuildIntegration):
-    """Test backward compatibility with existing YAML patches"""
+    """Test backward compatibility with existing JSON patches"""
     
-    def test_yaml_patch_compatibility(self):
-        """Test that existing YAML patches continue to work"""
+    def test_json_patch_compatibility(self):
+        """Test that existing JSON patches continue to work"""
         template_path = self.create_test_template('powerpoint')
         
-        # Create traditional YAML patch
-        patch_path = Path(self.temp_dir) / 'traditional_patch.yaml'
+        # Create traditional JSON patch
+        patch_path = Path(self.temp_dir) / 'traditional_patch.json'
         with open(patch_path, 'w') as f:
-            yaml.dump(self.sample_yaml_patch, f)
+            json.dump(self.sample_json_patch, f, indent=2)
             
         # Create tokens file
-        tokens_path = Path(self.temp_dir) / 'tokens.yaml'
+        tokens_path = Path(self.temp_dir) / 'tokens.json'
         with open(tokens_path, 'w') as f:
-            yaml.dump(self.sample_tokens, f)
+            json.dump(self.sample_tokens, f, indent=2)
             
         output_path = Path(self.temp_dir) / 'patched_output.potx'
         
@@ -341,13 +341,13 @@ class TestBackwardCompatibility(TestBuildIntegration):
             self.assertIn('FF0000', theme_content)  # Brand primary color
             self.assertIn('Arial Black', theme_content)  # Heading font
             
-        print("✅ YAML patch compatibility: traditional patches work correctly")
+        print("✅ JSON patch compatibility: traditional patches work correctly")
 
     def test_mixed_patch_and_extension_variables(self):
-        """Test mixing traditional YAML patches with extension variables"""
+        """Test mixing traditional JSON patches with extension variables"""
         template_path = self.create_test_template('powerpoint')
         
-        # Create YAML patch that doesn't conflict with extensions
+        # Create JSON patch that doesn't conflict with extensions
         non_conflicting_patch = {
             'targets': [
                 {
@@ -364,17 +364,17 @@ class TestBackwardCompatibility(TestBuildIntegration):
             ]
         }
         
-        patch_path = Path(self.temp_dir) / 'non_conflicting_patch.yaml'
+        patch_path = Path(self.temp_dir) / 'non_conflicting_patch.json'
         with open(patch_path, 'w') as f:
-            yaml.dump(non_conflicting_patch, f)
+            json.dump(non_conflicting_patch, f, indent=2)
             
         # Create tokens with accent color
         mixed_tokens = dict(self.sample_tokens)
         mixed_tokens['brand']['accent_color'] = {'value': 'FFAA00'}
         
-        tokens_path = Path(self.temp_dir) / 'mixed_tokens.yaml'
+        tokens_path = Path(self.temp_dir) / 'mixed_tokens.json'
         with open(tokens_path, 'w') as f:
-            yaml.dump(mixed_tokens, f)
+            json.dump(mixed_tokens, f, indent=2)
             
         output_path = Path(self.temp_dir) / 'mixed_output.potx'
         
@@ -394,7 +394,7 @@ class TestBackwardCompatibility(TestBuildIntegration):
             theme_content = zf.read('ppt/theme/theme1.xml').decode('utf-8')
             self.assertIn('FFAA00', theme_content)  # Patch-applied accent color
             
-        print("✅ Mixed compatibility: YAML patches and extension variables can coexist")
+        print("✅ Mixed compatibility: JSON patches and extension variables can coexist")
 
     def test_patch_precedence_rules(self):
         """Test precedence rules when patches conflict with extension variables"""
@@ -417,9 +417,9 @@ class TestBackwardCompatibility(TestBuildIntegration):
             ]
         }
         
-        patch_path = Path(self.temp_dir) / 'conflicting_patch.yaml'
+        patch_path = Path(self.temp_dir) / 'conflicting_patch.json'
         with open(patch_path, 'w') as f:
-            yaml.dump(conflicting_patch, f)
+            json.dump(conflicting_patch, f, indent=2)
             
         output_path = Path(self.temp_dir) / 'precedence_test.potx'
         
@@ -438,14 +438,14 @@ class TestBackwardCompatibility(TestBuildIntegration):
             theme_content = zf.read('ppt/theme/theme1.xml').decode('utf-8')
             self.assertIn('PATCH_COLOR', theme_content)
             
-        print("✅ Precedence rules: YAML patches currently take precedence (expected)")
+        print("✅ Precedence rules: JSON patches currently take precedence (expected)")
 
     def test_migration_utility_functionality(self):
-        """Test migration from YAML patches to extension variables"""
+        """Test migration from JSON patches to extension variables"""
         # This tests the concept - actual migration utility would be implemented separately
         
-        # Sample YAML patch to migrate
-        yaml_patch = {
+        # Sample JSON patch to migrate
+        json_patch = {
             'targets': [
                 {
                     'file': 'ppt/theme/theme1.xml',
@@ -487,7 +487,7 @@ class TestBackwardCompatibility(TestBuildIntegration):
         
         # Simple migration logic (proof of concept)
         migrated_vars = []
-        for target in yaml_patch.get('targets', []):
+        for target in json_patch.get('targets', []):
             for op in target.get('ops', []):
                 if 'set' in op:
                     set_op = op['set']
@@ -505,7 +505,7 @@ class TestBackwardCompatibility(TestBuildIntegration):
         self.assertTrue(all(var['type'] == 'color' for var in migrated_vars))
         self.assertTrue(all('accent' in var['xpath'] for var in migrated_vars))
         
-        print(f"✅ Migration utility: converted {len(migrated_vars)} YAML operations to extension variables")
+        print(f"✅ Migration utility: converted {len(migrated_vars)} JSON operations to extension variables")
 
     def _generate_var_id_from_xpath(self, xpath: str) -> str:
         """Helper to generate variable ID from XPath"""
@@ -547,9 +547,9 @@ class TestOrgChannelVariables(TestBuildIntegration):
             }
         }
         
-        core_path = Path(self.temp_dir) / 'core_tokens.yaml'
+        core_path = Path(self.temp_dir) / 'core_tokens.json'
         with open(core_path, 'w') as f:
-            yaml.dump(core_tokens, f)
+            json.dump(core_tokens, f, indent=2)
             
         # Create org override
         org_tokens = {
@@ -558,9 +558,9 @@ class TestOrgChannelVariables(TestBuildIntegration):
             }
         }
         
-        org_path = Path(self.temp_dir) / 'org_acme.yaml'
+        org_path = Path(self.temp_dir) / 'org_acme.json'
         with open(org_path, 'w') as f:
-            yaml.dump(org_tokens, f)
+            json.dump(org_tokens, f, indent=2)
             
         # Create patch to use tokens
         patch = {
@@ -579,9 +579,9 @@ class TestOrgChannelVariables(TestBuildIntegration):
             ]
         }
         
-        patch_path = Path(self.temp_dir) / 'color_patch.yaml'
+        patch_path = Path(self.temp_dir) / 'color_patch.json'
         with open(patch_path, 'w') as f:
-            yaml.dump(patch, f)
+            json.dump(patch, f, indent=2)
             
         output_path = Path(self.temp_dir) / 'org_override.potx'
         
@@ -629,16 +629,16 @@ class TestOrgChannelVariables(TestBuildIntegration):
         }
         
         # Write token files
-        core_path = Path(self.temp_dir) / 'core.yaml'
-        org_path = Path(self.temp_dir) / 'org.yaml'
-        channel_path = Path(self.temp_dir) / 'channel_present.yaml'
+        core_path = Path(self.temp_dir) / 'core.json'
+        org_path = Path(self.temp_dir) / 'org.json'
+        channel_path = Path(self.temp_dir) / 'channel_present.json'
         
         with open(core_path, 'w') as f:
-            yaml.dump(core_tokens, f)
+            json.dump(core_tokens, f, indent=2)
         with open(org_path, 'w') as f:
-            yaml.dump(org_tokens, f)
+            json.dump(org_tokens, f, indent=2)
         with open(channel_path, 'w') as f:
-            yaml.dump(channel_tokens, f)
+            json.dump(channel_tokens, f, indent=2)
             
         # Create patch using both tokens
         patch = {
@@ -663,9 +663,9 @@ class TestOrgChannelVariables(TestBuildIntegration):
             ]
         }
         
-        patch_path = Path(self.temp_dir) / 'channel_patch.yaml'
+        patch_path = Path(self.temp_dir) / 'channel_patch.json'
         with open(patch_path, 'w') as f:
-            yaml.dump(patch, f)
+            json.dump(patch, f, indent=2)
             
         output_path = Path(self.temp_dir) / 'channel_override.potx'
         
@@ -703,18 +703,18 @@ class TestOrgChannelVariables(TestBuildIntegration):
         
         # Write all token files
         token_files = {
-            'core.yaml': core_tokens,
-            'fork.yaml': fork_tokens,
-            'org.yaml': org_tokens,
-            'group.yaml': group_tokens,
-            'user.yaml': user_tokens
+            'core.json': core_tokens,
+            'fork.json': fork_tokens,
+            'org.json': org_tokens,
+            'group.json': group_tokens,
+            'user.json': user_tokens
         }
         
         token_paths = []
         for filename, tokens in token_files.items():
             path = Path(self.temp_dir) / filename
             with open(path, 'w') as f:
-                yaml.dump(tokens, f)
+                json.dump(tokens, f, indent=2)
             token_paths.append(str(path))
             
         # Create patch testing hierarchy
@@ -746,9 +746,9 @@ class TestOrgChannelVariables(TestBuildIntegration):
             ]
         }
         
-        patch_path = Path(self.temp_dir) / 'hierarchy_patch.yaml'
+        patch_path = Path(self.temp_dir) / 'hierarchy_patch.json'
         with open(patch_path, 'w') as f:
-            yaml.dump(patch, f)
+            json.dump(patch, f, indent=2)
             
         output_path = Path(self.temp_dir) / 'hierarchy_test.potx'
         
@@ -825,19 +825,19 @@ class TestIntegrationPipeline(TestBuildIntegration):
         }
         
         # Write configuration files
-        config_path = Path(self.temp_dir) / 'build_config.yaml'
-        core_path = Path(self.temp_dir) / 'core.yaml'
-        org_path = Path(self.temp_dir) / 'org_acme.yaml'
-        channel_path = Path(self.temp_dir) / 'channel_present.yaml'
+        config_path = Path(self.temp_dir) / 'build_config.json'
+        core_path = Path(self.temp_dir) / 'core.json'
+        org_path = Path(self.temp_dir) / 'org_acme.json'
+        channel_path = Path(self.temp_dir) / 'channel_present.json'
         
         with open(config_path, 'w') as f:
-            yaml.dump(build_config, f)
+            json.dump(build_config, f, indent=2)
         with open(core_path, 'w') as f:
-            yaml.dump(core_tokens, f)
+            json.dump(core_tokens, f, indent=2)
         with open(org_path, 'w') as f:
-            yaml.dump(org_tokens, f)
+            json.dump(org_tokens, f, indent=2)
         with open(channel_path, 'w') as f:
-            yaml.dump(channel_tokens, f)
+            json.dump(channel_tokens, f, indent=2)
             
         # Create comprehensive patch
         comprehensive_patch = {
@@ -874,9 +874,9 @@ class TestIntegrationPipeline(TestBuildIntegration):
             ]
         }
         
-        patch_path = Path(self.temp_dir) / 'comprehensive.yaml'
+        patch_path = Path(self.temp_dir) / 'comprehensive.json'
         with open(patch_path, 'w') as f:
-            yaml.dump(comprehensive_patch, f)
+            json.dump(comprehensive_patch, f, indent=2)
             
         # Execute end-to-end build
         output_path = Path(self.temp_dir) / 'acme_present_v1.0.0.potx'
@@ -920,9 +920,9 @@ class TestIntegrationPipeline(TestBuildIntegration):
             tokens[f'color{i}'] = {'value': f'{i:06X}'}
             tokens[f'font{i}'] = {'value': f'Font{i}'}
             
-        tokens_path = Path(self.temp_dir) / 'performance_tokens.yaml'
+        tokens_path = Path(self.temp_dir) / 'performance_tokens.json'
         with open(tokens_path, 'w') as f:
-            yaml.dump(tokens, f)
+            json.dump(tokens, f, indent=2)
             
         # Create patch with many operations
         patch = {'targets': [{'file': 'ppt/theme/theme1.xml', 'ops': []}]}
@@ -936,9 +936,9 @@ class TestIntegrationPipeline(TestBuildIntegration):
                 }
             })
             
-        patch_path = Path(self.temp_dir) / 'performance_patch.yaml'
+        patch_path = Path(self.temp_dir) / 'performance_patch.json'
         with open(patch_path, 'w') as f:
-            yaml.dump(patch, f)
+            json.dump(patch, f, indent=2)
             
         output_path = Path(self.temp_dir) / 'performance_test.potx'
         

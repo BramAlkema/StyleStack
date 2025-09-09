@@ -20,7 +20,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools"))
 
 from tools.multi_format_ooxml_handler import MultiFormatOOXMLHandler
 from tools.transaction_pipeline import TransactionPipeline
-from tools.yaml_ooxml_processor import YAMLPatchProcessor
 
 # Configure logging for tests
 logging.basicConfig(
@@ -114,9 +113,9 @@ def transaction_pipeline():
     return TransactionPipeline(enable_audit_trail=True)
 
 @pytest.fixture(scope="function")
-def yaml_processor():
-    """Provide a fresh YAMLPatchProcessor for each test."""
-    return YAMLPatchProcessor()
+def json_processor():
+    """Provide a fresh JSONPatchProcessor for each test."""
+    return JSONPatchProcessor()
 
 @pytest.fixture(scope="function")
 def template_factory(temp_workspace, templates_available):
@@ -136,8 +135,8 @@ def template_factory(temp_workspace, templates_available):
     return create_template_copy
 
 @pytest.fixture(scope="function")
-def sample_yaml_patches():
-    """Provide sample YAML patches for testing."""
+def sample_json_patches():
+    """Provide sample JSON patches for testing."""
     return {
         "powerpoint": [
             {

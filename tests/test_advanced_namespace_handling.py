@@ -2,7 +2,7 @@
 """
 Advanced Namespace Handling Integration Tests
 
-Tests the advanced namespace handling features integrated into the YAML-OOXML processor,
+Tests the advanced namespace handling features integrated into the JSON-OOXML processor,
 including collision resolution, custom declarations, namespace inheritance, and 
 cross-format namespace migration.
 
@@ -15,8 +15,6 @@ import tempfile
 import os
 from lxml import etree
 
-from tools.yaml_ooxml_processor import YAMLPatchProcessor, RecoveryStrategy
-from tools.yaml_ooxml_processor import PatchError
 
 
 class TestAdvancedNamespaceHandling(unittest.TestCase):
@@ -24,7 +22,7 @@ class TestAdvancedNamespaceHandling(unittest.TestCase):
     
     def setUp(self):
         """Set up test fixtures."""
-        self.processor = YAMLPatchProcessor(
+        self.processor = JSONPatchProcessor(
             recovery_strategy=RecoveryStrategy.RETRY_WITH_FALLBACK
         )
         

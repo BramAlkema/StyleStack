@@ -19,7 +19,7 @@ StyleStack's CI/CD pipeline automates:
 
 ### Basic Workflow Configuration
 
-```yaml
+```json
 # .github/workflows/build-templates.yml
 name: Build and Test Templates
 
@@ -141,8 +141,8 @@ jobs:
       - name: Check if channel exists
         id: channel-check
         run: |
-          if [ -f "org/${{ matrix.org }}/channels/${{ matrix.channel }}.yaml" ] || \
-             [ -f "channels/${{ matrix.channel }}.yaml" ]; then
+          if [ -f "org/${{ matrix.org }}/channels/${{ matrix.channel }}.json" ] || \
+             [ -f "channels/${{ matrix.channel }}.json" ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
@@ -292,7 +292,7 @@ gh secret set ANALYTICS_TOKEN     # Usage analytics
 
 ### Multi-Environment Deployment
 
-```yaml
+```json
 # .github/workflows/deploy-environments.yml
 name: Multi-Environment Deployment
 
@@ -339,7 +339,7 @@ jobs:
 
 ### Performance Testing
 
-```yaml
+```json
 # Performance and load testing
 performance-tests:
   runs-on: ubuntu-latest
@@ -368,7 +368,7 @@ performance-tests:
 
 ### Automated Documentation
 
-```yaml
+```json
 # Documentation generation and updates
 update-docs:
   runs-on: ubuntu-latest
@@ -395,7 +395,7 @@ update-docs:
 
 ### Azure DevOps Setup
 
-```yaml
+```json
 # azure-pipelines.yml
 trigger:
   branches:
@@ -459,7 +459,7 @@ stages:
 
 ### GitLab CI Setup
 
-```yaml
+```json
 # .gitlab-ci.yml
 stages:
   - validate
@@ -652,13 +652,13 @@ class PreBuildValidator:
         
     def validate_organization_config(self):
         """Validate organization configuration files"""
-        config_path = f"org/{self.org}/patches.yaml"
+        config_path = f"org/{self.org}/patches.json"
         if not os.path.exists(config_path):
             self.errors.append(f"Missing organization config: {config_path}")
             return
             
         with open(config_path) as f:
-            config = yaml.safe_load(f)
+            config = json.safe_load(f)
             
         required_fields = ['organization.name', 'branding.primary_color', 'fonts.heading']
         for field in required_fields:
@@ -919,7 +919,7 @@ python tools/debug-validation.py --org your-org --template presentation.potx
 ```
 
 **Issue: "Out of memory during build"**
-```yaml
+```json
 # Increase GitHub Actions memory
 jobs:
   build:
@@ -938,7 +938,7 @@ def deploy_with_retry():
 
 ### Performance Optimization
 
-```yaml
+```json
 # Optimize build performance
 optimization_strategies:
   - "Use build caching for dependencies"

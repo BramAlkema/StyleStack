@@ -2,10 +2,10 @@
 Patch Execution Engine
 
 This module provides the core execution engine that orchestrates the application
-of YAML patches to OOXML documents. It coordinates between the YAML parser and
+of JSON patches to OOXML documents. It coordinates between the JSON parser and
 patch processor, handles sequencing, dependencies, and execution context.
 
-Part of the StyleStack YAML-to-OOXML Processing Engine.
+Part of the StyleStack JSON-to-OOXML Processing Engine.
 """
 
 from typing import Dict, List, Any, Optional, Union, Callable
@@ -17,8 +17,9 @@ from copy import deepcopy
 import time
 
 from lxml import etree
-from .yaml_patch_parser import YAMLPatchParser, ParseResult, ValidationLevel
-from .yaml_ooxml_processor import YAMLPatchProcessor, PatchResult
+from .json_patch_parser import JSONPatchParser, ParsedPatch, ValidationLevel, PatchTarget
+from .core.types import PatchResult
+from .ooxml_processor import OOXMLProcessor as PatchProcessor
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -80,7 +81,7 @@ class BatchExecutionResult:
 
 class PatchExecutionEngine:
     """
-    Core execution engine for applying YAML patches to OOXML documents.
+    Core execution engine for applying JSON patches to OOXML documents.
     
     Features:
     - Sequential patch application with dependency resolution
@@ -93,8 +94,8 @@ class PatchExecutionEngine:
     
     def __init__(self, validation_level: ValidationLevel = ValidationLevel.LENIENT):
         """Initialize the execution engine."""
-        self.parser = YAMLPatchParser(validation_level)
-        self.processor = YAMLPatchProcessor()
+        self.parser = JSONPatchParser(validation_level)
+        self.processor = PatchProcessor()
         self.validation_level = validation_level
         
         # Execution callbacks
@@ -116,10 +117,10 @@ class PatchExecutionEngine:
                           mode: ExecutionMode = ExecutionMode.NORMAL,
                           context: Optional[ExecutionContext] = None) -> ExecutionResult:
         """
-        Execute a YAML patch file against an OOXML document.
+        Execute a JSON patch file against an OOXML document.
         
         Args:
-            patch_file: Path to the YAML patch file
+            patch_file: Path to the JSON patch file
             xml_document: Target OOXML document element
             mode: Execution mode (normal, dry_run, validate_only)
             context: Shared execution context (optional)
@@ -142,7 +143,7 @@ class PatchExecutionEngine:
             logger.info(f"Parsing patch file: {patch_file}")
             parse_result = self.parser.parse_file(patch_file)
             
-            if not parse_result.success:
+            if parse_result.errors:
                 errors.extend([error.message for error in parse_result.errors])
                 warnings.extend([warning.message for warning in parse_result.warnings])
                 return self._create_failed_result(xml_document, context, errors, warnings, time.time() - start_time, mode == ExecutionMode.DRY_RUN)
@@ -154,7 +155,7 @@ class PatchExecutionEngine:
             self._update_context_from_metadata(context, parse_result)
             
             # Apply additional variable substitution from shared context
-            patches = self._resolve_context_variables(parse_result.patches, context)
+            patches = self._resolve_context_variables(parse_result.targets, context)
             
             # Execute patches
             return self._execute_patches(
@@ -178,10 +179,10 @@ class PatchExecutionEngine:
                              mode: ExecutionMode = ExecutionMode.NORMAL,
                              context: Optional[ExecutionContext] = None) -> ExecutionResult:
         """
-        Execute YAML patch content against an OOXML document.
+        Execute JSON patch content against an OOXML document.
         
         Args:
-            patch_content: YAML patch content as string
+            patch_content: JSON patch content as string
             xml_document: Target OOXML document element
             mode: Execution mode (normal, dry_run, validate_only)
             context: Shared execution context (optional)
@@ -204,7 +205,7 @@ class PatchExecutionEngine:
             logger.info("Parsing patch content")
             parse_result = self.parser.parse_content(patch_content)
             
-            if not parse_result.success:
+            if parse_result.errors:
                 errors.extend([error.message for error in parse_result.errors])
                 warnings.extend([warning.message for warning in parse_result.warnings])
                 return self._create_failed_result(xml_document, context, errors, warnings, time.time() - start_time, mode == ExecutionMode.DRY_RUN)
@@ -216,7 +217,7 @@ class PatchExecutionEngine:
             self._update_context_from_metadata(context, parse_result)
             
             # Apply additional variable substitution from shared context
-            patches = self._resolve_context_variables(parse_result.patches, context)
+            patches = self._resolve_context_variables(parse_result.targets, context)
             
             # Execute patches
             return self._execute_patches(
@@ -450,26 +451,26 @@ class PatchExecutionEngine:
             dry_run=False
         )
     
-    def _update_context_from_metadata(self, context: ExecutionContext, parse_result: ParseResult) -> None:
+    def _update_context_from_metadata(self, context: ExecutionContext, parse_result: ParsedPatch) -> None:
         """Update execution context with metadata from parsed patches."""
         if parse_result.metadata:
             # Add metadata variables to context
-            if parse_result.metadata.variables:
-                context.variables.update(parse_result.metadata.variables)
+            if 'variables' in parse_result.metadata:
+                context.variables.update(parse_result.metadata['variables'])
             
             # Store metadata for reference
             context.metadata.update({
-                'version': parse_result.metadata.version,
-                'description': parse_result.metadata.description,
-                'author': parse_result.metadata.author,
-                'target_formats': parse_result.metadata.target_formats,
-                'dependencies': parse_result.metadata.dependencies
+                'version': parse_result.metadata.get('version'),
+                'description': parse_result.metadata.get('description'),
+                'author': parse_result.metadata.get('author'),
+                'target_formats': parse_result.metadata.get('target_formats'),
+                'dependencies': parse_result.metadata.get('dependencies')
             })
     
-    def _resolve_context_variables(self, patches: List[Dict[str, Any]], context: ExecutionContext) -> List[Dict[str, Any]]:
+    def _resolve_context_variables(self, targets: List[PatchTarget], context: ExecutionContext) -> List[PatchTarget]:
         """Apply variable substitution from execution context to patches."""
         if not context.variables:
-            return patches
+            return targets
         
         try:
             import re
@@ -578,7 +579,7 @@ def execute_patch_file(patch_file: Union[str, Path],
     Execute a patch file against an OOXML document.
     
     Args:
-        patch_file: Path to the YAML patch file
+        patch_file: Path to the JSON patch file
         xml_document: Target OOXML document element
         mode: Execution mode
         validation_level: Validation strictness level
@@ -598,7 +599,7 @@ def execute_patch_content(patch_content: str,
     Execute patch content against an OOXML document.
     
     Args:
-        patch_content: YAML patch content as string
+        patch_content: JSON patch content as string
         xml_document: Target OOXML document element
         mode: Execution mode
         validation_level: Validation strictness level

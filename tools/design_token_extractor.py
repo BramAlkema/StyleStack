@@ -965,7 +965,7 @@ class DesignTokenExtractor:
         
         Args:
             pptx_path: Input PowerPoint file
-            output_path: Output YAML/JSON file (optional)
+            output_path: Output JSON/JSON file (optional)
             extract_assets: Whether to extract image files
             assets_dir: Directory to save extracted images (optional)
             
@@ -984,10 +984,10 @@ class DesignTokenExtractor:
         
         if output_path:
             # Determine format from extension
-            if output_path.suffix.lower() in ['.yaml', '.yml']:
-                import yaml
+            if output_path.suffix.lower() in ['.json', '.yml']:
+                import json
                 with open(output_path, 'w') as f:
-                    yaml.dump(tokens, f, indent=2, default_flow_style=False)
+                    json.dump(tokens, f, indent=2, default_flow_style=False)
             else:
                 with open(output_path, 'w') as f:
                     json.dump(tokens, f, indent=2)
@@ -1127,7 +1127,7 @@ if __name__ == '__main__':
     
     parser = argparse.ArgumentParser(description='Extract design tokens from Office and OpenOffice files')
     parser.add_argument('input', help='Input Office file (.pptx/.potx/.ppsx/.odp/.otp/.ods/.ots/.odt/.ott)')
-    parser.add_argument('--output', '-o', help='Output YAML/JSON file')
+    parser.add_argument('--output', '-o', help='Output JSON/JSON file')
     parser.add_argument('--format', choices=['stylestack', 'w3c', 'figma'], 
                        default='stylestack', help='Output format')
     parser.add_argument('--analyze', '-a', action='store_true', 

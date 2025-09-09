@@ -17,7 +17,7 @@ StyleStack uses a fork-first distribution model designed for institutions that n
 ### Development Tools (Optional)
 ```bash
 # Install development dependencies
-pip install python-pptx python-docx openpyxl lxml pyyaml
+pip install python-pptx python-docx openpyxl lxml
 ```
 
 ## Fork-First Installation
@@ -72,7 +72,7 @@ Your fork will have this structure:
 stylestack-your-org/
 ├─ core/                   # Community baseline (don't modify)
 ├─ org/your-org/          # Your customizations
-│  ├─ patches.yaml        # YAML-based overrides
+│  ├─ patches.json        # JSON-based overrides
 │  ├─ assets/            # Brand assets (logos, etc.)
 │  └─ channels/          # Custom channel variants
 ├─ build.py              # Build orchestrator
@@ -87,7 +87,7 @@ mkdir -p org/your-org/assets
 mkdir -p org/your-org/channels
 
 # Initialize basic configuration
-cat > org/your-org/patches.yaml << EOF
+cat > org/your-org/patches.json << EOF
 organization:
   name: "Your Organization"
   short_name: "your-org"
@@ -120,9 +120,9 @@ file org/your-org/assets/*
 
 ## Configuration Options
 
-### patches.yaml Structure
+### patches.json Structure
 
-```yaml
+```json
 organization:
   name: "University of Example"
   short_name: "uoe"
@@ -163,7 +163,7 @@ Create custom channels for different use cases:
 
 ```bash
 # Academic presentation channel
-cat > org/your-org/channels/academic.yaml << EOF
+cat > org/your-org/channels/academic.json << EOF
 name: "Academic Presentations"
 description: "For research presentations and lectures"
 target_products: ["potx"]

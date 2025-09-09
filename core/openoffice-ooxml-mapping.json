@@ -1,0 +1,93 @@
+{
+  "fonts": {
+    "primary": "Liberation Sans",
+    "fallbacks": [
+      "Noto Sans",
+      "Arial",
+      "Helvetica"
+    ],
+    "families": {
+      "serif": "Liberation Serif",
+      "monospace": "Liberation Mono",
+      "unicode": "Arial Unicode MS"
+    }
+  },
+  "colors": {
+    "theme": {
+      "dark1": "#000000",
+      "light1": "#ffffff",
+      "dark2": "#000000",
+      "light2": "#ffffff",
+      "accent1": "#18a303",
+      "accent2": "#0369a3",
+      "accent3": "#a33e03",
+      "accent4": "#8e03a3",
+      "accent5": "#c99c00",
+      "accent6": "#c9211e",
+      "hyperlink": "#0000ee",
+      "followed_hyperlink": "#551a8b"
+    },
+    "status": {
+      "good": "#ccffcc",
+      "good_text": "#006600",
+      "neutral": "#ffffcc",
+      "neutral_text": "#996600",
+      "bad": "#ffcccc",
+      "bad_text": "#cc0000",
+      "error": "#cc0000",
+      "error_text": "#ffffff"
+    }
+  },
+  "typography": {
+    "sizes": {
+      "body": 20,
+      "heading1": 36,
+      "heading2": 24,
+      "heading": 48,
+      "caption": 20,
+      "footnote": 16
+    },
+    "line_heights": {
+      "body": 17,
+      "heading1": 34,
+      "heading2": 17,
+      "heading": 34
+    }
+  },
+  "powerpoint": {
+    "slide_sizes": {
+      "a4_portrait": {
+        "width": 7772400,
+        "height": 10986120
+      }
+    }
+  },
+  "excel": {
+    "row_height": 12.75,
+    "default_font_size": 10,
+    "styles": {
+      "default": "Liberation Sans 10pt",
+      "heading": "Liberation Sans 24pt Bold",
+      "heading1": "Liberation Sans 18pt Bold",
+      "heading2": "Liberation Sans 12pt Bold",
+      "text": "Liberation Sans 10pt",
+      "note": "Liberation Sans 10pt on #ffffcc",
+      "hyperlink": "Liberation Sans 10pt Blue Underline"
+    }
+  },
+  "word": {
+    "styles": {
+      "standard": "Liberation Sans 12pt",
+      "heading": "Liberation Sans 14pt Bold",
+      "text_body": "Liberation Sans 12pt",
+      "list": "Liberation Sans 12pt",
+      "caption": "Liberation Sans 12pt Italic"
+    },
+    "margins": {
+      "top": 85,
+      "bottom": 85,
+      "left": 68,
+      "right": 68
+    }
+  }
+}

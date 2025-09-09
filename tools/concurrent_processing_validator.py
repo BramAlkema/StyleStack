@@ -4,7 +4,7 @@ StyleStack Concurrent Processing Validator
 
 Thread-safety validation and concurrent processing optimization system.
 Provides comprehensive testing, validation, and optimization for thread-safe
-operations in the YAML-to-OOXML processing pipeline.
+operations in the JSON-to-OOXML processing pipeline.
 """
 
 import threading
@@ -28,12 +28,12 @@ import json
 
 # Import StyleStack components
 try:
-    from .yaml_ooxml_processor import YAMLPatchProcessor
+    from .json_ooxml_processor import JSONPatchProcessor
     from .advanced_cache_system import CacheManager
     from .memory_optimizer import MemoryManager, ConcurrentMemoryManager
     from .performance_profiler import PerformanceProfiler
 except ImportError:
-    from yaml_ooxml_processor import YAMLPatchProcessor
+    from json_ooxml_processor import JSONPatchProcessor
     from advanced_cache_system import CacheManager
     from memory_optimizer import MemoryManager, ConcurrentMemoryManager
     from performance_profiler import PerformanceProfiler
@@ -383,14 +383,14 @@ class ConcurrentProcessingValidator:
         """Register a component for testing."""
         self.test_components[name] = component
     
-    def validate_yaml_processor_thread_safety(self, 
+    def validate_json_processor_thread_safety(self, 
                                             thread_count: int = 4,
                                             iterations_per_thread: int = 100) -> ConcurrentTestResult:
-        """Validate thread safety of YAML processor."""
-        logger.info(f"Testing YAML processor thread safety with {thread_count} threads, {iterations_per_thread} iterations each")
+        """Validate thread safety of JSON processor."""
+        logger.info(f"Testing JSON processor thread safety with {thread_count} threads, {iterations_per_thread} iterations each")
         
         # Create test processor
-        processor = YAMLPatchProcessor()
+        processor = JSONPatchProcessor()
         
         # Test data
         test_patches = [
@@ -475,7 +475,7 @@ class ConcurrentProcessingValidator:
         
         # Create test result
         test_result = ConcurrentTestResult(
-            test_name="yaml_processor_thread_safety",
+            test_name="json_processor_thread_safety",
             success=len(all_errors) == 0 and len(race_conditions) == 0 and len(deadlocks) == 0,
             thread_count=thread_count,
             iterations=thread_count * iterations_per_thread,
@@ -602,7 +602,7 @@ class ConcurrentProcessingValidator:
         self.metrics = ThreadSafetyMetrics()
         
         # Run individual validation tests
-        yaml_result = self.validate_yaml_processor_thread_safety(thread_count=4, iterations_per_thread=50)
+        json_result = self.validate_json_processor_thread_safety(thread_count=4, iterations_per_thread=50)
         cache_result = self.validate_cache_manager_concurrency(thread_count=6, operations_per_thread=100)
         
         # Additional tests could be added here:

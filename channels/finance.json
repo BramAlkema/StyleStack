@@ -1,0 +1,66 @@
+{
+  "$schema": "https://stylestack.dev/schemas/channel-config.schema.json",
+  "metadata": {
+    "channel": "finance",
+    "description": "Finance and accounting template optimizations",
+    "version": "1.0.0"
+  },
+  "targets": [
+    {
+      "file": "xl/styles.xml",
+      "ns": {
+        "x": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+      },
+      "ops": [
+        {
+          "insert": {
+            "xpath": "//x:numFmts",
+            "position": "last",
+            "xml": "<x:numFmt numFmtId=\"164\" formatCode=\"_(&quot;$&quot;* #,##0.00_);_(&quot;$&quot;* \\(#,##0.00\\);_(&quot;$&quot;* &quot;-&quot;??_);_(@_)\"/>\n<x:numFmt numFmtId=\"165\" formatCode=\"0.00%\"/>\n<x:numFmt numFmtId=\"166\" formatCode=\"m/d/yyyy\"/>\n"
+          }
+        }
+      ]
+    },
+    {
+      "file": "ppt/theme/theme1.xml",
+      "ns": {
+        "a": "http://schemas.openxmlformats.org/drawingml/2006/main"
+      },
+      "ops": [
+        {
+          "set": {
+            "xpath": "//a:accent1/a:srgbClr/@val",
+            "value": "1F4E79"
+          }
+        },
+        {
+          "set": {
+            "xpath": "//a:accent2/a:srgbClr/@val",
+            "value": "70AD47"
+          }
+        },
+        {
+          "set": {
+            "xpath": "//a:accent3/a:srgbClr/@val",
+            "value": "E15759"
+          }
+        }
+      ]
+    },
+    {
+      "file": "word/styles.xml",
+      "ns": {
+        "w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+      },
+      "ops": [
+        {
+          "insert": {
+            "xpath": "//w:styles",
+            "position": "last",
+            "xml": "<w:style w:type=\"table\" w:styleId=\"FinancialTable\">\n  <w:name w:val=\"Financial Table\"/>\n  <w:basedOn w:val=\"TableNormal\"/>\n  <w:tblPr>\n    <w:tblBorders>\n      <w:top w:val=\"single\" w:sz=\"4\" w:space=\"0\" w:color=\"1F4E79\"/>\n      <w:bottom w:val=\"single\" w:sz=\"4\" w:space=\"0\" w:color=\"1F4E79\"/>\n    </w:tblBorders>\n    <w:tblCellMar>\n      <w:top w:w=\"108\" w:type=\"dxa\"/>\n      <w:bottom w:w=\"108\" w:type=\"dxa\"/>\n    </w:tblCellMar>\n  </w:tblPr>\n  <w:tcPr>\n    <w:tcBorders>\n      <w:right w:val=\"single\" w:sz=\"2\" w:space=\"0\" w:color=\"CCCCCC\"/>\n    </w:tcBorders>\n  </w:tcPr>\n  <w:rPr>\n    <w:rFonts w:ascii=\"Calibri\" w:hAnsi=\"Calibri\"/>\n    <w:sz w:val=\"20\"/>\n  </w:rPr>\n</w:style>"
+          }
+        }
+      ]
+    }
+  ]
+}

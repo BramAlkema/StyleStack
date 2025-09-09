@@ -3,7 +3,6 @@
 Grid System Generator - Converts parametric grid config to exact EMU values
 """
 
-import yaml
 from typing import Dict, List, Tuple, Any
 from dataclasses import dataclass
 
@@ -46,9 +45,9 @@ class GridConfig:
 class GridGenerator:
     """Generate exact EMU values from parametric grid configuration"""
     
-    def __init__(self, config_path: str = 'config/grid-system-parametric.yaml'):
+    def __init__(self, config_path: str = 'config/grid-system-parametric.json'):
         with open(config_path, 'r') as f:
-            self.config = yaml.safe_load(f)
+            self.config = json.safe_load(f)
         self.grid = GridConfig()
         self._resolve_formulas()
     
@@ -162,7 +161,7 @@ class GridGenerator:
         
         return resolved
     
-    def export_resolved_config(self, output_path: str = 'config/grid-system-resolved.yaml'):
+    def export_resolved_config(self, output_path: str = 'config/grid-system-resolved.json'):
         """Export resolved configuration with exact EMU values"""
         resolved = {
             'master': {
@@ -193,7 +192,7 @@ class GridGenerator:
             resolved['layouts'][layout_name] = self.resolve_layout(layout_name)
         
         with open(output_path, 'w') as f:
-            yaml.dump(resolved, f, default_flow_style=False, sort_keys=False)
+            json.dump(resolved, f, default_flow_style=False, sort_keys=False)
         
         return resolved
     
@@ -219,4 +218,4 @@ if __name__ == '__main__':
     generator = GridGenerator()
     generator.print_summary()
     resolved = generator.export_resolved_config()
-    print(f"\nResolved configuration exported to config/grid-system-resolved.yaml")
+    print(f"\nResolved configuration exported to config/grid-system-resolved.json")

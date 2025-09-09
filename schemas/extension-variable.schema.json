@@ -4,151 +4,157 @@
   "title": "StyleStack OOXML Extension Variable Schema",
   "description": "Schema for defining variables that can be embedded in OOXML templates using extension lists",
   "version": "1.0.0",
-  
-  "definitions": {
-    "variableId": {
+  "type": "object",
+  "properties": {
+    "id": {
       "type": "string",
       "pattern": "^[a-zA-Z][a-zA-Z0-9._]*$",
       "minLength": 1,
       "maxLength": 64,
-      "description": "Unique identifier for the variable, must start with letter and contain only letters, numbers, dots, and underscores"
+      "description": "Unique identifier (letters, numbers, dots, underscores only)",
+      "examples": [
+        "accent_primary",
+        "heading_font",
+        "slide_width",
+        "margin_top"
+      ]
     },
-    
-    "variableType": {
+    "type": {
       "type": "string",
-      "enum": ["color", "font", "dimension", "position", "text", "boolean", "number"],
+      "enum": [
+        "color",
+        "font",
+        "dimension",
+        "position",
+        "text",
+        "boolean",
+        "number"
+      ],
       "description": "The type of value this variable represents"
     },
-    
-    "variableScope": {
+    "scope": {
       "type": "string",
-      "enum": ["theme", "slide", "shape", "paragraph", "run", "document", "workbook", "worksheet"],
+      "enum": [
+        "theme",
+        "slide",
+        "shape",
+        "paragraph",
+        "run",
+        "document",
+        "workbook",
+        "worksheet"
+      ],
       "description": "The scope within OOXML where this variable applies"
     },
-    
-    "ooxmlValueType": {
-      "type": "string", 
-      "enum": ["direct", "schemeClr", "themeFont", "emu", "calculated", "percentage", "boolean"],
-      "description": "How the variable value should be applied to OOXML"
-    },
-    
-    "ooxmlNamespace": {
-      "type": "string",
-      "format": "uri",
-      "enum": [
-        "http://schemas.openxmlformats.org/drawingml/2006/main",
-        "http://schemas.openxmlformats.org/presentationml/2006/main", 
-        "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
-        "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
-        "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
-        "http://schemas.openxmlformats.org/package/2006/content-types"
-      ],
-      "description": "OOXML namespace URI for the target element"
-    },
-    
     "xpath": {
       "type": "string",
       "minLength": 1,
-      "description": "XPath expression to locate the target element/attribute in OOXML",
+      "description": "XPath expression to locate target element/attribute",
       "examples": [
         "//a:clrScheme/a:accent1/a:srgbClr/@val",
-        "//a:fontScheme/a:majorFont/a:latin/@typeface", 
+        "//a:fontScheme/a:majorFont/a:latin/@typeface",
         "//p:sldSz/@cx",
-        "//w:rPr/w:sz/@w:val"
+        "//w:rPr/w:sz/@w:val",
+        "//a:off/@x"
       ]
     },
-    
-    "colorValue": {
-      "oneOf": [
-        {
-          "type": "string",
-          "pattern": "^[0-9A-Fa-f]{6}$",
-          "description": "6-digit hexadecimal color value"
-        },
-        {
-          "type": "string",
-          "enum": ["accent1", "accent2", "accent3", "accent4", "accent5", "accent6", "bg1", "bg2", "tx1", "tx2", "hlink", "folHlink"],
-          "description": "Theme color reference"
-        }
-      ]
-    },
-    
-    "dimensionValue": {
-      "oneOf": [
-        {
-          "type": "string",
-          "pattern": "^\\d+(\\.\\d+)?(pt|in|mm|cm|px|emu)$",
-          "description": "Dimension with units (pt, in, mm, cm, px, emu)"
-        },
-        {
-          "type": "integer",
-          "minimum": 0,
-          "description": "Dimension in EMU units (1 inch = 914,400 EMU)"
-        }
-      ]
-    }
-  },
-  
-  "type": "object",
-  "properties": {
-    "id": {
-      "$ref": "#/definitions/variableId"
-    },
-    
-    "type": {
-      "$ref": "#/definitions/variableType"
-    },
-    
-    "scope": {
-      "$ref": "#/definitions/variableScope"
-    },
-    
-    "xpath": {
-      "$ref": "#/definitions/xpath"
-    },
-    
     "ooxml": {
       "type": "object",
       "properties": {
         "namespace": {
-          "$ref": "#/definitions/ooxmlNamespace"
+          "type": "string",
+          "format": "uri",
+          "enum": [
+            "http://schemas.openxmlformats.org/drawingml/2006/main",
+            "http://schemas.openxmlformats.org/presentationml/2006/main",
+            "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
+            "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+          ],
+          "description": "OOXML namespace URI for target element"
         },
         "element": {
           "type": "string",
           "minLength": 1,
-          "description": "OOXML element name (without namespace prefix)"
+          "description": "OOXML element name (without namespace prefix)",
+          "examples": [
+            "srgbClr",
+            "latin",
+            "sldSz",
+            "rPr",
+            "off"
+          ]
         },
         "attribute": {
           "type": "string",
-          "minLength": 1,
-          "description": "OOXML attribute name (without namespace prefix)"
+          "description": "OOXML attribute name (optional, for attribute targets)",
+          "examples": [
+            "val",
+            "typeface",
+            "cx",
+            "cy",
+            "x",
+            "y"
+          ]
         },
         "valueType": {
-          "$ref": "#/definitions/ooxmlValueType"
+          "type": "string",
+          "enum": [
+            "direct",
+            "schemeClr",
+            "themeFont",
+            "emu",
+            "calculated",
+            "percentage",
+            "boolean"
+          ],
+          "description": "How to apply the variable value to OOXML"
         }
       },
-      "required": ["namespace", "element", "valueType"],
+      "required": [
+        "namespace",
+        "element",
+        "valueType"
+      ],
       "additionalProperties": false
     },
-    
     "defaultValue": {
-      "description": "Default value used when token is not provided"
+      "description": "Default value when token is not provided",
+      "examples": [
+        "0066CC",
+        "Segoe UI",
+        "9144000",
+        true,
+        1.5
+      ]
     },
-    
     "dependencies": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/variableId"
+        "type": "string",
+        "pattern": "^[a-zA-Z][a-zA-Z0-9._]*$"
       },
       "uniqueItems": true,
-      "description": "List of variable IDs this variable depends on"
+      "description": "Variable IDs this variable depends on (for calculated values)",
+      "examples": [
+        [
+          "base_font_size",
+          "scale_factor"
+        ],
+        [
+          "primary_color",
+          "tint_amount"
+        ]
+      ]
     },
-    
     "description": {
       "type": "string",
-      "description": "Human-readable description of what this variable controls"
+      "description": "Human-readable description of what this variable controls",
+      "examples": [
+        "Primary accent color used throughout the theme",
+        "Base font size for body text",
+        "Width of slide in EMU units"
+      ]
     },
-    
     "validation": {
       "type": "object",
       "properties": {
@@ -162,32 +168,58 @@
           "description": "Minimum allowed value (for numeric types)"
         },
         "maxValue": {
-          "type": "number", 
+          "type": "number",
           "description": "Maximum allowed value (for numeric types)"
         },
         "pattern": {
           "type": "string",
-          "description": "Regular expression pattern for string validation"
+          "description": "Regular expression for string validation",
+          "examples": [
+            "^[0-9A-Fa-f]{6}$",
+            "^\\d+(\\.\\d+)?(pt|px|em)$"
+          ]
         },
         "allowedValues": {
           "type": "array",
-          "description": "List of allowed values"
+          "description": "List of allowed values",
+          "examples": [
+            [
+              "left",
+              "center",
+              "right"
+            ],
+            [
+              "small",
+              "medium",
+              "large"
+            ]
+          ]
         }
       },
       "additionalProperties": false
     },
-    
     "metadata": {
       "type": "object",
       "properties": {
         "category": {
           "type": "string",
-          "enum": ["layout", "typography", "color", "branding", "accessibility"],
+          "enum": [
+            "layout",
+            "typography",
+            "color",
+            "branding",
+            "accessibility"
+          ],
           "description": "Category for organizing variables"
         },
         "priority": {
           "type": "string",
-          "enum": ["critical", "high", "medium", "low"],
+          "enum": [
+            "critical",
+            "high",
+            "medium",
+            "low"
+          ],
           "default": "medium",
           "description": "Priority level for variable application"
         },
@@ -202,30 +234,66 @@
           "description": "Whether this variable is deprecated"
         },
         "replacement": {
-          "$ref": "#/definitions/variableId",
+          "type": "string",
+          "pattern": "^[a-zA-Z][a-zA-Z0-9._]*$",
           "description": "ID of replacement variable (if deprecated)"
         }
       },
       "additionalProperties": false
     }
   },
-  
-  "required": ["id", "type", "scope", "xpath", "ooxml"],
+  "required": [
+    "id",
+    "type",
+    "scope",
+    "xpath",
+    "ooxml"
+  ],
   "additionalProperties": false,
-  
   "allOf": [
     {
       "if": {
         "properties": {
-          "type": { "const": "color" }
+          "type": {
+            "const": "color"
+          }
         }
       },
       "then": {
         "properties": {
-          "defaultValue": { "$ref": "#/definitions/colorValue" },
+          "defaultValue": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9A-Fa-f]{6}$",
+                "description": "6-digit hex color"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "accent1",
+                  "accent2",
+                  "accent3",
+                  "accent4",
+                  "accent5",
+                  "accent6",
+                  "bg1",
+                  "bg2",
+                  "tx1",
+                  "tx2"
+                ],
+                "description": "Theme color reference"
+              }
+            ]
+          },
           "ooxml": {
             "properties": {
-              "valueType": { "enum": ["direct", "schemeClr"] }
+              "valueType": {
+                "enum": [
+                  "direct",
+                  "schemeClr"
+                ]
+              }
             }
           }
         }
@@ -234,15 +302,36 @@
     {
       "if": {
         "properties": {
-          "type": { "const": "dimension" }
+          "type": {
+            "const": "dimension"
+          }
         }
       },
       "then": {
         "properties": {
-          "defaultValue": { "$ref": "#/definitions/dimensionValue" },
+          "defaultValue": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d+(\\.\\d+)?(pt|in|mm|cm|px|emu)$",
+                "description": "Dimension with units"
+              },
+              {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Dimension in EMU units"
+              }
+            ]
+          },
           "ooxml": {
             "properties": {
-              "valueType": { "enum": ["emu", "direct", "calculated"] }
+              "valueType": {
+                "enum": [
+                  "emu",
+                  "direct",
+                  "calculated"
+                ]
+              }
             }
           }
         }
@@ -251,15 +340,24 @@
     {
       "if": {
         "properties": {
-          "type": { "const": "font" }
+          "type": {
+            "const": "font"
+          }
         }
       },
       "then": {
         "properties": {
-          "defaultValue": { "type": "string" },
+          "defaultValue": {
+            "type": "string"
+          },
           "ooxml": {
             "properties": {
-              "valueType": { "enum": ["themeFont", "direct"] }
+              "valueType": {
+                "enum": [
+                  "themeFont",
+                  "direct"
+                ]
+              }
             }
           }
         }
@@ -268,22 +366,30 @@
     {
       "if": {
         "properties": {
-          "type": { "const": "boolean" }
+          "type": {
+            "const": "boolean"
+          }
         }
       },
       "then": {
         "properties": {
-          "defaultValue": { "type": "boolean" },
+          "defaultValue": {
+            "type": "boolean"
+          },
           "ooxml": {
             "properties": {
-              "valueType": { "enum": ["boolean", "direct"] }
+              "valueType": {
+                "enum": [
+                  "boolean",
+                  "direct"
+                ]
+              }
             }
           }
         }
       }
     }
   ],
-  
   "examples": [
     {
       "id": "accent_primary",
@@ -293,11 +399,14 @@
       "ooxml": {
         "namespace": "http://schemas.openxmlformats.org/drawingml/2006/main",
         "element": "srgbClr",
-        "attribute": "val", 
+        "attribute": "val",
         "valueType": "schemeClr"
       },
       "defaultValue": "0066CC",
       "description": "Primary accent color used throughout the theme",
+      "validation": {
+        "required": true
+      },
       "metadata": {
         "category": "color",
         "priority": "high",
@@ -306,7 +415,7 @@
     },
     {
       "id": "heading_font",
-      "type": "font", 
+      "type": "font",
       "scope": "theme",
       "xpath": "//a:fontScheme/a:majorFont/a:latin/@typeface",
       "ooxml": {
@@ -317,9 +426,6 @@
       },
       "defaultValue": "Segoe UI",
       "description": "Primary font for headings and display text",
-      "validation": {
-        "required": true
-      },
       "metadata": {
         "category": "typography",
         "priority": "critical",
@@ -329,7 +435,7 @@
     {
       "id": "slide_width",
       "type": "dimension",
-      "scope": "slide", 
+      "scope": "slide",
       "xpath": "//p:sldSz/@cx",
       "ooxml": {
         "namespace": "http://schemas.openxmlformats.org/presentationml/2006/main",
@@ -338,7 +444,7 @@
         "valueType": "emu"
       },
       "defaultValue": "9144000",
-      "description": "Width of slide in EMU units (default: 10 inches)",
+      "description": "Width of slide in EMU units",
       "validation": {
         "minValue": 914400,
         "maxValue": 18288000
@@ -350,19 +456,22 @@
       }
     },
     {
-      "id": "calculated_title_size",
+      "id": "title_font_size",
       "type": "dimension",
       "scope": "shape",
       "xpath": "//a:r/a:rPr/@sz",
-      "dependencies": ["base_font_size", "title_scale_factor"],
+      "dependencies": [
+        "base_font_size",
+        "title_scale_factor"
+      ],
       "ooxml": {
-        "namespace": "http://schemas.openxmlformats.org/drawingml/2006/main", 
+        "namespace": "http://schemas.openxmlformats.org/drawingml/2006/main",
         "element": "rPr",
         "attribute": "sz",
         "valueType": "calculated"
       },
       "defaultValue": "4400",
-      "description": "Calculated title font size based on base size and scale factor",
+      "description": "Calculated title font size based on base size and scale",
       "metadata": {
         "category": "typography",
         "priority": "medium",

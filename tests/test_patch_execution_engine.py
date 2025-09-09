@@ -2,7 +2,11 @@
 Test suite for Patch Execution Engine.
 
 Tests comprehensive execution, coordination, and orchestration capabilities
-for the YAML-to-OOXML patch processing system.
+for the JSON-to-OOXML patch processing system.
+
+IMPORTANT: Always run tests using venv:
+    source .venv/bin/activate && python tests/test_patch_execution_engine.py
+    OR: .venv/bin/python tests/test_patch_execution_engine.py
 """
 
 import unittest
@@ -14,7 +18,7 @@ from tools.patch_execution_engine import (
     PatchExecutionEngine, ExecutionMode, ExecutionContext,
     execute_patch_file, execute_patch_content
 )
-from tools.yaml_patch_parser import ValidationLevel
+from tools.json_patch_parser import ValidationLevel
 
 
 class TestPatchExecutionEngine(unittest.TestCase):
@@ -56,14 +60,25 @@ class TestPatchExecutionEngine(unittest.TestCase):
         """Test executing patch content in normal mode."""
         xml_doc = etree.fromstring(self.sample_xml)
         
-        patch_content = """
-version: "1.0"
-description: "Change color to green"
-patches:
-  - operation: set
-    target: "//a:srgbClr/@val"
-    value: "00FF00"
-"""
+        patch_content = """{
+  "metadata": {
+    "version": "1.0",
+    "description": "Change color to green"
+  },
+  "targets": [
+    {
+      "file": "slide.xml",
+      "ops": [
+        {
+          "set": {
+            "xpath": "//a:srgbClr/@val",
+            "value": "00FF00"
+          }
+        }
+      ]
+    }
+  ]
+}"""
         
         result = self.engine.execute_patch_content(patch_content, xml_doc, ExecutionMode.NORMAL)
         
@@ -273,7 +288,7 @@ patches:
     value: "9966CC"
 """
         
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
             f.write(patch_content)
             temp_file = f.name
         
@@ -296,7 +311,7 @@ patches:
         """Test handling of non-existent patch files."""
         xml_doc = etree.fromstring(self.sample_xml)
         
-        result = self.engine.execute_patch_file("nonexistent_file.yaml", xml_doc, ExecutionMode.NORMAL)
+        result = self.engine.execute_patch_file("nonexistent_file.json", xml_doc, ExecutionMode.NORMAL)
         
         self.assertFalse(result.success)
         self.assertTrue(any('File not found' in error for error in result.errors))
@@ -331,7 +346,7 @@ patches:
         temp_files = []
         try:
             for i, content in enumerate([patch1_content, patch2_content, patch3_content]):
-                with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+                with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
                     f.write(content)
                     temp_files.append(f.name)
             
@@ -375,7 +390,7 @@ patches:
         temp_files = []
         try:
             for content in [patch1_content, patch2_content]:
-                with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+                with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
                     f.write(content)
                     temp_files.append(f.name)
             
@@ -460,7 +475,7 @@ patches:
         """Test error handling for invalid patches."""
         xml_doc = etree.fromstring(self.sample_xml)
         
-        # Invalid YAML content
+        # Invalid JSON content
         invalid_patch_content = """
 patches:
   - operation: invalid_operation
@@ -496,7 +511,7 @@ patches:
         temp_files = []
         try:
             for i in range(2):
-                with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+                with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
                     f.write(patch_content)
                     temp_files.append(f.name)
             
@@ -551,7 +566,7 @@ patches:
     value: "0066CC"
 """
         
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
             f.write(patch_content)
             temp_file = f.name
         

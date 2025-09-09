@@ -27,8 +27,8 @@ graph TD
 **Update frequency:** Major releases (quarterly)  
 **Override policy:** Should not be modified by organizations  
 
-```yaml
-# core/tokens/base.yaml
+```json
+# core/tokens/base.json
 colors:
   # Modern, accessible color palette
   primary: "#2563EB"        # Blue 600 - professional, trustworthy
@@ -76,8 +76,8 @@ accessibility:
 **Update frequency:** As needed for brand changes  
 **Override policy:** Can override core tokens, inherits unspecified values  
 
-```yaml
-# org/university-of-example/patches.yaml
+```json
+# org/university-of-example/patches.json
 organization:
   name: "University of Example"
   domain: "example.edu"
@@ -123,8 +123,8 @@ localization:
 **Update frequency:** Feature releases  
 **Override policy:** Can override organization and core tokens  
 
-```yaml
-# org/university-of-example/channels/academic-presentation.yaml
+```json
+# org/university-of-example/channels/academic-presentation.json
 name: "Academic Presentations"
 description: "For lectures, conference presentations, and research talks"
 target_products: ["potx"]
@@ -164,20 +164,20 @@ accessibility:
 
 Given these token definitions:
 
-```yaml
-# core/tokens/base.yaml
+```json
+# core/tokens/base.json
 colors:
   primary: "#2563EB"
   text: "#0F172A"
   accent: "#059669"
 
-# org/acme/patches.yaml  
+# org/acme/patches.json  
 colors:
   primary: "#1E40AF"      # Override core primary
   # text: inherited from core
   # accent: inherited from core
 
-# org/acme/channels/presentation.yaml
+# org/acme/channels/presentation.json
 colors:
   accent: "#F59E0B"       # Override org/core accent
   # primary: inherited from org
@@ -185,7 +185,7 @@ colors:
 ```
 
 **Final resolved tokens:**
-```yaml
+```json
 colors:
   primary: "#1E40AF"      # From organization layer
   text: "#0F172A"         # From core layer (inherited)  
@@ -197,7 +197,7 @@ colors:
 ### Full Inheritance
 Token not specified in higher layers inherits from lower layers:
 
-```yaml
+```json
 # Core defines comprehensive baseline
 fonts:
   heading: "Inter"
@@ -219,7 +219,7 @@ fonts:
 ### Partial Inheritance with Extension
 Higher layers can extend lower layer configurations:
 
-```yaml
+```json
 # Core defines base spacing
 spacing:
   unit: "8pt"
@@ -242,7 +242,7 @@ spacing:
 ### Reference Resolution
 Tokens can reference other tokens across layers:
 
-```yaml
+```json
 # Core baseline
 colors:
   primary: "#2563EB"
@@ -270,7 +270,7 @@ colors:
 - Test across different Office versions and platforms
 
 **Update Strategy:**
-```yaml
+```json
 # Version-controlled core updates
 core:
   version: "1.4.0"
@@ -295,7 +295,7 @@ core:
 - Plan for core layer updates
 
 **Governance Framework:**
-```yaml
+```json
 # Organization governance rules
 governance:
   token_approval_required:
@@ -320,7 +320,7 @@ governance:
 - Test in target environments
 
 **Channel Categories:**
-```yaml
+```json
 # Standard channel types
 channels:
   presentation:
@@ -350,7 +350,7 @@ channels:
 
 ### Error Handling
 
-```yaml
+```json
 # Token validation and fallbacks
 validation:
   required_tokens:
@@ -390,7 +390,7 @@ git merge upstream/v1.4.0
 
 ### Token Deprecation
 
-```yaml
+```json
 # Gradual token deprecation
 deprecated_tokens:
   old_primary_color:

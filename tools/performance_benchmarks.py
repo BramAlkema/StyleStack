@@ -2,7 +2,7 @@
 """
 StyleStack Performance Benchmarking Suite
 
-Comprehensive benchmarking system for the YAML-to-OOXML processing pipeline.
+Comprehensive benchmarking system for the JSON-to-OOXML processing pipeline.
 Provides realistic workload patterns to test small templates, large templates, 
 batch operations, and concurrent processing scenarios.
 """
@@ -25,17 +25,16 @@ import random
 import string
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 from lxml import etree
-import yaml
 
 # Import StyleStack components
 try:
     from .performance_profiler import PerformanceProfiler, ProfiledFunction
-    from .yaml_ooxml_processor import YAMLPatchProcessor
+    from .json_ooxml_processor import JSONPatchProcessor
     from .patch_execution_engine import PatchExecutionEngine
 except ImportError:
     # Handle relative import issues for standalone execution
     from performance_profiler import PerformanceProfiler, ProfiledFunction
-    from yaml_ooxml_processor import YAMLPatchProcessor
+    from json_ooxml_processor import JSONPatchProcessor
     from patch_execution_engine import PatchExecutionEngine
 
 import logging
@@ -565,7 +564,7 @@ class TemplateGenerator:
 
 
 class PatchGenerator:
-    """Generates synthetic YAML patches for benchmarking."""
+    """Generates synthetic JSON patches for benchmarking."""
     
     def generate_patches(self, config: WorkloadConfig) -> List[Dict[str, Any]]:
         """Generate patches based on workload configuration."""
@@ -702,7 +701,7 @@ class PerformanceBenchmark:
         self.profiler = profiler or PerformanceProfiler()
         self.template_generator = TemplateGenerator()
         self.patch_generator = PatchGenerator()
-        self.processor = YAMLPatchProcessor()
+        self.processor = JSONPatchProcessor()
         
         # Results storage
         self.results: List[BenchmarkResult] = []

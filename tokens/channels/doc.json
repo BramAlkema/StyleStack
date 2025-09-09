@@ -1,0 +1,7 @@
+{
+  "overrides": {
+    "fonts.primary": "Inter",
+    "grid.font_size": 24,
+    "colors.accent": "#333333"
+  }
+}

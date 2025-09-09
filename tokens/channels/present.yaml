@@ -1,5 +1,0 @@
-# Presentation channel overrides
-overrides:
-  fonts.primary: "Inter"
-  grid.font_size: 32    # 16pt for presentations
-  colors.accent: "#0369a3"  # Blue for presentations

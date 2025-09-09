@@ -1,5 +1,0 @@
-# Finance channel overrides
-overrides:
-  fonts.primary: "Liberation Sans" 
-  grid.font_size: 20    # 10pt for finance/data
-  colors.accent: "#c9211e"  # Red for finance

@@ -77,7 +77,7 @@ git diff --name-only main..upstream/main | grep "^core/"
 
 ### Automated Update Monitoring
 
-```yaml
+```json
 # .github/workflows/upstream-check.yml
 name: Check Upstream Updates
 
@@ -186,7 +186,7 @@ git merge upstream/main
 # Resolve conflicts carefully
 
 # For organization files, keep your version:
-git checkout --ours org/your-org/patches.yaml
+git checkout --ours org/your-org/patches.json
 
 # For upstream files, accept their version:
 git checkout --theirs .github/workflows/build-templates.yml.example
@@ -368,7 +368,7 @@ python tools/test-office-compatibility.py --org your-org
 
 ### Automated Sync Workflow
 
-```yaml
+```json
 # .github/workflows/auto-sync.yml
 name: Auto Sync Upstream
 

@@ -1,0 +1,77 @@
+{
+  "metadata": {
+    "group": "finance",
+    "org": "acme",
+    "description": "Finance department accounting and compliance styling",
+    "version": "1.0.0"
+  },
+  "targets": [
+    {
+      "file": "ppt/theme/theme1.xml",
+      "ns": {
+        "a": "http://schemas.openxmlformats.org/drawingml/2006/main"
+      },
+      "ops": [
+        {
+          "set": {
+            "xpath": "//a:accent3/a:srgbClr/@val",
+            "value": "1F4E79"
+          }
+        },
+        {
+          "set": {
+            "xpath": "//a:accent4/a:srgbClr/@val",
+            "value": "254117"
+          }
+        },
+        {
+          "set": {
+            "xpath": "//a:accent5/a:srgbClr/@val",
+            "value": "833C0C"
+          }
+        }
+      ]
+    },
+    {
+      "file": "xl/styles.xml",
+      "ns": {
+        "x": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+      },
+      "ops": [
+        {
+          "insert": {
+            "xpath": "//x:numFmts",
+            "position": "last",
+            "xml": "<x:numFmt numFmtId=\"170\" formatCode=\"_(&quot;$&quot;* #,##0.00_);_(&quot;$&quot;* \\(#,##0.00\\);_(&quot;$&quot;* &quot;-&quot;??_);_(@_)\"/>\n<x:numFmt numFmtId=\"171\" formatCode=\"0.00%\"/>\n<x:numFmt numFmtId=\"172\" formatCode=\"[$-409]m/d/yyyy;@\"/>\n<x:numFmt numFmtId=\"173\" formatCode=\"[Red](&quot;$&quot;#,##0.00);[Black]&quot;$&quot;#,##0.00\"/>\n"
+          }
+        }
+      ]
+    },
+    {
+      "file": "ppt/slideMasters/slideMaster1.xml",
+      "ns": {
+        "p": "http://schemas.openxmlformats.org/presentationml/2006/main",
+        "a": "http://schemas.openxmlformats.org/drawingml/2006/main"
+      },
+      "ops": [
+        {
+          "remove": {
+            "xpath": "//p:bg"
+          }
+        },
+        {
+          "remove": {
+            "xpath": "//a:gradFill"
+          }
+        },
+        {
+          "insert": {
+            "xpath": "//p:cSld/p:spTree",
+            "position": "last",
+            "xml": "<p:sp>\n  <p:nvSpPr>\n    <p:cNvPr id=\"101\" name=\"Finance Watermark\"/>\n    <p:cNvSpPr/><p:nvPr/>\n  </p:nvSpPr>\n  <p:spPr>\n    <a:xfrm>\n      <a:off x=\"4000000\" y=\"3000000\"/>\n      <a:ext cx=\"2000000\" cy=\"400000\"/>\n    </a:xfrm>\n  </p:spPr>\n  <p:txBody>\n    <a:bodyPr/>\n    <a:lstStyle/>\n    <a:p>\n      <a:rPr lang=\"en-US\" sz=\"1200\" b=\"1\">\n        <a:solidFill><a:srgbClr val=\"E0E0E0\"/></a:solidFill>\n        <a:latin typeface=\"Calibri\"/>\n      </a:rPr>\n      <a:t>FINANCIAL DATA</a:t>\n    </a:p>\n  </p:txBody>\n</p:sp>"
+          }
+        }
+      ]
+    }
+  ]
+}

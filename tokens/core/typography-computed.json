@@ -1,0 +1,500 @@
+{
+  "$schema": "../../schemas/token.schema.json",
+  "metadata": {
+    "name": "Computed Typography Tokens",
+    "version": "1.0.0",
+    "description": "OOXML-ready typography values with unit conversions",
+    "generated_from": "typography-modern.json",
+    "last_computed": "2025-01-20"
+  },
+  "fonts": {
+    "primary": {
+      "display": {
+        "family": {
+          "value": "Inter",
+          "type": "string",
+          "description": "Primary display/heading font",
+          "ooxml": {
+            "powerpoint_attribute": "typeface",
+            "word_attribute": "w:ascii",
+            "excel_attribute": "val"
+          }
+        },
+        "weight": {
+          "bold": {
+            "value": 700,
+            "type": "number",
+            "ooxml": {
+              "powerpoint": "b='1'",
+              "word": "w:b='1'",
+              "excel": "b='1'"
+            }
+          }
+        }
+      },
+      "body": {
+        "family": {
+          "value": "Inter",
+          "type": "string",
+          "description": "Primary body text font",
+          "ooxml": {
+            "powerpoint_attribute": "typeface",
+            "word_attribute": "w:ascii"
+          }
+        }
+      },
+      "monospace": {
+        "family": {
+          "value": "JetBrains Mono",
+          "type": "string",
+          "description": "Monospace font for code"
+        }
+      }
+    }
+  },
+  "powerpoint": {
+    "font_sizes": {
+      "hero": {
+        "value": 1221,
+        "type": "number",
+        "unit": "twentieths_pt",
+        "original": "61.04pt"
+      },
+      "display": {
+        "value": 977,
+        "type": "number",
+        "unit": "twentieths_pt",
+        "original": "48.83pt"
+      },
+      "title": {
+        "value": 781,
+        "type": "number",
+        "unit": "twentieths_pt",
+        "original": "39.06pt"
+      },
+      "subtitle": {
+        "value": 625,
+        "type": "number",
+        "unit": "twentieths_pt",
+        "original": "31.25pt"
+      },
+      "large": {
+        "value": 500,
+        "type": "number",
+        "unit": "twentieths_pt",
+        "original": "25pt"
+      },
+      "body": {
+        "value": 400,
+        "type": "number",
+        "unit": "twentieths_pt",
+        "original": "20pt"
+      },
+      "base": {
+        "value": 320,
+        "type": "number",
+        "unit": "twentieths_pt",
+        "original": "16pt"
+      },
+      "small": {
+        "value": 256,
+        "type": "number",
+        "unit": "twentieths_pt",
+        "original": "12.8pt"
+      },
+      "caption": {
+        "value": 205,
+        "type": "number",
+        "unit": "twentieths_pt",
+        "original": "10.24pt"
+      }
+    },
+    "kerning": {
+      "tight": {
+        "value": -32,
+        "type": "number",
+        "unit": "twentieths_pt",
+        "description": "Tight kerning for AV, AW, AY pairs"
+      },
+      "moderate": {
+        "value": -24,
+        "type": "number",
+        "unit": "twentieths_pt",
+        "description": "Moderate kerning"
+      },
+      "light": {
+        "value": -16,
+        "type": "number",
+        "unit": "twentieths_pt",
+        "description": "Light kerning"
+      },
+      "normal": {
+        "value": 0,
+        "type": "number",
+        "unit": "twentieths_pt"
+      },
+      "kern_enabled": {
+        "value": 1200,
+        "type": "number",
+        "description": "PowerPoint kerning enable value"
+      }
+    },
+    "line_spacing": {
+      "tight": {
+        "value": 120,
+        "type": "number",
+        "unit": "percentage"
+      },
+      "normal": {
+        "value": 150,
+        "type": "number",
+        "unit": "percentage"
+      },
+      "loose": {
+        "value": 175,
+        "type": "number",
+        "unit": "percentage"
+      }
+    }
+  },
+  "word": {
+    "font_sizes": {
+      "hero": {
+        "value": 122,
+        "type": "number",
+        "unit": "half_points",
+        "original": "61.04pt"
+      },
+      "display": {
+        "value": 98,
+        "type": "number",
+        "unit": "half_points",
+        "original": "48.83pt"
+      },
+      "heading1": {
+        "value": 78,
+        "type": "number",
+        "unit": "half_points",
+        "original": "39.06pt"
+      },
+      "heading2": {
+        "value": 63,
+        "type": "number",
+        "unit": "half_points",
+        "original": "31.25pt"
+      },
+      "heading3": {
+        "value": 50,
+        "type": "number",
+        "unit": "half_points",
+        "original": "25pt"
+      },
+      "large": {
+        "value": 40,
+        "type": "number",
+        "unit": "half_points",
+        "original": "20pt"
+      },
+      "body": {
+        "value": 32,
+        "type": "number",
+        "unit": "half_points",
+        "original": "16pt"
+      },
+      "small": {
+        "value": 26,
+        "type": "number",
+        "unit": "half_points",
+        "original": "12.8pt"
+      },
+      "caption": {
+        "value": 20,
+        "type": "number",
+        "unit": "half_points",
+        "original": "10.24pt"
+      }
+    },
+    "line_spacing": {
+      "tight": {
+        "value": 288,
+        "type": "number",
+        "unit": "twips",
+        "description": "Tight line spacing"
+      },
+      "normal": {
+        "value": 360,
+        "type": "number",
+        "unit": "twips",
+        "description": "Normal line spacing"
+      },
+      "loose": {
+        "value": 420,
+        "type": "number",
+        "unit": "twips",
+        "description": "Loose line spacing"
+      }
+    },
+    "paragraph_spacing": {
+      "before": {
+        "small": {
+          "value": 120,
+          "type": "number",
+          "unit": "twips"
+        },
+        "normal": {
+          "value": 160,
+          "type": "number",
+          "unit": "twips"
+        },
+        "large": {
+          "value": 240,
+          "type": "number",
+          "unit": "twips"
+        }
+      },
+      "after": {
+        "small": {
+          "value": 160,
+          "type": "number",
+          "unit": "twips"
+        },
+        "normal": {
+          "value": 240,
+          "type": "number",
+          "unit": "twips"
+        },
+        "large": {
+          "value": 320,
+          "type": "number",
+          "unit": "twips"
+        }
+      }
+    },
+    "character_spacing": {
+      "tight": {
+        "value": -20,
+        "type": "number",
+        "unit": "twips"
+      },
+      "normal": {
+        "value": 0,
+        "type": "number",
+        "unit": "twips"
+      },
+      "loose": {
+        "value": 20,
+        "type": "number",
+        "unit": "twips"
+      },
+      "all_caps": {
+        "value": 32,
+        "type": "number",
+        "unit": "twips"
+      }
+    },
+    "kerning": {
+      "minimum_size": {
+        "value": 24,
+        "type": "number",
+        "unit": "half_points"
+      }
+    }
+  },
+  "excel": {
+    "font_sizes": {
+      "large_header": {
+        "value": 14,
+        "type": "number",
+        "unit": "points"
+      },
+      "header": {
+        "value": 12,
+        "type": "number",
+        "unit": "points"
+      },
+      "body": {
+        "value": 11,
+        "type": "number",
+        "unit": "points"
+      },
+      "small": {
+        "value": 9,
+        "type": "number",
+        "unit": "points"
+      }
+    }
+  },
+  "kerning_pairs": {
+    "powerpoint": {
+      "critical_pairs": {
+        "AV": {
+          "value": -32,
+          "type": "number",
+          "unit": "twentieths_pt"
+        },
+        "AW": {
+          "value": -24,
+          "type": "number",
+          "unit": "twentieths_pt"
+        },
+        "AY": {
+          "value": -32,
+          "type": "number",
+          "unit": "twentieths_pt"
+        },
+        "AT": {
+          "value": -16,
+          "type": "number",
+          "unit": "twentieths_pt"
+        }
+      },
+      "punctuation_pairs": {
+        "T,": {
+          "value": -24,
+          "type": "number",
+          "unit": "twentieths_pt"
+        },
+        "T.": {
+          "value": -24,
+          "type": "number",
+          "unit": "twentieths_pt"
+        },
+        "P,": {
+          "value": -16,
+          "type": "number",
+          "unit": "twentieths_pt"
+        },
+        "P.": {
+          "value": -16,
+          "type": "number",
+          "unit": "twentieths_pt"
+        }
+      }
+    }
+  },
+  "opentype_features": {
+    "standard": {
+      "kern": {
+        "value": 1,
+        "type": "number",
+        "description": "Kerning enabled"
+      },
+      "liga": {
+        "value": 1,
+        "type": "number",
+        "description": "Standard ligatures enabled"
+      },
+      "calt": {
+        "value": 1,
+        "type": "number",
+        "description": "Contextual alternates enabled"
+      }
+    },
+    "optional": {
+      "dlig": {
+        "value": 0,
+        "type": "number",
+        "description": "Discretionary ligatures disabled"
+      },
+      "hlig": {
+        "value": 0,
+        "type": "number",
+        "description": "Historical ligatures disabled"
+      },
+      "ss01": {
+        "value": 0,
+        "type": "number",
+        "description": "Stylistic set 1 (rounded dots) disabled"
+      }
+    }
+  },
+  "accessibility": {
+    "contrast_ratios": {
+      "aa_minimum": {
+        "value": 4.5,
+        "type": "number",
+        "description": "Minimum contrast ratio for AA compliance"
+      },
+      "aaa_preferred": {
+        "value": 7.0,
+        "type": "number",
+        "description": "Preferred contrast ratio for AAA compliance"
+      }
+    },
+    "reading_comfort": {
+      "optimal_line_length": {
+        "value": 65,
+        "type": "number",
+        "unit": "characters",
+        "description": "Optimal line length for readability"
+      },
+      "minimum_line_height": {
+        "value": 120,
+        "type": "number",
+        "unit": "percentage",
+        "description": "Minimum line height for accessibility"
+      }
+    }
+  },
+  "semantic": {
+    "powerpoint": {
+      "slide_title": {
+        "font_size": "{fonts.powerpoint.font_sizes.title.value}",
+        "font_family": "{fonts.primary.display.family.value}",
+        "kerning": "{fonts.powerpoint.kerning.kern_enabled.value}",
+        "line_spacing": "{fonts.powerpoint.line_spacing.tight.value}"
+      },
+      "slide_body": {
+        "font_size": "{fonts.powerpoint.font_sizes.body.value}",
+        "font_family": "{fonts.primary.body.family.value}",
+        "line_spacing": "{fonts.powerpoint.line_spacing.normal.value}"
+      }
+    },
+    "word": {
+      "heading1": {
+        "font_size": "{fonts.word.font_sizes.heading1.value}",
+        "font_family": "{fonts.primary.display.family.value}",
+        "spacing_before": "{fonts.word.paragraph_spacing.before.large.value}",
+        "spacing_after": "{fonts.word.paragraph_spacing.after.normal.value}"
+      },
+      "body": {
+        "font_size": "{fonts.word.font_sizes.body.value}",
+        "font_family": "{fonts.primary.body.family.value}",
+        "line_spacing": "{fonts.word.line_spacing.normal.value}",
+        "spacing_before": "{fonts.word.paragraph_spacing.before.normal.value}",
+        "spacing_after": "{fonts.word.paragraph_spacing.after.normal.value}"
+      }
+    },
+    "excel": {
+      "header": {
+        "font_size": "{fonts.excel.font_sizes.header.value}",
+        "font_family": "{fonts.primary.display.family.value}",
+        "bold": "{fonts.primary.display.weight.bold.value}"
+      },
+      "data": {
+        "font_size": "{fonts.excel.font_sizes.body.value}",
+        "font_family": "{fonts.primary.body.family.value}"
+      }
+    }
+  },
+  "validation": {
+    "computed_at": "2025-01-20T12:00:00Z",
+    "source_file": "typography-modern.json",
+    "conversion_rules": [
+      "PowerPoint: points × 20 = twentieths",
+      "Word: points × 2 = half-points",
+      "Word spacing: points × 20 = twips",
+      "Kerning: em × font_size × unit_multiplier"
+    ],
+    "ranges": {
+      "font_sizes": {
+        "min_twentieths": 160,
+        "max_twentieths": 1440
+      },
+      "kerning": {
+        "min_twentieths": -80,
+        "max_twentieths": 40
+      }
+    }
+  }
+}

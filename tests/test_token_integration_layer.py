@@ -3,10 +3,10 @@
 Token Integration Layer Tests
 
 Tests the integration between Design Token Formula Evaluation system
-and YAML-to-OOXML Processing Engine, validating token resolution,
+and JSON-to-OOXML Processing Engine, validating token resolution,
 formula evaluation, and EMU type integration.
 
-Part of the StyleStack YAML-to-OOXML Processing Engine test suite.
+Part of the StyleStack JSON-to-OOXML Processing Engine test suite.
 """
 
 import unittest
@@ -16,7 +16,6 @@ from tools.token_integration_layer import (
     TokenIntegrationLayer, TokenScope, TokenContext, TokenResolutionResult,
     create_default_integration_layer, integrate_tokens_with_processor
 )
-from tools.yaml_ooxml_processor import YAMLPatchProcessor, RecoveryStrategy
 from tools.formula_parser import FormulaParser
 from tools.emu_types import EMUValue
 
@@ -162,9 +161,9 @@ class TestTokenIntegrationLayer(unittest.TestCase):
         self.assertEqual(resolved_patch['metadata']['description'], 'Setting color to BLUE_VALUE for AcmeCorp')
     
     def test_processor_integration(self):
-        """Test integration with YAML-to-OOXML processor."""
+        """Test integration with JSON-to-OOXML processor."""
         # Create mock processor
-        mock_processor = Mock(spec=YAMLPatchProcessor)
+        mock_processor = Mock(spec=JSONPatchProcessor)
         mock_processor.template_type = 'potx'
         mock_processor.variables = {'test_var': 'test_value'}
         mock_processor.metadata = {'version': '1.0'}
@@ -323,7 +322,7 @@ class TestConvenienceFunctions(unittest.TestCase):
     
     def test_integrate_tokens_with_processor(self):
         """Test integration with existing processor."""
-        mock_processor = Mock(spec=YAMLPatchProcessor)
+        mock_processor = Mock(spec=JSONPatchProcessor)
         mock_processor.template_type = 'potx'
         mock_processor.variables = {}
         mock_processor.metadata = {}

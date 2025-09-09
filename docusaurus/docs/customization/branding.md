@@ -53,8 +53,8 @@ python tools/generate-logo-variants.py \
 
 #### Color Palette Definition
 
-```yaml
-# org/your-org/patches.yaml
+```json
+# org/your-org/patches.json
 colors:
   # Primary brand colors (from brand guidelines)
   brand:
@@ -80,7 +80,7 @@ colors:
 
 #### Color System Implementation
 
-```yaml
+```json
 # Advanced color system with brand intelligence
 colors:
   # Brand color relationships
@@ -102,8 +102,8 @@ colors:
 
 #### Brand Font Integration
 
-```yaml
-# org/your-org/patches.yaml
+```json
+# org/your-org/patches.json
 fonts:
   # Brand typography hierarchy
   brand:
@@ -124,7 +124,7 @@ fonts:
 
 #### Custom Font Loading
 
-```yaml
+```json
 # For organizations with licensed fonts
 fonts:
   # Custom font files
@@ -147,8 +147,8 @@ fonts:
 
 ### PowerPoint Logo Placement
 
-```yaml
-# org/your-org/channels/presentation.yaml
+```json
+# org/your-org/channels/presentation.json
 logo_configuration:
   slide_master:
     position: "bottom-right"
@@ -176,8 +176,8 @@ logo_configuration:
 
 ### Word Document Headers
 
-```yaml
-# org/your-org/channels/document.yaml
+```json
+# org/your-org/channels/document.json
 document_branding:
   header:
     logo:
@@ -207,8 +207,8 @@ document_branding:
 
 ### Excel Branding
 
-```yaml
-# org/your-org/channels/finance.yaml
+```json
+# org/your-org/channels/finance.json
 spreadsheet_branding:
   header_row:
     logo:
@@ -235,8 +235,8 @@ spreadsheet_branding:
 
 ### Visual Hierarchy
 
-```yaml
-# org/your-org/brand-system.yaml
+```json
+# org/your-org/brand-system.json
 visual_hierarchy:
   # Logo prominence levels
   logo_prominence:
@@ -268,7 +268,7 @@ visual_hierarchy:
 
 ### Brand Application Rules
 
-```yaml
+```json
 brand_rules:
   # Logo usage guidelines
   logo:
@@ -304,8 +304,8 @@ brand_rules:
 
 ### Brand Portfolio Support
 
-```yaml
-# org/your-org/multi-brand.yaml
+```json
+# org/your-org/multi-brand.json
 brand_portfolio:
   brands:
     corporate:
@@ -347,7 +347,7 @@ brand_portfolio:
 
 ### Brand Switching Logic
 
-```yaml
+```json
 # Conditional branding based on context
 conditional_branding:
   rules:
@@ -385,7 +385,7 @@ conditional_branding:
 python tools/brand-validator.py \
   --org your-org \
   --templates "*.potx,*.dotx,*.xltx" \
-  --standards "brand-guidelines.yaml"
+  --standards "brand-guidelines.json"
 
 # Logo quality check
 python tools/logo-validator.py \
@@ -421,7 +421,7 @@ class BrandAuditor:
 
 ### Quality Gates
 
-```yaml
+```json
 # .github/workflows/brand-quality-gate.yml
 name: Brand Quality Gate
 
@@ -453,7 +453,7 @@ jobs:
 
 ### Dynamic Branding
 
-```yaml
+```json
 # Event-based branding changes
 dynamic_branding:
   events:
@@ -480,7 +480,7 @@ dynamic_branding:
 
 ### Personalization Features
 
-```yaml
+```json
 # User-level customization within brand constraints
 personalization:
   allowed_modifications:
@@ -504,7 +504,7 @@ personalization:
 
 ### Brand Evolution Support
 
-```yaml
+```json
 # Support for gradual brand transitions
 brand_evolution:
   transition_period: "2024-01-01 to 2024-06-30"
@@ -543,7 +543,7 @@ python tools/test-logo-loading.py --org your-org
 **Colors not matching brand guidelines:**
 ```bash
 # Validate color values
-python tools/color-validator.py --org your-org --reference brand-colors.yaml
+python tools/color-validator.py --org your-org --reference brand-colors.json
 # Check color space conversion
 python tools/color-space-check.py --colors "#1E40AF,#3B82F6"
 ```

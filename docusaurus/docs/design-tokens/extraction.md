@@ -26,7 +26,7 @@ git push
 GitHub Actions will automatically:
 1. Detect the new template
 2. Extract comprehensive design tokens
-3. Generate YAML configuration files
+3. Generate JSON configuration files
 4. Commit results back to your repository
 
 ### 2. Local Extraction
@@ -41,7 +41,7 @@ python tools/design_token_extractor.py extract/presentation.pptx
 python tools/design_token_extractor.py extract/*.pptx
 
 # Custom output format and location
-python tools/design_token_extractor.py input.pptx --output custom-tokens.yaml --format yaml
+python tools/design_token_extractor.py input.pptx --output custom-tokens.json --format json
 ```
 
 ## Extraction Capabilities
@@ -116,9 +116,9 @@ Extract tokens from diverse formats:
 
 ## Output Format
 
-The extractor generates comprehensive YAML files with hierarchical token structure:
+The extractor generates comprehensive JSON files with hierarchical token structure:
 
-```yaml
+```json
 stylestack:
   version: "1.0.0"
   tokens:
@@ -156,7 +156,7 @@ stylestack:
 
 The extraction workflow is fully automated through GitHub Actions:
 
-```yaml
+```json
 name: Design Token Extraction
 on:
   push:
@@ -215,10 +215,10 @@ Extracted tokens integrate seamlessly with the StyleStack build system:
 
 ```bash
 # Use extracted tokens in template generation
-python build.py --tokens extracted/presentation-tokens.yaml --org acme --channel present
+python build.py --tokens extracted/presentation-tokens.json --org acme --channel present
 
 # Merge multiple token sources
-python build.py --tokens base-tokens.yaml,extracted-tokens.yaml --output branded.potx
+python build.py --tokens base-tokens.json,extracted-tokens.json --output branded.potx
 ```
 
 ## Troubleshooting

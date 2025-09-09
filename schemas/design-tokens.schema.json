@@ -1,0 +1,358 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://stylestack.dev/schemas/design-tokens.schema.json",
+  "title": "StyleStack Design Tokens Schema",
+  "description": "Schema for StyleStack hierarchical design tokens following W3C Design Token specification",
+  "version": "2.0.0",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "Reference to this JSON schema"
+    },
+    "colors": {
+      "$ref": "#/definitions/tokenGroup",
+      "description": "Color design tokens"
+    },
+    "typography": {
+      "$ref": "#/definitions/tokenGroup", 
+      "description": "Typography design tokens"
+    },
+    "spacing": {
+      "$ref": "#/definitions/tokenGroup",
+      "description": "Spacing and dimension tokens"
+    },
+    "semantic": {
+      "$ref": "#/definitions/tokenGroup",
+      "description": "Semantic tokens that reference other tokens"
+    },
+    "layout": {
+      "$ref": "#/definitions/tokenGroup",
+      "description": "Layout and grid system tokens"
+    },
+    "components": {
+      "$ref": "#/definitions/tokenGroup",
+      "description": "Component-specific tokens"
+    }
+  },
+  "additionalProperties": {
+    "$ref": "#/definitions/tokenGroup"
+  },
+  "definitions": {
+    "token": {
+      "type": "object",
+      "description": "A design token following W3C specification",
+      "properties": {
+        "value": {
+          "description": "The value of the token",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object"
+            },
+            {
+              "type": "array"
+            }
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "color",
+            "dimension",
+            "fontFamily",
+            "fontWeight",
+            "duration",
+            "cubicBezier",
+            "number",
+            "strokeStyle",
+            "border",
+            "transition",
+            "shadow",
+            "gradient",
+            "typography"
+          ],
+          "description": "The type of token following W3C specification"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of the token"
+        },
+        "$extensions": {
+          "type": "object",
+          "description": "Tool-specific extensions",
+          "properties": {
+            "stylestack": {
+              "type": "object",
+              "properties": {
+                "contrast": {
+                  "type": "number",
+                  "description": "Contrast ratio for accessibility"
+                },
+                "category": {
+                  "type": "string",
+                  "enum": ["primitive", "semantic", "component"],
+                  "description": "Token category in hierarchy"
+                },
+                "emu": {
+                  "type": "number",
+                  "description": "EMU value for Office precision"
+                },
+                "ooxml": {
+                  "type": "object",
+                  "description": "OOXML-specific properties"
+                },
+                "platforms": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": ["office", "libreoffice", "google"]
+                  },
+                  "description": "Supported platforms"
+                }
+              }
+            }
+          },
+          "additionalProperties": {
+            "type": "object"
+          }
+        }
+      },
+      "required": ["value", "type"],
+      "additionalProperties": false
+    },
+    "tokenGroup": {
+      "type": "object",
+      "description": "A group of tokens or nested token groups",
+      "patternProperties": {
+        "^[a-zA-Z][a-zA-Z0-9_-]*$": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/token"
+            },
+            {
+              "$ref": "#/definitions/tokenGroup"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "colorToken": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/token"
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "color"
+            },
+            "value": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^#[0-9A-Fa-f]{6}$",
+                  "description": "Hex color value"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^rgb\\(\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*\\)$",
+                  "description": "RGB color value"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^rgba\\(\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*[0-9]*\\.?[0-9]+\\s*\\)$",
+                  "description": "RGBA color value"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\{[a-zA-Z][a-zA-Z0-9._-]*\\}$",
+                  "description": "Reference to another token"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "dimensionToken": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/token"
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "dimension"
+            },
+            "value": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d+(\\.\\d+)?(px|pt|rem|em|%)$",
+                  "description": "Dimension value with units"
+                },
+                {
+                  "type": "number",
+                  "description": "Unitless dimension value"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\{[a-zA-Z][a-zA-Z0-9._-]*\\}$",
+                  "description": "Reference to another token"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "fontFamilyToken": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/token"
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "fontFamily"
+            },
+            "value": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "description": "Single font family name"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Font stack array"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\{[a-zA-Z][a-zA-Z0-9._-]*\\}$",
+                  "description": "Reference to another token"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "fontWeightToken": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/token"
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "fontWeight"
+            },
+            "value": {
+              "oneOf": [
+                {
+                  "type": "number",
+                  "minimum": 1,
+                  "maximum": 1000,
+                  "description": "Numeric font weight"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "thin",
+                    "extralight",
+                    "light",
+                    "normal",
+                    "medium",
+                    "semibold",
+                    "bold",
+                    "extrabold",
+                    "black"
+                  ],
+                  "description": "Named font weight"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\{[a-zA-Z][a-zA-Z0-9._-]*\\}$",
+                  "description": "Reference to another token"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "typographyToken": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/token"
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "typography"
+            },
+            "value": {
+              "type": "object",
+              "properties": {
+                "fontFamily": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "fontSize": {
+                  "type": "string"
+                },
+                "fontWeight": {
+                  "oneOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "lineHeight": {
+                  "oneOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "letterSpacing": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      ]
+    }
+  }
+}

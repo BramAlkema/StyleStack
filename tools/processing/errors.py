@@ -1,5 +1,5 @@
 """
-Error Recovery and Handling System for YAML Patch Operations
+Error Recovery and Handling System for JSON Patch Operations
 
 This module provides comprehensive error handling, recovery strategies,
 and fallback mechanisms for OOXML processing operations.

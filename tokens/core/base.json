@@ -1,0 +1,15 @@
+{
+  "fonts": {
+    "primary": "Liberation Sans",
+    "fallback": "Arial"
+  },
+  "colors": {
+    "text": "#000000",
+    "accent": "#18a303",
+    "bg": "#ffffff"
+  },
+  "grid": {
+    "line_height": 17,
+    "font_size": 24
+  }
+}

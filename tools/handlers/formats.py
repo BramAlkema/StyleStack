@@ -30,7 +30,8 @@ class FormatRegistry:
             main_document_path="ppt/presentation.xml",
             relationships_path="ppt/_rels/presentation.xml.rels",
             theme_paths=["ppt/theme/theme1.xml"],
-            style_paths=["ppt/presentation.xml"],
+            style_paths=[],  # Presentation.xml is already the main document, no separate style files
+            content_paths=["ppt/slides/*.xml"],  # Pattern for slide files
             required_namespaces={
                 'p': 'http://schemas.openxmlformats.org/presentationml/2006/main',
                 'a': 'http://schemas.openxmlformats.org/drawingml/2006/main',

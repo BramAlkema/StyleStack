@@ -44,8 +44,7 @@ StyleStack/
 │  ├─ template_analyzer.py        # 100% variable coverage analysis
 │  └─ extension_schema_validator.py # JSON schema validation
 ├─ schemas/                        # Extension variable schemas
-│  ├─ extension-variable.schema.json
-│  └─ extension-variable.schema.yaml
+│  └─ extension-variable.schema.json
 ├─ tests/                          # Comprehensive test coverage
 │  ├─ test_variable_resolver.py
 │  ├─ test_ooxml_processor.py

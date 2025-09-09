@@ -50,12 +50,12 @@ python build.py --org acme --channel corporate --products potx,dotx,xltx
 
 | Argument | Description | Example |
 |----------|-------------|---------|
-| `--config` | Custom config file path | `--config custom-config.yaml` |
+| `--config` | Custom config file path | `--config custom-config.json` |
 | `--template-dir` | Custom template directory | `--template-dir templates/` |
 | `--cache-dir` | Build cache directory | `--cache-dir .cache/` |
 | `--parallel` | Number of parallel build processes | `--parallel 4` |
 | `--profile` | Enable build profiling | `--profile` |
-| `--format` | Output format (ooxml, json, yaml) | `--format json` |
+| `--format` | Output format (ooxml, json, json) | `--format json` |
 
 ### Exit Codes
 
@@ -79,7 +79,7 @@ from stylestack import BuildSystem
 # Initialize build system
 builder = BuildSystem(
     org="acme",
-    config_path="org/acme/patches.yaml",
+    config_path="org/acme/patches.json",
     cache_dir=".cache"
 )
 
@@ -264,7 +264,7 @@ class OOXMLProcessor:
     ):
     
     def apply_patches(self, patches: Dict[str, Any]) -> None:
-        """Apply YAML patches to template"""
+        """Apply JSON patches to template"""
     
     def resolve_tokens(self, resolver: TokenResolver) -> None:
         """Resolve design tokens in template"""

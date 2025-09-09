@@ -8,7 +8,6 @@ Core → Channel → Organization → Group → Personal
 Resolves token references like {colors.primary.500} to actual values.
 """
 
-import yaml
 import json
 import re
 from pathlib import Path
@@ -36,12 +35,12 @@ class TokenResolver:
             click.echo(f"📁 Loading core tokens from {core_dir}")
         
         # Load all core token files
-        for token_file in core_dir.glob("*.yaml"):
+        for token_file in core_dir.glob("*.json"):
             if self.verbose:
                 click.echo(f"   📄 {token_file.name}")
                 
             with open(token_file, 'r') as f:
-                file_tokens = yaml.safe_load(f)
+                file_tokens = json.load(f)
                 # Remove schema reference
                 if '$schema' in file_tokens:
                     del file_tokens['$schema']
@@ -58,7 +57,7 @@ class TokenResolver:
             click.echo(f"   🔧 {layer_path}")
             
         with open(layer_path, 'r') as f:
-            layer_data = yaml.safe_load(f)
+            layer_data = json.load(f)
             
         return layer_data.get('overrides', {})
     
@@ -178,27 +177,27 @@ class TokenResolver:
         
         # 2. Apply fork overrides
         if fork:
-            fork_overrides = self.load_layer_overrides(tokens_dir / "forks" / f"{fork}.yaml")
+            fork_overrides = self.load_layer_overrides(tokens_dir / "forks" / f"{fork}.json")
             tokens = self.apply_overrides(tokens, fork_overrides)
         
         # 3. Apply org overrides
         if org:
-            org_overrides = self.load_layer_overrides(tokens_dir / "org" / f"{org}.yaml")
+            org_overrides = self.load_layer_overrides(tokens_dir / "org" / f"{org}.json")
             tokens = self.apply_overrides(tokens, org_overrides)
         
         # 4. Apply group overrides
         if org and group:
-            group_overrides = self.load_layer_overrides(tokens_dir / "org" / org / "groups" / f"{group}.yaml")
+            group_overrides = self.load_layer_overrides(tokens_dir / "org" / org / "groups" / f"{group}.json")
             tokens = self.apply_overrides(tokens, group_overrides)
         
         # 5. Apply personal overrides
         if personal:
-            personal_overrides = self.load_layer_overrides(tokens_dir / "personal" / f"{personal}.yaml")
+            personal_overrides = self.load_layer_overrides(tokens_dir / "personal" / f"{personal}.json")
             tokens = self.apply_overrides(tokens, personal_overrides)
         
         # 6. Apply channel overrides (last, highest priority)
         if channel:
-            channel_overrides = self.load_layer_overrides(tokens_dir / "channels" / f"{channel}.yaml") 
+            channel_overrides = self.load_layer_overrides(tokens_dir / "channels" / f"{channel}.json") 
             tokens = self.apply_overrides(tokens, channel_overrides)
         
         # 7. Flatten token structure
@@ -212,12 +211,10 @@ class TokenResolver:
         
         return resolved
     
-    def export_tokens(self, resolved: Dict[str, str], format: str = "yaml") -> str:
+    def export_tokens(self, resolved: Dict[str, str], format: str = "json") -> str:
         """Export resolved tokens in various formats"""
         if format == "json":
             return json.dumps(resolved, indent=2)
-        elif format == "yaml":
-            return yaml.dump(resolved, default_flow_style=False)
         elif format == "css":
             css_vars = []
             for key, value in resolved.items():
@@ -234,7 +231,7 @@ class TokenResolver:
 @click.option('--group', help='Group layer (e.g. marketing)')
 @click.option('--personal', help='Personal layer (e.g. john-doe)')
 @click.option('--channel', help='Channel layer (e.g. present, doc, finance)')
-@click.option('--format', default='yaml', type=click.Choice(['yaml', 'json', 'css']), help='Output format')
+@click.option('--format', default='json', type=click.Choice(['json', 'css']), help='Output format')
 @click.option('--output', '-o', help='Output file (default: stdout)')
 @click.option('--verbose', '-v', is_flag=True, help='Verbose output')
 def resolve(fork, org, group, personal, channel, format, output, verbose):

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Performance Integration Tests for YAML-to-OOXML Processing Engine
+Performance Integration Tests for JSON-to-OOXML Processing Engine
 
 Tests performance optimization features in realistic scenarios:
 - Operation result caching effectiveness
@@ -9,13 +9,12 @@ Tests performance optimization features in realistic scenarios:
 - XPath precompilation benefits
 - Comprehensive performance statistics
 
-Part of the StyleStack YAML-to-OOXML Processing Engine test suite.
+Part of the StyleStack JSON-to-OOXML Processing Engine test suite.
 """
 
 import unittest
 import time
 from lxml import etree
-from tools.yaml_ooxml_processor import YAMLPatchProcessor, RecoveryStrategy
 
 
 class PerformanceIntegrationTestCase(unittest.TestCase):
@@ -23,7 +22,7 @@ class PerformanceIntegrationTestCase(unittest.TestCase):
     
     def setUp(self):
         """Set up test fixtures."""
-        self.processor = YAMLPatchProcessor(RecoveryStrategy.RETRY_WITH_FALLBACK)
+        self.processor = JSONPatchProcessor(RecoveryStrategy.RETRY_WITH_FALLBACK)
         
         # Sample OOXML content for performance testing
         self.large_sample_xml = '''<p:sld xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" 

@@ -11,7 +11,7 @@ from enum import Enum
 
 
 class PatchOperationType(Enum):
-    """Supported YAML patch operations for OOXML manipulation."""
+    """Supported JSON patch operations for OOXML manipulation."""
     SET = "set"
     INSERT = "insert" 
     EXTEND = "extend"
@@ -67,7 +67,7 @@ class PatchResult:
 
 @dataclass
 class PatchOperation:
-    """Represents a single YAML patch operation."""
+    """Represents a single JSON patch operation."""
     operation: str
     target: str
     value: Any

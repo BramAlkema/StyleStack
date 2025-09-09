@@ -2,10 +2,10 @@
 Token Integration Layer
 
 This module provides seamless integration between the Design Token Formula 
-Evaluation system and the YAML-to-OOXML Processing Engine, enabling dynamic 
+Evaluation system and the JSON-to-OOXML Processing Engine, enabling dynamic 
 token resolution within OOXML patch operations.
 
-Part of the StyleStack YAML-to-OOXML Processing Engine.
+Part of the StyleStack JSON-to-OOXML Processing Engine.
 """
 
 import logging
@@ -17,7 +17,6 @@ import re
 
 from tools.formula_parser import FormulaParser, FormulaError
 from tools.emu_types import EMUValue, EMUOverflowError, EMUConversionError, EMU_PER_POINT, EMU_PER_INCH, EMU_PER_CM
-from tools.yaml_ooxml_processor import YAMLPatchProcessor
 from tools.variable_resolver import VariableResolver as ProductionVariableResolver
 from tools.formula_variable_resolver import FormulaVariableResolver
 
@@ -155,7 +154,7 @@ class TokenIntegrationLayer:
     Integration layer between token systems and OOXML processing.
     
     Provides:
-    - Dynamic token resolution in YAML patches
+    - Dynamic token resolution in JSON patches
     - Formula evaluation with EMU type safety
     - Context-aware variable substitution
     - Multi-scope token resolution
@@ -273,9 +272,9 @@ class TokenIntegrationLayer:
             
         logger.debug(f"Registered token '{name}' in {scope.value} scope for {template_type or 'all'} templates")
     
-    def integrate_with_processor(self, processor: YAMLPatchProcessor):
+    def integrate_with_processor(self, processor: JSONPatchProcessor):
         """
-        Integrate token resolution with YAML-to-OOXML processor.
+        Integrate token resolution with JSON-to-OOXML processor.
         
         Args:
             processor: The processor to integrate with
@@ -300,7 +299,7 @@ class TokenIntegrationLayer:
             return original_apply_patch(xml_doc, resolved_patch, context)
         
         processor.apply_patch = token_aware_apply_patch
-        logger.info("Integrated token resolution with YAML-to-OOXML processor")
+        logger.info("Integrated token resolution with JSON-to-OOXML processor")
     
     def resolve_patch_tokens(self, patch_data: Dict[str, Any], 
                            context: TokenContext) -> Dict[str, Any]:
@@ -556,9 +555,9 @@ def create_default_integration_layer() -> TokenIntegrationLayer:
     """Create a token integration layer with default configuration."""
     return TokenIntegrationLayer()
 
-def integrate_tokens_with_processor(processor: YAMLPatchProcessor) -> TokenIntegrationLayer:
+def integrate_tokens_with_processor(processor: JSONPatchProcessor) -> TokenIntegrationLayer:
     """
-    Integrate token resolution with an existing YAML-to-OOXML processor.
+    Integrate token resolution with an existing JSON-to-OOXML processor.
     
     Args:
         processor: The processor to integrate with

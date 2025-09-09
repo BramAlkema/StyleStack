@@ -6,7 +6,7 @@ on:
     paths:
       - '**.py'
       - '**.yml'
-      - '**.yaml'
+      - '**.json'
       - 'core/**'
       - 'tools/**'
       - 'requirements.txt'
@@ -18,7 +18,7 @@ on:
     paths:
       - '**.py'
       - '**.yml'
-      - '**.yaml'
+      - '**.json'
       - 'core/**'
       - 'tools/**'
       - 'requirements.txt'
@@ -460,7 +460,7 @@ jobs:
       - name: Resolve design tokens
         run: |
           echo "🎨 Resolving design tokens for: ${{ matrix.layers }}"
-          python tools/token_resolver.py ${{ matrix.args }} --format yaml --output resolved-tokens.yaml --verbose
+          python tools/token_resolver.py ${{ matrix.args }} --format json --output resolved-tokens.json --verbose
         continue-on-error: true
 
       - name: Build templates
@@ -471,7 +471,7 @@ jobs:
             exit 0
           fi
           echo "📦 Building templates: ${{ matrix.layers }}"
-          python build.py ${{ matrix.args }} --tokens resolved-tokens.yaml --verbose
+          python build.py ${{ matrix.args }} --tokens resolved-tokens.json --verbose
         continue-on-error: true
       
       - name: Upload build artifacts

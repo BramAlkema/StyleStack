@@ -22,30 +22,36 @@ StyleStack features publication-quality typography inspired by Open XML PowerToo
 - **Multi-Format Precision** - Exact OOXML unit conversion across Office apps
 
 ### **OOXML Unit Mastery**
-```yaml
-# PowerPoint: Twentieths of points (1pt = 20 units)
-powerpoint:
-  font_sizes:
-    display: 977      # 48.83pt × 20
-    
-# Word: Half-points + Twips for spacing  
-word:
-  font_sizes:
-    heading1: 78      # 39pt × 2
-  line_spacing: 360   # 1.5 × 12pt × 20 twips
-  
-# Excel: Direct points
-excel:
-  font_sizes:
-    header: 12        # 12pt
+```json
+{
+  "powerpoint": {
+    "font_sizes": {
+      "display": 977
+    }
+  },
+  "word": {
+    "font_sizes": {
+      "heading1": 78
+    },
+    "line_spacing": 360
+  },
+  "excel": {
+    "font_sizes": {
+      "header": 12
+    }
+  }
+}
 ```
 
 ### **Professional Kerning**
-```yaml
-kerning_pairs:
-  "AV": -32          # -0.08em in twentieths
-  "T,": -24          # Punctuation optimization
-  "P.": -16          # Professional spacing
+```json
+{
+  "kerning_pairs": {
+    "AV": -32,
+    "T,": -24,
+    "P.": -16
+  }
+}
 ```
 
 ## 5-Layer Architecture
@@ -75,7 +81,7 @@ StyleStack/
 │  └─ creative-suite/       # Design-heavy alternative
 ├─ orgs/
 │  └─ acme/
-│     ├─ patches.yaml       # Corporate branding
+│     ├─ patches.json       # Corporate branding
 │     ├─ assets/logo.png    # Brand assets
 │     └─ groups/
 │        ├─ marketing/      # Marketing department overrides
@@ -83,9 +89,9 @@ StyleStack/
 ├─ personal/
 │  └─ john-doe/            # Individual customizations
 ├─ channels/               # Template flavors
-│  ├─ present.yaml         # Presentation mode
-│  ├─ doc.yaml             # Document mode
-│  └─ finance.yaml         # Accounting mode
+│  ├─ present.json         # Presentation mode
+│  ├─ doc.json             # Document mode
+│  └─ finance.json         # Accounting mode
 └─ build.py               # CLI orchestrator
 ```
 

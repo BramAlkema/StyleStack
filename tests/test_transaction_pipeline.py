@@ -6,7 +6,7 @@ Tests atomic, reversible operations across the entire OOXML processing chain.
 Validates transaction semantics, rollback capabilities, operation batching,
 and comprehensive audit trails.
 
-Part of the StyleStack YAML-to-OOXML Processing Engine test suite.
+Part of the StyleStack JSON-to-OOXML Processing Engine test suite.
 """
 
 import unittest

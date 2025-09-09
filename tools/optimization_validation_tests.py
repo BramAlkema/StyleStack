@@ -28,7 +28,7 @@ try:
     from .optimized_batch_processor import OptimizedBatchProcessor, BatchProcessingConfig, BatchTask
     from .concurrent_processing_validator import ConcurrentProcessingValidator
     from .performance_benchmarks import PerformanceBenchmark, BenchmarkSuite, WorkloadConfig
-    from .yaml_ooxml_processor import YAMLPatchProcessor
+    from .json_ooxml_processor import JSONPatchProcessor
     from .production_monitoring import ProductionMonitor
 except ImportError:
     from performance_profiler import PerformanceProfiler, profiler
@@ -37,7 +37,7 @@ except ImportError:
     from optimized_batch_processor import OptimizedBatchProcessor, BatchProcessingConfig, BatchTask
     from concurrent_processing_validator import ConcurrentProcessingValidator
     from performance_benchmarks import PerformanceBenchmark, BenchmarkSuite, WorkloadConfig
-    from yaml_ooxml_processor import YAMLPatchProcessor
+    from json_ooxml_processor import JSONPatchProcessor
     from production_monitoring import ProductionMonitor
 
 logger = logging.getLogger(__name__)
@@ -425,8 +425,8 @@ class OptimizationValidationTestSuite(unittest.TestCase):
         
         start_time = time.time()
         
-        # Create a YAML processor and test basic functionality
-        processor = YAMLPatchProcessor()
+        # Create a JSON processor and test basic functionality
+        processor = JSONPatchProcessor()
         
         # Test data
         test_patches = [

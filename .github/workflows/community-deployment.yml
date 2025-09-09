@@ -56,7 +56,7 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pip install pyyaml jinja2 requests
+          pip install jinja2 requests
       
       - name: Generate GitHub community files
         if: ${{ github.event.inputs.platform == 'all' || github.event.inputs.platform == 'github' }}
@@ -99,7 +99,7 @@ jobs:
           
           ### Code Style
           - Python: Follow PEP 8
-          - YAML: 2 spaces indentation
+          - JSON: Standard formatting
           - JSON: 2 spaces indentation
           - Use type hints for Python functions
           

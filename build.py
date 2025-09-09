@@ -39,18 +39,18 @@ except ImportError as e:
     LicenseError = None
     EXTENSION_SYSTEM_AVAILABLE = False
 
-# Import YAML-to-OOXML Processing Engine components
+# Import JSON-to-OOXML Processing Engine components
 try:
     from tools.patch_execution_engine import PatchExecutionEngine, ExecutionMode
-    from tools.yaml_patch_parser import ValidationLevel
-    YAML_OOXML_ENGINE_AVAILABLE = True
+    from tools.json_patch_parser import ValidationLevel
+    JSON_OOXML_ENGINE_AVAILABLE = True
 except ImportError as e:
-    print(f"Warning: Could not import YAML-to-OOXML Processing Engine: {e}")
-    print("YAML patch processing features will be disabled.")
+    print(f"Warning: Could not import JSON-to-OOXML Processing Engine: {e}")
+    print("JSON patch processing features will be disabled.")
     PatchExecutionEngine = None
     ExecutionMode = None
     ValidationLevel = None
-    YAML_OOXML_ENGINE_AVAILABLE = False
+    JSON_OOXML_ENGINE_AVAILABLE = False
 
 # ---------- Error Handling System ----------
 class StyleStackError(Exception):
@@ -78,6 +78,7 @@ class ErrorCode(Enum):
     
     # Extension Variable Errors (5xxx)
     EXTENSION_PROCESSING_FAILED = 5001
+    PROCESSING_FAILED = 5002
 
 @dataclass
 class BuildContext:
@@ -155,54 +156,172 @@ def safe_zip_dir(src_dir: pathlib.Path, out_zip: pathlib.Path, context: BuildCon
 
 
 # ---------- Template Content-Type Management ----------
+# Complete MIME type mappings for OOXML and OpenDocument formats
 CONTENT_TYPES = {
+    # OOXML PowerPoint
     "potx": "application/vnd.openxmlformats-officedocument.presentationml.template.main+xml",
-    "pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml",
+    "pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml", 
+    "ppsx": "application/vnd.openxmlformats-officedocument.presentationml.slideshow.main+xml",
+    "pptm": "application/vnd.ms-powerpoint.presentation.macroEnabled.12.main+xml",
+    
+    # OOXML Word
     "dotx": "application/vnd.openxmlformats-officedocument.wordprocessingml.template.main+xml",
     "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml",
+    "docm": "application/vnd.ms-word.document.macroEnabled.12.main+xml",
+    
+    # OOXML Excel
     "xltx": "application/vnd.openxmlformats-officedocument.spreadsheetml.template.main+xml",
     "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml",
+    "xlsm": "application/vnd.ms-excel.sheet.macroEnabled.12.main+xml",
+    
+    # OpenDocument Format (ODF)
+    "odt": "application/vnd.oasis.opendocument.text",
+    "ott": "application/vnd.oasis.opendocument.text-template",
+    "ods": "application/vnd.oasis.opendocument.spreadsheet", 
+    "ots": "application/vnd.oasis.opendocument.spreadsheet-template",
+    "odp": "application/vnd.oasis.opendocument.presentation",
+    "otp": "application/vnd.oasis.opendocument.presentation-template",
+    "odg": "application/vnd.oasis.opendocument.graphics",
+    "otg": "application/vnd.oasis.opendocument.graphics-template",
+    "odf": "application/vnd.oasis.opendocument.formula",
+    
+    # Legacy Microsoft Office (pre-2007)
+    "doc": "application/msword",
+    "xls": "application/vnd.ms-excel",
+    "ppt": "application/vnd.ms-powerpoint",
 }
 
-def flip_content_type(content_types_path: pathlib.Path, target_format: str, context: BuildContext):
-    """Convert between document and template formats with error handling"""
+def flip_opendocument_type(manifest_path: pathlib.Path, target_format: str, context: BuildContext):
+    """Convert OpenDocument between document and template formats"""
     import re
     
+    # OpenDocument conversion mappings (source -> target)
+    ODF_CONVERSIONS = {
+        "ott": [
+            ("application/vnd.oasis.opendocument.text", "application/vnd.oasis.opendocument.text-template"),
+        ],
+        "ots": [
+            ("application/vnd.oasis.opendocument.spreadsheet", "application/vnd.oasis.opendocument.spreadsheet-template"),
+        ],
+        "otp": [
+            ("application/vnd.oasis.opendocument.presentation", "application/vnd.oasis.opendocument.presentation-template"),
+        ],
+        "otg": [
+            ("application/vnd.oasis.opendocument.graphics", "application/vnd.oasis.opendocument.graphics-template"),
+        ],
+        # Reverse conversions (template to document)
+        "odt": [
+            ("application/vnd.oasis.opendocument.text-template", "application/vnd.oasis.opendocument.text"),
+        ],
+        "ods": [
+            ("application/vnd.oasis.opendocument.spreadsheet-template", "application/vnd.oasis.opendocument.spreadsheet"),
+        ],
+        "odp": [
+            ("application/vnd.oasis.opendocument.presentation-template", "application/vnd.oasis.opendocument.presentation"),
+        ],
+        "odg": [
+            ("application/vnd.oasis.opendocument.graphics-template", "application/vnd.oasis.opendocument.graphics"),
+        ],
+    }
+    
     try:
+        if not manifest_path.exists():
+            raise StyleStackError(
+                "OpenDocument manifest file not found",
+                ErrorCode.CONTENT_TYPE_ERROR.value,
+                {"file": str(manifest_path)}
+            )
+        
+        # Read manifest content as text for simpler string replacement
+        manifest_content = manifest_path.read_text(encoding="utf-8")
+        
+        # Apply conversions for the target format
+        if target_format in ODF_CONVERSIONS:
+            for source_mime, target_mime in ODF_CONVERSIONS[target_format]:
+                # Use regex to find and replace MIME type in root manifest entry
+                pattern = rf'(manifest:full-path="/" [^>]*manifest:media-type=")({re.escape(source_mime)})(")'
+                replacement = rf'\1{target_mime}\3'
+                manifest_content = re.sub(pattern, replacement, manifest_content)
+        
+        # Write back the modified manifest
+        manifest_path.write_text(manifest_content, encoding="utf-8")
+        
+    except Exception as e:
+        raise StyleStackError(
+            f"OpenDocument type conversion failed: {e}",
+            ErrorCode.CONTENT_TYPE_ERROR.value,
+            {"error": str(e), "target_format": target_format}
+        )
+
+def flip_content_type(content_types_path: pathlib.Path, target_format: str, context: BuildContext):
+    """Convert between document and template formats with error handling
+    
+    Handles both OOXML ([Content_Types].xml) and OpenDocument (META-INF/manifest.xml) formats
+    """
+    import re
+    
+    # Define conversion mappings: source_format -> template_format
+    CONVERSION_MAPPINGS = {
+        # OOXML PowerPoint conversions
+        "potx": [
+            (r'application/vnd\.openxmlformats-presentationml\.presentation\.main\+xml', CONTENT_TYPES["potx"]),
+            (r'application/vnd\.openxmlformats-presentationml\.slideshow\.main\+xml', CONTENT_TYPES["potx"]),
+        ],
+        # OOXML Word conversions  
+        "dotx": [
+            (r'application/vnd\.openxmlformats-wordprocessingml\.document\.main\+xml', CONTENT_TYPES["dotx"]),
+        ],
+        # OOXML Excel conversions
+        "xltx": [
+            (r'application/vnd\.openxmlformats-spreadsheetml\.sheet\.main\+xml', CONTENT_TYPES["xltx"]),
+        ],
+        # Document to document (no conversion, but validation)
+        "pptx": [
+            (r'application/vnd\.openxmlformats-presentationml\.template\.main\+xml', CONTENT_TYPES["pptx"]),
+        ],
+        "docx": [
+            (r'application/vnd\.openxmlformats-wordprocessingml\.template\.main\+xml', CONTENT_TYPES["docx"]),
+        ],
+        "xlsx": [
+            (r'application/vnd\.openxmlformats-spreadsheetml\.template\.main\+xml', CONTENT_TYPES["xlsx"]),
+        ]
+    }
+    
+    try:
+        # Detect format type and handle appropriately
+        pkg_dir = content_types_path.parent
+        manifest_path = pkg_dir / "META-INF" / "manifest.xml"
+        
+        # Check if this is an OpenDocument format
+        if manifest_path.exists() and target_format in ["odt", "ott", "ods", "ots", "odp", "otp", "odg", "otg", "odf"]:
+            # Handle OpenDocument format conversion
+            flip_opendocument_type(manifest_path, target_format, context)
+            return
+        
+        # Handle OOXML format conversion
         if not content_types_path.exists():
             raise StyleStackError(
-                "Content types file not found",
+                "Content types file not found", 
                 ErrorCode.CONTENT_TYPE_ERROR.value,
                 {"file": str(content_types_path)}
             )
         
         xml = content_types_path.read_text(encoding="utf-8")
         
-        # Determine source and target content types
-        if target_format == "potx":
-            xml = re.sub(
-                r'application/vnd\.openxmlformats-officedocument\.presentationml\.presentation\.main\+xml',
-                CONTENT_TYPES["potx"],
-                xml
-            )
-        elif target_format == "dotx":
-            xml = re.sub(
-                r'application/vnd\.openxmlformats-officedocument\.wordprocessingml\.document\.main\+xml',
-                CONTENT_TYPES["dotx"],
-                xml
-            )
-        elif target_format == "xltx":
-            xml = re.sub(
-                r'application/vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet\.main\+xml',
-                CONTENT_TYPES["xltx"],
-                xml
-            )
+        # Apply conversions for the target format
+        if target_format in CONVERSION_MAPPINGS:
+            for source_pattern, target_mime in CONVERSION_MAPPINGS[target_format]:
+                xml = re.sub(source_pattern, target_mime, xml)
         else:
-            raise StyleStackError(
-                f"Unsupported template format: {target_format}",
-                ErrorCode.CONTENT_TYPE_ERROR.value,
-                {"format": target_format}
-            )
+            # Handle as direct format assignment
+            if target_format in CONTENT_TYPES:
+                context.add_warning(f"Direct MIME type assignment for {target_format}")
+            else:
+                raise StyleStackError(
+                    f"Unsupported format: {target_format}",
+                    ErrorCode.CONTENT_TYPE_ERROR.value,
+                    {"format": target_format}
+                )
         
         content_types_path.write_text(xml, encoding="utf-8")
         
@@ -339,34 +458,34 @@ def initialize_extension_system(context: BuildContext, org: str = None, channel:
         context.add_warning(f"Failed to initialize extension variable system: {e}")
         return False
 
-def process_yaml_patches(context: BuildContext, pkg_dir: pathlib.Path, org: Optional[str] = None, channel: Optional[str] = None):
-    """Apply YAML patches to OOXML documents using the processing engine"""
-    if not YAML_OOXML_ENGINE_AVAILABLE:
+def process_json_patches(context: BuildContext, pkg_dir: pathlib.Path, org: Optional[str] = None, channel: Optional[str] = None):
+    """Apply JSON patches to OOXML documents using the processing engine"""
+    if not JSON_OOXML_ENGINE_AVAILABLE:
         if context.verbose:
-            click.echo("   Skipping YAML patch processing - engine not available")
+            click.echo("   Skipping JSON patch processing - engine not available")
         return
     
     try:
-        # Find YAML patch files
+        # Find JSON patch files
         patch_files = []
         
         # Look for org-specific patches
         if org:
-            org_patches = pathlib.Path(f"org/{org}").glob("*.yaml")
+            org_patches = pathlib.Path(f"org/{org}").glob("*.json")
             patch_files.extend(org_patches)
             
         # Look for channel-specific patches
         if channel:
-            channel_patches = pathlib.Path(f"channels/{channel}").glob("*.yaml")
+            channel_patches = pathlib.Path(f"channels/{channel}").glob("*.json")
             patch_files.extend(channel_patches)
         
         # Look for core patches
-        core_patches = pathlib.Path("core").glob("*.yaml")
+        core_patches = pathlib.Path("core").glob("*.json")
         patch_files.extend(core_patches)
         
         if not patch_files:
             if context.verbose:
-                click.echo("   No YAML patch files found")
+                click.echo("   No JSON patch files found")
             return
         
         # Initialize patch execution engine
@@ -424,21 +543,21 @@ def process_yaml_patches(context: BuildContext, pkg_dir: pathlib.Path, org: Opti
                         for result in batch_result.results:
                             if not result.success:
                                 for error in result.errors:
-                                    context.add_warning(f"YAML patch error in {xml_file.name}: {error}")
+                                    context.add_warning(f"JSON patch error in {xml_file.name}: {error}")
             
             except Exception as e:
-                context.add_warning(f"Failed to process YAML patches for {xml_file.name}: {e}")
+                context.add_warning(f"Failed to process JSON patches for {xml_file.name}: {e}")
                 errors_encountered += 1
         
         if context.verbose:
             if patches_applied > 0:
-                click.echo(f"   Applied {patches_applied} YAML patches successfully")
+                click.echo(f"   Applied {patches_applied} JSON patches successfully")
             if errors_encountered > 0:
                 click.echo(f"   Encountered {errors_encountered} patch errors")
         
     except Exception as e:
         context.add_error(StyleStackError(
-            f"YAML patch processing failed: {e}",
+            f"JSON patch processing failed: {e}",
             ErrorCode.PROCESSING_FAILED.value,
             {"error": str(e)}
         ))
@@ -537,7 +656,7 @@ def main(src, as_potx, as_dotx, as_xltx, out, verbose, org, channel):
     else:
         # Auto-detect from output extension
         ext = pathlib.Path(out).suffix.lower()
-        if ext in [".potx", ".dotx", ".xltx"]:
+        if ext in [".potx", ".dotx", ".xltx", ".otp", ".ott", ".ots", ".otg"]:
             target_format = ext[1:]  # Remove dot
     
     src_path = pathlib.Path(src) if src else None
@@ -572,7 +691,12 @@ def main(src, as_potx, as_dotx, as_xltx, out, verbose, org, channel):
             if verbose:
                 click.echo("🗂️  Staging source package...")
             
-            if src_path and src_path.is_file() and src_path.suffix.lower() in [".pptx", ".docx", ".xlsx", ".potx", ".dotx", ".xltx"]:
+            if src_path and src_path.is_file() and src_path.suffix.lower() in [
+                # OOXML formats
+                ".pptx", ".docx", ".xlsx", ".potx", ".dotx", ".xltx",
+                # OpenDocument formats
+                ".odt", ".ott", ".ods", ".ots", ".odp", ".otp", ".odg", ".otg", ".odf"
+            ]:
                 safe_unzip(src_path, pkg_dir, context)
             elif src_path and src_path.is_dir():
                 shutil.copytree(src_path, pkg_dir, dirs_exist_ok=True)
@@ -594,14 +718,14 @@ def main(src, as_potx, as_dotx, as_xltx, out, verbose, org, channel):
             if verbose:
                 click.echo("   Extension variables processed")
             
-            # Stage 3.5: Apply YAML patches
+            # Stage 3.5: Apply JSON patches
             if verbose:
-                click.echo("🔧 Applying YAML patches...")
+                click.echo("🔧 Applying JSON patches...")
             
-            process_yaml_patches(context, pkg_dir, org, channel)
+            process_json_patches(context, pkg_dir, org, channel)
             
             if verbose:
-                click.echo("   YAML patches applied")
+                click.echo("   JSON patches applied")
             
             # Stage 4: Convert to template format
             if target_format:

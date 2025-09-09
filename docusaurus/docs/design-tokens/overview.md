@@ -21,7 +21,7 @@ Design tokens are named entities that store visual design attributes. Instead of
 ## Token Categories
 
 ### Color Tokens
-```yaml
+```json
 colors:
   primary: "#1E3A8A"        # Main brand color
   secondary: "#3B82F6"      # Supporting brand color  
@@ -34,7 +34,7 @@ colors:
 ```
 
 ### Typography Tokens
-```yaml
+```json
 fonts:
   heading: "Montserrat"     # Headlines and titles
   body: "Open Sans"         # Body text and paragraphs
@@ -48,7 +48,7 @@ typography:
 ```
 
 ### Spacing Tokens
-```yaml
+```json
 spacing:
   unit: "8pt"              # Base spacing unit
   xs: "{unit * 0.5}"       # 4pt - tight spacing
@@ -59,7 +59,7 @@ spacing:
 ```
 
 ### Layout Tokens
-```yaml
+```json
 layout:
   page_margin: "{spacing.lg}"        # Standard page margins
   content_width: "8.5in"             # Page content width
@@ -73,8 +73,8 @@ layout:
 StyleStack uses a hierarchical token resolution system that allows customization at multiple levels:
 
 ### 1. Core Tokens (Community Baseline)
-```yaml
-# core/tokens/base.yaml
+```json
+# core/tokens/base.json
 colors:
   primary: "#2563EB"      # Community default blue
   text: "#1F2937"         # Dark gray for readability
@@ -83,8 +83,8 @@ fonts:
 ```
 
 ### 2. Organization Tokens (Your Branding) 
-```yaml  
-# org/your-org/patches.yaml
+```json  
+# org/your-org/patches.json
 colors:
   primary: "#1E3A8A"      # Override with your brand blue
   # text inherits from core
@@ -94,8 +94,8 @@ fonts:
 ```
 
 ### 3. Channel Tokens (Use Case Variants)
-```yaml
-# org/your-org/channels/presentation.yaml
+```json
+# org/your-org/channels/presentation.json
 typography:
   base_size: "20pt"       # Larger fonts for projection
 colors:
@@ -111,7 +111,7 @@ colors:
 
 ### Simple Tokens
 Direct value assignment:
-```yaml
+```json
 primary_color: "#1E3A8A"
 heading_font: "Montserrat"
 base_spacing: "8pt"
@@ -119,7 +119,7 @@ base_spacing: "8pt"
 
 ### Reference Tokens  
 Reference other tokens:
-```yaml
+```json
 link_color: "{primary_color}"           # Use primary color
 large_spacing: "{base_spacing * 3}"     # Calculate from base
 text_on_primary: "{primary_color.contrast}"  # Auto-contrast
@@ -127,7 +127,7 @@ text_on_primary: "{primary_color.contrast}"  # Auto-contrast
 
 ### Computed Tokens
 Generated through functions:
-```yaml
+```json
 colors:
   primary: "#1E3A8A"
   primary_light: "{primary.lighten(20%)}"    # Lighten by 20%
@@ -137,7 +137,7 @@ colors:
 
 ### Conditional Tokens
 Vary based on context:
-```yaml
+```json
 text_color:
   light_theme: "#1F2937"     # Dark text on light background
   dark_theme: "#F9FAFB"      # Light text on dark background
@@ -177,8 +177,8 @@ text_color:
 ## Token Governance
 
 ### Organization-Level Control
-```yaml
-# org/your-org/governance.yaml
+```json
+# org/your-org/governance.json
 token_overrides:
   allowed:
     - "colors.*"           # Allow all color customization
@@ -191,7 +191,7 @@ token_overrides:
 ```
 
 ### Channel-Level Restrictions
-```yaml
+```json
 # Channels can only modify specific tokens
 channel_permissions:
   presentation:
@@ -206,7 +206,7 @@ channel_permissions:
 ## Accessibility Considerations
 
 ### WCAG-Compliant Color Tokens
-```yaml
+```json
 # Automatic contrast checking
 colors:
   primary: "#1E3A8A"
@@ -218,7 +218,7 @@ accessibility:
 ```
 
 ### Font Size Accessibility
-```yaml
+```json
 typography:
   min_font_size: "12pt"    # Never smaller than 12pt
   reading_font_size: "14pt" # Comfortable reading size
@@ -231,14 +231,14 @@ typography:
 Use descriptive, purpose-driven names:
 
 ✅ **Good:**
-```yaml
+```json
 primary_color: "#1E3A8A"
 heading_font: "Montserrat"
 content_spacing: "16pt"
 ```
 
 ❌ **Bad:**  
-```yaml
+```json
 blue: "#1E3A8A"
 font1: "Montserrat"  
 spacing16: "16pt"
@@ -246,7 +246,7 @@ spacing16: "16pt"
 
 ### Token Comments
 Document token purposes:
-```yaml
+```json
 colors:
   primary: "#1E3A8A"           # Main brand color, used for headers, buttons, links
   secondary: "#3B82F6"         # Supporting color for backgrounds, inactive states  

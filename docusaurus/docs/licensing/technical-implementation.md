@@ -22,7 +22,7 @@ graph TB
 
 GitHub provides cryptographically signed identity tokens that cannot be forged:
 
-```yaml
+```json
 # In license request workflow
 - name: Get OIDC token
   id: oidc
@@ -216,7 +216,7 @@ def enforce_licensing(org_name: str):
 
 Multiple ways to provide licenses in automated environments:
 
-```yaml
+```json
 # Option 1: Repository secret (recommended)
 - name: Build template
   run: python build.py --org "${{ secrets.ORG_NAME }}"
