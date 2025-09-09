@@ -99,17 +99,12 @@ jobs:
                   converted = drive_service.files().copy(fileId=drive_file_id, body=copy_metadata, fields='id').execute()
                   slides_id = converted.get('id')
                   
-                  # Get presentation info
-                  presentation = slides_service.presentations().get(presentationId=slides_id).execute()
-                  slide_count = len(presentation.get('slides', []))
-                  print(f"Presentation has {slide_count} slides")
-                  
-                  # Export presentation as PDF
+                  # Export presentation as PDF using direct URL (no need for Slides API)
                   output_dir = Path(f'{Path(pptx_path).stem}_screenshots')
                   output_dir.mkdir(exist_ok=True)
                   
                   print("📄 Exporting presentation as PDF...")
-                  pdf_export_url = f"https://docs.google.com/presentation/d/{slides_id}/export/pdf"
+                  pdf_export_url = f"https://docs.google.com/presentation/d/{slides_id}/export?format=pdf"
                   pdf_response = requests.get(pdf_export_url, headers={'Authorization': f'Bearer {credentials.token}'})
                   
                   if pdf_response.status_code == 200:
@@ -157,6 +152,7 @@ jobs:
                       print(f"📸 Generated {len(images)} slide screenshots + animated PNG")
                   else:
                       print(f"❌ Failed to export PDF: {pdf_response.status_code}")
+                      return False
                   
                   # Cleanup Google Drive files
                   drive_service.files().delete(fileId=drive_file_id).execute()
