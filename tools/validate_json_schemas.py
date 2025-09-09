@@ -3,7 +3,7 @@
 JSON Schema Validation Tool for StyleStack Design Tokens
 
 Validates all JSON token files against their respective schemas to ensure
-compliance with the W3C Design Token specification and StyleStack extensions.
+compliance with the DTCG specification draft and StyleStack extensions.
 """
 
 import json

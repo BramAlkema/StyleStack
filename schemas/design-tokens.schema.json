@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://stylestack.dev/schemas/design-tokens.schema.json",
   "title": "StyleStack Design Tokens Schema",
-  "description": "Schema for StyleStack hierarchical design tokens following W3C Design Token specification",
+  "description": "Schema for StyleStack hierarchical design tokens following DTCG specification draft",
   "version": "2.0.0",
   "type": "object",
   "properties": {
@@ -42,7 +42,7 @@
   "definitions": {
     "token": {
       "type": "object",
-      "description": "A design token following W3C specification",
+      "description": "A design token following DTCG specification draft",
       "properties": {
         "value": {
           "description": "The value of the token",
@@ -81,7 +81,7 @@
             "gradient",
             "typography"
           ],
-          "description": "The type of token following W3C specification"
+          "description": "The type of token following DTCG specification draft"
         },
         "description": {
           "type": "string",
