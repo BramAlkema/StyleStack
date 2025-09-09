@@ -32,7 +32,7 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pip install google-auth google-auth-oauthlib google-api-python-client requests pillow
+          pip install google-auth google-auth-oauthlib google-api-python-client requests pillow pdf2image
       
       - name: Authenticate with Google Cloud
         run: |
@@ -66,6 +66,8 @@ jobs:
           from googleapiclient.discovery import build
           from googleapiclient.http import MediaFileUpload
           import requests
+          from pdf2image import convert_from_bytes
+          from PIL import Image
           
           def generate_screenshots(pptx_path):
               # Load credentials
@@ -102,19 +104,59 @@ jobs:
                   slide_count = len(presentation.get('slides', []))
                   print(f"Presentation has {slide_count} slides")
                   
-                  # Export slides as images
+                  # Export presentation as PDF
                   output_dir = Path(f'{Path(pptx_path).stem}_screenshots')
                   output_dir.mkdir(exist_ok=True)
                   
-                  for i in range(1, min(slide_count + 1, 6)):  # Max 5 slides for demo
-                      export_url = f"https://docs.google.com/presentation/d/{slides_id}/export/png?slide={i}"
-                      response = requests.get(export_url, headers={'Authorization': f'Bearer {credentials.token}'})
+                  print("📄 Exporting presentation as PDF...")
+                  pdf_export_url = f"https://docs.google.com/presentation/d/{slides_id}/export/pdf"
+                  pdf_response = requests.get(pdf_export_url, headers={'Authorization': f'Bearer {credentials.token}'})
+                  
+                  if pdf_response.status_code == 200:
+                      # Convert PDF to images using pdf2image
+                      print("🖼️ Converting PDF to images...")
+                      images = convert_from_bytes(pdf_response.content, dpi=300)
                       
-                      if response.status_code == 200:
+                      # Save individual PNG files
+                      png_files = []
+                      for i, img in enumerate(images, start=1):
                           output_path = output_dir / f'slide_{i:03d}.png'
-                          with open(output_path, 'wb') as f:
-                              f.write(response.content)
-                          print(f"✅ Exported slide {i}: {output_path}")
+                          img.save(output_path, 'PNG', optimize=True)
+                          png_files.append(img)
+                          print(f"✅ Saved slide {i}: {output_path}")
+                      
+                      # Create animated PNG with all slides
+                      if len(png_files) > 1:
+                          animated_path = output_dir / f'{Path(pptx_path).stem}_animated.png'
+                          print(f"🎬 Creating animated PNG: {animated_path}")
+                          
+                          # Resize images to consistent size for animation
+                          max_width = max(img.width for img in png_files)
+                          max_height = max(img.height for img in png_files)
+                          
+                          resized_images = []
+                          for img in png_files:
+                              # Create new image with consistent size, center the original
+                              new_img = Image.new('RGB', (max_width, max_height), 'white')
+                              x_offset = (max_width - img.width) // 2
+                              y_offset = (max_height - img.height) // 2
+                              new_img.paste(img, (x_offset, y_offset))
+                              resized_images.append(new_img)
+                          
+                          # Save as animated PNG (APNG)
+                          resized_images[0].save(
+                              animated_path,
+                              format='PNG',
+                              save_all=True,
+                              append_images=resized_images[1:],
+                              duration=2000,  # 2 seconds per slide
+                              loop=0  # Infinite loop
+                          )
+                          print(f"✅ Animated PNG created: {animated_path}")
+                      
+                      print(f"📸 Generated {len(images)} slide screenshots + animated PNG")
+                  else:
+                      print(f"❌ Failed to export PDF: {pdf_response.status_code}")
                   
                   # Cleanup Google Drive files
                   drive_service.files().delete(fileId=drive_file_id).execute()
