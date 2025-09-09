@@ -1,0 +1,194 @@
+name: Screenshot Templates
+
+on:
+  workflow_dispatch:
+    inputs:
+      template_file:
+        description: 'Template file to screenshot (e.g., test.pptx)'
+        required: true
+        default: 'test_presentation.pptx'
+  push:
+    paths:
+      - '**.pptx'
+      - '**.potx'
+  pull_request:
+    paths:
+      - '**.pptx'
+      - '**.potx'
+
+jobs:
+  screenshot-google-slides:
+    name: Generate Screenshots via Google Slides
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install google-auth google-auth-oauthlib google-api-python-client requests pillow
+      
+      - name: Authenticate with Google Cloud
+        run: |
+          echo '${{ secrets.GCP_SA_KEY }}' > /tmp/gcp-key.json
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp-key.json
+          
+      - name: Find PowerPoint files
+        id: find-pptx
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "files=${{ github.event.inputs.template_file }}" >> $GITHUB_OUTPUT
+          else
+            # Find all PPTX/POTX files that changed
+            files=$(find . -name "*.pptx" -o -name "*.potx" | head -5 | tr '\n' ' ')
+            echo "files=${files}" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Generate screenshots
+        run: |
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp-key.json
+          export GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
+          
+          # Create Python script inline for screenshot generation
+          cat > screenshot_tool.py << 'EOF'
+          import os
+          import sys
+          import json
+          import time
+          from pathlib import Path
+          from google.oauth2 import service_account
+          from googleapiclient.discovery import build
+          from googleapiclient.http import MediaFileUpload
+          import requests
+          
+          def generate_screenshots(pptx_path):
+              # Load credentials
+              credentials = service_account.Credentials.from_service_account_file(
+                  os.environ['GOOGLE_APPLICATION_CREDENTIALS'],
+                  scopes=[
+                      'https://www.googleapis.com/auth/drive',
+                      'https://www.googleapis.com/auth/presentations'
+                  ]
+              )
+              
+              drive_service = build('drive', 'v3', credentials=credentials)
+              slides_service = build('slides', 'v1', credentials=credentials)
+              
+              # Upload to Drive
+              print(f"Uploading {pptx_path} to Google Drive...")
+              file_metadata = {'name': f'temp_{Path(pptx_path).stem}_{int(time.time())}'}
+              media = MediaFileUpload(pptx_path, mimetype='application/vnd.openxmlformats-officedocument.presentationml.presentation')
+              file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+              drive_file_id = file.get('id')
+              
+              try:
+                  # Convert to Google Slides
+                  print("Converting to Google Slides...")
+                  copy_metadata = {
+                      'name': f'slides_{Path(pptx_path).stem}',
+                      'mimeType': 'application/vnd.google-apps.presentation'
+                  }
+                  converted = drive_service.files().copy(fileId=drive_file_id, body=copy_metadata, fields='id').execute()
+                  slides_id = converted.get('id')
+                  
+                  # Get presentation info
+                  presentation = slides_service.presentations().get(presentationId=slides_id).execute()
+                  slide_count = len(presentation.get('slides', []))
+                  print(f"Presentation has {slide_count} slides")
+                  
+                  # Export slides as images
+                  output_dir = Path(f'{Path(pptx_path).stem}_screenshots')
+                  output_dir.mkdir(exist_ok=True)
+                  
+                  for i in range(1, min(slide_count + 1, 6)):  # Max 5 slides for demo
+                      export_url = f"https://docs.google.com/presentation/d/{slides_id}/export/png?slide={i}"
+                      response = requests.get(export_url, headers={'Authorization': f'Bearer {credentials.token}'})
+                      
+                      if response.status_code == 200:
+                          output_path = output_dir / f'slide_{i:03d}.png'
+                          with open(output_path, 'wb') as f:
+                              f.write(response.content)
+                          print(f"✅ Exported slide {i}: {output_path}")
+                  
+                  # Cleanup Google Drive files
+                  drive_service.files().delete(fileId=drive_file_id).execute()
+                  drive_service.files().delete(fileId=slides_id).execute()
+                  print("🗑️ Cleaned up Google Drive files")
+                  
+                  return True
+                  
+              except Exception as e:
+                  print(f"Error: {e}")
+                  # Try to cleanup
+                  try:
+                      drive_service.files().delete(fileId=drive_file_id).execute()
+                  except:
+                      pass
+                  return False
+          
+          # Process files from command line
+          files = sys.argv[1].split() if len(sys.argv) > 1 else []
+          for file_path in files:
+              if os.path.exists(file_path):
+                  print(f"\n📸 Processing: {file_path}")
+                  generate_screenshots(file_path)
+          EOF
+          
+          # Run the screenshot tool
+          python screenshot_tool.py "${{ steps.find-pptx.outputs.files }}"
+      
+      - name: Upload screenshots as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: template-screenshots
+          path: |
+            *_screenshots/*.png
+          if-no-files-found: warn
+      
+      - name: Comment on PR with screenshots
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs').promises;
+            const path = require('path');
+            
+            // Find screenshot directories
+            const dirs = await fs.readdir('.');
+            const screenshotDirs = dirs.filter(d => d.endsWith('_screenshots'));
+            
+            if (screenshotDirs.length > 0) {
+              let comment = '## 📸 Template Screenshots\n\n';
+              
+              for (const dir of screenshotDirs) {
+                const templateName = dir.replace('_screenshots', '');
+                comment += `### ${templateName}\n\n`;
+                
+                const files = await fs.readdir(dir);
+                const pngs = files.filter(f => f.endsWith('.png')).slice(0, 3);
+                
+                for (const png of pngs) {
+                  // In a real workflow, you'd upload these to a CDN or use GitHub's image hosting
+                  comment += `- ${png}\n`;
+                }
+                comment += '\n';
+              }
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }
+      
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -f /tmp/gcp-key.json
