@@ -24,11 +24,13 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'tools'))
 
-from template_analyzer import (
+from tools.template_analyzer import (
     TemplateAnalyzer,
+    TemplateComplexity
+)
+from tools.analyzer.types import (
     DesignElement,
     VariableCoverage,
-    TemplateComplexity,
     AnalysisResult,
     CoverageReport,
     ComplexityScore,

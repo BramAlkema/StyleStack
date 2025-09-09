@@ -23,9 +23,9 @@ from concurrent.futures import ThreadPoolExecutor, Future
 import pickle
 import json
 
-from .multi_format_ooxml_handler import MultiFormatOOXMLHandler, ProcessingResult, OOXMLFormat
-from .token_integration_layer import TokenIntegrationLayer, TokenScope, TokenContext
-from .yaml_ooxml_processor import YAMLPatchProcessor, PatchResult
+from tools.multi_format_ooxml_handler import MultiFormatOOXMLHandler, ProcessingResult, OOXMLFormat
+from tools.token_integration_layer import TokenIntegrationLayer, TokenScope, TokenContext
+from tools.yaml_ooxml_processor import YAMLPatchProcessor, PatchResult
 
 # Configure logging
 logger = logging.getLogger(__name__)

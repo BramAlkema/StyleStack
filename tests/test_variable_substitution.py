@@ -25,8 +25,8 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'tools'))
 
-from variable_substitution import (
-    VariableSubstitutionPipeline, 
+from tools.substitution.pipeline import SubstitutionPipeline as VariableSubstitutionPipeline
+from tools.substitution.types import (
     SubstitutionResult,
     SubstitutionProgress,
     SubstitutionError,

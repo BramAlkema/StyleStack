@@ -28,9 +28,9 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'tools'))
 
 import build
-from template_analyzer import TemplateAnalyzer
-from exemplar_generator import ExemplarGenerator
-from variable_substitution import VariableSubstitutionPipeline
+from tools.template_analyzer import TemplateAnalyzer
+from tools.exemplar_generator import ExemplarGenerator  
+from tools.substitution.pipeline import SubstitutionPipeline as VariableSubstitutionPipeline
 
 
 class TestBuildIntegration(unittest.TestCase):

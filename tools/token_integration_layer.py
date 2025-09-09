@@ -15,11 +15,11 @@ from enum import Enum
 from pathlib import Path
 import re
 
-from .formula_parser import FormulaParser, FormulaError
-from .emu_types import EMUValue, EMUOverflowError, EMUConversionError, EMU_PER_POINT, EMU_PER_INCH, EMU_PER_CM
-from .yaml_ooxml_processor import YAMLPatchProcessor
-from .variable_resolver import VariableResolver as ProductionVariableResolver
-from .formula_variable_resolver import FormulaVariableResolver
+from tools.formula_parser import FormulaParser, FormulaError
+from tools.emu_types import EMUValue, EMUOverflowError, EMUConversionError, EMU_PER_POINT, EMU_PER_INCH, EMU_PER_CM
+from tools.yaml_ooxml_processor import YAMLPatchProcessor
+from tools.variable_resolver import VariableResolver as ProductionVariableResolver
+from tools.formula_variable_resolver import FormulaVariableResolver
 
 # Configure logging
 logger = logging.getLogger(__name__)

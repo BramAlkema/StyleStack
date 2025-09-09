@@ -18,9 +18,9 @@ import sys
 # Add tools directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools"))
 
-from multi_format_ooxml_handler import MultiFormatOOXMLHandler
-from transaction_pipeline import TransactionPipeline
-from yaml_ooxml_processor import YAMLPatchProcessor
+from tools.multi_format_ooxml_handler import MultiFormatOOXMLHandler
+from tools.transaction_pipeline import TransactionPipeline
+from tools.yaml_ooxml_processor import YAMLPatchProcessor
 
 # Configure logging for tests
 logging.basicConfig(

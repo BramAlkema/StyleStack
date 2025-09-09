@@ -18,10 +18,12 @@ from pathlib import Path
 from lxml import etree
 
 from tools.multi_format_ooxml_handler import (
-    MultiFormatOOXMLHandler, OOXMLFormat, OOXMLStructure, ProcessingResult,
-    create_multi_format_handler, process_ooxml_template
+    MultiFormatOOXMLHandler, 
+    create_multi_format_handler, 
+    process_ooxml_template
 )
-from tools.yaml_ooxml_processor import RecoveryStrategy
+from tools.handlers.types import OOXMLFormat, OOXMLStructure, ProcessingResult
+from tools.core.types import RecoveryStrategy
 
 
 class TestOOXMLFormat(unittest.TestCase):
