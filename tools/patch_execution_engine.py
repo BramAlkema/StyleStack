@@ -18,11 +18,26 @@ import time
 
 from lxml import etree
 from .json_patch_parser import JSONPatchParser, ParsedPatch, ValidationLevel, PatchTarget
-from .core.types import PatchResult
+from .core.types import PatchResult, PatchOperationType
 from .ooxml_processor import OOXMLProcessor as PatchProcessor
 
 # Configure logging
 logger = logging.getLogger(__name__)
+
+
+class PatchErrorCode(Enum):
+    """Error codes for patch execution engine."""
+    INVALID_PATCH = 6001
+    UNSUPPORTED_OPERATION = 6002
+
+
+class StyleStackError(Exception):
+    """Base exception with error codes for StyleStack."""
+    def __init__(self, message: str, error_code: int, context: Optional[Dict[str, Any]] = None):
+        self.message = message
+        self.error_code = error_code
+        self.context = context or {}
+        super().__init__(f"[E{error_code:04d}] {message}")
 
 
 class ExecutionMode(Enum):
@@ -142,8 +157,14 @@ class PatchExecutionEngine:
             # Parse the patch file
             logger.info(f"Parsing patch file: {patch_file}")
             parse_result = self.parser.parse_file(patch_file)
-            
+
             if parse_result.errors:
+                if self.validation_level == ValidationLevel.STRICT:
+                    raise StyleStackError(
+                        "Invalid patch file",
+                        PatchErrorCode.INVALID_PATCH.value,
+                        {"errors": [error.message for error in parse_result.errors]}
+                    )
                 errors.extend([error.message for error in parse_result.errors])
                 warnings.extend([warning.message for warning in parse_result.warnings])
                 return self._create_failed_result(xml_document, context, errors, warnings, time.time() - start_time, mode == ExecutionMode.DRY_RUN)
@@ -168,6 +189,8 @@ class PatchExecutionEngine:
                 start_time
             )
             
+        except StyleStackError:
+            raise
         except Exception as e:
             logger.error(f"Unexpected error executing patch file {patch_file}: {e}")
             errors.append(f"Execution error: {e}")
@@ -204,8 +227,14 @@ class PatchExecutionEngine:
             # Parse the patch content
             logger.info("Parsing patch content")
             parse_result = self.parser.parse_content(patch_content)
-            
+
             if parse_result.errors:
+                if self.validation_level == ValidationLevel.STRICT:
+                    raise StyleStackError(
+                        "Invalid patch content",
+                        PatchErrorCode.INVALID_PATCH.value,
+                        {"errors": [error.message for error in parse_result.errors]}
+                    )
                 errors.extend([error.message for error in parse_result.errors])
                 warnings.extend([warning.message for warning in parse_result.warnings])
                 return self._create_failed_result(xml_document, context, errors, warnings, time.time() - start_time, mode == ExecutionMode.DRY_RUN)
@@ -230,6 +259,8 @@ class PatchExecutionEngine:
                 start_time
             )
             
+        except StyleStackError:
+            raise
         except Exception as e:
             logger.error(f"Unexpected error executing patch content: {e}")
             errors.append(f"Execution error: {e}")
@@ -326,9 +357,27 @@ class PatchExecutionEngine:
             return self._validate_patches_only(patches, xml_document, context, errors, warnings, start_time)
         
         logger.info(f"Executing {len(patches)} patches in {mode.value} mode")
-        
+
+        supported_ops = {op.value for op in PatchOperationType}
+
         for i, patch in enumerate(patches):
             logger.debug(f"Executing patch {i+1}/{len(patches)}: {patch.get('operation', 'unknown')}")
+
+            operation = patch.get('operation')
+            target = patch.get('target')
+            value = patch.get('value')
+
+            if not operation or not target or value is None:
+                raise StyleStackError(
+                    f"Invalid patch structure at index {i}",
+                    PatchErrorCode.INVALID_PATCH.value
+                )
+
+            if operation not in supported_ops:
+                raise StyleStackError(
+                    f"Unsupported operation: {operation}",
+                    PatchErrorCode.UNSUPPORTED_OPERATION.value
+                )
             
             # Execute pre-patch callbacks
             for callback in self.pre_patch_callbacks:
@@ -398,38 +447,40 @@ class PatchExecutionEngine:
         patch_results = []
         
         logger.info(f"Validating {len(patches)} patches (no application)")
-        
+
+        supported_ops = {op.value for op in PatchOperationType}
+
         for i, patch in enumerate(patches):
+            operation = patch.get('operation')
+            target = patch.get('target')
+            value = patch.get('value')
+
+            if not operation or not target or value is None:
+                raise StyleStackError(
+                    f"Invalid patch structure at index {i}",
+                    PatchErrorCode.INVALID_PATCH.value
+                )
+
+            if operation not in supported_ops:
+                raise StyleStackError(
+                    f"Unsupported operation: {operation}",
+                    PatchErrorCode.UNSUPPORTED_OPERATION.value
+                )
+
             # Create a mock result for validation
             try:
-                # Validate patch structure
-                operation = patch.get('operation')
-                target = patch.get('target')
-                value = patch.get('value')
-                
-                if not operation:
-                    result = PatchResult(False, 'unknown', target or 'unknown', f"Patch {i+1}: Missing operation")
-                elif not target:
-                    result = PatchResult(False, operation, 'unknown', f"Patch {i+1}: Missing target")
-                elif value is None:
-                    result = PatchResult(False, operation, target, f"Patch {i+1}: Missing value")
+                # Try to validate XPath target
+                context_info = self.processor.xpath_system.get_xpath_context_info(xml_document, target)
+                if context_info.get('is_valid_syntax', False) and 'error' not in context_info:
+                    result = PatchResult(True, operation, target, f"Patch {i+1}: Validation passed", 0)
                 else:
-                    # Try to validate XPath target
-                    try:
-                        context_info = self.processor.xpath_system.get_xpath_context_info(xml_document, target)
-                        if context_info.get('is_valid_syntax', False) and 'error' not in context_info:
-                            result = PatchResult(True, operation, target, f"Patch {i+1}: Validation passed", 0)
-                        else:
-                            error_msg = context_info.get('error', 'Invalid XPath syntax or no matches found')
-                            result = PatchResult(False, operation, target, f"Patch {i+1}: {error_msg}")
-                    except Exception as e:
-                        result = PatchResult(False, operation, target, f"Patch {i+1}: XPath validation error: {e}")
-                
+                    error_msg = context_info.get('error', 'Invalid XPath syntax or no matches found')
+                    result = PatchResult(False, operation, target, f"Patch {i+1}: {error_msg}")
             except Exception as e:
-                result = PatchResult(False, 'unknown', 'unknown', f"Patch {i+1}: Validation error: {e}")
-            
+                result = PatchResult(False, operation, target, f"Patch {i+1}: XPath validation error: {e}")
+
             patch_results.append(result)
-            
+
             if result.success:
                 context.execution_stats['successful_patches'] += 1
             else:
