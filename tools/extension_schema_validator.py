@@ -62,7 +62,7 @@ class ValidationError:
 @dataclass
 class ValidationResult:
     """Complete validation result"""
-    is_valid: bool
+    is_valid: bool = True
     errors: List[ValidationError] = field(default_factory=list)
     warnings: List[ValidationError] = field(default_factory=list)
     variable_id: Optional[str] = None
@@ -410,6 +410,7 @@ class ExtensionSchemaValidator:
     def _validate_cross_dependencies(self, variables: List[Dict[str, Any]], results: List[ValidationResult]):
         """Validate cross-variable dependencies"""
         variable_ids = {var.get("id") for var in variables if var.get("id")}
+        id_to_index = {var.get("id"): i for i, var in enumerate(variables) if var.get("id")}
         
         for i, variable in enumerate(variables):
             dependencies = variable.get("dependencies", [])
@@ -425,8 +426,51 @@ class ExtensionSchemaValidator:
                         code="MISSING_DEPENDENCY"
                     )
         
-        # TODO: Implement circular dependency detection across multiple variables
-        # This would require building a dependency graph and checking for cycles
+        graph: Dict[str, List[str]] = {
+            var_id: [dep for dep in variables[id_to_index[var_id]].get("dependencies", []) if dep in variable_ids]
+            for var_id in variable_ids
+        }
+
+        visited: set = set()
+        recursion_stack: set = set()
+        path: List[str] = []
+
+        def visit(node: str):
+            if node in recursion_stack:
+                cycle_start = path.index(node)
+                cycle = path[cycle_start:] + [node]
+                cycle_path = " -> ".join(cycle)
+
+                for var in cycle:
+                    idx = id_to_index.get(var)
+                    if idx is not None:
+                        results[idx].add_error(
+                            field="dependencies",
+                            message=f"Circular dependency detected: {cycle_path}",
+                            value=cycle,
+                            code="CIRCULAR_DEPENDENCY",
+                        )
+
+                raise jsonschema.exceptions.ValidationError(
+                    f"Circular dependency detected: {cycle_path}"
+                )
+
+            if node in visited:
+                return
+
+            visited.add(node)
+            recursion_stack.add(node)
+            path.append(node)
+
+            for neighbour in graph.get(node, []):
+                visit(neighbour)
+
+            recursion_stack.remove(node)
+            path.pop()
+
+        for node in graph:
+            if node not in visited:
+                visit(node)
     
     def format_validation_report(self, results: List[ValidationResult]) -> str:
         """Format validation results as human-readable report"""
