@@ -14,35 +14,43 @@ Supported formats:
 - OpenOffice/LibreOffice: .odp, .otp (Impress), .ods, .ots (Calc), .odt, .ott (Writer)
 """
 
-import os
+
+from typing import Dict, List, Optional, Tuple
 import json
 import zipfile
 import tempfile
 from pathlib import Path
-from typing import Dict, List, Set, Optional, Tuple
-from collections import Counter, defaultdict
 from lxml import etree as ET
 import colorsys
 import re
+from collections import Counter
 
 # Import existing StyleStack tools for comprehensive analysis
+ThemeResolver = None
+TemplateAnalyzer = None
+OOXMLProcessor = None
+
 try:
-    from .theme_resolver import ThemeResolver, Theme
-    from .template_analyzer import TemplateAnalyzer, AnalysisResult
     from .ooxml_processor import OOXMLProcessor
 except ImportError:
     # Fallback for standalone usage
     import sys
     sys.path.append(str(Path(__file__).parent))
     try:
-        from theme_resolver import ThemeResolver, Theme
-        from template_analyzer import TemplateAnalyzer, AnalysisResult
-        from ooxml_processor import OOXMLProcessor
+        from tools.ooxml_processor import OOXMLProcessor
     except ImportError:
         print("⚠️  Warning: StyleStack analysis tools not available, using basic extraction only")
-        ThemeResolver = None
-        TemplateAnalyzer = None
-        OOXMLProcessor = None
+
+# Try to import other StyleStack tools
+try:
+    from .theme_resolver import ThemeResolver
+except ImportError:
+    pass
+
+try:
+    from .template_analyzer import TemplateAnalyzer  
+except ImportError:
+    pass
 
 class DesignTokenExtractor:
     """Extract design tokens from Office and OpenOffice files"""
