@@ -6,39 +6,33 @@ Automated test suite to validate that performance optimizations don't break func
 Provides comprehensive testing of all optimization features while ensuring correctness.
 """
 
+
+from typing import Any, Dict, List, Optional
 import unittest
 import tempfile
 import time
 import threading
-import multiprocessing
 import json
-import hashlib
-from typing import Dict, List, Any, Optional, Tuple
 from pathlib import Path
 from dataclasses import dataclass
 import logging
 from concurrent.futures import ThreadPoolExecutor
-import statistics
 
 # Import StyleStack components for testing
 try:
-    from .performance_profiler import PerformanceProfiler, profiler
     from .advanced_cache_system import CacheManager
     from .memory_optimizer import MemoryManager, StreamingOOXMLProcessor
     from .optimized_batch_processor import OptimizedBatchProcessor, BatchProcessingConfig, BatchTask
     from .concurrent_processing_validator import ConcurrentProcessingValidator
-    from .performance_benchmarks import PerformanceBenchmark, BenchmarkSuite, WorkloadConfig
-    from .json_ooxml_processor import JSONPatchProcessor
+    from .json_patch_parser import JSONPatchParser
     from .production_monitoring import ProductionMonitor
 except ImportError:
-    from performance_profiler import PerformanceProfiler, profiler
-    from advanced_cache_system import CacheManager
-    from memory_optimizer import MemoryManager, StreamingOOXMLProcessor
-    from optimized_batch_processor import OptimizedBatchProcessor, BatchProcessingConfig, BatchTask
-    from concurrent_processing_validator import ConcurrentProcessingValidator
-    from performance_benchmarks import PerformanceBenchmark, BenchmarkSuite, WorkloadConfig
-    from json_ooxml_processor import JSONPatchProcessor
-    from production_monitoring import ProductionMonitor
+    from tools.advanced_cache_system import CacheManager
+    from tools.memory_optimizer import MemoryManager, StreamingOOXMLProcessor
+    from tools.optimized_batch_processor import OptimizedBatchProcessor, BatchProcessingConfig, BatchTask
+    from tools.concurrent_processing_validator import ConcurrentProcessingValidator
+    from tools.json_patch_parser import JSONPatchParser
+    from tools.production_monitoring import ProductionMonitor
 
 logger = logging.getLogger(__name__)
 
@@ -426,7 +420,7 @@ class OptimizationValidationTestSuite(unittest.TestCase):
         start_time = time.time()
         
         # Create a JSON processor and test basic functionality
-        processor = JSONPatchProcessor()
+        processor = JSONPatchParser()
         
         # Test data
         test_patches = [

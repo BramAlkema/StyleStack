@@ -5,15 +5,13 @@ This module provides the main substitution pipeline with transaction support,
 validation checkpoints, and progress tracking.
 """
 
+
+from typing import Any, Dict, List, Optional
 import time
 import threading
-import tempfile
-import shutil
 import traceback
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Union, Tuple
 from contextlib import contextmanager
-import xml.etree.ElementTree as ET
 import uuid
 
 try:
@@ -313,18 +311,17 @@ class SubstitutionPipeline:
                 }
             
             # Apply variables using OOXML processor
-            processing_result = processor.apply_variables_to_xml(
+            updated_content, processing_result = processor.apply_variables_to_xml(
                 xml_content=content,
                 variables=variables_dict,
-                preserve_formatting=config.preserve_structure,
-                preserve_namespaces=config.preserve_namespaces
+                validate_result=True
             )
             
             # Update success tracking for variables
             for var in variables:
                 var['applied'] = True  # Assume success for now
             
-            return processing_result.modified_content if processing_result.success else None
+            return updated_content if processing_result.success else None
             
         except Exception as e:
             result.add_error('variable_application', f'Failed to apply variables: {str(e)}')

@@ -10,8 +10,9 @@ Tests the parsing, validation, and resolution of token syntax like:
 Validates type checking, circular dependency detection, and error handling.
 """
 
+
+from typing import Dict, List, Optional
 import pytest
-from typing import Dict, List, Any, Optional
 import re
 from dataclasses import dataclass
 from enum import Enum

@@ -5,9 +5,10 @@ This module provides comprehensive validation for variable substitution
 operations with various checkpoint types and validation strategies.
 """
 
+
+from typing import Any, Dict, List
 import re
 import xml.etree.ElementTree as ET
-from typing import Dict, List, Any, Optional, Set
 from pathlib import Path
 
 try:

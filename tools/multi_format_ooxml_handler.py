@@ -10,21 +10,22 @@ New code should import from the specific modules:
 - tools.handlers.integration for token integration and compatibility
 """
 
+
+from typing import Any, Dict, List, Optional, Union
 import logging
-from typing import Dict, List, Any, Optional, Union, Tuple, IO
 from pathlib import Path
 import zipfile
 import tempfile
 import shutil
 import time
 
-from tools.token_integration_layer import TokenIntegrationLayer, TokenScope, TokenContext
 
 # Import from split modules
 from tools.handlers.types import (
     OOXMLFormat, OOXMLStructure, ProcessingResult, FormatConfiguration,
     ValidationIssue, ProcessingStatistics
 )
+from tools.core.types import RecoveryStrategy
 from tools.handlers.formats import (
     FormatRegistry, FormatProcessor, create_format_processor
 )

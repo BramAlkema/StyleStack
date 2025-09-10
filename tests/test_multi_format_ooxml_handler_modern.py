@@ -12,7 +12,6 @@ import unittest
 import tempfile
 import zipfile
 from pathlib import Path
-from unittest.mock import Mock, patch
 
 # Import the main coordinator that we know works
 from tools.multi_format_ooxml_handler import MultiFormatOOXMLHandler

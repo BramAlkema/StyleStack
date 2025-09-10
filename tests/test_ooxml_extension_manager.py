@@ -15,9 +15,6 @@ Validates:
 import pytest
 import xml.etree.ElementTree as ET
 from typing import Dict, List, Any, Optional
-import zipfile
-import io
-import tempfile
 from pathlib import Path
 import json
 from dataclasses import dataclass

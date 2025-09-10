@@ -5,6 +5,8 @@ Uses GitHub Actions OIDC tokens and encrypted secrets for licensing
 No external API required - everything stays within GitHub
 """
 
+
+from typing import Dict, Optional, Tuple
 import os
 import json
 import base64
@@ -12,11 +14,7 @@ import hashlib
 import hmac
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, Optional, Tuple
 import subprocess
-import jwt
-from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 

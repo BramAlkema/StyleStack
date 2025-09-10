@@ -1,0 +1,225 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stylestack"
+version = "1.0.0"
+description = "Design Tokens as a Service for Office Templates"
+authors = [
+    {name = "StyleStack Team"}
+]
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0", 
+    "pytest-xdist>=3.0.0",
+    "pytest-mock>=3.10.0",
+    "pytest-benchmark>=4.0.0",
+    "pytest-html>=3.1.0",
+    "hypothesis>=6.70.0",
+    "xmldiff>=2.4",
+    "lxml>=4.9.0",
+]
+
+# Tool configurations
+
+[tool.coverage.run]
+source = ["tools"]
+branch = true
+parallel = true
+concurrency = ["multiprocessing", "thread"]
+omit = [
+    "tests/*",
+    "*/tests/*",
+    "venv/*",
+    ".venv/*", 
+    "build/*",
+    "dist/*",
+    "*.egg-info/*",
+    ".pytest_cache/*",
+    "__pycache__/*",
+    "tmp/*",
+    ".agent-os/*",
+    "docs/*",
+    "docusaurus/*",
+    "website/*",
+    "setup.py",
+    "*_pb2.py",
+    "node_modules/*",
+]
+context = "${COVERAGE_CONTEXT}"
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false  
+skip_empty = true
+sort = "Cover"
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+    "if TYPE_CHECKING:",
+    "logger\\.debug",
+    "if sys.platform",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+title = "StyleStack Test Coverage Report"
+show_contexts = true
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+[tool.coverage.json]
+output = "coverage.json"
+show_contexts = true
+
+[tool.coverage.paths]
+source = [
+    "tools/",
+    "*/tools/",
+    ".tox/*/lib/python*/site-packages/tools/",
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = [
+    "--strict-config",
+    "--strict-markers",
+    "--cov=tools",
+    "--cov-branch",
+    "--cov-report=term-missing",
+    "--cov-report=html:htmlcov",
+    "--cov-report=xml:coverage.xml",
+    "--cov-context=test",
+    "--tb=short",
+]
+testpaths = [
+    "tests",
+]
+python_files = [
+    "test_*.py",
+    "*_test.py",
+]
+python_functions = [
+    "test_*",
+]
+python_classes = [
+    "Test*",
+]
+markers = [
+    "unit: Unit tests for individual modules",
+    "integration: Integration tests for component interaction", 
+    "system: End-to-end system tests",
+    "slow: Tests that take more than 5 seconds",
+    "stress: Performance and stress tests",
+    "concurrent: Multi-threading and parallel processing tests",
+    "large_file: Tests processing large OOXML files", 
+    "ooxml: Tests related to OOXML processing",
+    "tokens: Tests related to design token processing",
+    "performance: Performance benchmarking tests",
+    "regression: Regression tests for known issues",
+    "security: Security-related tests",
+    "accessibility: WCAG compliance tests",
+    "golden_master: Golden master regression tests",
+    "cross_platform: Cross-platform compatibility tests", 
+    "xml_validation: XML structure validation tests",
+    "import_resolution: Module import resolution tests",
+    "parallel_safe: Tests safe to run in parallel",
+    "parallel_unsafe: Tests that must run sequentially",
+]
+filterwarnings = [
+    "error",
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning:lxml.*",
+    "ignore::PendingDeprecationWarning", 
+    "ignore::ResourceWarning",
+]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(name)s: %(message)s"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+
+# Black code formatting configuration
+[tool.black]
+line-length = 100
+target-version = ['py39']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # Directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | venv
+  | \.agent-os
+)/
+'''
+
+# isort import sorting configuration  
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+src_paths = ["tools", "tests"]
+
+# mypy static type checking configuration
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_decorators = false
+
+# Bandit security linting configuration
+[tool.bandit]
+exclude_dirs = ["tests", "venv", ".venv", "build", "dist"]
+skips = ["B101", "B601"]

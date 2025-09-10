@@ -6,6 +6,8 @@ This test suite validates the integration between the Design Token System and
 the JSON-to-OOXML Processing Engine with real-world production workflows.
 """
 
+
+from typing import Any, Dict
 import os
 import sys
 import pytest
@@ -14,14 +16,12 @@ import tempfile
 import zipfile
 import json
 from pathlib import Path
-from typing import Dict, List, Any, Optional
 import logging
 
 # Add tools directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools"))
 
 from multi_format_ooxml_handler import MultiFormatOOXMLHandler, OOXMLFormat
-from token_integration_layer import TokenIntegrationLayer, TokenScope, TokenContext
 from transaction_pipeline import TransactionPipeline, OperationType
 
 # Configure logging for tests

@@ -8,17 +8,18 @@ token resolution within OOXML patch operations.
 Part of the StyleStack JSON-to-OOXML Processing Engine.
 """
 
-import logging
+
 from typing import Dict, List, Any, Optional, Union, Callable
+import logging
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 import re
 
 from tools.formula_parser import FormulaParser, FormulaError
-from tools.emu_types import EMUValue, EMUOverflowError, EMUConversionError, EMU_PER_POINT, EMU_PER_INCH, EMU_PER_CM
 from tools.variable_resolver import VariableResolver as ProductionVariableResolver
 from tools.formula_variable_resolver import FormulaVariableResolver
+from tools.emu_types import EMUValue
 
 # Configure logging
 logger = logging.getLogger(__name__)

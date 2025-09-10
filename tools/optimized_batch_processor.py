@@ -7,21 +7,22 @@ Integrates with memory optimization, advanced caching, and provides concurrent p
 capabilities for production-scale workloads.
 """
 
+
+from typing import Any, Dict, Iterator, List, Optional, Set
+from concurrent.futures import Future
 import time
 import threading
 import multiprocessing
 import queue
-import asyncio
-from typing import Dict, List, Any, Optional, Union, Callable, Iterator, Tuple
 from dataclasses import dataclass, field
 from collections import deque, defaultdict
 from pathlib import Path
-from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, as_completed, Future
 import logging
 import tempfile
-import shutil
-import psutil
-import gc
+try:
+    import psutil
+except ImportError:
+    psutil = None  # Optional dependency for system monitoring
 from contextlib import contextmanager
 
 # Import StyleStack components
@@ -29,12 +30,12 @@ try:
     from .memory_optimizer import MemoryManager, StreamingOOXMLProcessor, ConcurrentMemoryManager
     from .advanced_cache_system import CacheManager
     from .performance_profiler import PerformanceProfiler
-    from .json_ooxml_processor import JSONPatchProcessor
+    from .json_patch_parser import JSONPatchParser
 except ImportError:
-    from memory_optimizer import MemoryManager, StreamingOOXMLProcessor, ConcurrentMemoryManager
-    from advanced_cache_system import CacheManager
-    from performance_profiler import PerformanceProfiler
-    from json_ooxml_processor import JSONPatchProcessor
+    from tools.memory_optimizer import MemoryManager, StreamingOOXMLProcessor, ConcurrentMemoryManager
+    from tools.advanced_cache_system import CacheManager
+    from tools.performance_profiler import PerformanceProfiler
+    from tools.json_patch_parser import JSONPatchParser
 
 logger = logging.getLogger(__name__)
 
@@ -356,7 +357,7 @@ class WorkerPool:
             processor = StreamingOOXMLProcessor(memory_manager)
         else:
             # Use regular JSON processor
-            processor = JSONPatchProcessor()
+            processor = JSONPatchParser()
         
         try:
             # Process template

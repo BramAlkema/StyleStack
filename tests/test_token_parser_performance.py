@@ -12,18 +12,17 @@ Validates:
 - Validation report generation speed
 """
 
+
+from typing import Dict
 import pytest
 import time
 import random
-import string
-from typing import List, Dict
 import sys
 import os
 
 # Add tools directory to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'tools'))
 
-from token_parser import TokenParser, TokenType, TokenScope, VariableToken
 
 
 class TestTokenParserPerformance:

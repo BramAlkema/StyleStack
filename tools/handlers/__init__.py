@@ -1,3 +1,4 @@
+from tools.handlers.types import OOXMLFormat
 """StyleStack Multi-Format OOXML Handlers Module"""
 
 from .types import (

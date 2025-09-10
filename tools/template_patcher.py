@@ -4,9 +4,10 @@ Simple template patcher for StyleStack OOXML templates
 Applies resolved design tokens to hardcoded baseline templates
 """
 
+
+from typing import Dict
 import re
 from pathlib import Path
-from typing import Dict
 
 
 class TemplatePatcher:
@@ -18,29 +19,29 @@ class TemplatePatcher:
     def patch_template(self, template_path: Path, output_path: Path):
         """Apply token substitutions to a template file"""
         
-        with open(template_path, 'r', encoding='utf-8') as f:
+        with open(template_path, "r", encoding="utf-8") as f:
             content = f.read()
         
         # Apply simple token substitutions
         patched_content = self._apply_tokens(content)
         
-        with open(output_path, 'w', encoding='utf-8') as f:
+        with open(output_path, "w", encoding="utf-8") as f:
             f.write(patched_content)
     
     def _apply_tokens(self, content: str) -> str:
         """Apply token substitutions using simple patterns"""
         
         # Font family substitutions
-        if 'fonts.primary' in self.tokens:
+        if "fonts.primary" in self.tokens:
             content = re.sub(
-                r'Liberation Sans',
-                self.tokens['fonts.primary'],
+                r"Liberation Sans",
+                self.tokens["fonts.primary"],
                 content
             )
         
         # Font size substitutions (Word uses half-points)
-        if 'grid.font_size' in self.tokens:
-            size = self.tokens['grid.font_size']
+        if "grid.font_size" in self.tokens:
+            size = self.tokens["grid.font_size"]
             content = re.sub(
                 r'<w:sz w:val="24"/>',
                 f'<w:sz w:val="{size}"/>',
@@ -53,8 +54,8 @@ class TemplatePatcher:
             )
         
         # Line height substitutions
-        if 'grid.line_height' in self.tokens:
-            height = self.tokens['grid.line_height']
+        if "grid.line_height" in self.tokens:
+            height = self.tokens["grid.line_height"]
             content = re.sub(
                 r'<w:spacing w:line="17"',
                 f'<w:spacing w:line="{height}"',
@@ -62,9 +63,9 @@ class TemplatePatcher:
             )
         
         # Color substitutions
-        if 'colors.accent' in self.tokens:
+        if "colors.accent" in self.tokens:
             # Convert hex to RGB for Excel
-            hex_color = self.tokens['colors.accent'].lstrip('#')
+            hex_color = self.tokens["colors.accent"].lstrip("#")
             if len(hex_color) == 6:
                 rgb_color = f"FF{hex_color.upper()}"
                 content = re.sub(
@@ -76,7 +77,7 @@ class TemplatePatcher:
         return content
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import sys
     import json
     
@@ -89,7 +90,7 @@ if __name__ == '__main__':
     tokens_path = Path(sys.argv[3])
     
     # Load resolved tokens
-    with open(tokens_path, 'r') as f:
+    with open(tokens_path, "r") as f:
         tokens = json.load(f)
     
     # Apply tokens to template

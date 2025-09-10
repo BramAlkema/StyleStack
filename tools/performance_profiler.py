@@ -6,26 +6,27 @@ Comprehensive profiling tools to identify bottlenecks in the JSON-to-OOXML proce
 Provides detailed analysis of CPU usage, memory consumption, I/O operations, and processing patterns.
 """
 
+
+from typing import Dict, List, Any, Optional, Callable, Union, NamedTuple
 import time
-import psutil
+try:
+    import psutil
+except ImportError:
+    psutil = None  # Optional dependency for system monitoring
 import tracemalloc
-import cProfile
 import pstats
-import io
 import gc
 import threading
 import functools
 import contextlib
 import json
 import sys
-from typing import Dict, List, Any, Optional, Callable, Union, NamedTuple
 from dataclasses import dataclass, field
 from collections import defaultdict, deque
 from pathlib import Path
 import logging
 from datetime import datetime, timedelta
 import weakref
-import memory_profiler
 
 # Configure logging
 logger = logging.getLogger(__name__)

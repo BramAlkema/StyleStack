@@ -6,8 +6,9 @@ Provides precise integer-based calculations for OOXML coordinates
 using English Metric Units (EMU) with type safety and unit conversions.
 """
 
+
+from typing import Any, Dict, Optional, Union
 import math
-from typing import Union, Dict, Any, Optional, Tuple
 
 
 # EMU Constants

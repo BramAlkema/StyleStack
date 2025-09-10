@@ -6,7 +6,8 @@ and hierarchical variable resolution specifically for design token formulas
 that integrate with the Formula Parser Engine and EMU Type System.
 """
 
-from typing import Dict, Set, List, Any, Optional, Union, Tuple
+
+from typing import Any, Dict, List, Optional, Set, Union
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
 import copy

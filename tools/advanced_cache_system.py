@@ -6,15 +6,14 @@ Enhanced caching system for XPath resolution, namespace detection, and operation
 Provides intelligent cache management, persistence, and optimization for production workloads.
 """
 
+
+from typing import Any, Dict, List, Optional, Set, Tuple, NamedTuple
 import time
 import json
 import pickle
 import hashlib
 import threading
 import weakref
-from typing import Dict, List, Any, Optional, Union, Tuple, Set, NamedTuple
-from dataclasses import dataclass, field
-from collections import OrderedDict, defaultdict, deque
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 from lxml import etree
@@ -22,6 +21,8 @@ import logging
 from datetime import datetime, timedelta
 import sqlite3
 import zlib
+from dataclasses import dataclass
+from collections import OrderedDict
 
 logger = logging.getLogger(__name__)
 

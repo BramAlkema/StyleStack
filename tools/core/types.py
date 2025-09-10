@@ -5,6 +5,7 @@ This module contains the fundamental enums and dataclasses used across
 the OOXML patch processing system.
 """
 
+
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
 from enum import Enum

@@ -12,11 +12,11 @@ Validates:
 - Cross-platform theme compatibility
 """
 
+
+from typing import Any, Dict
 import pytest
 import xml.etree.ElementTree as ET
-from typing import Dict, List, Any, Optional, Tuple
 import colorsys
-import math
 
 
 class MockThemeResolver:
@@ -114,6 +114,7 @@ class MockThemeResolver:
         """Extract theme definition from OOXML theme XML"""
         try:
             root = ET.fromstring(xml_content)
+            ns_a = "http://schemas.openxmlformats.org/drawingml/2006/main"
             theme = {
                 'name': root.get('name', 'Unnamed Theme'),
                 'colors': {},
@@ -121,23 +122,23 @@ class MockThemeResolver:
             }
             
             # Extract colors
-            color_scheme = root.find('.//{http://schemas.openxmlformats.org/drawingml/2006/main}clrScheme')
+            color_scheme = root.find(f'.//{{{ns_a}}}clrScheme')
             if color_scheme is not None:
                 for color_slot in self.THEME_COLOR_SLOTS.keys():
-                    color_elem = color_scheme.find(f'.//{{{http://schemas.openxmlformats.org/drawingml/2006/main}}}{color_slot}')
+                    color_elem = color_scheme.find(f'.//{{{ns_a}}}{color_slot}')
                     if color_elem is not None:
                         # Look for srgbClr or sysClr
-                        srgb_elem = color_elem.find(f'.//{{{http://schemas.openxmlformats.org/drawingml/2006/main}}}srgbClr')
+                        srgb_elem = color_elem.find(f'.//{{{ns_a}}}srgbClr')
                         if srgb_elem is not None:
                             theme['colors'][color_slot] = srgb_elem.get('val', self.theme_colors[color_slot]['default'])
             
             # Extract fonts
-            font_scheme = root.find('.//{http://schemas.openxmlformats.org/drawingml/2006/main}fontScheme')
+            font_scheme = root.find(f'.//{{{ns_a}}}fontScheme')
             if font_scheme is not None:
                 for font_slot in self.THEME_FONT_SLOTS.keys():
-                    font_elem = font_scheme.find(f'.//{{{http://schemas.openxmlformats.org/drawingml/2006/main}}}{font_slot}')
+                    font_elem = font_scheme.find(f'.//{{{ns_a}}}{font_slot}')
                     if font_elem is not None:
-                        latin_elem = font_elem.find(f'.//{{{http://schemas.openxmlformats.org/drawingml/2006/main}}}latin')
+                        latin_elem = font_elem.find(f'.//{{{ns_a}}}latin')
                         if latin_elem is not None:
                             theme['fonts'][font_slot] = latin_elem.get('typeface', self.theme_fonts[font_slot]['default'])
             

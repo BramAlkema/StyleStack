@@ -7,7 +7,6 @@ for comprehensive end-to-end integration testing of the StyleStack JSON-to-OOXML
 """
 
 import os
-import tempfile
 import zipfile
 from pathlib import Path
 

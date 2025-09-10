@@ -24,16 +24,13 @@ import os
 import sys
 import json
 import time
-import tempfile
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 import logging
 
 # Check for required dependencies
 try:
-    from google.oauth2 import service_account
     from googleapiclient.discovery import build
-    from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
     from google.auth.transport.requests import Request
 except ImportError as e:
     print("❌ Missing Google API dependencies.")

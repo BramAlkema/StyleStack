@@ -1,3 +1,4 @@
+from tools.handlers.types import OOXMLFormat
 #!/usr/bin/env python3
 """
 Transaction Pipeline Tests

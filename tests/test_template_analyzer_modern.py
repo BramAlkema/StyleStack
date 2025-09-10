@@ -15,7 +15,6 @@ import json
 import zipfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from unittest.mock import Mock, patch, MagicMock
 
 # Import new modular components
 from tools.template_analyzer import TemplateAnalyzer

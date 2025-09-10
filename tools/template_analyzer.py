@@ -12,15 +12,13 @@ New code should import from the specific modules:
 - tools.analyzer.complexity for complexity analysis
 """
 
+
+from typing import Any, Dict, List, Optional, Tuple
 import json
 import zipfile
-import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple, Set, Union
-import hashlib
 import time
-from collections import defaultdict
 
 try:
     import lxml.etree as lxml_ET
@@ -32,8 +30,8 @@ import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 
-from ooxml_processor import OOXMLProcessor
-from theme_resolver import ThemeResolver
+from tools.ooxml_processor import OOXMLProcessor
+from tools.theme_resolver import ThemeResolver
 
 # Import from split modules
 from tools.analyzer.types import (

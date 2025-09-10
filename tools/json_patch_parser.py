@@ -8,8 +8,9 @@ and provides intelligent error reporting.
 Part of the StyleStack JSON-to-OOXML Processing Engine.
 """
 
+
+from typing import Any, Dict, List, Optional
 import json
-from typing import Dict, List, Any, Optional, Union
 from dataclasses import dataclass
 from pathlib import Path
 import logging

@@ -12,14 +12,13 @@ New code should import from the specific modules:
 - tools.substitution.batch for batch processing
 """
 
+
+from typing import Any, Dict, List, Optional, Callable
 import json
 import time
 import threading
-import tempfile
-import shutil
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Union, Tuple, Callable, Set
 from contextlib import contextmanager
 import concurrent.futures
 
@@ -27,9 +26,9 @@ import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 
-from ooxml_processor import OOXMLProcessor, ProcessingResult
-from theme_resolver import ThemeResolver
-from variable_resolver import VariableResolver, ResolvedVariable
+from tools.ooxml_processor import OOXMLProcessor, ProcessingResult
+from tools.theme_resolver import ThemeResolver
+from tools.variable_resolver import VariableResolver, ResolvedVariable
 
 # Import from split modules
 from tools.substitution.types import (

@@ -19,15 +19,14 @@ Usage:
     updated_xml = processor.apply_variables_to_xml(xml_content, variables)
     
     # Process complete OOXML file
-    processor.process_ooxml_file('template.potx', variables, 'output.potx')
+    processor.process_ooxml_file("template.potx", variables, "output.potx")
 """
 
-import xml.etree.ElementTree as ET
-import zipfile
-import io
-import re
-from pathlib import Path
 from typing import Dict, List, Any, Optional, Union, Tuple
+import xml.etree.ElementTree as ET
+from tools.xml_utils import indent_xml
+import zipfile
+from pathlib import Path
 from dataclasses import dataclass
 import logging
 import time
@@ -47,7 +46,7 @@ class XPathExpression:
     """Represents an XPath expression with metadata"""
     expression: str
     description: str
-    target_type: str  # 'color', 'font', 'dimension', 'text'
+    target_type: str  # "color", "font", "dimension", "text"
     namespaces: Dict[str, str] = None
     
     def __post_init__(self):
@@ -77,99 +76,99 @@ class XPathLibrary:
     
     # OOXML Namespaces
     NAMESPACES = {
-        'a': 'http://schemas.openxmlformats.org/drawingml/2006/main',
-        'p': 'http://schemas.openxmlformats.org/presentationml/2006/main', 
-        'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main',
-        'x': 'http://schemas.openxmlformats.org/spreadsheetml/2006/main',
-        'r': 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
+        "a": "http://schemas.openxmlformats.org/drawingml/2006/main",
+        "p": "http://schemas.openxmlformats.org/presentationml/2006/main", 
+        "w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
+        "x": "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+        "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
     }
     
     # Color targeting expressions
     COLORS = {
-        'theme_accent1': XPathExpression(
-            '//a:accent1//a:srgbClr/@val',
-            'Theme accent color 1 RGB value',
-            'color',
+        "theme_accent1": XPathExpression(
+            "//a:accent1//a:srgbClr/@val",
+            "Theme accent color 1 RGB value",
+            "color",
             NAMESPACES
         ),
-        'theme_accent2': XPathExpression(
-            '//a:accent2//a:srgbClr/@val', 
-            'Theme accent color 2 RGB value',
-            'color',
+        "theme_accent2": XPathExpression(
+            "//a:accent2//a:srgbClr/@val", 
+            "Theme accent color 2 RGB value",
+            "color",
             NAMESPACES
         ),
-        'theme_dark1': XPathExpression(
-            '//a:dk1//a:srgbClr/@val',
-            'Theme dark color 1 RGB value', 
-            'color',
+        "theme_dark1": XPathExpression(
+            "//a:dk1//a:srgbClr/@val",
+            "Theme dark color 1 RGB value", 
+            "color",
             NAMESPACES
         ),
-        'all_rgb_colors': XPathExpression(
-            '//a:srgbClr[@val]',
-            'All RGB color elements with val attribute',
-            'color',
+        "all_rgb_colors": XPathExpression(
+            "//a:srgbClr[@val]",
+            "All RGB color elements with val attribute",
+            "color",
             NAMESPACES
         ),
-        'word_text_color': XPathExpression(
-            '//w:color[@w:val]',
-            'Word text color elements',
-            'color',
+        "word_text_color": XPathExpression(
+            "//w:color[@w:val]",
+            "Word text color elements",
+            "color",
             NAMESPACES
         ),
-        'excel_font_color': XPathExpression(
-            '//color[@rgb]',
-            'Excel font color elements',
-            'color',
+        "excel_font_color": XPathExpression(
+            "//color[@rgb]",
+            "Excel font color elements",
+            "color",
             NAMESPACES
         )
     }
     
     # Font targeting expressions  
     FONTS = {
-        'theme_major_font': XPathExpression(
-            '//a:majorFont/a:latin/@typeface',
-            'Theme major font typeface',
-            'font',
+        "theme_major_font": XPathExpression(
+            "//a:majorFont/a:latin/@typeface",
+            "Theme major font typeface",
+            "font",
             NAMESPACES
         ),
-        'theme_minor_font': XPathExpression(
-            '//a:minorFont/a:latin/@typeface',
-            'Theme minor font typeface',
-            'font', 
+        "theme_minor_font": XPathExpression(
+            "//a:minorFont/a:latin/@typeface",
+            "Theme minor font typeface",
+            "font", 
             NAMESPACES
         ),
-        'word_font_family': XPathExpression(
-            '//w:rFonts[@w:ascii]',
-            'Word font family elements',
-            'font',
+        "word_font_family": XPathExpression(
+            "//w:rFonts[@w:ascii]",
+            "Word font family elements",
+            "font",
             NAMESPACES
         ),
-        'excel_font_name': XPathExpression(
-            '//name[@val]',
-            'Excel font name elements',
-            'font',
+        "excel_font_name": XPathExpression(
+            "//name[@val]",
+            "Excel font name elements",
+            "font",
             NAMESPACES
         )
     }
     
     # Dimension targeting expressions
     DIMENSIONS = {
-        'word_font_size': XPathExpression(
-            '//w:sz[@w:val]',
-            'Word font size elements',
-            'dimension',
+        "word_font_size": XPathExpression(
+            "//w:sz[@w:val]",
+            "Word font size elements",
+            "dimension",
             NAMESPACES
         ),
-        'word_spacing': XPathExpression(
-            '//w:spacing[@w:line]',
-            'Word line spacing elements',
-            'dimension',
+        "word_spacing": XPathExpression(
+            "//w:spacing[@w:line]",
+            "Word line spacing elements",
+            "dimension",
             NAMESPACES
         ),
-        'excel_font_size': XPathExpression(
-            '//sz[@val]',
-            'Excel font size elements',
-            'dimension',
+        "excel_font_size": XPathExpression(
+            "//sz[@val]",
+            "Excel font size elements",
+            "dimension",
             NAMESPACES
         )
     }
@@ -178,9 +177,9 @@ class XPathLibrary:
     def get_expression(cls, category: str, name: str) -> Optional[XPathExpression]:
         """Get XPath expression by category and name"""
         category_map = {
-            'colors': cls.COLORS,
-            'fonts': cls.FONTS,
-            'dimensions': cls.DIMENSIONS
+            "colors": cls.COLORS,
+            "fonts": cls.FONTS,
+            "dimensions": cls.DIMENSIONS
         }
         
         if category in category_map:
@@ -191,9 +190,9 @@ class XPathLibrary:
     def get_all_expressions(cls) -> Dict[str, Dict[str, XPathExpression]]:
         """Get all XPath expressions organized by category"""
         return {
-            'colors': cls.COLORS,
-            'fonts': cls.FONTS,
-            'dimensions': cls.DIMENSIONS
+            "colors": cls.COLORS,
+            "fonts": cls.FONTS,
+            "dimensions": cls.DIMENSIONS
         }
 
 
@@ -223,9 +222,9 @@ class OOXMLProcessor:
         
         # Processing statistics
         self.stats = {
-            'documents_processed': 0,
-            'elements_modified': 0,
-            'total_processing_time': 0.0
+            "documents_processed": 0,
+            "elements_modified": 0,
+            "total_processing_time": 0.0
         }
         
         # Register namespaces for ElementTree
@@ -277,9 +276,9 @@ class OOXMLProcessor:
             result.processing_time = time.time() - start_time
             
             # Update stats
-            self.stats['documents_processed'] += 1
-            self.stats['elements_modified'] += result.elements_modified
-            self.stats['total_processing_time'] += result.processing_time
+            self.stats["documents_processed"] += 1
+            self.stats["elements_modified"] += result.elements_modified
+            self.stats["total_processing_time"] += result.processing_time
             
             return updated_xml, result
             
@@ -295,7 +294,7 @@ class OOXMLProcessor:
                              variables: Dict[str, Any]) -> Tuple[str, ProcessingResult]:
         """Apply variables using lxml for advanced XPath support"""
         parser = etree.XMLParser(ns_clean=True, recover=True)
-        root = etree.fromstring(xml_content.encode('utf-8'), parser)
+        root = etree.fromstring(xml_content.encode("utf-8"), parser)
         
         result = ProcessingResult(
             success=True,
@@ -327,7 +326,7 @@ class OOXMLProcessor:
                 continue
         
         # Serialize result
-        updated_xml = etree.tostring(root, encoding='unicode', pretty_print=self.preserve_formatting)
+        updated_xml = etree.tostring(root, encoding="unicode", pretty_print=self.preserve_formatting)
         return updated_xml, result
     
     def _apply_variables_elementtree(self, xml_content: str,
@@ -358,9 +357,9 @@ class OOXMLProcessor:
         
         # Serialize result
         if self.preserve_formatting:
-            self._indent_xml(root)
+            indent_xml(root)
         
-        updated_xml = ET.tostring(root, encoding='unicode')
+        updated_xml = ET.tostring(root, encoding="unicode")
         return updated_xml, result
     
     def _get_xpath_for_variable(self, variable: Dict[str, Any]) -> Optional[XPathExpression]:
@@ -369,35 +368,35 @@ class OOXMLProcessor:
         if 'xpath' in variable:
             return XPathExpression(
                 expression=variable['xpath'],
-                description=f"Custom XPath for {variable.get('id', 'unknown')}",
-                target_type=variable.get('type', 'text'),
+                description=f"Custom XPath for {variable.get("id", "unknown")}",
+                target_type=variable.get("type", "text"),
                 namespaces=XPathLibrary.NAMESPACES
             )
         
         # Try to find appropriate XPath from library
-        var_type = variable.get('type', 'text')
-        var_id = variable.get('id', '')
+        var_type = variable.get("type", "text")
+        var_id = variable.get("id", "")
         
-        if var_type == 'color':
-            if 'accent1' in var_id.lower():
+        if var_type == "color":
+            if "accent1" in var_id.lower():
                 return self.xpath_library.get_expression('colors', 'theme_accent1')
-            elif 'accent2' in var_id.lower():
+            elif "accent2" in var_id.lower():
                 return self.xpath_library.get_expression('colors', 'theme_accent2')
             else:
                 return self.xpath_library.get_expression('colors', 'all_rgb_colors')
                 
-        elif var_type == 'font':
-            if 'major' in var_id.lower() or 'heading' in var_id.lower():
+        elif var_type == "font":
+            if "major" in var_id.lower() or "heading" in var_id.lower():
                 return self.xpath_library.get_expression('fonts', 'theme_major_font')
-            elif 'minor' in var_id.lower() or 'body' in var_id.lower():
+            elif "minor" in var_id.lower() or "body" in var_id.lower():
                 return self.xpath_library.get_expression('fonts', 'theme_minor_font')
             else:
                 return self.xpath_library.get_expression('fonts', 'theme_major_font')
                 
-        elif var_type == 'dimension':
-            if 'size' in var_id.lower():
+        elif var_type == "dimension":
+            if "size" in var_id.lower():
                 return self.xpath_library.get_expression('dimensions', 'word_font_size')
-            elif 'spacing' in var_id.lower():
+            elif "spacing" in var_id.lower():
                 return self.xpath_library.get_expression('dimensions', 'word_spacing')
         
         return None
@@ -405,28 +404,28 @@ class OOXMLProcessor:
     def _find_elements_elementtree(self, root: ET.Element, 
                                   variable: Dict[str, Any]) -> List[ET.Element]:
         """Find elements using ElementTree (simplified XPath)"""
-        var_type = variable.get('type', 'text')
-        var_id = variable.get('id', '')
+        var_type = variable.get("type", "text")
+        var_id = variable.get("id", "")
         
-        if var_type == 'color':
+        if var_type == "color":
             # Find RGB color elements
-            elements = root.findall('.//{http://schemas.openxmlformats.org/drawingml/2006/main}srgbClr[@val]')
+            elements = root.findall(".//{http://schemas.openxmlformats.org/drawingml/2006/main}srgbClr[@val]")
             
             # Try Word colors if none found
             if not elements:
-                elements = root.findall('.//{http://schemas.openxmlformats.org/wordprocessingml/2006/main}color[@val]')
+                elements = root.findall(".//{http://schemas.openxmlformats.org/wordprocessingml/2006/main}color[@val]")
                 
-        elif var_type == 'font':
+        elif var_type == "font":
             # Find font elements
-            elements = root.findall('.//{http://schemas.openxmlformats.org/drawingml/2006/main}latin[@typeface]')
+            elements = root.findall(".//{http://schemas.openxmlformats.org/drawingml/2006/main}latin[@typeface]")
             
             # Try Word fonts if none found
             if not elements:
-                elements = root.findall('.//{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rFonts')
+                elements = root.findall(".//{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rFonts")
                 
-        elif var_type == 'dimension':
+        elif var_type == "dimension":
             # Find size elements
-            elements = root.findall('.//{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sz[@val]')
+            elements = root.findall(".//{http://schemas.openxmlformats.org/wordprocessingml/2006/main}sz[@val]")
             
         else:
             # Generic text elements
@@ -438,8 +437,8 @@ class OOXMLProcessor:
                                        xpath: XPathExpression) -> int:
         """Apply variable to elements using lxml"""
         modified_count = 0
-        var_value = str(variable.get('value', variable.get('defaultValue', '')))
-        var_type = variable.get('type', 'text')
+        var_value = str(variable.get("value", variable.get("defaultValue", "")))
+        var_type = variable.get("type", "text")
         
         for element in elements:
             try:
@@ -447,22 +446,22 @@ class OOXMLProcessor:
                     if isinstance(element, str):  # Attribute value
                         # Can't modify attribute directly in XPath result
                         continue
-                    elif hasattr(element, 'set') and 'val' in element.attrib:
-                        element.set('val', var_value.lstrip('#'))
+                    elif hasattr(element, "set") and "val" in element.attrib:
+                        element.set("val", var_value.lstrip("#"))
                         modified_count += 1
                         
                 elif xpath.target_type == 'font':
                     if isinstance(element, str):  # Attribute value
                         continue
-                    elif hasattr(element, 'set') and 'typeface' in element.attrib:
-                        element.set('typeface', var_value)
+                    elif hasattr(element, "set") and "typeface" in element.attrib:
+                        element.set("typeface", var_value)
                         modified_count += 1
                         
                 elif xpath.target_type == 'dimension':
                     if isinstance(element, str):  # Attribute value
                         continue
-                    elif hasattr(element, 'set') and 'val' in element.attrib:
-                        element.set('val', str(var_value))
+                    elif hasattr(element, "set") and "val" in element.attrib:
+                        element.set("val", str(var_value))
                         modified_count += 1
                         
             except Exception as e:
@@ -475,40 +474,40 @@ class OOXMLProcessor:
                                      variable: Dict[str, Any]) -> int:
         """Apply variable to elements using ElementTree"""
         modified_count = 0
-        var_value = str(variable.get('value', variable.get('defaultValue', '')))
-        var_type = variable.get('type', 'text')
+        var_value = str(variable.get("value", variable.get("defaultValue", "")))
+        var_type = variable.get("type", "text")
         
         for element in elements:
             try:
-                if var_type == 'color':
-                    if 'val' in element.attrib:
-                        element.set('val', var_value.lstrip('#'))
+                if var_type == "color":
+                    if "val" in element.attrib:
+                        element.set("val", var_value.lstrip("#"))
                         modified_count += 1
-                    elif 'rgb' in element.attrib:
-                        rgb_val = var_value.lstrip('#')
+                    elif "rgb" in element.attrib:
+                        rgb_val = var_value.lstrip("#")
                         if len(rgb_val) == 6:
-                            element.set('rgb', f'FF{rgb_val.upper()}')
+                            element.set("rgb", f"FF{rgb_val.upper()}")
                             modified_count += 1
                             
-                elif var_type == 'font':
-                    if 'typeface' in element.attrib:
-                        element.set('typeface', var_value)
+                elif var_type == "font":
+                    if "typeface" in element.attrib:
+                        element.set("typeface", var_value)
                         modified_count += 1
-                    elif 'ascii' in element.attrib:  # Word fonts
-                        element.set('ascii', var_value)
-                        element.set('hAnsi', var_value)
+                    elif "ascii" in element.attrib:  # Word fonts
+                        element.set("ascii", var_value)
+                        element.set("hAnsi", var_value)
                         modified_count += 1
                         
-                elif var_type == 'dimension':
-                    if 'val' in element.attrib:
+                elif var_type == "dimension":
+                    if "val" in element.attrib:
                         # Convert to appropriate units
-                        if 'pt' in str(var_value):
+                        if "pt" in str(var_value):
                             # Convert points to half-points for Word
-                            points = float(var_value.replace('pt', ''))
+                            points = float(var_value.replace("pt", ""))
                             half_points = int(points * 2)
-                            element.set('val', str(half_points))
+                            element.set("val", str(half_points))
                         else:
-                            element.set('val', str(var_value))
+                            element.set("val", str(var_value))
                         modified_count += 1
                         
             except Exception as e:
@@ -544,21 +543,6 @@ class OOXMLProcessor:
             
         return errors
     
-    def _indent_xml(self, elem: ET.Element, level: int = 0) -> None:
-        """Add indentation to XML elements"""
-        indent = "\n" + level * "  "
-        if len(elem):
-            if not elem.text or not elem.text.strip():
-                elem.text = indent + "  "
-            if not elem.tail or not elem.tail.strip():
-                elem.tail = indent
-            for child in elem:
-                self._indent_xml(child, level + 1)
-            if not child.tail or not child.tail.strip():
-                child.tail = indent
-        else:
-            if level and (not elem.tail or not elem.tail.strip()):
-                elem.tail = indent
     
     def process_ooxml_file(self, input_path: Union[str, Path],
                           variables: Dict[str, Any],
@@ -585,18 +569,18 @@ class OOXMLProcessor:
         )
         
         try:
-            with zipfile.ZipFile(input_path, 'r') as input_zip:
-                with zipfile.ZipFile(output_path, 'w', zipfile.ZIP_DEFLATED) as output_zip:
+            with zipfile.ZipFile(input_path, "r") as input_zip:
+                with zipfile.ZipFile(output_path, "w", zipfile.ZIP_DEFLATED) as output_zip:
                     
                     for file_info in input_zip.infolist():
                         file_data = input_zip.read(file_info.filename)
                         
                         # Process XML files
-                        if (file_info.filename.endswith('.xml') and 
+                        if (file_info.filename.endswith(".xml") and 
                             (target_files is None or file_info.filename in target_files)):
                             
                             try:
-                                xml_content = file_data.decode('utf-8')
+                                xml_content = file_data.decode("utf-8")
                                 updated_xml, file_result = self.apply_variables_to_xml(
                                     xml_content, variables, validate_result=False
                                 )
@@ -608,7 +592,7 @@ class OOXMLProcessor:
                                 overall_result.warnings.extend(file_result.warnings)
                                 
                                 # Write updated content
-                                output_zip.writestr(file_info, updated_xml.encode('utf-8'))
+                                output_zip.writestr(file_info, updated_xml.encode("utf-8"))
                                 
                                 if file_result.elements_modified > 0:
                                     logger.info(f"Processed {file_info.filename}: "
@@ -639,13 +623,13 @@ class OOXMLProcessor:
     def get_processing_statistics(self) -> Dict[str, Any]:
         """Get processing statistics"""
         return {
-            'documents_processed': self.stats['documents_processed'],
-            'total_elements_modified': self.stats['elements_modified'],
-            'total_processing_time': self.stats['total_processing_time'],
-            'average_processing_time': (
-                self.stats['total_processing_time'] / max(1, self.stats['documents_processed'])
+            "documents_processed": self.stats["documents_processed"],
+            "total_elements_modified": self.stats["elements_modified"],
+            "total_processing_time": self.stats["total_processing_time"],
+            "average_processing_time": (
+                self.stats["total_processing_time"] / max(1, self.stats["documents_processed"])
             ),
-            'lxml_available': self.use_lxml
+            "lxml_available": self.use_lxml
         }
 
 
@@ -655,16 +639,16 @@ if __name__ == "__main__":
     
     # Sample variables
     variables = {
-        'brandPrimary': {
-            'id': 'brandPrimary',
-            'type': 'color',
-            'value': 'FF0000',
+        "brandPrimary": {
+            "id": "brandPrimary",
+            "type": "color",
+            "value": "FF0000",
             'xpath': '//a:accent1//a:srgbClr'
         },
-        'headingFont': {
-            'id': 'headingFont',
-            'type': 'font',
-            'value': 'Arial Black',
+        "headingFont": {
+            "id": "headingFont",
+            "type": "font",
+            "value": "Arial Black",
             'xpath': '//a:majorFont//a:latin'
         }
     }
@@ -706,9 +690,9 @@ if __name__ == "__main__":
             print(f"   Warnings: {len(result.warnings)}")
             
         # Show some of the updated XML
-        if 'FF0000' in updated_xml:
+        if "FF0000" in updated_xml:
             print("   ✅ Color variable applied successfully")
-        if 'Arial Black' in updated_xml:
+        if "Arial Black" in updated_xml:
             print("   ✅ Font variable applied successfully")
             
     except Exception as e:

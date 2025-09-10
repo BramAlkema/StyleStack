@@ -6,9 +6,10 @@ Parses mathematical expressions containing variables, functions, and operators
 into Abstract Syntax Trees for dependency analysis and evaluation.
 """
 
+
+from typing import Dict, List, Set, Any, Union, Optional
 import re
 from enum import Enum
-from typing import Dict, List, Set, Any, Union, Optional
 from dataclasses import dataclass
 
 

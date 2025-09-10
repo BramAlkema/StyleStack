@@ -5,8 +5,9 @@ This module provides format-specific processing logic and configuration
 for different OOXML template formats (PowerPoint, Word, Excel).
 """
 
-import logging
+
 from typing import Dict, List, Any, Optional, Union
+import logging
 from pathlib import Path
 import zipfile
 from lxml import etree

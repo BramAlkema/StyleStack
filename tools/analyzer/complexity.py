@@ -5,7 +5,8 @@ This module provides comprehensive complexity analysis for OOXML templates,
 scoring and categorizing templates based on various complexity factors.
 """
 
-from typing import Dict, List, Any, Optional
+
+from typing import Any, Dict, List
 import math
 from collections import Counter
 

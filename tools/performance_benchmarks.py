@@ -7,35 +7,31 @@ Provides realistic workload patterns to test small templates, large templates,
 batch operations, and concurrent processing scenarios.
 """
 
+
+from typing import Any, Dict, List, NamedTuple, Optional
 import os
 import sys
 import time
 import json
 import tempfile
-import shutil
 import concurrent.futures
 import threading
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Union, Tuple, NamedTuple
 from dataclasses import dataclass, field
 from enum import Enum
 import statistics
 import zipfile
 import random
-import string
-from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 from lxml import etree
 
 # Import StyleStack components
 try:
-    from .performance_profiler import PerformanceProfiler, ProfiledFunction
-    from .json_ooxml_processor import JSONPatchProcessor
-    from .patch_execution_engine import PatchExecutionEngine
+    from .json_patch_parser import JSONPatchParser
+    from .performance_profiler import PerformanceProfiler
 except ImportError:
     # Handle relative import issues for standalone execution
-    from performance_profiler import PerformanceProfiler, ProfiledFunction
-    from json_ooxml_processor import JSONPatchProcessor
-    from patch_execution_engine import PatchExecutionEngine
+    from tools.json_patch_parser import JSONPatchParser
+    from tools.performance_profiler import PerformanceProfiler
 
 import logging
 logger = logging.getLogger(__name__)
@@ -701,7 +697,7 @@ class PerformanceBenchmark:
         self.profiler = profiler or PerformanceProfiler()
         self.template_generator = TemplateGenerator()
         self.patch_generator = PatchGenerator()
-        self.processor = JSONPatchProcessor()
+        self.processor = JSONPatchParser()
         
         # Results storage
         self.results: List[BenchmarkResult] = []

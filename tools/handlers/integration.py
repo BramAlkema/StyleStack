@@ -5,11 +5,13 @@ This module provides token integration capabilities and cross-format
 compatibility checks for multi-format OOXML processing.
 """
 
+
+from typing import Any, Dict, List, Tuple
 import logging
-from typing import Dict, List, Any, Optional, Set, Tuple
 from pathlib import Path
 
-from .types import OOXMLFormat, FormatConfiguration
+from .types import OOXMLFormat
+
 
 logger = logging.getLogger(__name__)
 

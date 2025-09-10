@@ -5,7 +5,8 @@ This module contains the core data types, enums, and dataclasses
 used throughout the variable substitution system.
 """
 
-from typing import Dict, List, Any, Optional, Union, Callable
+
+from typing import Any, Dict, List, Optional
 from dataclasses import dataclass, field
 from enum import Enum
 from datetime import datetime, timezone

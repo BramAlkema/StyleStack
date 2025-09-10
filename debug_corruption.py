@@ -17,11 +17,9 @@ import tempfile
 import zipfile
 from pathlib import Path
 from typing import Dict, Any
-import xml.etree.ElementTree as ET
 
 try:
     from tools.template_validator import TemplateValidator
-    from tools.ooxml_analyzer import OOXMLAnalyzer
 except ImportError as e:
     print(f"ERROR: Could not import validation tools. Did you activate venv?")
     print(f"Run: source venv/bin/activate")
@@ -41,10 +39,10 @@ class CorruptionDebugger:
         print(f"🔍 Debugging corruption in: {self.template_path}")
         
         results = {
-            'template': str(self.template_path),
-            'format': self.format,
-            'steps': [],
-            'corruption_points': []
+            "template": str(self.template_path),
+            "format": self.format,
+            "steps": [],
+            "corruption_points": []
         }
         
         # Step 1: Validate original template
@@ -53,12 +51,12 @@ class CorruptionDebugger:
         original_results = original_validator.validate()
         original_validator.print_summary(original_results)
         
-        results['steps'].append({
-            'step': 1,
-            'description': 'Original template validation',
-            'valid': original_results['valid'],
-            'corruption_risk': original_results['corruption_risk'],
-            'issues': len(original_results['issues'])
+        results["steps"].append({
+            "step": 1,
+            "description": "Original template validation",
+            "valid": original_results["valid"],
+            "corruption_risk": original_results["corruption_risk"],
+            "issues": len(original_results["issues"])
         })
         
         # Step 2: Create working copy and validate
@@ -73,14 +71,14 @@ class CorruptionDebugger:
             working_results = working_validator.validate()
             
             print(f"✅ Working copy created: {working_copy}")
-            print(f"   Validation status: {'✅ Valid' if working_results['valid'] else '❌ Invalid'}")
+            print(f"   Validation status: {"✅ Valid" if working_results["valid"] else "❌ Invalid"}")
             
-            results['steps'].append({
-                'step': 2,
-                'description': 'Working copy validation',
-                'valid': working_results['valid'],
-                'corruption_risk': working_results['corruption_risk'],
-                'issues': len(working_results['issues'])
+            results["steps"].append({
+                "step": 2,
+                "description": "Working copy validation",
+                "valid": working_results["valid"],
+                "corruption_risk": working_results["corruption_risk"],
+                "issues": len(working_results["issues"])
             })
             
             # Step 3: Simulate variable extraction
@@ -88,11 +86,11 @@ class CorruptionDebugger:
             variables = self._extract_variables_safely(working_copy)
             print(f"📝 Found {len(variables)} variable locations")
             
-            results['steps'].append({
-                'step': 3,
-                'description': 'Variable extraction',
-                'variables_found': len(variables),
-                'variable_files': list(variables.keys()) if variables else []
+            results["steps"].append({
+                "step": 3,
+                "description": "Variable extraction",
+                "variables_found": len(variables),
+                "variable_files": list(variables.keys()) if variables else []
             })
             
             # Step 4: Simulate simple variable substitution
@@ -105,28 +103,28 @@ class CorruptionDebugger:
             post_results = post_validator.validate()
             post_validator.print_summary(post_results)
             
-            results['steps'].append({
-                'step': 5,
-                'description': 'Post-substitution validation',
-                'valid': post_results['valid'],
-                'corruption_risk': post_results['corruption_risk'],
-                'issues': len(post_results['issues'])
+            results["steps"].append({
+                "step": 5,
+                "description": "Post-substitution validation",
+                "valid": post_results["valid"],
+                "corruption_risk": post_results["corruption_risk"],
+                "issues": len(post_results["issues"])
             })
             
             # Compare before/after
             corruption_detected = (
-                original_results['valid'] and not post_results['valid']
+                original_results["valid"] and not post_results["valid"]
             ) or (
-                post_results['corruption_risk'] == 'high'
+                post_results["corruption_risk"] == "high"
             ) or (
-                len(post_results['issues']) > len(original_results['issues'])
+                len(post_results["issues"]) > len(original_results["issues"])
             )
             
             if corruption_detected:
                 print("\n🚨 CORRUPTION DETECTED!")
-                results['corruption_points'].append({
-                    'step': 'variable_substitution',
-                    'details': 'Template became corrupted after variable substitution'
+                results["corruption_points"].append({
+                    "step": "variable_substitution",
+                    "details": "Template became corrupted after variable substitution"
                 })
             else:
                 print("\n✅ No corruption detected in simulation")
@@ -143,12 +141,12 @@ class CorruptionDebugger:
         variables = {}
         
         try:
-            with zipfile.ZipFile(template_path, 'r') as zip_file:
-                xml_files = [f for f in zip_file.namelist() if f.endswith('.xml')]
+            with zipfile.ZipFile(template_path, "r") as zip_file:
+                xml_files = [f for f in zip_file.namelist() if f.endswith(".xml")]
                 
                 for xml_file in xml_files:
                     try:
-                        content = zip_file.read(xml_file).decode('utf-8')
+                        content = zip_file.read(xml_file).decode("utf-8")
                         
                         # Look for StyleStack extension variables
                         import re
@@ -157,7 +155,7 @@ class CorruptionDebugger:
                         patterns = [
                             r'\{([^}]+)\}',  # {variable}
                             r'stylestack[._-](\w+)',  # stylestack.variable
-                            r'extensionvariables',  # extension variables marker
+                            r"extensionvariables",  # extension variables marker
                         ]
                         
                         found_vars = []
@@ -187,26 +185,26 @@ class CorruptionDebugger:
             
         try:
             # Create temporary backup
-            backup_path = template_path.with_suffix(template_path.suffix + '.backup')
+            backup_path = template_path.with_suffix(template_path.suffix + ".backup")
             shutil.copy2(template_path, backup_path)
             
             # Perform simple substitutions
-            with zipfile.ZipFile(backup_path, 'r') as zip_read:
-                with zipfile.ZipFile(template_path, 'w') as zip_write:
+            with zipfile.ZipFile(backup_path, "r") as zip_read:
+                with zipfile.ZipFile(template_path, "w") as zip_write:
                     for file_info in zip_read.infolist():
                         file_data = zip_read.read(file_info.filename)
                         
-                        if file_info.filename.endswith('.xml') and file_info.filename in variables:
+                        if file_info.filename.endswith(".xml") and file_info.filename in variables:
                             # Simple substitution simulation
                             try:
-                                content = file_data.decode('utf-8')
+                                content = file_data.decode("utf-8")
                                 
                                 # Replace common test variables with safe values
                                 substitutions = {
-                                    '{stylestack.primary_color}': '#2563eb',
-                                    '{stylestack.font_family}': 'Inter',
-                                    '{stylestack.org_name}': 'test-org',
-                                    '{stylestack.brand_color}': '#1e40af',
+                                    "{stylestack.primary_color}": "#2563eb",
+                                    "{stylestack.font_family}": "Inter",
+                                    "{stylestack.org_name}": "test-org",
+                                    "{stylestack.brand_color}": "#1e40af",
                                 }
                                 
                                 original_content = content
@@ -216,7 +214,7 @@ class CorruptionDebugger:
                                 if content != original_content:
                                     print(f"   ✏️  Modified {file_info.filename}")
                                     
-                                file_data = content.encode('utf-8')
+                                file_data = content.encode("utf-8")
                                 
                             except UnicodeDecodeError:
                                 # Binary file, don't modify
@@ -237,11 +235,11 @@ class CorruptionDebugger:
 
 def main():
     """Main CLI entry point"""
-    parser = argparse.ArgumentParser(description='Debug template corruption during processing')
-    parser.add_argument('--template', '-t', required=True,
-                       help='Path to template file')
-    parser.add_argument('--verbose', '-v', action='store_true',
-                       help='Verbose output')
+    parser = argparse.ArgumentParser(description="Debug template corruption during processing")
+    parser.add_argument("--template", "-t", required=True,
+                       help="Path to template file")
+    parser.add_argument("--verbose", "-v", action="store_true",
+                       help="Verbose output")
     
     args = parser.parse_args()
     
@@ -257,19 +255,19 @@ def main():
     print("📋 CORRUPTION DEBUG SUMMARY")
     print("="*60)
     
-    print(f"Template: {results['template']}")
-    print(f"Format: {results['format']}")
-    print(f"Steps completed: {len(results['steps'])}")
+    print(f"Template: {results["template"]}")
+    print(f"Format: {results["format"]}")
+    print(f"Steps completed: {len(results["steps"])}")
     
-    if results['corruption_points']:
-        print(f"🚨 Corruption points detected: {len(results['corruption_points'])}")
-        for point in results['corruption_points']:
-            print(f"   - {point['step']}: {point['details']}")
+    if results["corruption_points"]:
+        print(f"🚨 Corruption points detected: {len(results["corruption_points"])}")
+        for point in results["corruption_points"]:
+            print(f"   - {point["step"]}: {point["details"]}")
     else:
         print("✅ No corruption detected in simulation")
         
     print("\n" + "="*60)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

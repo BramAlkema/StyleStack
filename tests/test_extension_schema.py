@@ -13,15 +13,8 @@ from typing import Dict, Any, List
 from dataclasses import dataclass
 from enum import Enum
 
-# Test data and fixtures
-class VariableType(Enum):
-    COLOR = "color"
-    FONT = "font" 
-    DIMENSION = "dimension"
-    POSITION = "position"
-    TEXT = "text"
-    BOOLEAN = "boolean"
-    NUMBER = "number"
+# Import shared enums and types
+from tools.extension_schema_validator import VariableType
 
 class VariableScope(Enum):
     THEME = "theme"

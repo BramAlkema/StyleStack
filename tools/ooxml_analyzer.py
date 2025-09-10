@@ -10,14 +10,14 @@ Usage:
     python tools/ooxml_analyzer.py --template path/to/template.potx --analyze structure
 """
 
+
+from typing import Any, Dict
 import argparse
 import sys
 import zipfile
 import json
 from pathlib import Path
-from typing import Dict, List, Any
 import xml.etree.ElementTree as ET
-from xml.parsers.expat import ExpatError
 
 try:
     import lxml.etree as lxml_ET

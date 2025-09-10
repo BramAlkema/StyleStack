@@ -6,13 +6,12 @@ Generates professionally designed OOXML templates with embedded variable systems
 quality assurance, cross-application compatibility, and design compliance.
 """
 
+
+from typing import Any, Dict, List, Optional, Set
 import os
 import xml.etree.ElementTree as ET
 import zipfile
-import tempfile
-import uuid
 from dataclasses import dataclass, field
-from typing import Dict, List, Any, Optional, Set, Union
 from enum import Enum
 from pathlib import Path
 

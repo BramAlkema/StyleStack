@@ -5,7 +5,8 @@ This module contains the core data types, enums, and dataclasses
 used throughout the template analysis system.
 """
 
-from typing import Dict, List, Any, Optional, Set
+
+from typing import Any, Dict, List, Optional
 from dataclasses import dataclass, field
 from enum import Enum
 from datetime import datetime, timezone

@@ -6,10 +6,11 @@ Validates variable definitions against the StyleStack extension variable schema.
 Provides detailed error reporting and validation utilities.
 """
 
+
+from typing import Any, Dict, List, Optional
 import json
 import re
 from pathlib import Path
-from typing import Dict, Any, List, Optional, Union, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 import jsonschema

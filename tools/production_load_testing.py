@@ -7,44 +7,35 @@ for hundreds of templates with sustained processing. Includes performance regres
 testing to ensure optimizations don't introduce performance degradation.
 """
 
+
+from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 import time
 import threading
 import multiprocessing
-import concurrent.futures
-import queue
 import random
 import statistics
 import json
 import sqlite3
-from typing import Dict, List, Any, Optional, Tuple, Callable, NamedTuple
-from dataclasses import dataclass, field
-from collections import deque, defaultdict
 from pathlib import Path
-from datetime import datetime, timedelta
 import logging
-import tempfile
-import shutil
-import psutil
-import hashlib
-import contextlib
+from dataclasses import dataclass
+from collections import deque
+try:
+    import psutil
+except ImportError:
+    psutil = None  # Optional dependency for system monitoring
 
 # Import StyleStack components for load testing
 try:
     from .performance_profiler import PerformanceProfiler
-    from .advanced_cache_system import CacheManager
-    from .memory_optimizer import MemoryManager, ConcurrentMemoryManager
     from .optimized_batch_processor import OptimizedBatchProcessor, BatchProcessingConfig, BatchTask
     from .performance_benchmarks import TemplateGenerator, PatchGenerator
     from .production_monitoring import ProductionMonitor
-    from .concurrent_processing_validator import ConcurrentProcessingValidator
 except ImportError:
-    from performance_profiler import PerformanceProfiler
-    from advanced_cache_system import CacheManager
-    from memory_optimizer import MemoryManager, ConcurrentMemoryManager
-    from optimized_batch_processor import OptimizedBatchProcessor, BatchProcessingConfig, BatchTask
-    from performance_benchmarks import TemplateGenerator, PatchGenerator
-    from production_monitoring import ProductionMonitor
-    from concurrent_processing_validator import ConcurrentProcessingValidator
+    from tools.performance_profiler import PerformanceProfiler
+    from tools.optimized_batch_processor import OptimizedBatchProcessor, BatchProcessingConfig, BatchTask
+    from tools.performance_benchmarks import TemplateGenerator, PatchGenerator
+    from tools.production_monitoring import ProductionMonitor
 
 logger = logging.getLogger(__name__)
 

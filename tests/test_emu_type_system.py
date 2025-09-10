@@ -5,7 +5,6 @@ Tests EMUValue class, mathematical operations, unit conversions, and OOXML posit
 """
 
 import unittest
-import math
 import sys
 import os
 

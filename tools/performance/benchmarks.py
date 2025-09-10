@@ -6,6 +6,8 @@ Comprehensive performance testing and optimization framework for the modular arc
 Measures performance across all core components and identifies optimization opportunities.
 """
 
+
+from typing import Any, Dict, List, Optional
 import time
 import statistics
 import tempfile
@@ -13,9 +15,7 @@ import zipfile
 import json
 import threading
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Callable, Tuple
 from dataclasses import dataclass, field
-from contextlib import contextmanager
 import sys
 import os
 

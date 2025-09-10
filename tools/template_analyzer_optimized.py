@@ -9,6 +9,8 @@ Enhanced template analyzer with performance optimizations:
 - Batch processing for multiple templates
 """
 
+
+from typing import Any, Dict, List, Optional
 from pathlib import Path
 import sys
 
@@ -21,8 +23,6 @@ from tools.performance.optimizations import (
     MemoryOptimizer, BatchProcessor, memoize
 )
 from tools.template_analyzer import TemplateAnalyzer as BaseTemplateAnalyzer
-from tools.analyzer.types import DesignElementType, AnalysisLevel, PriorityLevel
-from typing import Dict, List, Any, Optional, Set
 
 
 class OptimizedTemplateAnalyzer:

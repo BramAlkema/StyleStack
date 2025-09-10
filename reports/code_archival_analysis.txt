@@ -1,0 +1,95 @@
+StyleStack Code Archival Analysis Report
+============================================================
+Generated: 2025-09-10 11:56:06
+
+📊 ARCHIVAL SUMMARY
+-------------------------
+Total candidates: 42
+🔴 High confidence: 3
+🟡 Medium confidence: 39
+🟢 Low confidence: 0
+Total size: 10.3 MB
+
+🔴 HIGH CONFIDENCE ARCHIVAL CANDIDATES
+---------------------------------------------
+📁 analyze_archival_candidates.py
+   Path: analyze_archival_candidates.py
+   Reason: Contains deprecation markers or deprecated filename
+   Size: 21.2 KB, Age: 0 days
+   Dependencies: 8, Dependents: 0
+   Notes: Contains explicit deprecation markers
+
+📁 token_integration_layer.py
+   Path: tools/token_integration_layer.py
+   Reason: Contains deprecation markers or deprecated filename
+   Size: 21.7 KB, Age: 0 days
+   Dependencies: 11, Dependents: 5
+   Notes: Contains explicit deprecation markers
+
+📁 build.py
+   Path: build.py
+   Reason: Contains deprecation markers or deprecated filename
+   Size: 31.5 KB, Age: 0 days
+   Dependencies: 23, Dependents: 1
+   Notes: Contains explicit deprecation markers
+
+🟡 MEDIUM CONFIDENCE ARCHIVAL CANDIDATES
+-----------------------------------------------
+📁 templates
+   Reason: Directory name suggests archival content: templates
+   Size: 2.1 KB, Age: 0 days
+
+📁 draft3
+   Reason: Directory name suggests archival content: draft3
+   Size: 2.5 KB, Age: 1 days
+
+📁 draft3
+   Reason: Directory name suggests archival content: draft3
+   Size: 2.5 KB, Age: 0 days
+
+📁 draft3
+   Reason: Directory name suggests archival content: draft3
+   Size: 2.5 KB, Age: 0 days
+
+📁 uritemplate-4.2.0.dist-info
+   Reason: Directory name suggests archival content: uritemplate-4.2.0.dist-info
+   Size: 4.0 KB, Age: 0 days
+
+📁 draft4
+   Reason: Directory name suggests archival content: draft4
+   Size: 4.3 KB, Age: 1 days
+
+📁 draft4
+   Reason: Directory name suggests archival content: draft4
+   Size: 4.3 KB, Age: 0 days
+
+📁 draft4
+   Reason: Directory name suggests archival content: draft4
+   Size: 4.3 KB, Age: 0 days
+
+📁 draft6
+   Reason: Directory name suggests archival content: draft6
+   Size: 4.3 KB, Age: 1 days
+
+📁 draft6
+   Reason: Directory name suggests archival content: draft6
+   Size: 4.3 KB, Age: 0 days
+
+💡 ARCHIVAL RECOMMENDATIONS
+------------------------------
+1. **SAFE TO ARCHIVE** - High confidence candidates:
+   • Files with explicit deprecation markers
+   • Files not imported by any other modules
+   • Files not modified in 1+ years with no dependencies
+
+2. **REVIEW BEFORE ARCHIVING** - Medium confidence candidates:
+   • Files with few dependencies but still in use
+   • Older versions of duplicate implementations
+   • Directories with archival-suggesting names
+
+3. **ARCHIVAL PROCESS**:
+   • Create 'archive/' directory
+   • Move candidates maintaining directory structure
+   • Update any remaining imports
+   • Test that nothing breaks
+   • Commit changes with clear archival message

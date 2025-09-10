@@ -12,17 +12,18 @@ Core → Fork → Org → Group → Personal → Channel → Extension Variables
 Integrates with existing token_resolver.py while adding OOXML-native capabilities.
 """
 
-import json
+
+from typing import Dict, Any, List, Optional, Union, Tuple
 import re
 from pathlib import Path
-from typing import Dict, Any, List, Optional, Union, Tuple
 from dataclasses import dataclass, field
 import xml.etree.ElementTree as ET
+
+from tools.token_parser import TokenType, TokenScope, TokenParser
 import logging
 
 # Import existing components
 from tools.token_resolver import TokenResolver
-from tools.token_parser import TokenParser, VariableToken, TokenScope, TokenType
 from tools.ooxml_extension_manager import OOXMLExtensionManager, StyleStackExtension
 
 logger = logging.getLogger(__name__)

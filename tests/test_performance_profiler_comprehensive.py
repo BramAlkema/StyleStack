@@ -1,36 +1,30 @@
 #!/usr/bin/env python3
 """
-Comprehensive Tests for Performance Profiler
+Comprehensive test suite for Performance Profiler
 
-Comprehensive test coverage for the performance profiling and monitoring system
-used throughout StyleStack for optimization and debugging.
-
-Part of StyleStack 90% Coverage Initiative - Phase 2: Foundation-Up Scaling
+Tests the performance profiling functionality for StyleStack including
+profiling sessions, performance snapshots, and system monitoring.
 """
 
-import pytest
+import unittest
 import time
 import threading
-import psutil
+import tempfile
+import json
+from pathlib import Path
 from unittest.mock import Mock, patch, MagicMock
-from typing import Dict, Any, List, Optional
-from datetime import datetime
 
-from tests.fixtures import sample_design_tokens, temp_dir, benchmark_data
-from tests.mocks import create_standard_mocks
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'tools'))
 
-
-# Import the module under test
 try:
     from tools.performance_profiler import (
+        ProfiledFunction,
+        PerformanceSnapshot,
+        ProfilingSession,
         PerformanceProfiler,
-        ProfilerConfig,
-        ProfileMetrics,
-        MemoryTracker,
-        CPUTracker,
-        TimeTracker,
-        ProfilerError,
-        ProfilerReport
+        _ProfilerContextManager
     )
     REAL_IMPORTS = True
 except ImportError:

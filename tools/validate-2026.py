@@ -9,12 +9,13 @@ Validates templates against 2026 design principles:
 - Publication-quality standards
 """
 
+
+from typing import List
 import click
 import xml.etree.ElementTree as ET
 from pathlib import Path
 import re
 import sys
-from typing import List, Tuple, Dict
 import colorsys
 
 

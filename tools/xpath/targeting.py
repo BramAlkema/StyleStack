@@ -5,9 +5,9 @@ This module provides advanced XPath expression handling with namespace resolutio
 validation, and optimization for OOXML document manipulation.
 """
 
-from typing import Dict, List, Any, Optional, Set
+
+from typing import Any, Dict
 import logging
-from collections import defaultdict
 from lxml import etree
 from lxml.etree import XPathEvalError
 

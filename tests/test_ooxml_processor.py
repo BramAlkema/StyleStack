@@ -12,13 +12,11 @@ Validates:
 - Performance with large/complex documents
 """
 
+
+from typing import Any, Dict, List
 import pytest
 import xml.etree.ElementTree as ET
-from typing import Dict, List, Any, Optional
 from pathlib import Path
-import zipfile
-import tempfile
-import io
 
 try:
     from lxml import etree

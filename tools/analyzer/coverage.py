@@ -5,9 +5,9 @@ This module provides comprehensive analysis of variable coverage
 in OOXML templates with recommendations for achieving 100% coverage.
 """
 
+
 from typing import Dict, List, Any, Optional
 from collections import defaultdict, Counter
-import math
 
 from .types import (
     DesignElement, DesignElementType, PriorityLevel, VariableCoverage,

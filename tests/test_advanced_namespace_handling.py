@@ -10,8 +10,6 @@ Part of Task 6.6: Advanced Namespace Handling for Complex XPath Expressions.
 """
 
 import unittest
-from unittest.mock import MagicMock, patch
-import tempfile
 import os
 from lxml import etree
 

@@ -29,14 +29,14 @@ Usage:
     updated_xml = manager.write_extension_to_xml(theme_xml, extension)
 """
 
+
+from typing import Any, Dict, List, Optional, Union
 import xml.etree.ElementTree as ET
+from tools.xml_utils import indent_xml
 import json
 import zipfile
-import io
-from typing import Dict, List, Any, Optional, Union, Tuple
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
-import uuid
 from datetime import datetime
 import logging
 
@@ -510,7 +510,7 @@ class OOXMLExtensionManager:
     def _format_xml_output(self, root: ET.Element) -> str:
         """Format XML output with proper indentation"""
         # Add indentation
-        self._indent_xml(root)
+        indent_xml(root)
         
         # Generate XML with declaration
         xml_str = ET.tostring(root, encoding='unicode')
@@ -521,21 +521,6 @@ class OOXMLExtensionManager:
         
         return xml_str
     
-    def _indent_xml(self, elem: ET.Element, level: int = 0) -> None:
-        """Add indentation to XML elements"""
-        indent = "\n" + level * "  "
-        if len(elem):
-            if not elem.text or not elem.text.strip():
-                elem.text = indent + "  "
-            if not elem.tail or not elem.tail.strip():
-                elem.tail = indent
-            for child in elem:
-                self._indent_xml(child, level + 1)
-            if not child.tail or not child.tail.strip():
-                child.tail = indent
-        else:
-            if level and (not elem.tail or not elem.tail.strip()):
-                elem.tail = indent
     
     def remove_extension(self, xml_content: str, extension_uri: str) -> str:
         """Remove extension by URI from XML content"""

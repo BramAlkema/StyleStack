@@ -5,9 +5,10 @@ This module provides batch processing capabilities with parallel execution,
 progress tracking, and comprehensive error handling.
 """
 
+
+from typing import Any, Dict, List, Optional, Callable
 import time
 import concurrent.futures
-from typing import Dict, List, Any, Optional, Tuple, Callable
 from pathlib import Path
 import threading
 

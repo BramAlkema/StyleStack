@@ -4,13 +4,14 @@ StyleStack Enterprise License Manager
 Handles licensing for commercial forks and enterprise deployments
 """
 
+
+from typing import Tuple
 import os
 import json
 import hmac
 import hashlib
 import requests
 from datetime import datetime, timedelta
-from typing import Dict, Optional, Tuple
 from pathlib import Path
 import base64
 

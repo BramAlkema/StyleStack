@@ -1,3 +1,4 @@
+from tools.handlers.types import OOXMLFormat
 #!/usr/bin/env python3
 """
 Advanced Integration Test Scenarios for StyleStack JSON-to-OOXML Processing Engine
@@ -44,6 +45,7 @@ from transaction_pipeline import (
     TransactionState, 
     OperationType
 )
+from tools.core.types import (
     JSONPatchProcessor, 
     RecoveryStrategy,
     PatchResult

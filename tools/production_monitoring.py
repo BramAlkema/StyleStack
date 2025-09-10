@@ -7,36 +7,34 @@ Provides real-time metrics, alerting, health checks, and comprehensive observabi
 for production deployments.
 """
 
+
+from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 import time
 import threading
 import logging
 import json
 import smtplib
 import sqlite3
-from typing import Dict, List, Any, Optional, Callable, NamedTuple, Union
 from dataclasses import dataclass, field
 from collections import deque, defaultdict
 from pathlib import Path
 from datetime import datetime, timedelta
-from email.mime.text import MimeText
-from email.mime.multipart import MimeMultipart
-import psutil
-import socket
+from email.mime.text import MIMEText as MimeText
+from email.mime.multipart import MIMEMultipart as MimeMultipart
+# import psutil  # Optional dependency for system monitoring
 import urllib.request
 import urllib.error
 from concurrent.futures import ThreadPoolExecutor
 
 # Import StyleStack components for monitoring
 try:
-    from .performance_profiler import PerformanceProfiler
     from .advanced_cache_system import CacheManager
     from .memory_optimizer import MemoryManager
-    from .json_ooxml_processor import JSONPatchProcessor
+    from .json_patch_parser import JSONPatchParser
 except ImportError:
-    from performance_profiler import PerformanceProfiler
-    from advanced_cache_system import CacheManager
-    from memory_optimizer import MemoryManager
-    from json_ooxml_processor import JSONPatchProcessor
+    from tools.advanced_cache_system import CacheManager
+    from tools.memory_optimizer import MemoryManager
+    from tools.json_patch_parser import JSONPatchParser
 
 logger = logging.getLogger(__name__)
 

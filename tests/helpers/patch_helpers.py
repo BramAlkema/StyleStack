@@ -6,9 +6,10 @@ of OOXML documents, avoiding the issue of applying inappropriate patches
 to the wrong file types.
 """
 
+
+
+
 from typing import List, Dict, Any
-
-
 def get_powerpoint_patches() -> List[Dict[str, Any]]:
     """Get patches appropriate for PowerPoint templates."""
     return [

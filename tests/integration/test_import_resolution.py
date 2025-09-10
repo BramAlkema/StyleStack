@@ -9,7 +9,6 @@ import unittest
 import sys
 from pathlib import Path
 from importlib import import_module
-import inspect
 
 # Add project root to path
 project_root = Path(__file__).parent.parent.parent
@@ -154,7 +153,6 @@ class TestImportResolution(unittest.TestCase):
         """Test that modules can work together properly."""
         from tools.processing.json import JSONPatchProcessor
         from tools.xpath.targeting import XPathTargetingSystem
-        from tools.core.types import PatchOperation
         from lxml import etree
         
         # Create instances

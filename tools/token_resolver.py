@@ -8,10 +8,11 @@ Core → Channel → Organization → Group → Personal
 Resolves token references like {colors.primary.500} to actual values.
 """
 
+
+from typing import Any, Dict, Optional
 import json
 import re
 from pathlib import Path
-from typing import Dict, Any, List, Optional
 import click
 
 

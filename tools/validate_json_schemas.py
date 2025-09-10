@@ -6,12 +6,12 @@ Validates all JSON token files against their respective schemas to ensure
 compliance with the DTCG specification draft and StyleStack extensions.
 """
 
+
+from typing import Dict, List, Any, Optional, Tuple
 import json
 import sys
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
 import jsonschema
-from jsonschema import validate, ValidationError, Draft7Validator
 
 
 class TokenValidator:

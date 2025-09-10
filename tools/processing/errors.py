@@ -5,7 +5,8 @@ This module provides comprehensive error handling, recovery strategies,
 and fallback mechanisms for OOXML processing operations.
 """
 
-from typing import Dict, List, Any, Optional, Callable
+
+from typing import Any, Dict, List, Optional
 import logging
 import traceback
 from collections import defaultdict

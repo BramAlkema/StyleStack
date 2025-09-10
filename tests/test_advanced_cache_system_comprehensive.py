@@ -1,916 +1,598 @@
 #!/usr/bin/env python3
 """
-Comprehensive test suite for Advanced Cache System module.
+Comprehensive test suite for Advanced Cache System
 
-Tests the advanced caching functionality used in the StyleStack design token 
-system for optimizing PowerPoint processing performance.
+Tests the advanced caching functionality for StyleStack including LRU cache,
+TTL handling, compression, and statistics tracking.
 """
 
-import pytest
+import unittest
 import time
 import threading
 import tempfile
-import os
 import pickle
+import json
 from pathlib import Path
+from unittest.mock import Mock, patch
 
-# Test with real imports when available, mock otherwise
-try:
-    from tools.advanced_cache_system import (
-        AdvancedCacheSystem, CacheEntry, CacheConfig, CacheStats,
-        CacheStrategy, LRUCache, TTLCache, FIFOCache, 
-        CacheManager, CacheSerializer, CachePersistence
-    )
-    REAL_IMPORTS = True
-except ImportError:
-    REAL_IMPORTS = False
-    
-    # Mock classes for testing structure
-    class AdvancedCacheSystem:
-        def __init__(self, strategy='lru', max_size=1000, ttl=3600):
-            self.strategy = strategy
-            self.max_size = max_size
-            self.ttl = ttl
-            self.cache = {}
-        
-        def get(self, key):
-            return self.cache.get(key)
-        
-        def set(self, key, value, ttl=None):
-            self.cache[key] = value
-        
-        def delete(self, key):
-            self.cache.pop(key, None)
-        
-        def clear(self):
-            self.cache.clear()
-        
-        def size(self):
-            return len(self.cache)
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'tools'))
 
-    class CacheEntry:
-        def __init__(self, key, value, ttl=None):
-            self.key = key
-            self.value = value
-            self.ttl = ttl
-            self.created_at = time.time()
-
-    class CacheConfig:
-        def __init__(self, max_size=1000, ttl=3600, strategy='lru'):
-            self.max_size = max_size
-            self.ttl = ttl
-            self.strategy = strategy
-
-    class CacheStats:
-        def __init__(self):
-            self.hits = 0
-            self.misses = 0
-            self.evictions = 0
-
-    class CacheStrategy:
-        def evict(self, cache):
-            pass
-
-    class LRUCache(AdvancedCacheSystem):
-        pass
-
-    class TTLCache(AdvancedCacheSystem):
-        pass
-
-    class FIFOCache(AdvancedCacheSystem):
-        pass
-
-    class CacheManager:
-        def __init__(self):
-            self.caches = {}
-        
-        def get_cache(self, name):
-            return self.caches.get(name)
-        
-        def create_cache(self, name, config):
-            cache = AdvancedCacheSystem()
-            self.caches[name] = cache
-            return cache
-
-    class CacheSerializer:
-        def serialize(self, value):
-            return pickle.dumps(value)
-        
-        def deserialize(self, data):
-            return pickle.loads(data)
-
-    class CachePersistence:
-        def save(self, cache, filename):
-            pass
-        
-        def load(self, filename):
-            return AdvancedCacheSystem()
+from tools.advanced_cache_system import (
+    CacheEntry,
+    CacheStats,
+    LRUCache
+)
 
 
-class TestAdvancedCacheSystem:
-    """Test the Advanced Cache System core functionality."""
-    
-    def test_cache_initialization_default(self):
-        """Test cache initialization with default settings"""
-        cache = AdvancedCacheSystem()
-        
-        if REAL_IMPORTS:
-            assert hasattr(cache, 'strategy')
-            assert hasattr(cache, 'max_size')
-            assert hasattr(cache, 'ttl')
-        else:
-            assert cache.strategy == 'lru'
-            assert cache.max_size == 1000
-            assert cache.ttl == 3600
-    
-    def test_cache_initialization_custom(self):
-        """Test cache initialization with custom settings"""
-        cache = AdvancedCacheSystem(strategy='ttl', max_size=500, ttl=1800)
-        
-        if REAL_IMPORTS:
-            assert cache.strategy == 'ttl' or hasattr(cache, 'strategy')
-            assert cache.max_size == 500 or hasattr(cache, 'max_size')
-        else:
-            assert cache.strategy == 'ttl'
-            assert cache.max_size == 500
-            assert cache.ttl == 1800
-    
-    def test_cache_basic_set_get(self):
-        """Test basic cache set and get operations"""
-        cache = AdvancedCacheSystem()
-        
-        cache.set("key1", "value1")
-        result = cache.get("key1")
-        
-        if REAL_IMPORTS:
-            assert result == "value1" or result is None
-        else:
-            assert result == "value1"
-    
-    def test_cache_get_nonexistent(self):
-        """Test getting non-existent cache entry"""
-        cache = AdvancedCacheSystem()
-        
-        result = cache.get("nonexistent_key")
-        
-        assert result is None
-    
-    def test_cache_update_existing(self):
-        """Test updating existing cache entry"""
-        cache = AdvancedCacheSystem()
-        
-        cache.set("key1", "original_value")
-        cache.set("key1", "updated_value")
-        result = cache.get("key1")
-        
-        if REAL_IMPORTS:
-            assert result == "updated_value" or result in ["original_value", "updated_value"]
-        else:
-            assert result == "updated_value"
-    
-    def test_cache_delete_entry(self):
-        """Test deleting cache entries"""
-        cache = AdvancedCacheSystem()
-        
-        cache.set("key1", "value1")
-        cache.delete("key1")
-        result = cache.get("key1")
-        
-        assert result is None
-    
-    def test_cache_clear_all(self):
-        """Test clearing all cache entries"""
-        cache = AdvancedCacheSystem()
-        
-        cache.set("key1", "value1")
-        cache.set("key2", "value2")
-        cache.clear()
-        
-        assert cache.get("key1") is None
-        assert cache.get("key2") is None
-        
-        if REAL_IMPORTS:
-            assert cache.size() == 0 or isinstance(cache.size(), int)
-        else:
-            assert cache.size() == 0
-    
-    def test_cache_size_tracking(self):
-        """Test cache size tracking"""
-        cache = AdvancedCacheSystem()
-        
-        initial_size = cache.size()
-        cache.set("key1", "value1")
-        cache.set("key2", "value2")
-        
-        if REAL_IMPORTS:
-            current_size = cache.size()
-            assert current_size >= initial_size
-            assert isinstance(current_size, int)
-        else:
-            assert cache.size() == 2
-    
-    def test_cache_with_ttl(self):
-        """Test cache with TTL (Time To Live)"""
-        cache = AdvancedCacheSystem(ttl=1)  # 1 second TTL
-        
-        cache.set("key1", "value1", ttl=1)
-        immediate_result = cache.get("key1")
-        
-        if REAL_IMPORTS:
-            assert immediate_result == "value1" or immediate_result is None
-            
-            # Wait for TTL to expire
-            time.sleep(1.1)
-            expired_result = cache.get("key1")
-            # TTL behavior may vary in real implementation
-            assert expired_result is None or expired_result == "value1"
-        else:
-            assert immediate_result == "value1"
-
-
-class TestCacheEntry:
-    """Test the Cache Entry data structures."""
+class TestCacheEntry(unittest.TestCase):
+    """Test CacheEntry functionality"""
     
     def test_cache_entry_creation(self):
-        """Test creating cache entries"""
-        entry = CacheEntry("test_key", "test_value")
+        """Test creating cache entry"""
+        entry = CacheEntry(
+            value="test_value",
+            timestamp=1234567890.0,
+            access_count=5,
+            size_bytes=100,
+            ttl_seconds=300
+        )
         
-        assert entry.key == "test_key"
-        assert entry.value == "test_value"
-        if REAL_IMPORTS:
-            assert hasattr(entry, 'created_at')
-            assert isinstance(entry.created_at, (int, float))
-        else:
-            assert hasattr(entry, 'created_at')
-    
-    def test_cache_entry_with_ttl(self):
-        """Test creating cache entries with TTL"""
-        entry = CacheEntry("key", "value", ttl=3600)
+        self.assertEqual(entry.value, "test_value")
+        self.assertEqual(entry.timestamp, 1234567890.0)
+        self.assertEqual(entry.access_count, 5)
+        self.assertEqual(entry.size_bytes, 100)
+        self.assertEqual(entry.ttl_seconds, 300)
         
-        assert entry.key == "key"
-        assert entry.value == "value"
-        assert entry.ttl == 3600
-    
-    def test_cache_entry_timestamp(self):
-        """Test cache entry timestamp tracking"""
-        before_time = time.time()
-        entry = CacheEntry("key", "value")
-        after_time = time.time()
+    def test_cache_entry_defaults(self):
+        """Test cache entry with default values"""
+        entry = CacheEntry(
+            value="test",
+            timestamp=time.time(),
+            access_count=1,
+            size_bytes=50
+        )
         
-        if REAL_IMPORTS:
-            assert before_time <= entry.created_at <= after_time
-        else:
-            # Mock implementation
-            assert hasattr(entry, 'created_at')
+        self.assertIsNone(entry.ttl_seconds)
+        
+    def test_cache_entry_replacement(self):
+        """Test cache entry replacement functionality"""
+        entry = CacheEntry(
+            value="original",
+            timestamp=time.time(),
+            access_count=1,
+            size_bytes=50
+        )
+        
+        # Test _replace method
+        updated_entry = entry._replace(access_count=5)
+        self.assertEqual(updated_entry.access_count, 5)
+        self.assertEqual(updated_entry.value, "original")
 
 
-class TestCacheConfig:
-    """Test the Cache Configuration functionality."""
+class TestCacheStats(unittest.TestCase):
+    """Test CacheStats functionality"""
     
-    def test_config_creation_default(self):
-        """Test creating cache config with defaults"""
-        config = CacheConfig()
+    def test_cache_stats_creation(self):
+        """Test creating cache stats"""
+        stats = CacheStats(
+            hits=100,
+            misses=25,
+            evictions=5,
+            size_bytes=1024,
+            entry_count=50
+        )
         
-        if REAL_IMPORTS:
-            assert hasattr(config, 'max_size')
-            assert hasattr(config, 'ttl')
-            assert hasattr(config, 'strategy')
-        else:
-            assert config.max_size == 1000
-            assert config.ttl == 3600
-            assert config.strategy == 'lru'
-    
-    def test_config_creation_custom(self):
-        """Test creating cache config with custom values"""
-        config = CacheConfig(max_size=2000, ttl=7200, strategy='fifo')
+        self.assertEqual(stats.hits, 100)
+        self.assertEqual(stats.misses, 25)
+        self.assertEqual(stats.evictions, 5)
+        self.assertEqual(stats.size_bytes, 1024)
+        self.assertEqual(stats.entry_count, 50)
         
-        if REAL_IMPORTS:
-            assert config.max_size == 2000 or hasattr(config, 'max_size')
-            assert config.ttl == 7200 or hasattr(config, 'ttl')
-            assert config.strategy == 'fifo' or hasattr(config, 'strategy')
-        else:
-            assert config.max_size == 2000
-            assert config.ttl == 7200
-            assert config.strategy == 'fifo'
-    
-    def test_config_validation(self):
-        """Test cache config validation"""
-        # Test with valid values
-        config = CacheConfig(max_size=100, ttl=1800, strategy='lru')
+    def test_hit_rate_calculation(self):
+        """Test hit rate calculation"""
+        stats = CacheStats(hits=80, misses=20)
+        self.assertAlmostEqual(stats.hit_rate, 0.8, places=2)
         
-        if REAL_IMPORTS:
-            assert config.max_size > 0 or hasattr(config, 'max_size')
-            assert config.ttl > 0 or hasattr(config, 'ttl')
-            assert config.strategy in ['lru', 'fifo', 'ttl'] or hasattr(config, 'strategy')
-        else:
-            assert config.max_size == 100
-            assert config.ttl == 1800
-
-
-class TestCacheStats:
-    """Test the Cache Statistics functionality."""
-    
-    def test_stats_initialization(self):
-        """Test cache stats initialization"""
+        # Test zero case
+        stats_zero = CacheStats(hits=0, misses=0)
+        self.assertEqual(stats_zero.hit_rate, 0.0)
+        
+    def test_miss_rate_calculation(self):
+        """Test miss rate calculation"""
+        stats = CacheStats(hits=80, misses=20)
+        self.assertAlmostEqual(stats.miss_rate, 0.2, places=2)
+        
+    def test_default_stats(self):
+        """Test default cache stats"""
         stats = CacheStats()
-        
-        if REAL_IMPORTS:
-            assert hasattr(stats, 'hits')
-            assert hasattr(stats, 'misses')
-            assert hasattr(stats, 'evictions')
-        else:
-            assert stats.hits == 0
-            assert stats.misses == 0
-            assert stats.evictions == 0
-    
-    def test_stats_tracking(self):
-        """Test cache statistics tracking"""
-        stats = CacheStats()
-        
-        # Simulate some operations
-        if hasattr(stats, 'hits'):
-            initial_hits = stats.hits
-            stats.hits += 5
-            assert stats.hits >= initial_hits
-        
-        if hasattr(stats, 'misses'):
-            initial_misses = stats.misses
-            stats.misses += 3
-            assert stats.misses >= initial_misses
+        self.assertEqual(stats.hits, 0)
+        self.assertEqual(stats.misses, 0)
+        self.assertEqual(stats.evictions, 0)
+        self.assertEqual(stats.size_bytes, 0)
+        self.assertEqual(stats.entry_count, 0)
 
 
-class TestCacheStrategies:
-    """Test different cache eviction strategies."""
+class TestLRUCache(unittest.TestCase):
+    """Test LRU Cache functionality"""
     
-    def test_lru_cache_creation(self):
-        """Test LRU cache creation"""
-        lru_cache = LRUCache()
+    def setUp(self):
+        """Set up test environment"""
+        self.cache = LRUCache(max_size=10, max_memory_mb=1.0)
         
-        assert lru_cache is not None
-        if REAL_IMPORTS:
-            assert hasattr(lru_cache, 'get')
-            assert hasattr(lru_cache, 'set')
-        else:
-            assert isinstance(lru_cache, AdvancedCacheSystem)
-    
-    def test_lru_cache_behavior(self):
-        """Test LRU cache behavior"""
-        lru_cache = LRUCache(max_size=3)
+    def tearDown(self):
+        """Clean up test environment"""
+        self.cache.clear()
         
+    def test_lru_cache_initialization(self):
+        """Test LRU cache initialization"""
+        cache = LRUCache(
+            max_size=100,
+            max_memory_mb=5.0,
+            default_ttl_seconds=300,
+            enable_compression=True,
+            compression_threshold_bytes=512
+        )
+        
+        self.assertEqual(cache.max_size, 100)
+        self.assertEqual(cache.max_memory_bytes, 5.0 * 1024 * 1024)
+        self.assertEqual(cache.default_ttl_seconds, 300)
+        self.assertTrue(cache.enable_compression)
+        self.assertEqual(cache.compression_threshold_bytes, 512)
+        
+    def test_basic_put_get_operations(self):
+        """Test basic put and get operations"""
+        # Put value
+        self.cache.put("key1", "value1")
+        
+        # Get value
+        result = self.cache.get("key1")
+        self.assertEqual(result, "value1")
+        
+        # Get non-existent key
+        result = self.cache.get("nonexistent")
+        self.assertIsNone(result)
+        
+    def test_lru_eviction_policy(self):
+        """Test LRU eviction policy"""
         # Fill cache to capacity
-        lru_cache.set("key1", "value1")
-        lru_cache.set("key2", "value2")
-        lru_cache.set("key3", "value3")
-        
-        # Access key1 to make it recently used
-        lru_cache.get("key1")
-        
-        # Add new entry that should evict least recently used
-        lru_cache.set("key4", "value4")
-        
-        # Check if LRU eviction occurred (implementation-dependent)
-        if REAL_IMPORTS:
-            # LRU behavior may vary in real implementation
-            result = lru_cache.get("key2")  # Should be evicted
-            assert result is None or isinstance(result, str)
-        else:
-            # Mock doesn't implement actual LRU logic
-            assert lru_cache.get("key4") == "value4"
-    
-    def test_ttl_cache_creation(self):
-        """Test TTL cache creation"""
-        ttl_cache = TTLCache(ttl=1)
-        
-        assert ttl_cache is not None
-        if REAL_IMPORTS:
-            assert hasattr(ttl_cache, 'ttl')
-        else:
-            assert ttl_cache.ttl == 1
-    
-    def test_ttl_cache_expiration(self):
-        """Test TTL cache expiration behavior"""
-        ttl_cache = TTLCache(ttl=1)
-        
-        ttl_cache.set("key1", "value1")
-        immediate_result = ttl_cache.get("key1")
-        
-        if REAL_IMPORTS:
-            assert immediate_result == "value1" or immediate_result is None
+        for i in range(10):
+            self.cache.put(f"key{i}", f"value{i}")
             
-            # Wait for expiration
-            time.sleep(1.1)
-            expired_result = ttl_cache.get("key1")
-            # TTL behavior may vary
-            assert expired_result is None or isinstance(expired_result, str)
-        else:
-            assert immediate_result == "value1"
-    
-    def test_fifo_cache_creation(self):
-        """Test FIFO cache creation"""
-        fifo_cache = FIFOCache()
+        # Add one more item to trigger eviction
+        self.cache.put("key10", "value10")
         
-        assert fifo_cache is not None
-        if REAL_IMPORTS:
-            assert hasattr(fifo_cache, 'get')
-            assert hasattr(fifo_cache, 'set')
-        else:
-            assert isinstance(fifo_cache, AdvancedCacheSystem)
-    
-    def test_fifo_cache_behavior(self):
-        """Test FIFO cache behavior"""
-        fifo_cache = FIFOCache(max_size=2)
+        # First item should be evicted
+        result = self.cache.get("key0")
+        self.assertIsNone(result)
         
-        fifo_cache.set("first", "value1")
-        fifo_cache.set("second", "value2")
-        fifo_cache.set("third", "value3")  # Should evict "first"
+        # Last item should still be there
+        result = self.cache.get("key10")
+        self.assertEqual(result, "value10")
         
-        if REAL_IMPORTS:
-            # FIFO behavior may vary in real implementation
-            first_result = fifo_cache.get("first")
-            assert first_result is None or isinstance(first_result, str)
+    def test_lru_access_pattern(self):
+        """Test LRU access pattern behavior"""
+        # Fill cache to exact capacity
+        for i in range(10):
+            self.cache.put(f"key{i}", f"value{i}")
             
-            second_result = fifo_cache.get("second")
-            assert second_result is not None or second_result is None
-        else:
-            assert fifo_cache.get("third") == "value3"
-
-
-class TestCacheManager:
-    """Test the Cache Manager functionality."""
-    
-    def test_manager_initialization(self):
-        """Test cache manager initialization"""
-        manager = CacheManager()
+        # Access an early key to make it recently used
+        self.cache.get("key1")
         
-        assert manager is not None
-        if REAL_IMPORTS:
-            assert hasattr(manager, 'get_cache')
-            assert hasattr(manager, 'create_cache')
-        else:
-            assert hasattr(manager, 'caches')
-    
-    def test_manager_create_cache(self):
-        """Test creating cache through manager"""
-        manager = CacheManager()
-        config = CacheConfig(max_size=500, strategy='lru')
+        # Add one more item to trigger eviction
+        self.cache.put("key_new", "value_new")
         
-        cache = manager.create_cache("test_cache", config)
+        # key1 should still be there (recently accessed)
+        self.assertIsNotNone(self.cache.get("key1"))
         
-        if REAL_IMPORTS:
-            assert cache is not None
-            assert hasattr(cache, 'get')
-        else:
-            assert isinstance(cache, AdvancedCacheSystem)
-            assert "test_cache" in manager.caches
-    
-    def test_manager_get_cache(self):
-        """Test retrieving cache through manager"""
-        manager = CacheManager()
-        config = CacheConfig()
+        # Some early key should be evicted (depends on implementation)
+        # We'll just check that the cache size is maintained
+        self.assertLessEqual(len(self.cache._cache), self.cache.max_size)
         
-        # Create cache
-        created_cache = manager.create_cache("named_cache", config)
+    def test_ttl_expiration(self):
+        """Test TTL-based expiration"""
+        # Put item with short TTL
+        self.cache.put("expiring_key", "expiring_value", ttl_seconds=0.1)
         
-        # Retrieve cache
-        retrieved_cache = manager.get_cache("named_cache")
+        # Should be available immediately
+        result = self.cache.get("expiring_key")
+        self.assertEqual(result, "expiring_value")
         
-        if REAL_IMPORTS:
-            assert retrieved_cache is not None
-            assert retrieved_cache == created_cache or isinstance(retrieved_cache, type(created_cache))
-        else:
-            assert retrieved_cache == created_cache
-    
-    def test_manager_get_nonexistent_cache(self):
-        """Test retrieving non-existent cache"""
-        manager = CacheManager()
+        # Wait for expiration
+        time.sleep(0.2)
         
-        result = manager.get_cache("nonexistent")
+        # Should be expired
+        result = self.cache.get("expiring_key")
+        self.assertIsNone(result)
         
-        assert result is None
-    
-    def test_manager_multiple_caches(self):
-        """Test managing multiple caches"""
-        manager = CacheManager()
-        config1 = CacheConfig(strategy='lru')
-        config2 = CacheConfig(strategy='fifo')
+    def test_cache_statistics(self):
+        """Test cache statistics tracking"""
+        # Start with clean stats
+        self.assertEqual(self.cache.stats.hits, 0)
+        self.assertEqual(self.cache.stats.misses, 0)
         
-        cache1 = manager.create_cache("cache1", config1)
-        cache2 = manager.create_cache("cache2", config2)
+        # Miss
+        self.cache.get("nonexistent")
+        self.assertEqual(self.cache.stats.misses, 1)
         
-        retrieved1 = manager.get_cache("cache1")
-        retrieved2 = manager.get_cache("cache2")
+        # Put and hit
+        self.cache.put("key1", "value1")
+        self.cache.get("key1")
+        self.assertEqual(self.cache.stats.hits, 1)
         
-        if REAL_IMPORTS:
-            assert cache1 != cache2 or (cache1 is not None and cache2 is not None)
-            assert retrieved1 is not None
-            assert retrieved2 is not None
-        else:
-            assert cache1 != cache2
-            assert retrieved1 == cache1
-            assert retrieved2 == cache2
-
-
-class TestCacheSerializer:
-    """Test the Cache Serialization functionality."""
-    
-    def test_serializer_initialization(self):
-        """Test cache serializer initialization"""
-        serializer = CacheSerializer()
+        # Multiple hits
+        self.cache.get("key1")
+        self.cache.get("key1")
+        self.assertEqual(self.cache.stats.hits, 3)
         
-        assert serializer is not None
-        if REAL_IMPORTS:
-            assert hasattr(serializer, 'serialize')
-            assert hasattr(serializer, 'deserialize')
-    
-    def test_serialize_simple_data(self):
-        """Test serializing simple data types"""
-        serializer = CacheSerializer()
+    def test_delete_operation(self):
+        """Test delete operation"""
+        # Put value
+        self.cache.put("key1", "value1")
+        self.assertIsNotNone(self.cache.get("key1"))
         
-        # Test string
-        string_data = "test_string"
-        serialized = serializer.serialize(string_data)
+        # Delete value
+        result = self.cache.delete("key1")
+        self.assertTrue(result)
+        self.assertIsNone(self.cache.get("key1"))
         
-        if REAL_IMPORTS:
-            assert isinstance(serialized, bytes) or isinstance(serialized, str)
-        else:
-            assert isinstance(serialized, bytes)
-    
-    def test_serialize_complex_data(self):
-        """Test serializing complex data types"""
-        serializer = CacheSerializer()
+        # Delete non-existent key
+        result = self.cache.delete("nonexistent")
+        self.assertFalse(result)
         
-        complex_data = {
-            "string": "value",
-            "number": 42,
-            "list": [1, 2, 3],
-            "nested": {"inner": "data"}
-        }
-        
-        serialized = serializer.serialize(complex_data)
-        
-        if REAL_IMPORTS:
-            assert serialized is not None
-            assert isinstance(serialized, (bytes, str))
-        else:
-            assert isinstance(serialized, bytes)
-    
-    def test_deserialize_data(self):
-        """Test deserializing data"""
-        serializer = CacheSerializer()
-        
-        original_data = {"key": "value", "number": 123}
-        serialized = serializer.serialize(original_data)
-        deserialized = serializer.deserialize(serialized)
-        
-        if REAL_IMPORTS:
-            assert deserialized == original_data or isinstance(deserialized, dict)
-        else:
-            assert deserialized == original_data
-    
-    def test_serialize_deserialize_roundtrip(self):
-        """Test complete serialize-deserialize roundtrip"""
-        serializer = CacheSerializer()
-        
-        test_data = [
-            "simple_string",
-            42,
-            [1, 2, 3],
-            {"nested": {"data": "value"}}
-        ]
-        
-        for data in test_data:
-            serialized = serializer.serialize(data)
-            deserialized = serializer.deserialize(serialized)
+    def test_clear_operation(self):
+        """Test clear operation"""
+        # Add some entries
+        for i in range(5):
+            self.cache.put(f"key{i}", f"value{i}")
             
-            if REAL_IMPORTS:
-                assert deserialized == data or type(deserialized) == type(data)
-            else:
-                assert deserialized == data
-
-
-class TestCachePersistence:
-    """Test the Cache Persistence functionality."""
-    
-    def test_persistence_initialization(self):
-        """Test cache persistence initialization"""
-        persistence = CachePersistence()
+        # Verify entries exist
+        self.assertEqual(self.cache.stats.entry_count, 5)
         
-        assert persistence is not None
-        if REAL_IMPORTS:
-            assert hasattr(persistence, 'save')
-            assert hasattr(persistence, 'load')
-    
-    def test_save_cache_to_file(self):
-        """Test saving cache to file"""
-        persistence = CachePersistence()
-        cache = AdvancedCacheSystem()
-        cache.set("key1", "value1")
+        # Clear cache
+        self.cache.clear()
         
-        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-            temp_filename = temp_file.name
+        # Verify cache is empty
+        self.assertEqual(self.cache.stats.entry_count, 0)
+        self.assertEqual(self.cache.stats.hits, 0)
+        self.assertEqual(self.cache.stats.misses, 0)
         
-        try:
-            persistence.save(cache, temp_filename)
+    def test_compression_functionality(self):
+        """Test value compression"""
+        # Test with compression enabled
+        cache_with_compression = LRUCache(
+            max_size=10,
+            enable_compression=True,
+            compression_threshold_bytes=10
+        )
+        
+        # Large value that should be compressed
+        large_value = "x" * 100
+        cache_with_compression.put("large_key", large_value)
+        
+        # Should retrieve original value
+        result = cache_with_compression.get("large_key")
+        self.assertEqual(result, large_value)
+        
+        # Test with compression disabled
+        cache_no_compression = LRUCache(
+            max_size=10,
+            enable_compression=False
+        )
+        
+        cache_no_compression.put("key", large_value)
+        result = cache_no_compression.get("key")
+        self.assertEqual(result, large_value)
+        
+    def test_compression_threshold(self):
+        """Test compression threshold behavior"""
+        cache = LRUCache(
+            max_size=10,
+            enable_compression=True,
+            compression_threshold_bytes=50
+        )
+        
+        # Small value (below threshold)
+        small_value = "small"
+        cache.put("small_key", small_value)
+        
+        # Large value (above threshold) 
+        large_value = "x" * 100
+        cache.put("large_key", large_value)
+        
+        # Both should be retrievable correctly
+        self.assertEqual(cache.get("small_key"), small_value)
+        self.assertEqual(cache.get("large_key"), large_value)
+        
+    def test_memory_size_tracking(self):
+        """Test memory size tracking"""
+        # Put some values
+        self.cache.put("key1", "value1")
+        self.cache.put("key2", "value2" * 10)
+        
+        # Size should be tracked
+        self.assertGreater(self.cache.stats.size_bytes, 0)
+        self.assertEqual(self.cache.stats.entry_count, 2)
+        
+        # Delete one entry
+        self.cache.delete("key1")
+        self.assertEqual(self.cache.stats.entry_count, 1)
+        
+    def test_memory_limit_enforcement(self):
+        """Test memory limit enforcement"""
+        # Create cache with very small memory limit
+        small_cache = LRUCache(max_size=100, max_memory_mb=0.001)  # 1KB
+        
+        # Add large values
+        for i in range(10):
+            large_value = "x" * 200  # 200 bytes each
+            small_cache.put(f"key{i}", large_value)
             
-            # Check if file was created
-            if REAL_IMPORTS:
-                assert os.path.exists(temp_filename) or True  # May not create actual file in all implementations
-        finally:
-            if os.path.exists(temp_filename):
-                os.unlink(temp_filename)
-    
-    def test_load_cache_from_file(self):
-        """Test loading cache from file"""
-        persistence = CachePersistence()
+        # Cache should respect memory limit
+        self.assertLessEqual(small_cache.stats.size_bytes, small_cache.max_memory_bytes * 1.1)
         
-        # Create a temporary file for testing
-        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-            temp_filename = temp_file.name
-        
-        try:
-            loaded_cache = persistence.load(temp_filename)
-            
-            if REAL_IMPORTS:
-                assert loaded_cache is not None or loaded_cache is None
-                if loaded_cache:
-                    assert hasattr(loaded_cache, 'get')
-            else:
-                assert isinstance(loaded_cache, AdvancedCacheSystem)
-        finally:
-            if os.path.exists(temp_filename):
-                os.unlink(temp_filename)
-
-
-class TestCacheIntegration:
-    """Test integrated cache system workflows."""
-    
-    def test_complete_cache_workflow(self):
-        """Test complete cache workflow"""
-        # Create cache with configuration
-        config = CacheConfig(max_size=100, ttl=3600, strategy='lru')
-        cache = AdvancedCacheSystem(strategy=config.strategy, max_size=config.max_size, ttl=config.ttl)
-        
-        # Perform cache operations
-        cache.set("user:123", {"name": "John", "age": 30})
-        cache.set("user:456", {"name": "Jane", "age": 25})
-        
-        # Retrieve data
-        user_data = cache.get("user:123")
-        
-        if REAL_IMPORTS:
-            assert user_data is not None or user_data is None
-            if user_data:
-                assert isinstance(user_data, dict)
-        else:
-            assert user_data == {"name": "John", "age": 30}
-    
-    def test_manager_integration(self):
-        """Test cache manager integration"""
-        manager = CacheManager()
-        
-        # Create multiple caches
-        user_config = CacheConfig(max_size=1000, strategy='lru')
-        session_config = CacheConfig(max_size=500, ttl=1800, strategy='ttl')
-        
-        user_cache = manager.create_cache("users", user_config)
-        session_cache = manager.create_cache("sessions", session_config)
-        
-        # Use caches
-        user_cache.set("user:1", "user_data")
-        session_cache.set("session:abc", "session_data")
-        
-        # Retrieve through manager
-        retrieved_user_cache = manager.get_cache("users")
-        
-        if REAL_IMPORTS:
-            assert retrieved_user_cache is not None
-            user_data = retrieved_user_cache.get("user:1")
-            assert user_data == "user_data" or user_data is None
-        else:
-            assert retrieved_user_cache == user_cache
-            assert retrieved_user_cache.get("user:1") == "user_data"
-    
-    def test_serialization_integration(self):
-        """Test cache serialization integration"""
-        cache = AdvancedCacheSystem()
-        serializer = CacheSerializer()
-        
-        # Cache complex data
-        complex_data = {
-            "presentation": {
-                "slides": [
-                    {"title": "Slide 1", "content": "Content 1"},
-                    {"title": "Slide 2", "content": "Content 2"}
-                ]
-            }
-        }
-        
-        cache.set("presentation:1", complex_data)
-        cached_data = cache.get("presentation:1")
-        
-        if REAL_IMPORTS:
-            if cached_data:
-                # Test serialization
-                serialized = serializer.serialize(cached_data)
-                deserialized = serializer.deserialize(serialized)
-                assert isinstance(deserialized, dict) or deserialized == cached_data
-        else:
-            assert cached_data == complex_data
-    
-    def test_concurrent_cache_access(self):
-        """Test concurrent access to cache"""
-        cache = AdvancedCacheSystem()
+    def test_thread_safety(self):
+        """Test thread safety of LRU cache"""
         results = []
+        errors = []
         
-        def worker_function(worker_id):
-            # Each worker sets and gets data
-            key = f"worker_{worker_id}"
-            value = f"data_{worker_id}"
-            
-            cache.set(key, value)
-            retrieved = cache.get(key)
-            
-            if retrieved == value:
-                results.append(worker_id)
-        
-        # Create and start threads
+        def worker(thread_id):
+            try:
+                for i in range(10):
+                    key = f"thread_{thread_id}_key_{i}"
+                    value = f"thread_{thread_id}_value_{i}"
+                    
+                    self.cache.put(key, value)
+                    result = self.cache.get(key)
+                    results.append(result == value)
+            except Exception as e:
+                errors.append(e)
+                
+        # Create multiple threads
         threads = []
         for i in range(5):
-            thread = threading.Thread(target=worker_function, args=(i,))
+            thread = threading.Thread(target=worker, args=(i,))
             threads.append(thread)
             thread.start()
-        
-        # Wait for threads to complete
+            
+        # Wait for all threads to complete
         for thread in threads:
-            thread.join(timeout=2)
-        
+            thread.join()
+            
         # Check results
-        if REAL_IMPORTS:
-            # In real implementation, should handle concurrent access
-            assert len(results) >= 0  # Some operations may succeed
-        else:
-            # Mock implementation should handle basic concurrent access
-            assert len(results) >= 3  # Most operations should succeed
-
-
-class TestPerformanceAndOptimization:
-    """Test performance-related cache scenarios."""
-    
-    def test_large_dataset_caching(self):
-        """Test caching large datasets"""
-        cache = AdvancedCacheSystem(max_size=1000)
+        self.assertEqual(len(errors), 0)
+        self.assertTrue(all(results))
         
-        # Cache multiple large objects
-        for i in range(100):
-            large_data = {
-                "id": i,
-                "data": [j for j in range(100)],  # 100 integers
-                "metadata": {"created": time.time(), "size": 100}
-            }
-            cache.set(f"large_data_{i}", large_data)
+    def test_access_count_tracking(self):
+        """Test access count tracking"""
+        self.cache.put("key1", "value1")
         
-        # Verify some data is accessible
-        test_data = cache.get("large_data_50")
+        # First access
+        self.cache.get("key1")
+        entry = self.cache._cache["key1"]
+        self.assertEqual(entry.access_count, 2)  # 1 from put, 1 from get
         
-        if REAL_IMPORTS:
-            assert test_data is not None or test_data is None
-            if test_data:
-                assert isinstance(test_data, dict)
-                assert test_data["id"] == 50
-        else:
-            assert test_data["id"] == 50
-    
-    def test_cache_memory_efficiency(self):
-        """Test cache memory efficiency"""
-        cache = AdvancedCacheSystem(max_size=10)
+        # Second access
+        self.cache.get("key1")
+        entry = self.cache._cache["key1"]
+        self.assertEqual(entry.access_count, 3)
         
-        # Fill cache beyond capacity
-        for i in range(20):
-            cache.set(f"key_{i}", f"value_{i}")
+    def test_is_expired_method(self):
+        """Test _is_expired method"""
+        # Entry without TTL
+        entry_no_ttl = CacheEntry(
+            value="test",
+            timestamp=time.time(),
+            access_count=1,
+            size_bytes=10
+        )
+        self.assertFalse(self.cache._is_expired(entry_no_ttl))
         
-        # Check cache size constraints
-        current_size = cache.size()
+        # Entry with non-expired TTL
+        entry_fresh = CacheEntry(
+            value="test",
+            timestamp=time.time(),
+            access_count=1,
+            size_bytes=10,
+            ttl_seconds=60
+        )
+        self.assertFalse(self.cache._is_expired(entry_fresh))
         
-        if REAL_IMPORTS:
-            # Real implementation should respect max_size
-            assert current_size <= 10 or isinstance(current_size, int)
-        else:
-            # Mock doesn't implement size constraints
-            assert isinstance(current_size, int)
-    
-    def test_cache_access_patterns(self):
-        """Test different cache access patterns"""
-        cache = AdvancedCacheSystem()
+        # Entry with expired TTL
+        entry_expired = CacheEntry(
+            value="test",
+            timestamp=time.time() - 120,  # 2 minutes ago
+            access_count=1,
+            size_bytes=10,
+            ttl_seconds=60  # 1 minute TTL
+        )
+        self.assertTrue(self.cache._is_expired(entry_expired))
         
-        # Sequential access pattern
-        for i in range(50):
-            cache.set(f"seq_{i}", f"value_{i}")
+    def test_enforce_limits_method(self):
+        """Test _enforce_limits method"""
+        # Fill cache beyond size limit
+        for i in range(15):  # Max size is 10
+            self.cache.put(f"key{i}", f"value{i}")
+            
+        # Should not exceed max size
+        self.assertLessEqual(len(self.cache._cache), self.cache.max_size)
         
-        # Random access pattern
-        for i in [10, 5, 30, 15, 40]:
-            result = cache.get(f"seq_{i}")
-            if REAL_IMPORTS:
-                assert result == f"value_{i}" or result is None
-            else:
-                assert result == f"value_{i}"
+    def test_maybe_maintenance_method(self):
+        """Test _maybe_maintenance method"""
+        # Set maintenance interval to very small value
+        self.cache._maintenance_interval = 0.001
+        self.cache._last_maintenance = time.time() - 1  # Force maintenance
         
-        # Update pattern
-        cache.set("seq_10", "updated_value")
-        updated = cache.get("seq_10")
+        # Add entry to trigger maintenance
+        self.cache.put("key1", "value1")
         
-        if REAL_IMPORTS:
-            assert updated == "updated_value" or updated in ["value_10", "updated_value"]
-        else:
-            assert updated == "updated_value"
-
-
-class TestErrorHandlingAndEdgeCases:
-    """Test error handling and edge cases."""
-    
-    def test_invalid_key_types(self):
-        """Test handling of invalid key types"""
-        cache = AdvancedCacheSystem()
+        # Maintenance should have been called
+        self.assertGreater(self.cache._last_maintenance, time.time() - 1)
         
-        # Test with various key types
-        test_keys = [
-            None,
-            123,
-            ["list", "key"],
-            {"dict": "key"}
+    def test_data_types_support(self):
+        """Test support for different data types"""
+        test_data = [
+            ("string", "hello world"),
+            ("integer", 42),
+            ("list", [1, 2, 3, "four"]),
+            ("dict", {"key": "value", "nested": {"data": True}}),
+            ("tuple", (1, 2, "three")),
+            ("bytes", b"byte data"),
+            ("none", None),
+            ("boolean", True)
         ]
         
-        for key in test_keys:
-            try:
-                cache.set(key, "value")
-                result = cache.get(key)
-                # Should handle gracefully or raise appropriate exception
-                if REAL_IMPORTS:
-                    assert result == "value" or result is None
-                else:
-                    assert result == "value" or result is None
-            except (TypeError, ValueError):
-                pass  # Expected for invalid key types
-    
+        for key, value in test_data:
+            self.cache.put(key, value)
+            result = self.cache.get(key)
+            self.assertEqual(result, value, f"Failed for {key}: {value}")
+            
     def test_large_value_handling(self):
-        """Test handling of very large values"""
-        cache = AdvancedCacheSystem()
+        """Test handling of large values"""
+        # Very large string
+        large_string = "x" * 10000  # 10KB
+        self.cache.put("large_string", large_string)
+        self.assertEqual(self.cache.get("large_string"), large_string)
         
-        # Create large value
-        large_value = "x" * 10000  # 10KB string
+        # Large dict
+        large_dict = {f"key{i}": f"value{i}" * 100 for i in range(100)}
+        self.cache.put("large_dict", large_dict)
+        self.assertEqual(self.cache.get("large_dict"), large_dict)
         
-        try:
-            cache.set("large_key", large_value)
-            result = cache.get("large_key")
-            
-            if REAL_IMPORTS:
-                assert result == large_value or result is None
-            else:
-                assert result == large_value
-        except (MemoryError, Exception):
-            pass  # Expected for very large values in some implementations
-    
-    def test_null_value_handling(self):
-        """Test handling of null/None values"""
-        cache = AdvancedCacheSystem()
+    def test_cache_replacement_behavior(self):
+        """Test cache replacement behavior"""
+        # Put initial value
+        self.cache.put("key1", "original_value")
+        self.assertEqual(self.cache.get("key1"), "original_value")
         
-        # Set None value
-        cache.set("null_key", None)
-        result = cache.get("null_key")
+        # Replace with new value
+        self.cache.put("key1", "new_value")
+        self.assertEqual(self.cache.get("key1"), "new_value")
         
-        # Should distinguish between None value and missing key
-        if REAL_IMPORTS:
-            assert result is None  # Could be None value or missing key
-        else:
-            assert result is None
-    
-    def test_cache_corruption_recovery(self):
-        """Test cache behavior with corrupted data"""
-        cache = AdvancedCacheSystem()
-        
-        # Set normal data
-        cache.set("normal_key", "normal_value")
-        
-        # Simulate corruption by setting invalid data (if possible)
-        try:
-            # This might not be possible in all implementations
-            cache.cache["corrupted_key"] = object()  # Non-serializable object
-            
-            # Try to access corrupted data
-            result = cache.get("corrupted_key")
-            
-            if REAL_IMPORTS:
-                # Should handle gracefully
-                assert result is None or isinstance(result, object)
-        except (AttributeError, Exception):
-            pass  # Expected if direct cache access is not available
-        
-        # Normal operations should still work
-        normal_result = cache.get("normal_key")
-        if REAL_IMPORTS:
-            assert normal_result == "normal_value" or normal_result is None
-        else:
-            assert normal_result == "normal_value"
+        # Should not increase entry count
+        self.assertEqual(self.cache.stats.entry_count, 1)
 
 
-if __name__ == "__main__":
-    pytest.main([__file__])
+class TestCacheIntegration(unittest.TestCase):
+    """Test integrated cache scenarios"""
+    
+    def test_realistic_usage_pattern(self):
+        """Test realistic cache usage patterns"""
+        cache = LRUCache(max_size=100, max_memory_mb=1.0, default_ttl_seconds=60)
+        
+        # Simulate realistic usage
+        # 1. Initial data loading
+        for i in range(50):
+            cache.put(f"user:{i}", {"id": i, "name": f"User{i}", "data": list(range(10))})
+            
+        # 2. Frequent access to some items
+        hot_keys = [f"user:{i}" for i in range(10)]
+        for _ in range(5):
+            for key in hot_keys:
+                cache.get(key)
+                
+        # 3. Add more data (should evict cold items)
+        for i in range(50, 80):
+            cache.put(f"user:{i}", {"id": i, "name": f"User{i}", "data": list(range(10))})
+            
+        # 4. Verify hot items are still there
+        for key in hot_keys:
+            self.assertIsNotNone(cache.get(key))
+            
+        # 5. Check hit rate
+        self.assertGreater(cache.stats.hit_rate, 0.5)
+        
+    def test_concurrent_performance(self):
+        """Test concurrent cache performance"""
+        cache = LRUCache(max_size=1000)
+        
+        def worker_reads():
+            for i in range(100):
+                cache.get(f"key{i % 50}")
+                
+        def worker_writes():
+            for i in range(100):
+                cache.put(f"key{i}", f"value{i}")
+                
+        # Pre-populate cache
+        for i in range(50):
+            cache.put(f"key{i}", f"value{i}")
+            
+        # Start concurrent workers
+        threads = []
+        for _ in range(3):
+            threads.append(threading.Thread(target=worker_reads))
+            threads.append(threading.Thread(target=worker_writes))
+            
+        start_time = time.time()
+        for thread in threads:
+            thread.start()
+            
+        for thread in threads:
+            thread.join()
+        end_time = time.time()
+        
+        # Should complete in reasonable time
+        self.assertLess(end_time - start_time, 5.0)
+        
+        # Should have reasonable hit rate
+        self.assertGreater(cache.stats.hit_rate, 0.3)
+
+
+class TestCacheEdgeCases(unittest.TestCase):
+    """Test edge cases and error conditions"""
+    
+    def test_empty_key_handling(self):
+        """Test handling of empty keys"""
+        cache = LRUCache()
+        
+        # Empty string key
+        cache.put("", "empty_key_value")
+        self.assertEqual(cache.get(""), "empty_key_value")
+        
+    def test_special_character_keys(self):
+        """Test keys with special characters"""
+        cache = LRUCache()
+        special_keys = [
+            "key with spaces",
+            "key/with/slashes",
+            "key.with.dots",
+            "key-with-dashes",
+            "key_with_underscores",
+            "key@with#symbols$",
+            "키 with unicode 🚀"
+        ]
+        
+        for key in special_keys:
+            cache.put(key, f"value_for_{key}")
+            self.assertEqual(cache.get(key), f"value_for_{key}")
+            
+    def test_zero_size_cache(self):
+        """Test cache with zero max size"""
+        cache = LRUCache(max_size=0)
+        
+        # Should handle gracefully
+        cache.put("key1", "value1")
+        # With zero size, nothing should be stored
+        self.assertIsNone(cache.get("key1"))
+        
+    def test_negative_ttl(self):
+        """Test negative TTL values"""
+        cache = LRUCache()
+        
+        # Negative TTL should expire immediately
+        cache.put("key1", "value1", ttl_seconds=-1)
+        self.assertIsNone(cache.get("key1"))
+        
+    def test_very_large_ttl(self):
+        """Test very large TTL values"""
+        cache = LRUCache()
+        
+        # Very large TTL
+        cache.put("key1", "value1", ttl_seconds=999999999)
+        self.assertEqual(cache.get("key1"), "value1")
+
+
+if __name__ == '__main__':
+    unittest.main()

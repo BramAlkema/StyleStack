@@ -5,7 +5,8 @@ This module provides pattern-based discovery of design elements
 in OOXML templates with format-specific discovery patterns.
 """
 
-from typing import Dict, List, Any, Optional, Set
+
+from typing import Any, Dict, List, Optional
 import xml.etree.ElementTree as ET
 from pathlib import Path
 

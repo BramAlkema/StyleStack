@@ -13,7 +13,6 @@ import unittest
 import tempfile
 import json
 from pathlib import Path
-from unittest.mock import Mock, patch
 
 # Import the modern substitution components
 from tools.substitution.pipeline import SubstitutionPipeline

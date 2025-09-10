@@ -17,7 +17,7 @@ from typing import Dict, Any
 
 try:
     # Import StyleStack components directly
-    sys.path.append('.')
+    sys.path.append(".")
     from tools.template_validator import TemplateValidator
     from tools.variable_resolver import VariableResolver
     from tools.ooxml_processor import OOXMLProcessor
@@ -42,10 +42,10 @@ class ActualCorruptionTester:
         print(f"🔍 Testing actual pipeline corruption: {self.template_path}")
         
         results = {
-            'template': str(self.template_path),
-            'format': self.format,
-            'pipeline_steps': [],
-            'corruption_detected': False
+            "template": str(self.template_path),
+            "format": self.format,
+            "pipeline_steps": [],
+            "corruption_detected": False
         }
         
         # Step 1: Validate original
@@ -53,11 +53,11 @@ class ActualCorruptionTester:
         original_validator = TemplateValidator(str(self.template_path))
         original_results = original_validator.validate()
         
-        if not original_results['valid']:
+        if not original_results["valid"]:
             print("❌ Original template is already invalid!")
             return results
             
-        print(f"✅ Original template is valid (risk: {original_results['corruption_risk']})")
+        print(f"✅ Original template is valid (risk: {original_results["corruption_risk"]})")
         
         # Step 2: Create working copy
         with tempfile.NamedTemporaryFile(suffix=self.format, delete=False) as tmp_file:
@@ -72,13 +72,13 @@ class ActualCorruptionTester:
             
             # Create minimal test configuration
             test_config = {
-                'org': 'test-org',
-                'channel': 'present',
-                'variables': {
-                    'stylestack.primary_color': '#2563eb',
-                    'stylestack.font_family': 'Inter',
-                    'stylestack.org_name': 'test-org',
-                    'stylestack.brand_color': '#1e40af'
+                "org": "test-org",
+                "channel": "present",
+                "variables": {
+                    "stylestack.primary_color": "#2563eb",
+                    "stylestack.font_family": "Inter",
+                    "stylestack.org_name": "test-org",
+                    "stylestack.brand_color": "#1e40af"
                 }
             }
             
@@ -100,10 +100,10 @@ class ActualCorruptionTester:
                 load_validator = TemplateValidator(str(working_copy))
                 load_results = load_validator.validate()
                 
-                if not load_results['valid']:
+                if not load_results["valid"]:
                     print("❌ Template corrupted during OOXML loading!")
-                    results['corruption_detected'] = True
-                    results['corruption_point'] = 'ooxml_loading'
+                    results["corruption_detected"] = True
+                    results["corruption_point"] = "ooxml_loading"
                     return results
                     
                 print("✅ Template still valid after OOXML loading")
@@ -115,7 +115,7 @@ class ActualCorruptionTester:
                 pipeline = VariableSubstitutionPipeline()
                 
                 # Perform substitutions
-                for var_name, var_value in test_config['variables'].items():
+                for var_name, var_value in test_config["variables"].items():
                     print(f"   Substituting {var_name} = {var_value}")
                     try:
                         # This might be where corruption occurs
@@ -126,16 +126,16 @@ class ActualCorruptionTester:
                             print(f"   ⚠️  No substitution made for {var_name}")
                     except Exception as e:
                         print(f"   ❌ Substitution failed for {var_name}: {str(e)}")
-                        results['corruption_detected'] = True
-                        results['corruption_point'] = f'variable_substitution_{var_name}'
-                        results['error'] = str(e)
+                        results["corruption_detected"] = True
+                        results["corruption_point"] = f"variable_substitution_{var_name}"
+                        results["error"] = str(e)
                         break
                         
                 # Step 6: Save and validate result
                 print("\n📋 Step 6: Save processed template and validate")
                 
                 # Save the processed template
-                processed_path = working_copy.with_name(f'processed_{working_copy.name}')
+                processed_path = working_copy.with_name(f"processed_{working_copy.name}")
                 ooxml_processor.save_template(str(processed_path))
                 print(f"✅ Processed template saved: {processed_path}")
                 
@@ -145,28 +145,28 @@ class ActualCorruptionTester:
                 processed_validator.print_summary(processed_results)
                 
                 # Check for corruption
-                if original_results['valid'] and not processed_results['valid']:
+                if original_results["valid"] and not processed_results["valid"]:
                     print("🚨 CORRUPTION DETECTED!")
-                    results['corruption_detected'] = True
-                    results['corruption_point'] = 'variable_processing'
+                    results["corruption_detected"] = True
+                    results["corruption_point"] = "variable_processing"
                     
-                elif processed_results['corruption_risk'] == 'high':
+                elif processed_results["corruption_risk"] == "high":
                     print("⚠️  HIGH CORRUPTION RISK detected")
-                    results['corruption_detected'] = True
-                    results['corruption_point'] = 'high_risk_processing'
+                    results["corruption_detected"] = True
+                    results["corruption_point"] = "high_risk_processing"
                     
-                elif len(processed_results['issues']) > len(original_results['issues']):
+                elif len(processed_results["issues"]) > len(original_results["issues"]):
                     print("⚠️  NEW ISSUES detected after processing")
-                    results['corruption_detected'] = True
-                    results['corruption_point'] = 'new_issues'
+                    results["corruption_detected"] = True
+                    results["corruption_point"] = "new_issues"
                     
                 else:
                     print("✅ No corruption detected in actual pipeline")
                     
-                results['original_issues'] = len(original_results['issues'])
-                results['processed_issues'] = len(processed_results['issues'])
-                results['original_valid'] = original_results['valid']
-                results['processed_valid'] = processed_results['valid']
+                results["original_issues"] = len(original_results["issues"])
+                results["processed_issues"] = len(processed_results["issues"])
+                results["original_valid"] = original_results["valid"]
+                results["processed_valid"] = processed_results["valid"]
                 
                 # Clean up processed file
                 if processed_path.exists():
@@ -174,9 +174,9 @@ class ActualCorruptionTester:
                     
             except Exception as e:
                 print(f"❌ Pipeline processing failed: {str(e)}")
-                results['corruption_detected'] = True
-                results['corruption_point'] = 'pipeline_exception'
-                results['error'] = str(e)
+                results["corruption_detected"] = True
+                results["corruption_point"] = "pipeline_exception"
+                results["error"] = str(e)
                 
         finally:
             # Clean up working copy
@@ -191,21 +191,21 @@ class ActualCorruptionTester:
         print("🧪 ACTUAL CORRUPTION TEST SUMMARY")
         print("="*60)
         
-        print(f"Template: {results['template']}")
-        print(f"Format: {results['format']}")
+        print(f"Template: {results["template"]}")
+        print(f"Format: {results["format"]}")
         
-        if results['corruption_detected']:
+        if results["corruption_detected"]:
             print("🚨 CORRUPTION DETECTED!")
-            print(f"   Corruption point: {results.get('corruption_point', 'unknown')}")
-            if 'error' in results:
-                print(f"   Error: {results['error']}")
+            print(f"   Corruption point: {results.get("corruption_point", "unknown")}")
+            if "error" in results:
+                print(f"   Error: {results["error"]}")
                 
             # Show validation comparison
-            if 'original_issues' in results and 'processed_issues' in results:
-                print(f"   Original issues: {results['original_issues']}")
-                print(f"   Processed issues: {results['processed_issues']}")
-                print(f"   Original valid: {results['original_valid']}")
-                print(f"   Processed valid: {results['processed_valid']}")
+            if "original_issues" in results and "processed_issues" in results:
+                print(f"   Original issues: {results["original_issues"]}")
+                print(f"   Processed issues: {results["processed_issues"]}")
+                print(f"   Original valid: {results["original_valid"]}")
+                print(f"   Processed valid: {results["processed_valid"]}")
         else:
             print("✅ No corruption detected")
             
@@ -214,9 +214,9 @@ class ActualCorruptionTester:
 
 def main():
     """Main CLI entry point"""
-    parser = argparse.ArgumentParser(description='Test actual StyleStack pipeline corruption')
-    parser.add_argument('--template', '-t', required=True,
-                       help='Path to template file')
+    parser = argparse.ArgumentParser(description="Test actual StyleStack pipeline corruption")
+    parser.add_argument("--template", "-t", required=True,
+                       help="Path to template file")
     
     args = parser.parse_args()
     
@@ -229,5 +229,5 @@ def main():
     tester.print_summary(results)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

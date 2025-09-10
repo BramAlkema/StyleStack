@@ -8,23 +8,23 @@ operation batching, and comprehensive audit trails.
 Part of the StyleStack JSON-to-OOXML Processing Engine.
 """
 
+
+from typing import Any, Dict, List, Optional, Union
 import logging
 import uuid
 import time
 import tempfile
 import shutil
-from typing import Dict, List, Any, Optional, Union, Callable, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
 from contextlib import contextmanager
 import threading
 from concurrent.futures import ThreadPoolExecutor, Future
-import pickle
 import json
 
 from tools.multi_format_ooxml_handler import MultiFormatOOXMLHandler, ProcessingResult, OOXMLFormat
-from tools.token_integration_layer import TokenIntegrationLayer, TokenScope, TokenContext
+from tools.core.types import PatchResult
 
 # Configure logging
 logger = logging.getLogger(__name__)

@@ -1,3 +1,4 @@
+from tools.handlers.types import OOXMLFormat
 #!/usr/bin/env python3
 """
 Comprehensive End-to-End Integration Tests for StyleStack JSON-to-OOXML Processing Engine
@@ -41,6 +42,7 @@ from transaction_pipeline import (
     atomic_ooxml_operation
 )
 from token_integration_layer import TokenIntegrationLayer, TokenScope, TokenContext
+from tools.core.types import (
     JSONPatchProcessor, 
     PatchResult, 
     PatchOperationType,

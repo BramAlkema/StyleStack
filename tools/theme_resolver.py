@@ -25,12 +25,12 @@ Usage:
     theme = resolver.extract_theme_from_ooxml_file('template.potx')
 """
 
+
+from typing import Dict, List, Any, Optional, Tuple, Union
 import xml.etree.ElementTree as ET
 import colorsys
-import math
 import zipfile
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple, Union
 from dataclasses import dataclass, field
 import logging
 

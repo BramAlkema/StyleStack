@@ -7,36 +7,29 @@ Provides comprehensive testing, validation, and optimization for thread-safe
 operations in the JSON-to-OOXML processing pipeline.
 """
 
+
+from typing import Any, Dict, List, Tuple, NamedTuple
 import threading
-import multiprocessing
 import concurrent.futures
 import time
 import random
 import queue
-from typing import Dict, List, Any, Optional, Callable, Set, Tuple, NamedTuple
-from dataclasses import dataclass, field
-from collections import defaultdict, deque
 import logging
-import traceback
 import hashlib
 from pathlib import Path
-import tempfile
 import copy
 import weakref
-from contextlib import contextmanager
 import json
+from collections import defaultdict
+from dataclasses import dataclass
 
 # Import StyleStack components
 try:
-    from .json_ooxml_processor import JSONPatchProcessor
+    from .json_patch_parser import JSONPatchParser
     from .advanced_cache_system import CacheManager
-    from .memory_optimizer import MemoryManager, ConcurrentMemoryManager
-    from .performance_profiler import PerformanceProfiler
 except ImportError:
-    from json_ooxml_processor import JSONPatchProcessor
-    from advanced_cache_system import CacheManager
-    from memory_optimizer import MemoryManager, ConcurrentMemoryManager
-    from performance_profiler import PerformanceProfiler
+    from tools.json_patch_parser import JSONPatchParser
+    from tools.advanced_cache_system import CacheManager
 
 logger = logging.getLogger(__name__)
 
@@ -390,7 +383,7 @@ class ConcurrentProcessingValidator:
         logger.info(f"Testing JSON processor thread safety with {thread_count} threads, {iterations_per_thread} iterations each")
         
         # Create test processor
-        processor = JSONPatchProcessor()
+        processor = JSONPatchParser()
         
         # Test data
         test_patches = [

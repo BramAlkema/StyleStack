@@ -8,6 +8,7 @@ patch processor, handles sequencing, dependencies, and execution context.
 Part of the StyleStack JSON-to-OOXML Processing Engine.
 """
 
+
 from typing import Dict, List, Any, Optional, Union, Callable
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -45,13 +46,13 @@ class ExecutionContext:
         """Initialize execution statistics."""
         if not self.execution_stats:
             self.execution_stats = {
-                'start_time': None,
-                'end_time': None,
-                'total_patches': 0,
-                'successful_patches': 0,
-                'failed_patches': 0,
-                'warnings_count': 0,
-                'execution_time': 0.0
+                "start_time": None,
+                "end_time": None,
+                "total_patches": 0,
+                "successful_patches": 0,
+                "failed_patches": 0,
+                "warnings_count": 0,
+                "execution_time": 0.0
             }
 
 
@@ -105,10 +106,10 @@ class PatchExecutionEngine:
         
         # Global execution statistics
         self.global_stats = {
-            'total_executions': 0,
-            'successful_executions': 0,
-            'total_patches_processed': 0,
-            'average_execution_time': 0.0
+            "total_executions": 0,
+            "successful_executions": 0,
+            "total_patches_processed": 0,
+            "average_execution_time": 0.0
         }
     
     def execute_patch_file(self, 
@@ -136,7 +137,7 @@ class PatchExecutionEngine:
         if context is None:
             context = ExecutionContext()
         
-        context.execution_stats['start_time'] = start_time
+        context.execution_stats["start_time"] = start_time
         
         try:
             # Parse the patch file
@@ -198,7 +199,7 @@ class PatchExecutionEngine:
         if context is None:
             context = ExecutionContext()
         
-        context.execution_stats['start_time'] = start_time
+        context.execution_stats["start_time"] = start_time
         
         try:
             # Parse the patch content
@@ -319,7 +320,7 @@ class PatchExecutionEngine:
         patch_results = []
         working_document = deepcopy(xml_document) if mode != ExecutionMode.VALIDATE_ONLY else xml_document
         
-        context.execution_stats['total_patches'] = len(patches)
+        context.execution_stats["total_patches"] = len(patches)
         
         # Validate-only mode: just check patches without applying
         if mode == ExecutionMode.VALIDATE_ONLY:
@@ -328,7 +329,7 @@ class PatchExecutionEngine:
         logger.info(f"Executing {len(patches)} patches in {mode.value} mode")
         
         for i, patch in enumerate(patches):
-            logger.debug(f"Executing patch {i+1}/{len(patches)}: {patch.get('operation', 'unknown')}")
+            logger.debug(f"Executing patch {i+1}/{len(patches)}: {patch.get("operation", "unknown")}")
             
             # Execute pre-patch callbacks
             for callback in self.pre_patch_callbacks:
@@ -350,11 +351,11 @@ class PatchExecutionEngine:
             
             # Update context and statistics
             if result.success:
-                context.execution_stats['successful_patches'] += 1
+                context.execution_stats["successful_patches"] += 1
                 context.applied_patches.append(patch)
                 logger.debug(f"Patch {i+1} succeeded: {result.message}")
             else:
-                context.execution_stats['failed_patches'] += 1
+                context.execution_stats["failed_patches"] += 1
                 errors.append(f"Patch {i+1} failed: {result.message}")
                 logger.warning(f"Patch {i+1} failed: {result.message}")
             
@@ -367,8 +368,8 @@ class PatchExecutionEngine:
         
         # Finalize execution
         execution_time = time.time() - start_time
-        context.execution_stats['end_time'] = time.time()
-        context.execution_stats['execution_time'] = execution_time
+        context.execution_stats["end_time"] = time.time()
+        context.execution_stats["execution_time"] = execution_time
         
         # Determine overall success
         success = all(result.success for result in patch_results)
@@ -403,41 +404,41 @@ class PatchExecutionEngine:
             # Create a mock result for validation
             try:
                 # Validate patch structure
-                operation = patch.get('operation')
-                target = patch.get('target')
-                value = patch.get('value')
+                operation = patch.get("operation")
+                target = patch.get("target")
+                value = patch.get("value")
                 
                 if not operation:
-                    result = PatchResult(False, 'unknown', target or 'unknown', f"Patch {i+1}: Missing operation")
+                    result = PatchResult(False, "unknown", target or "unknown", f"Patch {i+1}: Missing operation")
                 elif not target:
-                    result = PatchResult(False, operation, 'unknown', f"Patch {i+1}: Missing target")
+                    result = PatchResult(False, operation, "unknown", f"Patch {i+1}: Missing target")
                 elif value is None:
                     result = PatchResult(False, operation, target, f"Patch {i+1}: Missing value")
                 else:
                     # Try to validate XPath target
                     try:
                         context_info = self.processor.xpath_system.get_xpath_context_info(xml_document, target)
-                        if context_info.get('is_valid_syntax', False) and 'error' not in context_info:
+                        if context_info.get("is_valid_syntax", False) and "error" not in context_info:
                             result = PatchResult(True, operation, target, f"Patch {i+1}: Validation passed", 0)
                         else:
-                            error_msg = context_info.get('error', 'Invalid XPath syntax or no matches found')
+                            error_msg = context_info.get("error", "Invalid XPath syntax or no matches found")
                             result = PatchResult(False, operation, target, f"Patch {i+1}: {error_msg}")
                     except Exception as e:
                         result = PatchResult(False, operation, target, f"Patch {i+1}: XPath validation error: {e}")
                 
             except Exception as e:
-                result = PatchResult(False, 'unknown', 'unknown', f"Patch {i+1}: Validation error: {e}")
+                result = PatchResult(False, "unknown", "unknown", f"Patch {i+1}: Validation error: {e}")
             
             patch_results.append(result)
             
             if result.success:
-                context.execution_stats['successful_patches'] += 1
+                context.execution_stats["successful_patches"] += 1
             else:
-                context.execution_stats['failed_patches'] += 1
+                context.execution_stats["failed_patches"] += 1
                 errors.append(result.message)
         
         execution_time = time.time() - start_time
-        context.execution_stats['execution_time'] = execution_time
+        context.execution_stats["execution_time"] = execution_time
         success = all(result.success for result in patch_results)
         
         return ExecutionResult(
@@ -455,16 +456,16 @@ class PatchExecutionEngine:
         """Update execution context with metadata from parsed patches."""
         if parse_result.metadata:
             # Add metadata variables to context
-            if 'variables' in parse_result.metadata:
-                context.variables.update(parse_result.metadata['variables'])
+            if "variables" in parse_result.metadata:
+                context.variables.update(parse_result.metadata["variables"])
             
             # Store metadata for reference
             context.metadata.update({
-                'version': parse_result.metadata.get('version'),
-                'description': parse_result.metadata.get('description'),
-                'author': parse_result.metadata.get('author'),
-                'target_formats': parse_result.metadata.get('target_formats'),
-                'dependencies': parse_result.metadata.get('dependencies')
+                "version": parse_result.metadata.get("version"),
+                "description": parse_result.metadata.get("description"),
+                "author": parse_result.metadata.get("author"),
+                "target_formats": parse_result.metadata.get("target_formats"),
+                "dependencies": parse_result.metadata.get("dependencies")
             })
     
     def _resolve_context_variables(self, targets: List[PatchTarget], context: ExecutionContext) -> List[PatchTarget]:
@@ -516,8 +517,8 @@ class PatchExecutionEngine:
                              execution_time: float,
                              dry_run: bool) -> ExecutionResult:
         """Create a failed execution result."""
-        context.execution_stats['end_time'] = time.time()
-        context.execution_stats['execution_time'] = execution_time
+        context.execution_stats["end_time"] = time.time()
+        context.execution_stats["execution_time"] = execution_time
         
         return ExecutionResult(
             success=False,
@@ -532,16 +533,16 @@ class PatchExecutionEngine:
     
     def _update_global_stats(self, patch_count: int, success: bool, execution_time: float) -> None:
         """Update global execution statistics."""
-        self.global_stats['total_executions'] += 1
-        self.global_stats['total_patches_processed'] += patch_count
+        self.global_stats["total_executions"] += 1
+        self.global_stats["total_patches_processed"] += patch_count
         
         if success:
-            self.global_stats['successful_executions'] += 1
+            self.global_stats["successful_executions"] += 1
         
         # Update average execution time
-        total_execs = self.global_stats['total_executions']
-        current_avg = self.global_stats['average_execution_time']
-        self.global_stats['average_execution_time'] = ((current_avg * (total_execs - 1)) + execution_time) / total_execs
+        total_execs = self.global_stats["total_executions"]
+        current_avg = self.global_stats["average_execution_time"]
+        self.global_stats["average_execution_time"] = ((current_avg * (total_execs - 1)) + execution_time) / total_execs
     
     def add_pre_patch_callback(self, callback: Callable[[Dict[str, Any], ExecutionContext], None]) -> None:
         """Add a callback to execute before each patch."""
@@ -562,10 +563,10 @@ class PatchExecutionEngine:
     def reset_global_statistics(self) -> None:
         """Reset global execution statistics."""
         self.global_stats = {
-            'total_executions': 0,
-            'successful_executions': 0,
-            'total_patches_processed': 0,
-            'average_execution_time': 0.0
+            "total_executions": 0,
+            "successful_executions": 0,
+            "total_patches_processed": 0,
+            "average_execution_time": 0.0
         }
 
 

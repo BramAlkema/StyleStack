@@ -10,7 +10,6 @@ from tools.formula_variable_resolver import (
     FormulaVariableResolver, DependencyGraph, VariableDefinition,
     CircularDependencyError, VariableNotFoundError
 )
-from tools.emu_types import EMUValue
 
 
 class TestDependencyGraph(unittest.TestCase):

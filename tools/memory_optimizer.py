@@ -7,23 +7,26 @@ Provides streaming processing, intelligent caching, memory pooling,
 and automatic garbage collection for production-scale workloads.
 """
 
+
+from typing import Any, Dict, List, Optional, Callable, Iterator
 import gc
 import sys
 import weakref
 import threading
 import time
 import mmap
-from typing import Dict, List, Any, Optional, Union, Iterator, ContextManager, Callable
 from dataclasses import dataclass, field
 from collections import deque, defaultdict
 from pathlib import Path
 from contextlib import contextmanager
 import tempfile
 import zipfile
-import xml.etree.ElementTree as ET
 from lxml import etree
 import logging
-import psutil
+try:
+    import psutil
+except ImportError:
+    psutil = None  # Optional dependency for system monitoring
 from concurrent.futures import ThreadPoolExecutor
 import multiprocessing
 import os

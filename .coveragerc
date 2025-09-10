@@ -1,0 +1,85 @@
+[run]
+# Configuration for coverage measurement
+source = tools/
+branch = true
+parallel = true
+concurrency = multiprocessing
+omit = 
+    # Test files
+    tests/*
+    */tests/*
+    # Virtual environment
+    venv/*
+    .venv/*
+    # Build and distribution
+    build/*
+    dist/*
+    *.egg-info/*
+    # IDE and tool files
+    .pytest_cache/*
+    __pycache__/*
+    # Temporary files
+    tmp/*
+    .agent-os/*
+    # Documentation
+    docs/*
+    docusaurus/*
+    website/*
+    # Configuration files
+    *.cfg
+    *.ini
+    *.yaml
+    *.yml
+    setup.py
+    # Generated files
+    *_pb2.py
+    # External dependencies
+    node_modules/*
+
+[report]
+# Reporting configuration
+precision = 2
+show_missing = true
+skip_covered = false
+skip_empty = true
+sort = Cover
+exclude_lines =
+    # Standard exclusions
+    pragma: no cover
+    def __repr__
+    if self.debug:
+    if settings.DEBUG
+    raise AssertionError
+    raise NotImplementedError
+    if 0:
+    if __name__ == .__main__.:
+    class .*\bProtocol\):
+    @(abc\.)?abstractmethod
+    # Type checking
+    if TYPE_CHECKING:
+    # Debug code
+    logger\.debug
+    # Platform specific
+    if sys.platform
+
+[html]
+# HTML report configuration
+directory = htmlcov
+title = StyleStack Test Coverage Report
+show_contexts = true
+
+[xml] 
+# XML report configuration (for CI/CD)
+output = coverage.xml
+
+[json]
+# JSON report configuration
+output = coverage.json
+show_contexts = true
+
+[paths]
+# Path mapping for distributed testing
+source = 
+    tools/
+    */tools/
+    .tox/*/lib/python*/site-packages/tools/

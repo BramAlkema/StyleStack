@@ -11,6 +11,8 @@ Author: StyleStack Development Team
 License: MIT
 """
 
+
+from typing import Dict, List, Any, Optional, Tuple, Set
 import unittest
 from unittest.mock import Mock, patch, MagicMock
 import tempfile
@@ -20,7 +22,6 @@ import xml.etree.ElementTree as ET
 import subprocess
 # import json  # Removed - now using JSON
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple, Set
 
 import sys
 import os

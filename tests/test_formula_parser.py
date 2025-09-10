@@ -5,7 +5,6 @@ Tests tokenization, AST generation, dependency extraction, and validation
 """
 
 import unittest
-from typing import Dict, List, Set, Any
 import sys
 import os
 

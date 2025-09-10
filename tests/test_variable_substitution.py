@@ -12,20 +12,18 @@ License: MIT
 """
 
 import unittest
-from unittest.mock import Mock, patch, MagicMock
 import tempfile
 import json
 import time
 import threading
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
 import xml.etree.ElementTree as ET
 
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'tools'))
 
-from tools.substitution.pipeline import SubstitutionPipeline as VariableSubstitutionPipeline
+from tools.variable_substitution import VariableSubstitutionPipeline
 from tools.substitution.types import (
     SubstitutionResult,
     SubstitutionProgress,
@@ -44,7 +42,7 @@ class TestVariableSubstitutionPipeline(unittest.TestCase):
         self.pipeline = VariableSubstitutionPipeline(
             enable_transactions=True,
             enable_progress_reporting=True,
-            validation_level='strict'
+            validation_level='comprehensive'
         )
         
         # Sample OOXML documents for testing
@@ -148,18 +146,17 @@ class TestEndToEndSubstitutionWorkflows(TestVariableSubstitutionPipeline):
         # Test PowerPoint theme substitution
         result = self.pipeline.substitute_variables_in_document(
             document_content=self.sample_ppt_theme,
-            variables=self.test_variables,
-            document_type='powerpoint_theme'
+            variables=self.test_variables
         )
         
         self.assertTrue(result.success)
         self.assertGreater(result.variables_applied, 0)
-        self.assertIn('FF0000', result.updated_content)  # brandPrimary applied
-        self.assertIn('Arial Black', result.updated_content)  # headingFont applied
-        self.assertNotIn('4472C4', result.updated_content)  # Original accent1 replaced
+        self.assertIn('FF0000', result.substituted_content)  # brandPrimary applied
+        self.assertIn('Arial Black', result.substituted_content)  # headingFont applied
+        self.assertNotIn('4472C4', result.substituted_content)  # Original accent1 replaced
         
         # Verify document structure preserved
-        updated_root = ET.fromstring(result.updated_content)
+        updated_root = ET.fromstring(result.substituted_content)
         original_root = ET.fromstring(self.sample_ppt_theme)
         self.assertEqual(len(list(updated_root.iter())), len(list(original_root.iter())))
         
@@ -215,7 +212,7 @@ class TestEndToEndSubstitutionWorkflows(TestVariableSubstitutionPipeline):
         )
         
         self.assertTrue(result.success)
-        self.assertIn('0000FF', result.updated_content)  # Conditional variable applied
+        self.assertIn('0000FF', result.substituted_content)  # Conditional variable applied
         
         print(f"✅ Conditional substitution: {result.variables_applied} variables (including conditional)")
 
@@ -259,9 +256,9 @@ class TestEndToEndSubstitutionWorkflows(TestVariableSubstitutionPipeline):
         
         self.assertTrue(result.success)
         # Should use highest hierarchy level (user scope)
-        self.assertIn('CCCCCC', result.updated_content) 
-        self.assertNotIn('AAAAAA', result.updated_content)
-        self.assertNotIn('BBBBBB', result.updated_content)
+        self.assertIn('CCCCCC', result.substituted_content) 
+        self.assertNotIn('AAAAAA', result.substituted_content)
+        self.assertNotIn('BBBBBB', result.substituted_content)
         
         print("✅ Hierarchical precedence: user-level variable took precedence")
 
@@ -612,7 +609,7 @@ class TestValidationCheckpoints(TestVariableSubstitutionPipeline):
         self.assertIn('post_substitution', result.validation_checkpoints_passed)
         
         # Verify document integrity maintained
-        updated_root = ET.fromstring(result.updated_content)
+        updated_root = ET.fromstring(result.substituted_content)
         self.assertIsNotNone(updated_root)
         
         print("✅ Post-substitution validation: document integrity verified")
@@ -779,7 +776,7 @@ class TestDocumentIntegrity(TestVariableSubstitutionPipeline):
         
         self.assertTrue(result.success)
         
-        updated_root = ET.fromstring(result.updated_content)
+        updated_root = ET.fromstring(result.substituted_content)
         updated_element_count = len(list(updated_root.iter()))
         updated_namespace_count = len(set(elem.tag.split('}')[0] + '}' if '}' in elem.tag else ''
                                         for elem in updated_root.iter()))
@@ -820,7 +817,7 @@ class TestDocumentIntegrity(TestVariableSubstitutionPipeline):
         
         self.assertTrue(result.success)
         
-        updated_root = ET.fromstring(result.updated_content)
+        updated_root = ET.fromstring(result.substituted_content)
         updated_attributes = {}
         for elem in updated_root.iter():
             if elem.attrib:
@@ -865,10 +862,10 @@ class TestDocumentIntegrity(TestVariableSubstitutionPipeline):
         
         # Verify all namespaces preserved
         for ns_prefix in ['xmlns:a', 'xmlns:r', 'xmlns:p']:
-            self.assertIn(ns_prefix, result.updated_content)
+            self.assertIn(ns_prefix, result.substituted_content)
             
         # Verify namespace-prefixed elements preserved
-        updated_root = ET.fromstring(result.updated_content)
+        updated_root = ET.fromstring(result.substituted_content)
         ns_elements = [elem.tag for elem in updated_root.iter() if '}' in elem.tag]
         self.assertGreater(len(ns_elements), 0)
         
@@ -901,12 +898,12 @@ class TestDocumentIntegrity(TestVariableSubstitutionPipeline):
         self.assertTrue(result.success)
         
         # Verify comments preserved
-        self.assertIn('<!-- StyleStack Theme Definition -->', result.updated_content)
-        self.assertIn('<!-- Color scheme definition -->', result.updated_content)
-        self.assertIn('<!-- Primary brand color -->', result.updated_content)
+        self.assertIn('<!-- StyleStack Theme Definition -->', result.substituted_content)
+        self.assertIn('<!-- Color scheme definition -->', result.substituted_content)
+        self.assertIn('<!-- Primary brand color -->', result.substituted_content)
         
         # Verify processing instruction preserved  
-        self.assertIn('<?xml-stylesheet', result.updated_content)
+        self.assertIn('<?xml-stylesheet', result.substituted_content)
         
         print("✅ Comment/PI preservation: XML comments and processing instructions preserved")
 

@@ -29,15 +29,15 @@ def find_libreoffice() -> str:
     """Find LibreOffice executable on different platforms"""
     # Common paths for different OS
     possible_paths = [
-        'libreoffice',  # Linux/Ubuntu (apt package)
-        '/usr/bin/libreoffice',  # Linux
-        '/Applications/LibreOffice.app/Contents/MacOS/soffice',  # macOS
+        "libreoffice",  # Linux/Ubuntu (apt package)
+        "/usr/bin/libreoffice",  # Linux
+        "/Applications/LibreOffice.app/Contents/MacOS/soffice",  # macOS
         'C:\\Program Files\\LibreOffice\\program\\soffice.exe',  # Windows
         'C:\\Program Files (x86)\\LibreOffice\\program\\soffice.exe',  # Windows 32-bit
     ]
     
     for path in possible_paths:
-        if os.path.exists(path) or subprocess.run(['which', path], capture_output=True).returncode == 0:
+        if os.path.exists(path) or subprocess.run(["which", path], capture_output=True).returncode == 0:
             return path
     
     raise FileNotFoundError("LibreOffice not found. Install LibreOffice or add it to PATH.")
@@ -57,7 +57,7 @@ def create_contact_sheet(images: List[Image.Image], output_path: Path, cols: int
     contact_width = cols * thumb_width + (cols + 1) * 20
     contact_height = rows * thumb_height + (rows + 1) * 20 + 40
     
-    contact_sheet = Image.new('RGB', (contact_width, contact_height), 'white')
+    contact_sheet = Image.new("RGB", (contact_width, contact_height), "white")
     
     draw = ImageDraw.Draw(contact_sheet)
     
@@ -65,8 +65,8 @@ def create_contact_sheet(images: List[Image.Image], output_path: Path, cols: int
     try:
         # Try different font paths for cross-platform compatibility
         font_paths = [
-            '/System/Library/Fonts/Helvetica.ttc',  # macOS
-            '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',  # Ubuntu
+            "/System/Library/Fonts/Helvetica.ttc",  # macOS
+            "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",  # Ubuntu
             'C:\\Windows\\Fonts\\arial.ttf',  # Windows
         ]
         font = None
@@ -82,7 +82,7 @@ def create_contact_sheet(images: List[Image.Image], output_path: Path, cols: int
         font = ImageFont.load_default()
     
     display_title = title or f"Office Document Export ({len(images)} pages)"
-    draw.text((20, 10), display_title, fill='black', font=font)
+    draw.text((20, 10), display_title, fill="black", font=font)
     
     # Add thumbnails
     for i, img in enumerate(images):
@@ -108,9 +108,9 @@ def create_contact_sheet(images: List[Image.Image], output_path: Path, cols: int
             page_font = ImageFont.truetype(font_paths[0], 16) if font_paths else ImageFont.load_default()
         except:
             page_font = ImageFont.load_default()
-        draw.text((x + 5, y + thumb_height - 25), f"Page {i+1}", fill='gray', font=page_font)
+        draw.text((x + 5, y + thumb_height - 25), f"Page {i+1}", fill="gray", font=page_font)
     
-    contact_sheet.save(output_path, 'PNG', optimize=True)
+    contact_sheet.save(output_path, "PNG", optimize=True)
     print(f"✅ Contact sheet saved: {output_path}")
 
 def convert_office_to_screenshots(file_path: str, output_dir: Path = None, dpi: int = 300) -> bool:
@@ -123,15 +123,15 @@ def convert_office_to_screenshots(file_path: str, output_dir: Path = None, dpi: 
     # Determine file type
     file_ext = office_file.suffix.lower()
     file_types = {
-        '.pptx': '📊 PowerPoint Presentation',
-        '.potx': '📊 PowerPoint Template', 
-        '.docx': '📄 Word Document',
-        '.dotx': '📄 Word Template',
-        '.xlsx': '📈 Excel Spreadsheet',
-        '.xltx': '📈 Excel Template'
+        ".pptx": "📊 PowerPoint Presentation",
+        ".potx": "📊 PowerPoint Template", 
+        ".docx": "📄 Word Document",
+        ".dotx": "📄 Word Template",
+        ".xlsx": "📈 Excel Spreadsheet",
+        ".xltx": "📈 Excel Template"
     }
     
-    file_type_name = file_types.get(file_ext, f'📁 Office Document ({file_ext})')
+    file_type_name = file_types.get(file_ext, f"📁 Office Document ({file_ext})")
     print(f"📸 Processing: {office_file.name} ({file_type_name})")
     
     # Create output directory
@@ -154,8 +154,8 @@ def convert_office_to_screenshots(file_path: str, output_dir: Path = None, dpi: 
     try:
         # Use absolute paths to avoid issues
         result = subprocess.run([
-            libreoffice_cmd, '--headless', '--convert-to', 'pdf',
-            '--outdir', str(output_dir.absolute()), 
+            libreoffice_cmd, "--headless", "--convert-to", "pdf",
+            "--outdir", str(output_dir.absolute()), 
             str(office_file.absolute())
         ], capture_output=True, text=True, check=True, timeout=60)
         
@@ -190,13 +190,13 @@ def convert_office_to_screenshots(file_path: str, output_dir: Path = None, dpi: 
             pix = page.get_pixmap(matrix=mat)
             
             # Determine naming convention based on file type
-            if file_ext in ['.pptx', '.potx']:
+            if file_ext in [".pptx", ".potx"]:
                 page_prefix = "slide"
                 page_label = "slide"
-            elif file_ext in ['.docx', '.dotx']:
+            elif file_ext in [".docx", ".dotx"]:
                 page_prefix = "page"
                 page_label = "page"
-            elif file_ext in ['.xlsx', '.xltx']:
+            elif file_ext in [".xlsx", ".xltx"]:
                 page_prefix = "sheet"
                 page_label = "sheet"
             else:
@@ -222,7 +222,7 @@ def convert_office_to_screenshots(file_path: str, output_dir: Path = None, dpi: 
     # Create animated formats if multiple pages/slides
     if len(images) > 1:
         # Determine duration based on file type
-        page_duration = 3000 if file_ext in ['.pptx', '.potx'] else 2000  # Slides: 3s, Docs/Sheets: 2s
+        page_duration = 3000 if file_ext in [".pptx", ".potx"] else 2000  # Slides: 3s, Docs/Sheets: 2s
         
         # Animated PNG
         apng_path = output_dir / f"{office_file.stem}_animated.png"
@@ -308,9 +308,9 @@ def show_help():
 
 def main():
     # Check for help flags
-    if len(sys.argv) < 2 or '--help' in sys.argv or '-h' in sys.argv:
+    if len(sys.argv) < 2 or "--help" in sys.argv or "-h" in sys.argv:
         show_help()
-        sys.exit(0 if ('--help' in sys.argv or '-h' in sys.argv) else 1)
+        sys.exit(0 if ("--help" in sys.argv or "-h" in sys.argv) else 1)
     
     files = sys.argv[1:]
     success_count = 0
@@ -320,7 +320,7 @@ def main():
     
     for file_path in files:
         # Handle wildcards by expanding them
-        if '*' in file_path or '?' in file_path:
+        if "*" in file_path or "?" in file_path:
             from glob import glob
             expanded_files = glob(file_path)
             if not expanded_files:

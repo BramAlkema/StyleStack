@@ -6,6 +6,8 @@ Comprehensive test runner for the StyleStack JSON-to-OOXML Processing Engine int
 Provides options for running different test suites, performance monitoring, and detailed reporting.
 """
 
+
+from typing import Any, Dict
 import os
 import sys
 import argparse
@@ -13,7 +15,6 @@ import subprocess
 import time
 import json
 from pathlib import Path
-from typing import Dict, List, Any, Optional
 import logging
 
 # Configure logging

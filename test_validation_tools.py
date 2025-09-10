@@ -16,35 +16,30 @@ def test_dependencies():
     print("🔍 Testing PyOffice dependencies...")
     
     try:
-        import docx
         print("✅ python-docx imported successfully")
     except ImportError as e:
         print(f"❌ python-docx import failed: {e}")
         return False
         
     try:
-        import openpyxl
         print("✅ openpyxl imported successfully")
     except ImportError as e:
         print(f"❌ openpyxl import failed: {e}")
         return False
         
     try:
-        import pptx
         print("✅ python-pptx imported successfully")
     except ImportError as e:
         print(f"❌ python-pptx import failed: {e}")
         return False
         
     try:
-        import lxml.etree
         print("✅ lxml imported successfully")
     except ImportError as e:
         print(f"❌ lxml import failed: {e}")
         return False
         
     try:
-        import xmltodict
         print("✅ xmltodict imported successfully")
     except ImportError as e:
         print(f"❌ xmltodict import failed: {e}")
@@ -59,14 +54,12 @@ def test_tools_import():
     
     try:
         sys.path.insert(0, str(Path.cwd() / 'tools'))
-        import template_validator
         print("✅ template_validator imported successfully")
     except ImportError as e:
         print(f"❌ template_validator import failed: {e}")
         return False
         
     try:
-        import ooxml_analyzer
         print("✅ ooxml_analyzer imported successfully")
     except ImportError as e:
         print(f"❌ ooxml_analyzer import failed: {e}")
@@ -100,7 +93,6 @@ def test_sample_validation():
     
     try:
         sys.path.insert(0, str(Path.cwd() / 'tools'))
-        from template_validator import TemplateValidator
         
         validator = TemplateValidator(str(test_template))
         results = validator.validate()

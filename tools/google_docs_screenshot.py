@@ -9,12 +9,11 @@ Usage:
     python tools/google_docs_screenshot.py FILE_ID doc|sheet|slide [output_name]
 """
 
+
+from typing import List
 import sys
-import os
 import io
 from pathlib import Path
-from typing import List, Optional
-import subprocess
 
 try:
     import requests

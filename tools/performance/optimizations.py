@@ -9,12 +9,12 @@ Implementation of performance optimizations based on benchmark results:
 - Connection pooling
 """
 
+
+from typing import Any, Dict, Optional
 import functools
 import threading
 import time
 import weakref
-from typing import Dict, Any, Callable, Optional, TypeVar, Generic, Union
-from dataclasses import dataclass, field
 
 
 # Type definitions
@@ -373,7 +373,6 @@ lazy_json = LazyImport('json')
 def optimize_module_imports():
     """Apply import optimizations to reduce startup time."""
     import sys
-    import importlib.util
     
     # List of modules that should be lazy-loaded
     lazy_modules = [
