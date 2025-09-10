@@ -1,24 +1,32 @@
-name: Screenshot Templates
+name: Screenshot Office Templates
 
 on:
   workflow_dispatch:
     inputs:
       template_file:
-        description: 'Template file to screenshot (e.g., test.pptx)'
+        description: 'Template file to screenshot (e.g., presentation.pptx, document.docx, spreadsheet.xlsx)'
         required: true
-        default: 'test_presentation.pptx'
+        default: 'test-baseline.potx'
   push:
     paths:
       - '**.pptx'
       - '**.potx'
+      - '**.docx'
+      - '**.dotx'
+      - '**.xlsx'
+      - '**.xltx'
   pull_request:
     paths:
       - '**.pptx'
       - '**.potx'
+      - '**.docx'
+      - '**.dotx'
+      - '**.xlsx'
+      - '**.xltx'
 
 jobs:
-  screenshot-google-slides:
-    name: Generate Screenshots via Google Slides
+  screenshot-libreoffice:
+    name: Generate Screenshots via LibreOffice
     runs-on: ubuntu-latest
     
     steps:
@@ -32,154 +40,178 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pip install google-auth google-auth-oauthlib google-api-python-client requests pillow pdf2image
-      
-      - name: Authenticate with Google Cloud
-        run: |
-          echo '${{ secrets.GCP_SA_KEY }}' > /tmp/gcp-key.json
-          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp-key.json
+          # Install LibreOffice headless
+          sudo apt-get update
+          sudo apt-get install -y libreoffice
           
-      - name: Find PowerPoint files
-        id: find-pptx
+          # Install Python dependencies
+          pip install requests pillow PyMuPDF
+      
+      # Remove Google Cloud authentication - not needed for LibreOffice approach
+          
+      - name: Find Office files
+        id: find-office-files
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             echo "files=${{ github.event.inputs.template_file }}" >> $GITHUB_OUTPUT
           else
-            # Find all PPTX/POTX files that changed
-            files=$(find . -name "*.pptx" -o -name "*.potx" | head -5 | tr '\n' ' ')
+            # Find all Office files that changed
+            files=$(find . \( -name "*.pptx" -o -name "*.potx" -o -name "*.docx" -o -name "*.dotx" -o -name "*.xlsx" -o -name "*.xltx" \) | head -10 | tr '\n' ' ')
             echo "files=${files}" >> $GITHUB_OUTPUT
           fi
       
-      - name: Generate screenshots
+      - name: Generate screenshots with LibreOffice
         run: |
-          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp-key.json
-          export GCP_PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
-          
-          # Create Python script inline for screenshot generation
-          cat > screenshot_tool.py << 'EOF'
+          # Create LibreOffice screenshot tool
+          cat > libreoffice_screenshot.py << 'EOF'
           import os
           import sys
-          import json
-          import time
+          import subprocess
+          import io
           from pathlib import Path
-          from google.oauth2 import service_account
-          from googleapiclient.discovery import build
-          from googleapiclient.http import MediaFileUpload
-          import requests
-          from pdf2image import convert_from_bytes
           from PIL import Image
+          import fitz  # PyMuPDF
           
-          def generate_screenshots(pptx_path):
-              # Load credentials
-              credentials = service_account.Credentials.from_service_account_file(
-                  os.environ['GOOGLE_APPLICATION_CREDENTIALS'],
-                  scopes=[
-                      'https://www.googleapis.com/auth/drive',
-                      'https://www.googleapis.com/auth/presentations'
-                  ]
-              )
+          def convert_office_to_screenshots(file_path):
+              """Convert Office documents (PPTX, DOCX, XLSX) to screenshots using LibreOffice headless"""
+              office_file = Path(file_path)
+              if not office_file.exists():
+                  print(f"❌ File not found: {file_path}")
+                  return False
               
-              drive_service = build('drive', 'v3', credentials=credentials)
-              slides_service = build('slides', 'v1', credentials=credentials)
+              # Determine file type
+              file_ext = office_file.suffix.lower()
+              file_types = {
+                  '.pptx': '📊 PowerPoint Presentation',
+                  '.potx': '📊 PowerPoint Template', 
+                  '.docx': '📄 Word Document',
+                  '.dotx': '📄 Word Template',
+                  '.xlsx': '📈 Excel Spreadsheet',
+                  '.xltx': '📈 Excel Template'
+              }
               
-              # Upload to Drive
-              print(f"Uploading {pptx_path} to Google Drive...")
-              file_metadata = {'name': f'temp_{Path(pptx_path).stem}_{int(time.time())}'}
-              media = MediaFileUpload(pptx_path, mimetype='application/vnd.openxmlformats-officedocument.presentationml.presentation')
-              file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-              drive_file_id = file.get('id')
+              file_type_name = file_types.get(file_ext, f'📁 Office Document ({file_ext})')
+              print(f"📸 Processing: {office_file.name} ({file_type_name})")
+              
+              # Create output directory
+              output_dir = Path(f"{office_file.stem}_screenshots")
+              output_dir.mkdir(exist_ok=True)
+              
+              # Convert Office document to PDF using LibreOffice headless
+              pdf_path = output_dir / f"{office_file.stem}.pdf"
+              print(f"📄 Converting {file_type_name} to PDF with LibreOffice...")
               
               try:
-                  # Convert to Google Slides
-                  print("Converting to Google Slides...")
-                  copy_metadata = {
-                      'name': f'slides_{Path(pptx_path).stem}',
-                      'mimeType': 'application/vnd.google-apps.presentation'
-                  }
-                  converted = drive_service.files().copy(fileId=drive_file_id, body=copy_metadata, fields='id').execute()
-                  slides_id = converted.get('id')
-                  
-                  # Export presentation as PDF using direct URL (no need for Slides API)
-                  output_dir = Path(f'{Path(pptx_path).stem}_screenshots')
-                  output_dir.mkdir(exist_ok=True)
-                  
-                  print("📄 Exporting presentation as PDF...")
-                  pdf_export_url = f"https://docs.google.com/presentation/d/{slides_id}/export?format=pdf"
-                  pdf_response = requests.get(pdf_export_url, headers={'Authorization': f'Bearer {credentials.token}'})
-                  
-                  if pdf_response.status_code == 200:
-                      # Convert PDF to images using pdf2image
-                      print("🖼️ Converting PDF to images...")
-                      images = convert_from_bytes(pdf_response.content, dpi=300)
-                      
-                      # Save individual PNG files
-                      png_files = []
-                      for i, img in enumerate(images, start=1):
-                          output_path = output_dir / f'slide_{i:03d}.png'
-                          img.save(output_path, 'PNG', optimize=True)
-                          png_files.append(img)
-                          print(f"✅ Saved slide {i}: {output_path}")
-                      
-                      # Create animated PNG with all slides
-                      if len(png_files) > 1:
-                          animated_path = output_dir / f'{Path(pptx_path).stem}_animated.png'
-                          print(f"🎬 Creating animated PNG: {animated_path}")
-                          
-                          # Resize images to consistent size for animation
-                          max_width = max(img.width for img in png_files)
-                          max_height = max(img.height for img in png_files)
-                          
-                          resized_images = []
-                          for img in png_files:
-                              # Create new image with consistent size, center the original
-                              new_img = Image.new('RGB', (max_width, max_height), 'white')
-                              x_offset = (max_width - img.width) // 2
-                              y_offset = (max_height - img.height) // 2
-                              new_img.paste(img, (x_offset, y_offset))
-                              resized_images.append(new_img)
-                          
-                          # Save as animated PNG (APNG)
-                          resized_images[0].save(
-                              animated_path,
-                              format='PNG',
-                              save_all=True,
-                              append_images=resized_images[1:],
-                              duration=2000,  # 2 seconds per slide
-                              loop=0  # Infinite loop
-                          )
-                          print(f"✅ Animated PNG created: {animated_path}")
-                      
-                      print(f"📸 Generated {len(images)} slide screenshots + animated PNG")
-                  else:
-                      print(f"❌ Failed to export PDF: {pdf_response.status_code}")
-                      return False
-                  
-                  # Cleanup Google Drive files
-                  drive_service.files().delete(fileId=drive_file_id).execute()
-                  drive_service.files().delete(fileId=slides_id).execute()
-                  print("🗑️ Cleaned up Google Drive files")
-                  
-                  return True
-                  
-              except Exception as e:
-                  print(f"Error: {e}")
-                  # Try to cleanup
-                  try:
-                      drive_service.files().delete(fileId=drive_file_id).execute()
-                  except:
-                      pass
+                  result = subprocess.run([
+                      'libreoffice', '--headless', '--convert-to', 'pdf',
+                      '--outdir', str(output_dir), str(office_file)
+                  ], capture_output=True, text=True, check=True, timeout=120)
+                  print(f"✅ PDF created: {pdf_path}")
+              except subprocess.CalledProcessError as e:
+                  print(f"❌ LibreOffice conversion failed: {e}")
+                  print(f"stdout: {e.stdout}")
+                  print(f"stderr: {e.stderr}")
                   return False
+              except subprocess.TimeoutExpired:
+                  print("❌ LibreOffice conversion timed out")
+                  return False
+              
+              # Convert PDF to images using PyMuPDF
+              if not pdf_path.exists():
+                  print(f"❌ PDF not found: {pdf_path}")
+                  return False
+              
+              print("🖼️ Converting PDF to PNG images...")
+              doc = fitz.open(str(pdf_path))
+              images = []
+              
+              for page_num in range(len(doc)):
+                  page = doc.load_page(page_num)
+                  # High DPI for quality screenshots
+                  mat = fitz.Matrix(300/72, 300/72)  # 300 DPI
+                  pix = page.get_pixmap(matrix=mat)
+                  
+                  # Determine naming convention based on file type
+                  if file_ext in ['.pptx', '.potx']:
+                      page_prefix = "slide"
+                      page_label = "slide"
+                  elif file_ext in ['.docx', '.dotx']:
+                      page_prefix = "page"
+                      page_label = "page"
+                  elif file_ext in ['.xlsx', '.xltx']:
+                      page_prefix = "sheet"
+                      page_label = "sheet"
+                  else:
+                      page_prefix = "page"
+                      page_label = "page"
+                  
+                  # Save individual PNG
+                  png_path = output_dir / f"{page_prefix}_{page_num+1:03d}.png"
+                  pix.save(str(png_path))
+                  print(f"✅ Saved {page_label} {page_num+1}: {png_path}")
+                  
+                  # Convert to PIL Image for animation
+                  img_data = pix.tobytes("png")
+                  img = Image.open(io.BytesIO(img_data))
+                  images.append(img.convert("RGB"))
+              
+              doc.close()
+              
+              # Create animated formats if multiple pages/slides
+              if len(images) > 1:
+                  # Determine duration based on file type
+                  page_duration = 3000 if file_ext in ['.pptx', '.potx'] else 2000  # Slides: 3s, Docs/Sheets: 2s
+                  
+                  # Animated PNG
+                  apng_path = output_dir / f"{office_file.stem}_animated.png"
+                  print(f"🎬 Creating animated PNG: {apng_path}")
+                  images[0].save(
+                      str(apng_path),
+                      save_all=True,
+                      append_images=images[1:],
+                      duration=page_duration,  # File-type specific duration
+                      loop=0,
+                      format="PNG"
+                  )
+                  print(f"✅ Animated PNG created: {apng_path}")
+                  
+                  # Animated WebP
+                  webp_path = output_dir / f"{office_file.stem}_animated.webp"
+                  print(f"🎬 Creating animated WebP: {webp_path}")
+                  images[0].save(
+                      str(webp_path),
+                      save_all=True,
+                      append_images=images[1:],
+                      duration=page_duration,  # File-type specific duration
+                      loop=0,
+                      format="WEBP",
+                      lossless=False,
+                      quality=85,
+                      method=6
+                  )
+                  print(f"✅ Animated WebP created: {webp_path}")
+              
+              # Cleanup PDF
+              pdf_path.unlink()
+              
+              print(f"🎉 Generated {len(images)} screenshots + animated formats")
+              return True
           
           # Process files from command line
           files = sys.argv[1].split() if len(sys.argv) > 1 else []
+          success_count = 0
+          
           for file_path in files:
-              if os.path.exists(file_path):
-                  print(f"\n📸 Processing: {file_path}")
-                  generate_screenshots(file_path)
+              if os.path.exists(file_path.strip()):
+                  print(f"\n" + "="*50)
+                  if convert_office_to_screenshots(file_path.strip()):
+                      success_count += 1
+          
+          print(f"\n✅ Successfully processed {success_count}/{len(files)} files")
           EOF
           
-          # Run the screenshot tool
-          python screenshot_tool.py "${{ steps.find-pptx.outputs.files }}"
+          # Run the LibreOffice screenshot tool
+          python libreoffice_screenshot.py "${{ steps.find-office-files.outputs.files }}"
       
       - name: Upload screenshots as artifacts
         uses: actions/upload-artifact@v3
@@ -187,6 +219,7 @@ jobs:
           name: template-screenshots
           path: |
             *_screenshots/*.png
+            *_screenshots/*.webp
           if-no-files-found: warn
       
       - name: Comment on PR with screenshots
@@ -229,4 +262,5 @@ jobs:
       - name: Cleanup
         if: always()
         run: |
-          rm -f /tmp/gcp-key.json
+          # Cleanup temporary files
+          rm -f libreoffice_screenshot.py
