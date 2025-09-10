@@ -137,10 +137,19 @@ def safe_unzip(src_zip: pathlib.Path, dst_dir: pathlib.Path, context: BuildConte
         )
 
 def safe_zip_dir(src_dir: pathlib.Path, out_zip: pathlib.Path, context: BuildContext):
-    """Create deterministic ZIP with error handling"""
+    """Create deterministic ZIP with reproducible compression and error handling.
+
+    Uses ``ZIP_DEFLATED`` compression with level 9 to guarantee deterministic
+    archives across runs.
+    """
     try:
         out_zip.parent.mkdir(parents=True, exist_ok=True)
-        with zipfile.ZipFile(out_zip, "w", compression=zipfile.ZIP_DEFLATED) as z:
+        with zipfile.ZipFile(
+            out_zip,
+            "w",
+            compression=zipfile.ZIP_DEFLATED,
+            compresslevel=9,
+        ) as z:
             for p in sorted(src_dir.rglob("*")):
                 if p.is_file():
                     rel = p.relative_to(src_dir).as_posix()
