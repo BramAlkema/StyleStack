@@ -14,6 +14,7 @@ import argparse
 import sys
 import zipfile
 import json
+import difflib
 from pathlib import Path
 from typing import Dict, List, Any
 import xml.etree.ElementTree as ET
@@ -388,8 +389,22 @@ class OOXMLAnalyzer:
                 'original': orig_vars,
                 'processed': proc_vars
             })
-            
+
         return differences
+
+    def print_diff(self, original: Dict[str, Any], processed: Dict[str, Any]) -> None:
+        """Print a unified diff between two analysis structures"""
+        orig_json = json.dumps(original, indent=2, sort_keys=True)
+        proc_json = json.dumps(processed, indent=2, sort_keys=True)
+        diff = difflib.unified_diff(
+            orig_json.splitlines(),
+            proc_json.splitlines(),
+            fromfile='original',
+            tofile='processed',
+            lineterm=''  # avoid extra newlines
+        )
+        for line in diff:
+            print(line)
         
     def print_analysis(self, analysis: Dict[str, Any]):
         """Print detailed analysis"""
@@ -451,6 +466,8 @@ def main():
     parser.add_argument('--analyze', choices=['structure', 'compare'], default='structure',
                        help='Analysis type')
     parser.add_argument('--compare-with', help='Second template for comparison')
+    parser.add_argument('--show-diff', action='store_true',
+                       help='Print unified diff when comparing templates')
     parser.add_argument('--output', '-o', help='Output JSON file for results')
     
     args = parser.parse_args()
@@ -466,9 +483,13 @@ def main():
         analyzer.print_analysis(analysis)
     elif args.analyze == 'compare' and args.compare_with:
         comparison = analyzer.compare_before_after(args.template, args.compare_with)
-        analyzer.print_analysis(comparison['original'])
-        print("\n" + "🔄 COMPARISON RESULTS" + "\n")
-        # TODO: Implement comparison printing
+        if args.show_diff:
+            analyzer.print_diff(comparison['original'], comparison['processed'])
+        else:
+            analyzer.print_analysis(comparison['original'])
+            print("\n" + "🔄 COMPARISON RESULTS" + "\n")
+            analyzer.print_analysis(comparison['processed'])
+        analysis = comparison
         
     if args.output:
         with open(args.output, 'w') as f:
