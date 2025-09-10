@@ -11,7 +11,7 @@ Resolves token references like {colors.primary.500} to actual values.
 import json
 import re
 from pathlib import Path
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Set
 import click
 
 
@@ -22,6 +22,8 @@ class TokenResolver:
         self.verbose = verbose
         self.tokens: Dict[str, Any] = {}
         self.resolved: Dict[str, str] = {}
+        # Track unresolved tokens during resolution
+        self.unresolved_tokens: Set[str] = set()
         
     def load_core_tokens(self, tokens_dir: Path = None) -> Dict[str, Any]:
         """Load core primitive tokens"""
@@ -120,10 +122,12 @@ class TokenResolver:
         """Resolve token references like {colors.primary.500} to actual values"""
         resolved = {}
         max_iterations = 10  # Prevent infinite loops
-        
+        previous_unresolved: Set[str] = set()
+
         for iteration in range(max_iterations):
             changed = False
-            
+            current_unresolved: Set[str] = set()
+
             for key, value in flattened.items():
                 if isinstance(value, str) and '{' in value:
                     # Find token references in the value
@@ -131,15 +135,37 @@ class TokenResolver:
                     if resolved_value != value:
                         flattened[key] = resolved_value
                         changed = True
-                
+                    if isinstance(resolved_value, str) and '{' in resolved_value:
+                        current_unresolved.add(key)
+
                 resolved[key] = flattened[key]
-            
+
+            # Track unresolved tokens for this iteration
+            self.unresolved_tokens = current_unresolved
+
+            if not current_unresolved:
+                break
+
+            if current_unresolved == previous_unresolved:
+                raise ValueError(
+                    "Circular token reference detected: "
+                    + ", ".join(sorted(current_unresolved))
+                )
+
+            previous_unresolved = current_unresolved
+
             if not changed:
                 break
-                
+
+        if self.unresolved_tokens:
+            raise ValueError(
+                "Unresolved token references: "
+                + ", ".join(sorted(self.unresolved_tokens))
+            )
+
         if iteration == max_iterations - 1:
             click.echo("⚠️  Warning: Maximum resolution iterations reached")
-            
+
         return resolved
     
     def _resolve_references_in_string(self, text: str, token_dict: Dict[str, str]) -> str:
@@ -259,6 +285,11 @@ def resolve(fork, org, group, personal, channel, format, output, verbose):
             click.echo(output_content)
             
     except Exception as e:
+        if resolver.unresolved_tokens:
+            click.echo(
+                "❌ Unresolved tokens: "
+                + ", ".join(sorted(resolver.unresolved_tokens))
+            )
         click.echo(f"❌ Token resolution failed: {e}")
         raise
 
