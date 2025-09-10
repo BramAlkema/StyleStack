@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
   <w:body>
+    <!-- TABLE_PLACEHOLDER_START -->
+    <!-- XPath: /w:document/w:body/w:tbl[1] -->
+    <w:tbl>
+      <w:tblPr>
+        <w:tblStyle w:val="{{table.style.id}}"/>
+        <w:tblW w:w="{{table.width.dxa}}" w:type="dxa"/>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="{{table.column1.width}}"/>
+        <w:gridCol w:w="{{table.column2.width}}"/>
+        <w:gridCol w:w="{{table.column3.width}}"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:tc><w:tcPr><w:tcW w:w="{{table.column1.width}}" w:type="dxa"/></w:tcPr><w:p><w:r><w:t>{{content.header.cell1}}</w:t></w:r></w:p></w:tc>
+        <w:tc><w:tcPr><w:tcW w:w="{{table.column2.width}}" w:type="dxa"/></w:tcPr><w:p><w:r><w:t>{{content.header.cell2}}</w:t></w:r></w:p></w:tc>
+        <w:tc><w:tcPr><w:tcW w:w="{{table.column3.width}}" w:type="dxa"/></w:tcPr><w:p><w:r><w:t>{{content.header.cell3}}</w:t></w:r></w:p></w:tc>
+      </w:tr>
+      <w:tr>
+        <w:tc><w:tcPr><w:tcW w:w="{{table.column1.width}}" w:type="dxa"/></w:tcPr><w:p><w:r><w:t>{{content.data.row2.cell1}}</w:t></w:r></w:p></w:tc>
+        <w:tc><w:tcPr><w:tcW w:w="{{table.column2.width}}" w:type="dxa"/></w:tcPr><w:p><w:r><w:t>{{content.data.row2.cell2}}</w:t></w:r></w:p></w:tc>
+        <w:tc><w:tcPr><w:tcW w:w="{{table.column3.width}}" w:type="dxa"/></w:tcPr><w:p><w:r><w:t>{{content.data.row2.cell3}}</w:t></w:r></w:p></w:tc>
+      </w:tr>
+      <w:tr>
+        <w:tc><w:tcPr><w:tcW w:w="{{table.column1.width}}" w:type="dxa"/></w:tcPr><w:p><w:r><w:t>{{content.data.row3.cell1}}</w:t></w:r></w:p></w:tc>
+        <w:tc><w:tcPr><w:tcW w:w="{{table.column2.width}}" w:type="dxa"/></w:tcPr><w:p><w:r><w:t>{{content.data.row3.cell2}}</w:t></w:r></w:p></w:tc>
+        <w:tc><w:tcPr><w:tcW w:w="{{table.column3.width}}" w:type="dxa"/></w:tcPr><w:p><w:r><w:t>{{content.data.row3.cell3}}</w:t></w:r></w:p></w:tc>
+      </w:tr>
+    </w:tbl>
+    <!-- TABLE_PLACEHOLDER_END -->
     <w:sectPr>
       <w:pgSz w:w="11906" w:h="16838" w:code="9"/>
       <w:pgMar w:top="85" w:right="68" w:bottom="85" w:left="68" w:header="34" w:footer="34" w:gutter="0"/>

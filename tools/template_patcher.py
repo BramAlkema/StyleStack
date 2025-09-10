@@ -11,19 +11,23 @@ from typing import Dict
 
 class TemplatePatcher:
     """Apply design tokens to OOXML template files"""
-    
-    def __init__(self, tokens: Dict[str, str]):
+
+    def __init__(self, tokens: Dict[str, str], remove_table_placeholder: bool = False):
         self.tokens = tokens
-    
+        self.remove_table_placeholder = remove_table_placeholder
+
     def patch_template(self, template_path: Path, output_path: Path):
         """Apply token substitutions to a template file"""
-        
+
         with open(template_path, 'r', encoding='utf-8') as f:
             content = f.read()
-        
+
         # Apply simple token substitutions
         patched_content = self._apply_tokens(content)
-        
+
+        if self.remove_table_placeholder:
+            patched_content = self._remove_table_placeholder(patched_content)
+
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write(patched_content)
     
@@ -72,28 +76,34 @@ class TemplatePatcher:
                     f'rgb="{rgb_color}"',
                     content
                 )
-        
+
         return content
+
+    def _remove_table_placeholder(self, content: str) -> str:
+        """Strip table placeholder block if not needed"""
+        pattern = r'<!-- TABLE_PLACEHOLDER_START -->.*?<!-- TABLE_PLACEHOLDER_END -->\n?'
+        return re.sub(pattern, '', content, flags=re.DOTALL)
 
 
 if __name__ == '__main__':
     import sys
     import json
-    
-    if len(sys.argv) != 4:
-        print("Usage: template_patcher.py <input_template> <output_template> <tokens.json>")
+
+    if len(sys.argv) not in (4, 5):
+        print("Usage: template_patcher.py <input_template> <output_template> <tokens.json> [--remove-table]")
         sys.exit(1)
-    
+
     input_path = Path(sys.argv[1])
     output_path = Path(sys.argv[2])
     tokens_path = Path(sys.argv[3])
-    
+    remove_table = len(sys.argv) == 5 and sys.argv[4] == '--remove-table'
+
     # Load resolved tokens
     with open(tokens_path, 'r') as f:
         tokens = json.load(f)
-    
+
     # Apply tokens to template
-    patcher = TemplatePatcher(tokens)
+    patcher = TemplatePatcher(tokens, remove_table_placeholder=remove_table)
     patcher.patch_template(input_path, output_path)
-    
+
     print(f"✅ Applied {len(tokens)} tokens to {input_path.name} → {output_path.name}")
