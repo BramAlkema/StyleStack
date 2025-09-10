@@ -235,9 +235,10 @@ class OOXMLProcessor:
             except ValueError:
                 pass  # Already registered
     
-    def apply_variables_to_xml(self, xml_content: str, 
+    def apply_variables_to_xml(self, xml_content: str,
                               variables: Dict[str, Any],
-                              validate_result: bool = True) -> Tuple[str, ProcessingResult]:
+                              validate_result: bool = True,
+                              remove_table_placeholder: bool = False) -> Tuple[str, ProcessingResult]:
         """
         Apply variables to XML content with XPath targeting.
         
@@ -272,7 +273,10 @@ class OOXMLProcessor:
             if validate_result:
                 validation_errors = self._validate_xml_integrity(xml_content, updated_xml)
                 result.errors.extend(validation_errors)
-            
+
+            if remove_table_placeholder:
+                updated_xml = self._remove_table_placeholder(updated_xml)
+
             result.success = len(result.errors) == 0
             result.processing_time = time.time() - start_time
             
@@ -543,7 +547,12 @@ class OOXMLProcessor:
             errors.append(f"Validation error: {e}")
             
         return errors
-    
+
+    def _remove_table_placeholder(self, content: str) -> str:
+        """Strip table placeholder block from XML if present"""
+        pattern = r'<!-- TABLE_PLACEHOLDER_START -->.*?<!-- TABLE_PLACEHOLDER_END -->\n?'
+        return re.sub(pattern, '', content, flags=re.DOTALL)
+
     def _indent_xml(self, elem: ET.Element, level: int = 0) -> None:
         """Add indentation to XML elements"""
         indent = "\n" + level * "  "
@@ -563,7 +572,8 @@ class OOXMLProcessor:
     def process_ooxml_file(self, input_path: Union[str, Path],
                           variables: Dict[str, Any],
                           output_path: Union[str, Path],
-                          target_files: Optional[List[str]] = None) -> ProcessingResult:
+                          target_files: Optional[List[str]] = None,
+                          remove_table_placeholder: bool = False) -> ProcessingResult:
         """
         Process complete OOXML file with variable substitution.
         
@@ -598,7 +608,10 @@ class OOXMLProcessor:
                             try:
                                 xml_content = file_data.decode('utf-8')
                                 updated_xml, file_result = self.apply_variables_to_xml(
-                                    xml_content, variables, validate_result=False
+                                    xml_content,
+                                    variables,
+                                    validate_result=False,
+                                    remove_table_placeholder=remove_table_placeholder
                                 )
                                 
                                 # Update overall statistics

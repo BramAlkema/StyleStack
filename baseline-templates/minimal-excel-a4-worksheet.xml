@@ -4,7 +4,31 @@
     <sheetView workbookViewId="0"/>
   </sheetViews>
   <sheetFormatPr defaultRowHeight="12.75"/>
-  <sheetData/>
+  <cols>
+    <col min="1" max="1" width="{{table.column1.width}}" customWidth="1"/>
+    <col min="2" max="2" width="{{table.column2.width}}" customWidth="1"/>
+    <col min="3" max="3" width="{{table.column3.width}}" customWidth="1"/>
+  </cols>
+  <sheetData>
+    <!-- TABLE_PLACEHOLDER_START -->
+    <!-- XPath: /x:worksheet/x:sheetData/x:row -->
+    <row r="1">
+      <c r="A1" t="inlineStr"><is><t>{{content.header.cell1}}</t></is></c>
+      <c r="B1" t="inlineStr"><is><t>{{content.header.cell2}}</t></is></c>
+      <c r="C1" t="inlineStr"><is><t>{{content.header.cell3}}</t></is></c>
+    </row>
+    <row r="2">
+      <c r="A2" t="inlineStr"><is><t>{{content.data.row2.cell1}}</t></is></c>
+      <c r="B2" t="inlineStr"><is><t>{{content.data.row2.cell2}}</t></is></c>
+      <c r="C2" t="inlineStr"><is><t>{{content.data.row2.cell3}}</t></is></c>
+    </row>
+    <row r="3">
+      <c r="A3" t="inlineStr"><is><t>{{content.data.row3.cell1}}</t></is></c>
+      <c r="B3" t="inlineStr"><is><t>{{content.data.row3.cell2}}</t></is></c>
+      <c r="C3" t="inlineStr"><is><t>{{content.data.row3.cell3}}</t></is></c>
+    </row>
+    <!-- TABLE_PLACEHOLDER_END -->
+  </sheetData>
   <pageMargins left="0.85" right="0.85" top="1.06" bottom="1.06" header="0.43" footer="0.43"/>
   <pageSetup paperSize="9" orientation="portrait" horizontalDpi="300" verticalDpi="300"/>
   <headerFooter>
