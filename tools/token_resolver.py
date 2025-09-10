@@ -12,7 +12,9 @@ import json
 import re
 from pathlib import Path
 from typing import Dict, Any, List, Optional
+
 import click
+import jsonschema
 
 
 class TokenResolver:
@@ -35,16 +37,29 @@ class TokenResolver:
             click.echo(f"📁 Loading core tokens from {core_dir}")
         
         # Load all core token files
+        schema_path = tokens_dir / "schema" / "design-tokens.schema.json"
+        with open(schema_path, "r") as schema_file:
+            schema = json.load(schema_file)
+        validator = jsonschema.Draft7Validator(schema)
+
         for token_file in core_dir.glob("*.json"):
             if self.verbose:
                 click.echo(f"   📄 {token_file.name}")
-                
-            with open(token_file, 'r') as f:
+
+            with open(token_file, "r") as f:
                 file_tokens = json.load(f)
-                # Remove schema reference
-                if '$schema' in file_tokens:
-                    del file_tokens['$schema']
-                core_tokens.update(file_tokens)
+
+            schema_ref = file_tokens.get("$schema", "")
+            if "design-tokens.schema.json" not in schema_ref:
+                # Skip files that don't declare the design tokens schema
+                continue
+
+            # Validate against schema
+            validator.validate(file_tokens)
+
+            # Remove schema reference
+            del file_tokens["$schema"]
+            core_tokens.update(file_tokens)
         
         return core_tokens
     
