@@ -17,7 +17,7 @@ import re
 from pathlib import Path
 from typing import Dict, Any, List, Optional, Union, Tuple
 from dataclasses import dataclass, field
-import xml.etree.ElementTree as ET
+from lxml import etree as ET
 import logging
 
 # Import existing components
@@ -445,13 +445,10 @@ class VariableResolver:
         for var_id, variable in variables.items():
             if variable.is_ooxml_native and variable.xpath:
                 try:
-                    # Find elements using XPath (simplified - full implementation would use lxml)
-                    elements = self._find_elements_by_simple_xpath(root, variable.xpath)
-                    
-                    for element in elements:
-                        self._apply_variable_to_element(element, variable)
+                    elements = self._find_elements_by_xpath(root, variable.xpath)
+                    for element, attr in elements:
+                        self._apply_variable_to_element(element, variable, attr)
                         applied_count += 1
-                        
                 except Exception as e:
                     if self.verbose:
                         logger.warning(f"Could not apply variable {var_id}: {e}")
@@ -462,44 +459,48 @@ class VariableResolver:
             
         return ET.tostring(root, encoding='unicode')
     
-    def _find_elements_by_simple_xpath(self, root: ET.Element, xpath: str) -> List[ET.Element]:
-        """Simple XPath implementation for common patterns"""
-        # This is a simplified version - production would use lxml for full XPath support
-        if xpath.startswith('//'):
-            # Find all descendants with matching tag
-            tag_name = xpath[2:].split('/')[-1].split('[')[0].split('@')[0]
-            return root.findall(f'.//{{{root.nsmap[None] if hasattr(root, "nsmap") else "*"}}}{tag_name}')
-        else:
-            # Simple path
-            return root.findall(xpath)
-    
-    def _apply_variable_to_element(self, element: ET.Element, variable: ResolvedVariable):
+    def _find_elements_by_xpath(self, root: ET._Element, xpath: str) -> List[Tuple[ET._Element, Optional[str]]]:
+        """Find elements (and optional attribute targets) using XPath"""
+        namespaces = dict(getattr(root, 'nsmap', {}) or {})
+        if None in namespaces:
+            namespaces['ns'] = namespaces.pop(None)
+        if '/@' in xpath:
+            parent_xpath, attr_name = xpath.rsplit('/@', 1)
+            elements = root.xpath(parent_xpath, namespaces=namespaces)
+            return [(el, attr_name) for el in elements]
+        elements = root.xpath(xpath, namespaces=namespaces)
+        return [(el, None) for el in elements]
+
+    def _apply_variable_to_element(self, element: ET._Element, variable: ResolvedVariable, attribute: Optional[str] = None):
         """Apply variable value to XML element"""
-        if variable.ooxml_mapping:
-            # Use OOXML mapping if available
-            mapping = variable.ooxml_mapping
-            if 'attribute' in mapping:
-                element.set(mapping['attribute'], variable.value)
-            elif 'text' in mapping:
-                element.text = variable.value
+        attr = None
+        if variable.ooxml_mapping and 'attribute' in variable.ooxml_mapping:
+            attr = variable.ooxml_mapping['attribute']
+        elif attribute:
+            attr = attribute
+
+        if attr:
+            element.set(attr, variable.value)
+            return
+
+        if variable.ooxml_mapping and 'text' in variable.ooxml_mapping:
+            element.text = variable.value
+            return
+
+        # Default application based on type
+        if variable.type == TokenType.COLOR:
+            if 'val' in element.attrib:
+                element.set('val', variable.value.lstrip('#'))
+            elif 'rgb' in element.attrib:
+                element.set('rgb', variable.value.lstrip('#'))
+        elif variable.type == TokenType.FONT:
+            if 'typeface' in element.attrib:
+                element.set('typeface', variable.value)
         else:
-            # Default application based on type
-            if variable.type == TokenType.COLOR:
-                # Apply color value to appropriate attributes
-                if 'val' in element.attrib:
-                    element.set('val', variable.value.lstrip('#'))
-                elif 'rgb' in element.attrib:
-                    element.set('rgb', variable.value.lstrip('#'))
-            elif variable.type == TokenType.FONT:
-                # Apply font value
-                if 'typeface' in element.attrib:
-                    element.set('typeface', variable.value)
-            else:
-                # Generic application
-                if element.text is not None:
-                    element.text = variable.value
-                elif 'val' in element.attrib:
-                    element.set('val', variable.value)
+            if element.text is not None:
+                element.text = variable.value
+            elif 'val' in element.attrib:
+                element.set('val', variable.value)
     
     def generate_resolution_report(self, variables: Dict[str, ResolvedVariable]) -> Dict[str, Any]:
         """Generate comprehensive resolution report"""
