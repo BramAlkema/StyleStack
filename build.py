@@ -122,7 +122,27 @@ def safe_unzip(src_zip: pathlib.Path, dst_dir: pathlib.Path, context: BuildConte
                     ErrorCode.ZIP_EXTRACTION_FAILED.value,
                     {"file": str(src_zip), "size": total_size}
                 )
-            z.extractall(dst_dir)
+
+            base = dst_dir.resolve()
+            # Validate paths
+            for info in z.infolist():
+                normalized = (base / pathlib.Path(info.filename)).resolve()
+                if not normalized.is_relative_to(base):
+                    raise StyleStackError(
+                        f"Unsafe ZIP entry: {info.filename}",
+                        ErrorCode.ZIP_EXTRACTION_FAILED.value,
+                        {"file": str(src_zip), "member": info.filename}
+                    )
+
+            # Extract files manually after validation
+            for info in z.infolist():
+                normalized = (base / pathlib.Path(info.filename)).resolve()
+                if info.is_dir():
+                    normalized.mkdir(parents=True, exist_ok=True)
+                else:
+                    normalized.parent.mkdir(parents=True, exist_ok=True)
+                    with z.open(info) as src, open(normalized, "wb") as dest:
+                        shutil.copyfileobj(src, dest)
     except zipfile.BadZipFile as e:
         raise StyleStackError(
             f"Invalid ZIP file: {e}",
