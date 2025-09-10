@@ -17,6 +17,8 @@ from enum import Enum
 from lxml import etree as ET
 import click
 
+logger = logging.getLogger(__name__)
+
 # Import OOXML Extension Variable System components
 try:
     from tools.variable_resolver import VariableResolver
@@ -27,8 +29,10 @@ try:
     from tools.github_license_manager import GitHubLicenseManager, GitHubLicenseEnforcer, LicenseError
     EXTENSION_SYSTEM_AVAILABLE = True
 except ImportError as e:
-    print(f"Warning: Could not import OOXML Extension Variable System components: {e}")
-    print("Extension variable features will be disabled.")
+    logger.warning(
+        "Could not import OOXML Extension Variable System components: %s", e
+    )
+    logger.warning("Extension variable features will be disabled.")
     VariableResolver = None
     OOXMLProcessor = None
     ThemeResolver = None
@@ -45,8 +49,10 @@ try:
     from tools.json_patch_parser import ValidationLevel
     JSON_OOXML_ENGINE_AVAILABLE = True
 except ImportError as e:
-    print(f"Warning: Could not import JSON-to-OOXML Processing Engine: {e}")
-    print("JSON patch processing features will be disabled.")
+    logger.warning(
+        "Could not import JSON-to-OOXML Processing Engine: %s", e
+    )
+    logger.warning("JSON patch processing features will be disabled.")
     PatchExecutionEngine = None
     ExecutionMode = None
     ValidationLevel = None
