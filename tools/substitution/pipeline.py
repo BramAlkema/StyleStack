@@ -265,21 +265,50 @@ class SubstitutionPipeline:
         # Import here to avoid circular imports
         from variable_resolver import VariableResolver
         
-        resolver = VariableResolver()
+        resolver = VariableResolver(enable_cache=True)
         
-        # Convert variables to resolved format
-        resolved_variables = []
+        # First pass: convert to resolver format for nested reference resolution
+        resolver_context = {}
         for var_name, var_data in variables.items():
             if isinstance(var_data, dict):
-                resolved_var = {
-                    'name': var_name,
-                    'xpath': var_data.get('xpath', ''),
-                    'value': var_data.get('value', ''),
-                    'type': var_data.get('type', 'text'),
-                    'applied': False
-                }
-                resolved_variables.append(resolved_var)
-            else:
+                # Import ResolvedVariable for proper typing
+                from ..variable_resolver import ResolvedVariable, TokenType, TokenScope
+                
+                # Determine token type
+                token_type = var_data.get('type', 'text')
+                try:
+                    token_type_enum = TokenType(token_type.upper())
+                except (ValueError, AttributeError):
+                    token_type_enum = TokenType.TEXT
+                
+                resolver_context[var_name] = ResolvedVariable(
+                    id=var_name,
+                    value=var_data.get('value', ''),
+                    type=token_type_enum,
+                    scope=TokenScope.THEME,
+                    source='pipeline_variables',
+                    xpath=var_data.get('xpath'),
+                    ooxml_mapping=var_data.get('ooxml_mapping')
+                )
+        
+        # Second pass: resolve nested references
+        resolved_context = resolver.resolve_all(resolver_context)
+        
+        # Convert back to pipeline format
+        resolved_variables = []
+        for var_name, resolved_var in resolved_context.items():
+            pipeline_var = {
+                'name': var_name,
+                'xpath': resolved_var.xpath or '',
+                'value': resolved_var.value,
+                'type': resolved_var.type.value.lower() if hasattr(resolved_var.type, 'value') else 'text',
+                'applied': False
+            }
+            resolved_variables.append(pipeline_var)
+        
+        # Handle simple string values that weren't in the resolver context
+        for var_name, var_data in variables.items():
+            if not isinstance(var_data, dict):
                 # Simple string value
                 resolved_var = {
                     'name': var_name,
@@ -291,6 +320,30 @@ class SubstitutionPipeline:
                 resolved_variables.append(resolved_var)
         
         return resolved_variables
+    
+    def _process_composite_tokens(self, xml_content: str, composite_tokens: Dict[str, Any],
+                                context: Optional[Dict[str, Any]] = None) -> str:
+        """Process composite tokens (shadows, borders, gradients) in XML content"""
+        try:
+            # Import composite token processor
+            from ..ooxml_processor import OOXMLProcessor
+            
+            processor = OOXMLProcessor()
+            updated_xml, result = processor.apply_composite_tokens_to_xml(
+                xml_content, composite_tokens, context
+            )
+            
+            if not result.success:
+                # Log warnings/errors but don't fail the entire pipeline
+                for error in result.errors:
+                    print(f"Composite token processing error: {error}")
+                return xml_content  # Return original if processing failed
+            
+            return updated_xml
+            
+        except Exception as e:
+            print(f"Composite token processing failed: {e}")
+            return xml_content  # Return original content on error
     
     def _apply_variables_to_content(self, content: str, variables: List[Dict[str, Any]], 
                                    config: SubstitutionConfig, result: SubstitutionResult) -> Optional[str]:

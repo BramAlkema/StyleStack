@@ -15,6 +15,7 @@ import math
 EMU_PER_INCH = 914400
 EMU_PER_POINT = 12700
 EMU_PER_CM = 360000
+EMU_PER_MM = 36000  # 1 mm = 36,000 EMU (25.4mm/inch × EMU_PER_INCH ÷ 25.4)
 
 # Maximum safe EMU value to prevent overflow in calculations
 # Use 64-bit range but keep reasonable limits for OOXML usage
@@ -97,6 +98,10 @@ class EMUValue:
     def to_cm(self) -> float:
         """Convert EMU to centimeters"""
         return self._value / EMU_PER_CM
+    
+    def to_mm(self) -> float:
+        """Convert EMU to millimeters"""
+        return self._value / EMU_PER_MM
     
     # Arithmetic operators
     def __add__(self, other: Union['EMUValue', int, float]) -> 'EMUValue':
@@ -205,6 +210,42 @@ class EMUValue:
         if isinstance(other, EMUValue):
             return self._value >= other._value
         return self._value >= int(other)
+    
+    # Class methods for aspect ratio calculations
+    @classmethod
+    def from_inches(cls, inches: Union[int, float]) -> 'EMUValue':
+        """Create EMUValue from inches"""
+        return cls(int(float(inches) * EMU_PER_INCH))
+    
+    @classmethod
+    def from_points(cls, points: Union[int, float]) -> 'EMUValue':
+        """Create EMUValue from points"""
+        return cls(int(float(points) * EMU_PER_POINT))
+    
+    @classmethod
+    def from_cm(cls, cm: Union[int, float]) -> 'EMUValue':
+        """Create EMUValue from centimeters"""
+        return cls(int(float(cm) * EMU_PER_CM))
+    
+    @classmethod
+    def from_mm(cls, mm: Union[int, float]) -> 'EMUValue':
+        """Create EMUValue from millimeters"""
+        return cls(int(float(mm) * EMU_PER_MM))
+    
+    @classmethod
+    def from_pixels(cls, pixels: Union[int, float], dpi: float = 96.0) -> 'EMUValue':
+        """
+        Create EMUValue from pixels with DPI conversion
+        
+        Args:
+            pixels: Value in pixels
+            dpi: Dots per inch (default 96 DPI for screen)
+            
+        Returns:
+            EMUValue equivalent
+        """
+        inches = float(pixels) / dpi
+        return cls.from_inches(inches)
     
     # Unary operators
     def __neg__(self) -> 'EMUValue':
@@ -560,6 +601,57 @@ def emu_to_points(emu: EMUValue) -> float:
 def emu_to_cm(emu: EMUValue) -> float:
     """Convert EMUValue to centimeters"""
     return emu.to_cm()
+
+
+def mm_to_emu(mm: Union[int, float]) -> EMUValue:
+    """
+    Convert millimeters to EMU
+    
+    Args:
+        mm: Value in millimeters
+        
+    Returns:
+        EMUValue representing the equivalent EMU measurement
+        
+    Raises:
+        EMUConversionError: If input cannot be converted
+    """
+    try:
+        return EMUValue(int(float(mm) * EMU_PER_MM))
+    except (TypeError, ValueError) as e:
+        raise EMUConversionError(f"Cannot convert {mm} mm to EMU: {e}")
+
+
+def emu_to_mm(emu: EMUValue) -> float:
+    """Convert EMUValue to millimeters"""
+    return emu.to_mm()
+
+
+def pixels_to_emu(pixels: Union[int, float], dpi: float = 96.0) -> EMUValue:
+    """
+    Convert pixels to EMU with DPI awareness
+    
+    Args:
+        pixels: Value in pixels
+        dpi: Dots per inch (default 96 DPI for screen)
+        
+    Returns:
+        EMUValue representing the equivalent EMU measurement
+        
+    Raises:
+        EMUConversionError: If input cannot be converted
+    """
+    try:
+        inches = float(pixels) / dpi
+        return EMUValue(int(inches * EMU_PER_INCH))
+    except (TypeError, ValueError, ZeroDivisionError) as e:
+        raise EMUConversionError(f"Cannot convert {pixels} pixels to EMU: {e}")
+
+
+def emu_to_pixels(emu: EMUValue, dpi: float = 96.0) -> float:
+    """Convert EMUValue to pixels with DPI awareness"""
+    inches = emu.to_inches()
+    return inches * dpi
 
 
 if __name__ == '__main__':
