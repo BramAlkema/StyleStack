@@ -1,0 +1,29 @@
+{
+  "$schema": "https://stylestack.dev/schemas/design-tokens.schema.json",
+  "table": {
+    "default": {
+      "value": {
+        "styleId": "TableNormal",
+        "width": "100%",
+        "alignment": "center",
+        "margins": {
+          "top": "{space.2}",
+          "bottom": "{space.2}",
+          "left": "{space.2}",
+          "right": "{space.2}"
+        },
+        "border": {
+          "color": "{colors.gray.200}",
+          "width": "1pt"
+        }
+      },
+      "type": "table",
+      "description": "Default table styling for documents",
+      "$extensions": {
+        "stylestack": {
+          "category": "semantic"
+        }
+      }
+    }
+  }
+}

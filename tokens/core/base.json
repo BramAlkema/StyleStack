@@ -11,5 +11,6 @@
   "grid": {
     "line_height": 17,
     "font_size": 24
-  }
+  },
+  "table": "{table.default}"
 }

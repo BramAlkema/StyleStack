@@ -22,7 +22,8 @@
             "typography",
             "shadow",
             "gradient",
-            "transition"
+            "transition",
+            "table",
           ],
           "description": "Token type following W3C spec"
         },
@@ -126,6 +127,36 @@
         "offsetY",
         "blur"
       ]
+    },
+    "table": {
+      "type": "object",
+      "properties": {
+        "styleId": { "type": "string" },
+        "width": { "type": "string" },
+        "alignment": {
+          "type": "string",
+          "enum": ["left", "center", "right"]
+        },
+        "margins": {
+          "type": "object",
+          "properties": {
+            "top": { "type": "string" },
+            "bottom": { "type": "string" },
+            "left": { "type": "string" },
+            "right": { "type": "string" }
+          },
+          "required": ["top", "bottom", "left", "right"]
+        },
+        "border": {
+          "type": "object",
+          "properties": {
+            "color": { "type": "string" },
+            "width": { "type": "string" }
+          },
+          "required": ["color"]
+        }
+      },
+      "required": ["styleId"]
     }
   }
 }
