@@ -38,22 +38,27 @@ from tools.substitution.types import (
     SubstitutionConfig
 )
 from tools.substitution.pipeline import SubstitutionPipeline
+from tools.substitution.enhanced_pipeline import EnhancedSubstitutionPipeline, EnhancedSubstitutionConfig
 from tools.substitution.validation import ValidationEngine
 from tools.substitution.batch import BatchSubstitutionEngine, BatchProgressReporter
+from tools.substitution.carrier_processor import CarrierVariableProcessor
 
 
 class VariableSubstitutionPipeline:
     """
-    Main variable substitution pipeline - Backward Compatibility Interface.
+    Main variable substitution pipeline - Enhanced with Carrier Variable Support.
     
     Coordinates the substitution pipeline, validation, and batch processing
-    components to provide complete variable substitution capabilities.
+    components to provide complete variable substitution capabilities including
+    carrier-specific variables with EMU precision and hierarchical tokens.
     """
     
     def __init__(self,
                  enable_transactions: bool = True,
                  enable_progress_reporting: bool = False,
-                 validation_level: str = 'standard'):
+                 validation_level: str = 'standard',
+                 enable_carrier_variables: bool = True,
+                 enable_emu_validation: bool = True):
         """
         Initialize the variable substitution pipeline.
         
@@ -61,26 +66,65 @@ class VariableSubstitutionPipeline:
             enable_transactions: Enable transaction support with rollback
             enable_progress_reporting: Enable progress reporting
             validation_level: Validation level ('minimal', 'standard', 'comprehensive')
+            enable_carrier_variables: Enable carrier variable processing
+            enable_emu_validation: Enable EMU precision validation
         """
         self.enable_transactions = enable_transactions
         self.enable_progress_reporting = enable_progress_reporting
         self.validation_level = validation_level
+        self.enable_carrier_variables = enable_carrier_variables
+        self.enable_emu_validation = enable_emu_validation
         
-        # Initialize core components
-        self.pipeline = SubstitutionPipeline()
+        # Initialize enhanced pipeline if carrier variables are enabled
+        if enable_carrier_variables:
+            self.pipeline = EnhancedSubstitutionPipeline(enable_carrier_processing=True)
+        else:
+            self.pipeline = SubstitutionPipeline()
+        
         self.validation_engine = ValidationEngine()
         self.batch_engine = BatchSubstitutionEngine()
         
         # Configure validation checkpoints based on level
         self.validation_checkpoints = self._get_validation_checkpoints(validation_level)
         
+        # Design token layers for hierarchical resolution
+        self.design_token_layers = []
+        
         # Statistics tracking for backward compatibility
         self.statistics = {
             'substitutions_performed': 0,
             'variables_processed': 0,
             'errors_encountered': 0,
-            'transactions_used': 0
+            'transactions_used': 0,
+            'carrier_variables_processed': 0,
+            'emu_validations_performed': 0
         }
+    
+    def add_design_token_layer(self, layer_name: str, tokens: Dict[str, Any], precedence: int):
+        """
+        Add a design token layer for hierarchical resolution.
+        
+        Args:
+            layer_name: Name of the token layer (e.g., 'Corporate', 'Channel')  
+            tokens: Dictionary of design tokens
+            precedence: Layer precedence (higher number = higher precedence)
+        """
+        layer = {
+            'name': layer_name,
+            'tokens': tokens,
+            'precedence': precedence
+        }
+        
+        # Remove existing layer with same name
+        self.design_token_layers = [l for l in self.design_token_layers if l['name'] != layer_name]
+        
+        # Add new layer and sort by precedence
+        self.design_token_layers.append(layer)
+        self.design_token_layers.sort(key=lambda x: x['precedence'], reverse=True)
+    
+    def clear_design_token_layers(self):
+        """Clear all design token layers"""
+        self.design_token_layers = []
     
     def substitute_variables_in_document(self,
                                        document_content: str,
@@ -107,18 +151,36 @@ class VariableSubstitutionPipeline:
         Returns:
             SubstitutionResult with detailed operation results
         """
-        # Create configuration
-        config = SubstitutionConfig(
-            enable_transactions=self.enable_transactions,
-            validation_checkpoints=self.validation_checkpoints,
-            preserve_structure=preserve_structure,
-            preserve_namespaces=preserve_namespaces,
-            resolve_hierarchy=resolve_hierarchy,
-            evaluate_conditions=evaluate_conditions,
-            enable_progress_reporting=progress_reporter is not None,
-            progress_reporter=progress_reporter,
-            cancellation_token=cancellation_token
-        )
+        # Create enhanced configuration if carrier variables are enabled
+        if self.enable_carrier_variables:
+            config = EnhancedSubstitutionConfig(
+                enable_transactions=self.enable_transactions,
+                validation_checkpoints=self.validation_checkpoints,
+                preserve_structure=preserve_structure,
+                preserve_namespaces=preserve_namespaces,
+                resolve_hierarchy=resolve_hierarchy,
+                evaluate_conditions=evaluate_conditions,
+                enable_progress_reporting=progress_reporter is not None,
+                progress_reporter=progress_reporter,
+                cancellation_token=cancellation_token,
+                enable_carrier_variables=self.enable_carrier_variables,
+                enable_emu_validation=self.enable_emu_validation,
+                enable_hierarchical_tokens=True,
+                carrier_variable_caching=True,
+                design_token_layers=self.design_token_layers
+            )
+        else:
+            config = SubstitutionConfig(
+                enable_transactions=self.enable_transactions,
+                validation_checkpoints=self.validation_checkpoints,
+                preserve_structure=preserve_structure,
+                preserve_namespaces=preserve_namespaces,
+                resolve_hierarchy=resolve_hierarchy,
+                evaluate_conditions=evaluate_conditions,
+                enable_progress_reporting=progress_reporter is not None,
+                progress_reporter=progress_reporter,
+                cancellation_token=cancellation_token
+            )
         
         # Perform substitution
         result = self.pipeline.substitute_variables(
@@ -133,6 +195,12 @@ class VariableSubstitutionPipeline:
         self.statistics['errors_encountered'] += len(result.errors)
         if self.enable_transactions:
             self.statistics['transactions_used'] += 1
+        
+        # Update carrier variable statistics if enhanced pipeline is used
+        if self.enable_carrier_variables and hasattr(self.pipeline, 'get_enhanced_pipeline_statistics'):
+            enhanced_stats = self.pipeline.get_enhanced_pipeline_statistics()
+            self.statistics['carrier_variables_processed'] = enhanced_stats.get('carrier_variables_processed', 0)
+            self.statistics['emu_validations_performed'] = enhanced_stats.get('emu_values_validated', 0)
         
         return result
     
@@ -307,6 +375,11 @@ __all__ = [
     'DefaultProgressReporter',
     'BatchSubstitutionConfig',
     'SubstitutionConfig',
+    
+    # Enhanced components
+    'EnhancedSubstitutionPipeline',
+    'EnhancedSubstitutionConfig',
+    'CarrierVariableProcessor',
     
     # Core components
     'SubstitutionPipeline',
