@@ -1,0 +1,29 @@
+{
+  "version": "1.0",
+  "description": "StyleStack batch processing configuration template",
+  "settings": {
+    "parallel": true,
+    "max_workers": 4,
+    "checkpoint_interval": 10,
+    "retry_failed": true,
+    "max_retries": 3
+  },
+  "templates": [
+    {
+      "name": "Corporate Presentation Template",
+      "src": "templates/corporate.potx",
+      "out": "output/corporate-branded.potx",
+      "org": "your-org",
+      "channel": "present",
+      "priority": 1
+    },
+    {
+      "name": "Document Template",
+      "src": "templates/document.dotx",
+      "out": "output/document-branded.dotx",
+      "org": "your-org",
+      "channel": "doc",
+      "priority": 2
+    }
+  ]
+}

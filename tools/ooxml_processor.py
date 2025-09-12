@@ -236,7 +236,8 @@ class OOXMLProcessor:
     
     def apply_variables_to_xml(self, xml_content: str, 
                               variables: Dict[str, Any],
-                              validate_result: bool = True) -> Tuple[str, ProcessingResult]:
+                              validate_result: bool = True,
+                              allow_element_count_changes: bool = False) -> Tuple[str, ProcessingResult]:
         """
         Apply variables to XML content with XPath targeting.
         
@@ -269,7 +270,7 @@ class OOXMLProcessor:
             
             # Validate result if requested
             if validate_result:
-                validation_errors = self._validate_xml_integrity(xml_content, updated_xml)
+                validation_errors = self._validate_xml_integrity(xml_content, updated_xml, allow_element_count_changes)
                 result.errors.extend(validation_errors)
             
             result.success = len(result.errors) == 0
@@ -368,7 +369,7 @@ class OOXMLProcessor:
         if 'xpath' in variable:
             return XPathExpression(
                 expression=variable['xpath'],
-                description=f"Custom XPath for {variable.get("id", "unknown")}",
+                description=f"Custom XPath for {variable.get('id', 'unknown')}",
                 target_type=variable.get("type", "text"),
                 namespaces=XPathLibrary.NAMESPACES
             )
@@ -439,10 +440,21 @@ class OOXMLProcessor:
         modified_count = 0
         var_value = str(variable.get("value", variable.get("defaultValue", "")))
         var_type = variable.get("type", "text")
+        action = variable.get("action", "set_attribute")
         
         for element in elements:
             try:
-                if xpath.target_type == 'color':
+                # Handle append_child action for composite tokens
+                if action == "append_child":
+                    # Parse the XML fragment to append
+                    from lxml import etree
+                    fragment = etree.fromstring(var_value.encode("utf-8"))
+                    # Append child elements
+                    for child in fragment:
+                        element.append(child)
+                    modified_count += 1
+                    
+                elif xpath.target_type == 'color':
                     if isinstance(element, str):  # Attribute value
                         # Can't modify attribute directly in XPath result
                         continue
@@ -476,10 +488,20 @@ class OOXMLProcessor:
         modified_count = 0
         var_value = str(variable.get("value", variable.get("defaultValue", "")))
         var_type = variable.get("type", "text")
+        action = variable.get("action", "set_attribute")
         
         for element in elements:
             try:
-                if var_type == "color":
+                # Handle append_child action for composite tokens
+                if action == "append_child":
+                    # Parse the XML fragment to append
+                    fragment = ET.fromstring(var_value)
+                    # Append child elements
+                    for child in fragment:
+                        element.append(child)
+                    modified_count += 1
+                    
+                elif var_type == "color":
                     if "val" in element.attrib:
                         element.set("val", var_value.lstrip("#"))
                         modified_count += 1
@@ -516,7 +538,7 @@ class OOXMLProcessor:
                 
         return modified_count
     
-    def _validate_xml_integrity(self, original_xml: str, updated_xml: str) -> List[str]:
+    def _validate_xml_integrity(self, original_xml: str, updated_xml: str, allow_element_count_changes: bool = False) -> List[str]:
         """Validate XML integrity after processing"""
         errors = []
         
@@ -525,12 +547,13 @@ class OOXMLProcessor:
             original_root = ET.fromstring(original_xml)
             updated_root = ET.fromstring(updated_xml)
             
-            # Check element counts
-            original_count = len(list(original_root.iter()))
-            updated_count = len(list(updated_root.iter()))
-            
-            if original_count != updated_count:
-                errors.append(f"Element count changed: {original_count} -> {updated_count}")
+            # Check element counts (skip if allowed)
+            if not allow_element_count_changes:
+                original_count = len(list(original_root.iter()))
+                updated_count = len(list(updated_root.iter()))
+                
+                if original_count != updated_count:
+                    errors.append(f"Element count changed: {original_count} -> {updated_count}")
             
             # Check root element
             if original_root.tag != updated_root.tag:
@@ -631,6 +654,112 @@ class OOXMLProcessor:
             ),
             "lxml_available": self.use_lxml
         }
+    
+    def apply_composite_tokens_to_xml(self, xml_content: str, 
+                                     tokens: Dict[str, Any],
+                                     namespace_map: Optional[Dict[str, str]] = None,
+                                     preserve_formatting: bool = True) -> Tuple[str, ProcessingResult]:
+        """Apply composite tokens to XML content with namespace-aware XPath selection.
+        
+        This method transforms composite tokens (shadow, border, gradient) into OOXML
+        and applies them to the XML content, automatically detecting document type
+        and using the appropriate namespace prefixes.
+        
+        Args:
+            xml_content: Raw XML content string
+            tokens: Dictionary of composite tokens
+            namespace_map: Optional namespace mapping
+            preserve_formatting: Whether to preserve XML formatting
+            
+        Returns:
+            Tuple of (updated_xml, ProcessingResult)
+        """
+        from tools.composite_token_transformer import transform_composite_token
+        
+        # Detect document type and get appropriate XPath
+        xpath_expression = self._get_shape_properties_xpath(xml_content)
+        
+        # Convert composite tokens to OOXML variables
+        ooxml_variables = {}
+        
+        for token_name, token_value in tokens.items():
+            if isinstance(token_value, dict) and '$type' in token_value:
+                # Transform composite token to OOXML
+                try:
+                    ooxml_fragment = transform_composite_token(token_value)
+                    # Create a variable that can be applied with document-specific XPath
+                    ooxml_variables[token_name] = {
+                        'xpath': xpath_expression,
+                        'action': 'append_child',
+                        'value': ooxml_fragment
+                    }
+                except Exception as e:
+                    if not hasattr(self, 'warnings'):
+                        self.warnings = []
+                    self.warnings.append(f"Failed to transform token {token_name}: {str(e)}")
+                    continue
+            else:
+                # Regular variable
+                ooxml_variables[token_name] = token_value
+        
+        # Apply the variables using existing method (correct signature)
+        return self.apply_variables_to_xml(
+            xml_content, 
+            ooxml_variables,
+            validate_result=True,
+            allow_element_count_changes=True
+        )
+    
+    def _get_shape_properties_xpath(self, xml_content: str) -> str:
+        """Get the appropriate XPath for shape properties based on document type.
+        
+        Different Office document types use different namespace prefixes for shape properties:
+        - PowerPoint: p:spPr
+        - Word: pic:spPr  
+        - Excel: xdr:spPr
+        - DrawingML: a:spPr
+        
+        Args:
+            xml_content: XML content to analyze
+            
+        Returns:
+            XPath expression for shape properties in the detected document type
+        """
+        try:
+            if self.use_lxml:
+                from lxml import etree
+                parser = etree.XMLParser(ns_clean=True, recover=True)
+                root = etree.fromstring(xml_content.encode("utf-8"), parser)
+                root_tag = root.tag
+            else:
+                import xml.etree.ElementTree as ET
+                root = ET.fromstring(xml_content)
+                root_tag = root.tag
+            
+            # Detect document type based on root element namespace
+            if 'presentationml' in root_tag or 'p:sld' in xml_content:
+                # PowerPoint document
+                return '//p:spPr'
+            elif 'wordprocessingml' in root_tag or 'w:document' in xml_content:
+                # Word document - shape properties in pictures
+                return '//pic:spPr'
+            elif 'spreadsheetml' in root_tag or 'xdr:' in xml_content:
+                # Excel document - shape properties in drawings
+                return '//xdr:spPr'
+            else:
+                # Default to DrawingML namespace
+                return '//a:spPr'
+                
+        except Exception:
+            # Fallback: try to detect based on content patterns
+            if 'p:sld' in xml_content or 'p:sp' in xml_content:
+                return '//p:spPr'
+            elif 'w:document' in xml_content or 'pic:' in xml_content:
+                return '//pic:spPr'
+            elif 'xdr:' in xml_content:
+                return '//xdr:spPr'
+            else:
+                return '//a:spPr'
 
 
 if __name__ == "__main__":

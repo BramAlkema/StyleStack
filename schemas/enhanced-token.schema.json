@@ -1,0 +1,461 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://stylestack.dev/schemas/enhanced-token.schema.json",
+  "title": "StyleStack W3C DTCG Design Token Schema",
+  "description": "W3C Design Tokens Community Group compliant schema with StyleStack-specific extensions for enterprise Office integration",
+  "version": "2.0.0",
+  "type": "object",
+  "$ref": "#/definitions/w3c-dtcg-token",
+  "definitions": {
+    "w3c-dtcg-token": {
+      "type": "object",
+      "description": "W3C Design Tokens Community Group compliant token",
+      "properties": {
+        "$type": {
+          "type": "string",
+          "enum": [
+            "color",
+            "dimension", 
+            "fontFamily",
+            "fontWeight",
+            "fontSize",
+            "lineHeight",
+            "letterSpacing",
+            "typography",
+            "shadow",
+            "border",
+            "gradient",
+            "transition",
+            "cubic-bezier",
+            "number",
+            "duration",
+            "strokeStyle",
+            "string"
+          ],
+          "description": "The type of design token as per W3C DTCG specification"
+        },
+        "$value": {
+          "description": "The value of the design token, can be literal value, reference, or expression",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object"
+            },
+            {
+              "type": "array"
+            }
+          ]
+        },
+        "$description": {
+          "type": "string",
+          "description": "Human-readable description of the token's purpose"
+        },
+        "$extensions": {
+          "type": "object",
+          "description": "Tool-specific extensions to the token",
+          "properties": {
+            "stylestack": {
+              "$ref": "#/definitions/stylestack-extensions"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "required": ["$type", "$value"],
+      "additionalProperties": false
+    },
+    "stylestack-extensions": {
+      "type": "object",
+      "description": "StyleStack-specific extensions for W3C DTCG tokens",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z][a-zA-Z0-9._]*$",
+          "description": "StyleStack internal identifier"
+        },
+        "scope": {
+          "type": "string",
+          "enum": ["theme", "slide", "shape", "paragraph", "run", "document", "workbook", "worksheet"],
+          "description": "OOXML scope for this token"
+        },
+        "xpath": {
+          "type": "string",
+          "description": "XPath expression for OOXML targeting"
+        },
+        "ooxml": {
+          "$ref": "#/definitions/ooxml-configuration"
+        },
+        "emu": {
+          "$ref": "#/definitions/emu-precision"
+        },
+        "platforms": {
+          "$ref": "#/definitions/platform-support"
+        },
+        "accessibility": {
+          "$ref": "#/definitions/accessibility-compliance"
+        },
+        "brand": {
+          "$ref": "#/definitions/brand-compliance"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Token dependencies for resolution"
+        },
+        "expression": {
+          "$ref": "#/definitions/expression-metadata"
+        },
+        "conditional": {
+          "type": "boolean",
+          "description": "Whether this token has platform-conditional values"
+        },
+        "fallback": {
+          "type": "string",
+          "description": "Fallback value for unsupported platforms"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ooxml-configuration": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string",
+          "format": "uri",
+          "enum": [
+            "http://schemas.openxmlformats.org/drawingml/2006/main",
+            "http://schemas.openxmlformats.org/presentationml/2006/main", 
+            "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
+            "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+          ],
+          "description": "OOXML namespace URI"
+        },
+        "element": {
+          "type": "string",
+          "minLength": 1,
+          "description": "OOXML element name"
+        },
+        "attribute": {
+          "type": "string",
+          "description": "OOXML attribute name (optional)"
+        },
+        "valueType": {
+          "type": "string",
+          "enum": [
+            "direct",
+            "schemeClr",
+            "themeFont",
+            "emu",
+            "calculated",
+            "percentage",
+            "boolean"
+          ],
+          "description": "How to apply the value to OOXML"
+        }
+      },
+      "required": ["namespace", "element", "valueType"],
+      "additionalProperties": false
+    },
+    "emu-precision": {
+      "type": "object",
+      "description": "EMU (English Metric Unit) precision settings for Office compatibility",
+      "properties": {
+        "value": {
+          "type": "string",
+          "pattern": "^\\d+$",
+          "description": "EMU value as string"
+        },
+        "precision": {
+          "type": "string",
+          "enum": ["exact", "approximate", "rounded"],
+          "description": "Level of EMU precision"
+        },
+        "platform": {
+          "type": "string", 
+          "enum": ["office", "libreoffice", "google", "web"],
+          "description": "Target platform for EMU calculation"
+        },
+        "fontSize": {
+          "type": "string",
+          "pattern": "^\\d+$",
+          "description": "Font size in EMU units"
+        },
+        "lineHeight": {
+          "type": "string",
+          "pattern": "^\\d+$", 
+          "description": "Line height in EMU units"
+        },
+        "validated": {
+          "type": "boolean",
+          "description": "Whether EMU values have been validated"
+        }
+      },
+      "additionalProperties": false
+    },
+    "platform-support": {
+      "type": "object",
+      "description": "Platform-specific support and formatting",
+      "properties": {
+        "office": {
+          "$ref": "#/definitions/platform-config"
+        },
+        "libreoffice": {
+          "$ref": "#/definitions/platform-config"
+        },
+        "google": {
+          "$ref": "#/definitions/platform-config"
+        },
+        "web": {
+          "$ref": "#/definitions/platform-config"
+        },
+        "print": {
+          "$ref": "#/definitions/platform-config"
+        }
+      },
+      "additionalProperties": false
+    },
+    "platform-config": {
+      "type": "object",
+      "properties": {
+        "supported": {
+          "type": "boolean",
+          "description": "Whether platform is supported"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["emu", "px", "pt", "em", "rem", "cm", "mm", "in"],
+          "description": "Preferred unit format for platform"
+        },
+        "value": {
+          "type": "string",
+          "description": "Platform-specific value override"
+        }
+      },
+      "additionalProperties": false
+    },
+    "accessibility-compliance": {
+      "type": "object",
+      "description": "WCAG accessibility compliance information",
+      "properties": {
+        "wcag": {
+          "type": "object",
+          "properties": {
+            "contrastRatio": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 21,
+              "description": "Contrast ratio against background"
+            },
+            "level": {
+              "type": "string",
+              "enum": ["A", "AA", "AAA", "FAIL"],
+              "description": "WCAG compliance level"
+            },
+            "largeText": {
+              "type": "boolean",
+              "description": "Whether token is for large text (18pt+ or 14pt+ bold)"
+            },
+            "background": {
+              "type": "string",
+              "description": "Background color for contrast calculation"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "brand-compliance": {
+      "type": "object",
+      "description": "Corporate brand rule compliance",
+      "properties": {
+        "primary": {
+          "type": "boolean",
+          "description": "Whether this is a primary brand token"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["corporate", "secondary", "neutral", "custom"],
+          "description": "Brand category classification"
+        },
+        "approved": {
+          "type": "boolean",
+          "description": "Whether token is brand-approved"
+        },
+        "guidelines": {
+          "type": "object",
+          "properties": {
+            "usage": {
+              "type": "string",
+              "description": "Approved usage guidelines"
+            },
+            "restrictions": {
+              "type": "string",
+              "description": "Usage restrictions"
+            }
+          },
+          "additionalProperties": false
+        },
+        "violations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of brand guideline violations"
+        }
+      },
+      "additionalProperties": false
+    },
+    "expression-metadata": {
+      "type": "object",
+      "description": "Metadata about mathematical expressions in token values",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["multiplication", "addition", "subtraction", "division", "function_call", "conditional"],
+          "description": "Type of mathematical expression"
+        },
+        "operands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Expression operands"
+        },
+        "function": {
+          "type": "string",
+          "description": "Function name for function calls"
+        },
+        "base": {
+          "type": "string",
+          "description": "Base value for function calls"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Function arguments"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "examples": [
+    {
+      "comment": "W3C DTCG color token with StyleStack extensions",
+      "example": {
+        "$type": "color",
+        "$value": "#0066CC",
+        "$description": "Primary brand color for corporate identity",
+        "$extensions": {
+          "stylestack": {
+            "id": "brand_primary",
+            "scope": "theme",
+            "xpath": "//a:clrScheme/a:accent1/a:srgbClr/@val",
+            "ooxml": {
+              "namespace": "http://schemas.openxmlformats.org/drawingml/2006/main",
+              "element": "srgbClr",
+              "attribute": "val",
+              "valueType": "schemeClr"
+            },
+            "accessibility": {
+              "wcag": {
+                "contrastRatio": 4.8,
+                "level": "AA",
+                "background": "#FFFFFF"
+              }
+            },
+            "brand": {
+              "primary": true,
+              "category": "corporate",
+              "approved": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "comment": "Mathematical expression token",
+      "example": {
+        "$type": "dimension",
+        "$value": "{base_spacing} * 2",
+        "$description": "Large spacing calculated from base",
+        "$extensions": {
+          "stylestack": {
+            "id": "spacing_large",
+            "dependencies": ["base_spacing"],
+            "expression": {
+              "type": "multiplication",
+              "operands": ["{base_spacing}", "2"]
+            },
+            "emu": {
+              "precision": "exact"
+            }
+          }
+        }
+      }
+    },
+    {
+      "comment": "Platform-conditional token",
+      "example": {
+        "$type": "dimension",
+        "$value": {
+          "office": "11pt", 
+          "web": "14px",
+          "print": "10pt"
+        },
+        "$description": "Platform-specific font size",
+        "$extensions": {
+          "stylestack": {
+            "conditional": true,
+            "fallback": "12pt",
+            "platforms": {
+              "office": {
+                "supported": true,
+                "format": "emu"
+              },
+              "web": {
+                "supported": true,
+                "format": "px"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "comment": "Composite shadow token",
+      "example": {
+        "$type": "shadow",
+        "$value": {
+          "color": "#000000",
+          "offsetX": "2px",
+          "offsetY": "2px",
+          "blur": "4px",
+          "spread": "0px"
+        },
+        "$description": "Standard drop shadow for elevated elements",
+        "$extensions": {
+          "stylestack": {
+            "emu": {
+              "offsetX": "40320",
+              "offsetY": "40320",
+              "blur": "80640"
+            }
+          }
+        }
+      }
+    }
+  ]
+}
