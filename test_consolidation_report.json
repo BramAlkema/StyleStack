@@ -1,0 +1,823 @@
+{
+  "total_files": 111,
+  "total_size_bytes": 1924668,
+  "duplication_patterns": {
+    "transaction_pipeline": {
+      "pattern_name": "transaction_pipeline",
+      "files": [
+        "tests/test_transaction_pipeline.py",
+        "tests/test_transaction_pipeline_comprehensive.py"
+      ],
+      "overlap_score": 0.33506493506493507,
+      "consolidation_potential": "MEDIUM",
+      "priority_score": 202.863
+    },
+    "theme_resolver": {
+      "pattern_name": "theme_resolver",
+      "files": [
+        "tests/test_theme_resolver.py",
+        "tests/test_theme_resolver_phase4.py",
+        "tests/test_theme_resolver_comprehensive.py",
+        "tests/integration/test_theme_resolver_integration.py"
+      ],
+      "overlap_score": 0.0676659364071579,
+      "consolidation_potential": "HIGH",
+      "priority_score": 274.437
+    },
+    "ooxml_extension_manager": {
+      "pattern_name": "ooxml_extension_manager",
+      "files": [
+        "tests/test_ooxml_extension_manager_comprehensive.py",
+        "tests/test_ooxml_extension_manager_simple.py",
+        "tests/test_ooxml_extension_manager.py",
+        "tests/integration/test_ooxml_extension_manager_integration.py"
+      ],
+      "overlap_score": 0.16811299081035924,
+      "consolidation_potential": "HIGH",
+      "priority_score": 176.171
+    },
+    "ooxml_processor": {
+      "pattern_name": "ooxml_processor",
+      "files": [
+        "tests/test_ooxml_processor_comprehensive.py",
+        "tests/test_ooxml_processor.py",
+        "tests/test_ooxml_processor_methods.py",
+        "tests/test_ooxml_processor_missing_coverage.py",
+        "tests/integration/test_ooxml_processor_integration.py"
+      ],
+      "overlap_score": 0.11124094007725722,
+      "consolidation_potential": "HIGH",
+      "priority_score": 320.036
+    },
+    "build": {
+      "pattern_name": "build",
+      "files": [
+        "tests/test_build_integration_modern.py",
+        "tests/test_build_integration.py"
+      ],
+      "overlap_score": 0.24571428571428572,
+      "consolidation_potential": "MEDIUM",
+      "priority_score": 118.679
+    },
+    "token_parser": {
+      "pattern_name": "token_parser",
+      "files": [
+        "tests/test_token_parser.py",
+        "tests/test_token_parser_comprehensive.py",
+        "tests/test_token_parser_performance.py",
+        "tests/integration/test_token_parser_integration.py"
+      ],
+      "overlap_score": 0.09425054112554114,
+      "consolidation_potential": "HIGH",
+      "priority_score": 205.711
+    },
+    "variable_substitution": {
+      "pattern_name": "variable_substitution",
+      "files": [
+        "tests/test_variable_substitution.py",
+        "tests/test_variable_substitution_modern.py",
+        "tests/integration/test_variable_substitution_integration.py"
+      ],
+      "overlap_score": 0.05822649572649572,
+      "consolidation_potential": "HIGH",
+      "priority_score": 162.214
+    },
+    "design_token_extractor": {
+      "pattern_name": "design_token_extractor",
+      "files": [
+        "tests/test_design_token_extractor_basic.py",
+        "tests/test_design_token_extractor_comprehensive.py",
+        "tests/test_design_token_extractor_foundation.py",
+        "tests/unit/test_design_token_extractor.py",
+        "tests/integration/test_design_token_extractor_integration.py"
+      ],
+      "overlap_score": 0.12550633727734442,
+      "consolidation_potential": "HIGH",
+      "priority_score": 297.307
+    },
+    "json_patch_parser": {
+      "pattern_name": "json_patch_parser",
+      "files": [
+        "tests/test_json_patch_parser_comprehensive.py",
+        "tests/unit/test_json_patch_parser.py",
+        "tests/integration/test_json_patch_parser_integration.py"
+      ],
+      "overlap_score": 0.2041666666666667,
+      "consolidation_potential": "HIGH",
+      "priority_score": 150.358
+    },
+    "variable_resolver": {
+      "pattern_name": "variable_resolver",
+      "files": [
+        "tests/test_variable_resolver_comprehensive.py",
+        "tests/unit/test_variable_resolver.py",
+        "tests/integration/test_variable_resolver_integration.py"
+      ],
+      "overlap_score": 0.19642857142857142,
+      "consolidation_potential": "HIGH",
+      "priority_score": 113.158
+    },
+    "multi_format_ooxml_handler": {
+      "pattern_name": "multi_format_ooxml_handler",
+      "files": [
+        "tests/test_multi_format_ooxml_handler_modern.py",
+        "tests/integration/test_multi_format_ooxml_handler_integration.py"
+      ],
+      "overlap_score": 0.02608695652173913,
+      "consolidation_potential": "MEDIUM",
+      "priority_score": 82.89099999999999
+    },
+    "template_analyzer": {
+      "pattern_name": "template_analyzer",
+      "files": [
+        "tests/test_template_analyzer_modern.py",
+        "tests/test_template_analyzer_simple.py",
+        "tests/test_template_analyzer_comprehensive.py",
+        "tests/test_template_analyzer.py"
+      ],
+      "overlap_score": 0.1981301985086548,
+      "consolidation_potential": "HIGH",
+      "priority_score": 311.134
+    },
+    "token_layer": {
+      "pattern_name": "token_layer",
+      "files": [
+        "tests/test_token_integration_layer_comprehensive.py",
+        "tests/test_token_integration_layer.py",
+        "tests/integration/test_token_integration_layer_integration.py"
+      ],
+      "overlap_score": 0.035476190476190474,
+      "consolidation_potential": "HIGH",
+      "priority_score": 182.377
+    },
+    "formula_variable_resolver": {
+      "pattern_name": "formula_variable_resolver",
+      "files": [
+        "tests/test_formula_variable_resolver.py",
+        "tests/integration/test_formula_variable_resolver_integration.py"
+      ],
+      "overlap_score": 0.0,
+      "consolidation_potential": "MEDIUM",
+      "priority_score": 96.444
+    },
+    "formula_parser": {
+      "pattern_name": "formula_parser",
+      "files": [
+        "tests/test_formula_parser.py",
+        "tests/integration/test_formula_parser_integration.py"
+      ],
+      "overlap_score": 0.015,
+      "consolidation_potential": "MEDIUM",
+      "priority_score": 109.148
+    },
+    "optimized_batch_processor": {
+      "pattern_name": "optimized_batch_processor",
+      "files": [
+        "tests/test_optimized_batch_processor_comprehensive.py",
+        "tests/unit/test_optimized_batch_processor.py",
+        "tests/integration/test_optimized_batch_processor_integration.py"
+      ],
+      "overlap_score": 0.1922222222222222,
+      "consolidation_potential": "HIGH",
+      "priority_score": 139.599
+    },
+    "ooxml_analyzer": {
+      "pattern_name": "ooxml_analyzer",
+      "files": [
+        "tests/unit/test_ooxml_analyzer.py",
+        "tests/integration/test_ooxml_analyzer_integration.py"
+      ],
+      "overlap_score": 0.5,
+      "consolidation_potential": "MEDIUM",
+      "priority_score": 35.345
+    },
+    "token_resolver": {
+      "pattern_name": "token_resolver",
+      "files": [
+        "tests/unit/test_token_resolver.py",
+        "tests/integration/test_token_resolver_integration.py"
+      ],
+      "overlap_score": 0.5,
+      "consolidation_potential": "MEDIUM",
+      "priority_score": 35.345
+    }
+  },
+  "consolidation_matrix": {
+    "transaction_pipeline": {
+      "files": [
+        {
+          "path": "tests/test_transaction_pipeline.py",
+          "size_bytes": 23249,
+          "line_count": 599,
+          "test_functions": 31,
+          "test_classes": 9
+        },
+        {
+          "path": "tests/test_transaction_pipeline_comprehensive.py",
+          "size_bytes": 25614,
+          "line_count": 735,
+          "test_functions": 36,
+          "test_classes": 16
+        }
+      ],
+      "file_count": 2,
+      "total_size_bytes": 48863,
+      "total_functions": 67,
+      "total_classes": 25,
+      "overlap_score": 0.33506493506493507,
+      "consolidation_potential": "MEDIUM",
+      "priority_score": 202.863,
+      "estimated_reduction_pct": 33.506493506493506
+    },
+    "theme_resolver": {
+      "files": [
+        {
+          "path": "tests/test_theme_resolver.py",
+          "size_bytes": 24082,
+          "line_count": 571,
+          "test_functions": 17,
+          "test_classes": 1
+        },
+        {
+          "path": "tests/test_theme_resolver_phase4.py",
+          "size_bytes": 21719,
+          "line_count": 591,
+          "test_functions": 30,
+          "test_classes": 10
+        },
+        {
+          "path": "tests/test_theme_resolver_comprehensive.py",
+          "size_bytes": 25185,
+          "line_count": 758,
+          "test_functions": 31,
+          "test_classes": 5
+        },
+        {
+          "path": "tests/integration/test_theme_resolver_integration.py",
+          "size_bytes": 1451,
+          "line_count": 53,
+          "test_functions": 3,
+          "test_classes": 1
+        }
+      ],
+      "file_count": 4,
+      "total_size_bytes": 72437,
+      "total_functions": 81,
+      "total_classes": 17,
+      "overlap_score": 0.0676659364071579,
+      "consolidation_potential": "HIGH",
+      "priority_score": 274.437,
+      "estimated_reduction_pct": 30
+    },
+    "ooxml_extension_manager": {
+      "files": [
+        {
+          "path": "tests/test_ooxml_extension_manager_comprehensive.py",
+          "size_bytes": 12494,
+          "line_count": 356,
+          "test_functions": 21,
+          "test_classes": 4
+        },
+        {
+          "path": "tests/test_ooxml_extension_manager_simple.py",
+          "size_bytes": 6481,
+          "line_count": 196,
+          "test_functions": 11,
+          "test_classes": 4
+        },
+        {
+          "path": "tests/test_ooxml_extension_manager.py",
+          "size_bytes": 23701,
+          "line_count": 622,
+          "test_functions": 11,
+          "test_classes": 1
+        },
+        {
+          "path": "tests/integration/test_ooxml_extension_manager_integration.py",
+          "size_bytes": 1495,
+          "line_count": 53,
+          "test_functions": 3,
+          "test_classes": 1
+        }
+      ],
+      "file_count": 4,
+      "total_size_bytes": 44171,
+      "total_functions": 46,
+      "total_classes": 10,
+      "overlap_score": 0.16811299081035924,
+      "consolidation_potential": "HIGH",
+      "priority_score": 176.171,
+      "estimated_reduction_pct": 30
+    },
+    "ooxml_processor": {
+      "files": [
+        {
+          "path": "tests/test_ooxml_processor_comprehensive.py",
+          "size_bytes": 29938,
+          "line_count": 789,
+          "test_functions": 34,
+          "test_classes": 8
+        },
+        {
+          "path": "tests/test_ooxml_processor.py",
+          "size_bytes": 21101,
+          "line_count": 562,
+          "test_functions": 14,
+          "test_classes": 1
+        },
+        {
+          "path": "tests/test_ooxml_processor_methods.py",
+          "size_bytes": 17728,
+          "line_count": 434,
+          "test_functions": 22,
+          "test_classes": 5
+        },
+        {
+          "path": "tests/test_ooxml_processor_missing_coverage.py",
+          "size_bytes": 17813,
+          "line_count": 464,
+          "test_functions": 18,
+          "test_classes": 2
+        },
+        {
+          "path": "tests/integration/test_ooxml_processor_integration.py",
+          "size_bytes": 1456,
+          "line_count": 53,
+          "test_functions": 3,
+          "test_classes": 1
+        }
+      ],
+      "file_count": 5,
+      "total_size_bytes": 88036,
+      "total_functions": 91,
+      "total_classes": 17,
+      "overlap_score": 0.11124094007725722,
+      "consolidation_potential": "HIGH",
+      "priority_score": 320.036,
+      "estimated_reduction_pct": 30
+    },
+    "build": {
+      "files": [
+        {
+          "path": "tests/test_build_integration_modern.py",
+          "size_bytes": 12630,
+          "line_count": 316,
+          "test_functions": 11,
+          "test_classes": 2
+        },
+        {
+          "path": "tests/test_build_integration.py",
+          "size_bytes": 38049,
+          "line_count": 986,
+          "test_functions": 13,
+          "test_classes": 5
+        }
+      ],
+      "file_count": 2,
+      "total_size_bytes": 50679,
+      "total_functions": 24,
+      "total_classes": 7,
+      "overlap_score": 0.24571428571428572,
+      "consolidation_potential": "MEDIUM",
+      "priority_score": 118.679,
+      "estimated_reduction_pct": 30
+    },
+    "token_parser": {
+      "files": [
+        {
+          "path": "tests/test_token_parser.py",
+          "size_bytes": 16419,
+          "line_count": 479,
+          "test_functions": 14,
+          "test_classes": 1
+        },
+        {
+          "path": "tests/test_token_parser_comprehensive.py",
+          "size_bytes": 14414,
+          "line_count": 424,
+          "test_functions": 31,
+          "test_classes": 10
+        },
+        {
+          "path": "tests/test_token_parser_performance.py",
+          "size_bytes": 17437,
+          "line_count": 431,
+          "test_functions": 10,
+          "test_classes": 2
+        },
+        {
+          "path": "tests/integration/test_token_parser_integration.py",
+          "size_bytes": 1441,
+          "line_count": 53,
+          "test_functions": 3,
+          "test_classes": 1
+        }
+      ],
+      "file_count": 4,
+      "total_size_bytes": 49711,
+      "total_functions": 58,
+      "total_classes": 14,
+      "overlap_score": 0.09425054112554114,
+      "consolidation_potential": "HIGH",
+      "priority_score": 205.711,
+      "estimated_reduction_pct": 30
+    },
+    "variable_substitution": {
+      "files": [
+        {
+          "path": "tests/test_variable_substitution.py",
+          "size_bytes": 37317,
+          "line_count": 917,
+          "test_functions": 24,
+          "test_classes": 7
+        },
+        {
+          "path": "tests/test_variable_substitution_modern.py",
+          "size_bytes": 11411,
+          "line_count": 302,
+          "test_functions": 14,
+          "test_classes": 4
+        },
+        {
+          "path": "tests/integration/test_variable_substitution_integration.py",
+          "size_bytes": 1486,
+          "line_count": 53,
+          "test_functions": 3,
+          "test_classes": 1
+        }
+      ],
+      "file_count": 3,
+      "total_size_bytes": 50214,
+      "total_functions": 41,
+      "total_classes": 12,
+      "overlap_score": 0.05822649572649572,
+      "consolidation_potential": "HIGH",
+      "priority_score": 162.214,
+      "estimated_reduction_pct": 30
+    },
+    "design_token_extractor": {
+      "files": [
+        {
+          "path": "tests/test_design_token_extractor_basic.py",
+          "size_bytes": 11114,
+          "line_count": 281,
+          "test_functions": 19,
+          "test_classes": 6
+        },
+        {
+          "path": "tests/test_design_token_extractor_comprehensive.py",
+          "size_bytes": 27857,
+          "line_count": 717,
+          "test_functions": 35,
+          "test_classes": 12
+        },
+        {
+          "path": "tests/test_design_token_extractor_foundation.py",
+          "size_bytes": 20890,
+          "line_count": 572,
+          "test_functions": 32,
+          "test_classes": 6
+        },
+        {
+          "path": "tests/unit/test_design_token_extractor.py",
+          "size_bytes": 1956,
+          "line_count": 66,
+          "test_functions": 3,
+          "test_classes": 2
+        },
+        {
+          "path": "tests/integration/test_design_token_extractor_integration.py",
+          "size_bytes": 1490,
+          "line_count": 53,
+          "test_functions": 3,
+          "test_classes": 1
+        }
+      ],
+      "file_count": 5,
+      "total_size_bytes": 63307,
+      "total_functions": 92,
+      "total_classes": 27,
+      "overlap_score": 0.12550633727734442,
+      "consolidation_potential": "HIGH",
+      "priority_score": 297.307,
+      "estimated_reduction_pct": 30
+    },
+    "json_patch_parser": {
+      "files": [
+        {
+          "path": "tests/test_json_patch_parser_comprehensive.py",
+          "size_bytes": 22977,
+          "line_count": 665,
+          "test_functions": 41,
+          "test_classes": 7
+        },
+        {
+          "path": "tests/unit/test_json_patch_parser.py",
+          "size_bytes": 1916,
+          "line_count": 66,
+          "test_functions": 3,
+          "test_classes": 2
+        },
+        {
+          "path": "tests/integration/test_json_patch_parser_integration.py",
+          "size_bytes": 1465,
+          "line_count": 53,
+          "test_functions": 3,
+          "test_classes": 1
+        }
+      ],
+      "file_count": 3,
+      "total_size_bytes": 26358,
+      "total_functions": 47,
+      "total_classes": 10,
+      "overlap_score": 0.2041666666666667,
+      "consolidation_potential": "HIGH",
+      "priority_score": 150.358,
+      "estimated_reduction_pct": 30
+    },
+    "variable_resolver": {
+      "files": [
+        {
+          "path": "tests/test_variable_resolver_comprehensive.py",
+          "size_bytes": 21774,
+          "line_count": 597,
+          "test_functions": 23,
+          "test_classes": 7
+        },
+        {
+          "path": "tests/unit/test_variable_resolver.py",
+          "size_bytes": 1918,
+          "line_count": 66,
+          "test_functions": 3,
+          "test_classes": 2
+        },
+        {
+          "path": "tests/integration/test_variable_resolver_integration.py",
+          "size_bytes": 1466,
+          "line_count": 53,
+          "test_functions": 3,
+          "test_classes": 1
+        }
+      ],
+      "file_count": 3,
+      "total_size_bytes": 25158,
+      "total_functions": 29,
+      "total_classes": 10,
+      "overlap_score": 0.19642857142857142,
+      "consolidation_potential": "HIGH",
+      "priority_score": 113.158,
+      "estimated_reduction_pct": 30
+    },
+    "multi_format_ooxml_handler": {
+      "files": [
+        {
+          "path": "tests/test_multi_format_ooxml_handler_modern.py",
+          "size_bytes": 15382,
+          "line_count": 371,
+          "test_functions": 20,
+          "test_classes": 7
+        },
+        {
+          "path": "tests/integration/test_multi_format_ooxml_handler_integration.py",
+          "size_bytes": 1509,
+          "line_count": 53,
+          "test_functions": 3,
+          "test_classes": 1
+        }
+      ],
+      "file_count": 2,
+      "total_size_bytes": 16891,
+      "total_functions": 23,
+      "total_classes": 8,
+      "overlap_score": 0.02608695652173913,
+      "consolidation_potential": "MEDIUM",
+      "priority_score": 82.89099999999999,
+      "estimated_reduction_pct": 30
+    },
+    "template_analyzer": {
+      "files": [
+        {
+          "path": "tests/test_template_analyzer_modern.py",
+          "size_bytes": 16347,
+          "line_count": 439,
+          "test_functions": 15,
+          "test_classes": 5
+        },
+        {
+          "path": "tests/test_template_analyzer_simple.py",
+          "size_bytes": 6390,
+          "line_count": 162,
+          "test_functions": 9,
+          "test_classes": 3
+        },
+        {
+          "path": "tests/test_template_analyzer_comprehensive.py",
+          "size_bytes": 35101,
+          "line_count": 879,
+          "test_functions": 31,
+          "test_classes": 9
+        },
+        {
+          "path": "tests/test_template_analyzer.py",
+          "size_bytes": 53296,
+          "line_count": 1234,
+          "test_functions": 25,
+          "test_classes": 6
+        }
+      ],
+      "file_count": 4,
+      "total_size_bytes": 111134,
+      "total_functions": 80,
+      "total_classes": 23,
+      "overlap_score": 0.1981301985086548,
+      "consolidation_potential": "HIGH",
+      "priority_score": 311.134,
+      "estimated_reduction_pct": 30
+    },
+    "token_layer": {
+      "files": [
+        {
+          "path": "tests/test_token_integration_layer_comprehensive.py",
+          "size_bytes": 25779,
+          "line_count": 788,
+          "test_functions": 37,
+          "test_classes": 7
+        },
+        {
+          "path": "tests/test_token_integration_layer.py",
+          "size_bytes": 15103,
+          "line_count": 337,
+          "test_functions": 15,
+          "test_classes": 2
+        },
+        {
+          "path": "tests/integration/test_token_integration_layer_integration.py",
+          "size_bytes": 1495,
+          "line_count": 53,
+          "test_functions": 3,
+          "test_classes": 1
+        }
+      ],
+      "file_count": 3,
+      "total_size_bytes": 42377,
+      "total_functions": 55,
+      "total_classes": 10,
+      "overlap_score": 0.035476190476190474,
+      "consolidation_potential": "HIGH",
+      "priority_score": 182.377,
+      "estimated_reduction_pct": 30
+    },
+    "formula_variable_resolver": {
+      "files": [
+        {
+          "path": "tests/test_formula_variable_resolver.py",
+          "size_bytes": 14939,
+          "line_count": 424,
+          "test_functions": 27,
+          "test_classes": 2
+        },
+        {
+          "path": "tests/integration/test_formula_variable_resolver_integration.py",
+          "size_bytes": 1505,
+          "line_count": 53,
+          "test_functions": 3,
+          "test_classes": 1
+        }
+      ],
+      "file_count": 2,
+      "total_size_bytes": 16444,
+      "total_functions": 30,
+      "total_classes": 3,
+      "overlap_score": 0.0,
+      "consolidation_potential": "MEDIUM",
+      "priority_score": 96.444,
+      "estimated_reduction_pct": 30
+    },
+    "formula_parser": {
+      "files": [
+        {
+          "path": "tests/test_formula_parser.py",
+          "size_bytes": 15697,
+          "line_count": 422,
+          "test_functions": 33,
+          "test_classes": 6
+        },
+        {
+          "path": "tests/integration/test_formula_parser_integration.py",
+          "size_bytes": 1451,
+          "line_count": 53,
+          "test_functions": 3,
+          "test_classes": 1
+        }
+      ],
+      "file_count": 2,
+      "total_size_bytes": 17148,
+      "total_functions": 36,
+      "total_classes": 7,
+      "overlap_score": 0.015,
+      "consolidation_potential": "MEDIUM",
+      "priority_score": 109.148,
+      "estimated_reduction_pct": 30
+    },
+    "optimized_batch_processor": {
+      "files": [
+        {
+          "path": "tests/test_optimized_batch_processor_comprehensive.py",
+          "size_bytes": 28114,
+          "line_count": 811,
+          "test_functions": 33,
+          "test_classes": 11
+        },
+        {
+          "path": "tests/unit/test_optimized_batch_processor.py",
+          "size_bytes": 1980,
+          "line_count": 66,
+          "test_functions": 3,
+          "test_classes": 2
+        },
+        {
+          "path": "tests/integration/test_optimized_batch_processor_integration.py",
+          "size_bytes": 1505,
+          "line_count": 53,
+          "test_functions": 3,
+          "test_classes": 1
+        }
+      ],
+      "file_count": 3,
+      "total_size_bytes": 31599,
+      "total_functions": 39,
+      "total_classes": 14,
+      "overlap_score": 0.1922222222222222,
+      "consolidation_potential": "HIGH",
+      "priority_score": 139.599,
+      "estimated_reduction_pct": 30
+    },
+    "ooxml_analyzer": {
+      "files": [
+        {
+          "path": "tests/unit/test_ooxml_analyzer.py",
+          "size_bytes": 1894,
+          "line_count": 66,
+          "test_functions": 3,
+          "test_classes": 2
+        },
+        {
+          "path": "tests/integration/test_ooxml_analyzer_integration.py",
+          "size_bytes": 1451,
+          "line_count": 53,
+          "test_functions": 3,
+          "test_classes": 1
+        }
+      ],
+      "file_count": 2,
+      "total_size_bytes": 3345,
+      "total_functions": 6,
+      "total_classes": 3,
+      "overlap_score": 0.5,
+      "consolidation_potential": "MEDIUM",
+      "priority_score": 35.345,
+      "estimated_reduction_pct": 50.0
+    },
+    "token_resolver": {
+      "files": [
+        {
+          "path": "tests/unit/test_token_resolver.py",
+          "size_bytes": 1894,
+          "line_count": 66,
+          "test_functions": 3,
+          "test_classes": 2
+        },
+        {
+          "path": "tests/integration/test_token_resolver_integration.py",
+          "size_bytes": 1451,
+          "line_count": 53,
+          "test_functions": 3,
+          "test_classes": 1
+        }
+      ],
+      "file_count": 2,
+      "total_size_bytes": 3345,
+      "total_functions": 6,
+      "total_classes": 3,
+      "overlap_score": 0.5,
+      "consolidation_potential": "MEDIUM",
+      "priority_score": 35.345,
+      "estimated_reduction_pct": 50.0
+    }
+  },
+  "performance_baseline": {
+    "total_files": 111,
+    "estimated_execution_time_seconds": 55.5,
+    "total_test_functions": 1992,
+    "average_file_size_kb": 16.932960304054053
+  },
+  "recommendations": [
+    "\ud83c\udfaf Start with 11 high-priority consolidation patterns",
+    "   \u2022 ooxml_processor: 5 files with 11.1% overlap",
+    "   \u2022 template_analyzer: 4 files with 19.8% overlap",
+    "   \u2022 design_token_extractor: 5 files with 12.6% overlap",
+    "\ud83d\udcc9 Estimated reduction: 111 \u2192 78 files (29% reduction)",
+    "\u26a1 Expected CI performance improvement: 30-50% faster execution"
+  ],
+  "analysis_timestamp": 1757645152.366743
+}

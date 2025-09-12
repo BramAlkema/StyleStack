@@ -1,0 +1,743 @@
+{
+  "target_architectures": {
+    "transaction_pipeline": {
+      "pattern_name": "transaction_pipeline",
+      "source_files": [
+        "tests/test_transaction_pipeline.py",
+        "tests/test_transaction_pipeline_comprehensive.py"
+      ],
+      "target_file": "test_transaction_pipeline_unified.py",
+      "strategy": "merge_all",
+      "risk_level": "LOW",
+      "estimated_effort_hours": 3.0,
+      "expected_size_reduction_pct": 33.506493506493506,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "unique_test_scenarios",
+        "specialized_fixtures"
+      ],
+      "conflict_resolution_approach": "automated_merge",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check"
+      ],
+      "migration_notes": [
+        "Consolidating 2 files using merge_all strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline",
+        "Create new unified file combining all existing functionality"
+      ]
+    },
+    "theme_resolver": {
+      "pattern_name": "theme_resolver",
+      "source_files": [
+        "tests/test_theme_resolver.py",
+        "tests/test_theme_resolver_phase4.py",
+        "tests/test_theme_resolver_comprehensive.py",
+        "tests/integration/test_theme_resolver_integration.py"
+      ],
+      "target_file": "test_theme_resolver_consolidated.py",
+      "strategy": "selective_merge",
+      "risk_level": "MEDIUM",
+      "estimated_effort_hours": 9.0,
+      "expected_size_reduction_pct": 30,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "phase_specific_tests",
+        "version_compatibility_tests",
+        "performance_benchmarks"
+      ],
+      "conflict_resolution_approach": "automated_with_manual_verification",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check",
+        "coverage_analysis",
+        "integration_test_run",
+        "performance_regression_check"
+      ],
+      "migration_notes": [
+        "Consolidating 4 files using selective_merge strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline",
+        "Preserve phase-specific resolution tests",
+        "Maintain color transformation tests",
+        "Keep hierarchical theme inheritance tests"
+      ]
+    },
+    "ooxml_extension_manager": {
+      "pattern_name": "ooxml_extension_manager",
+      "source_files": [
+        "tests/test_ooxml_extension_manager_comprehensive.py",
+        "tests/test_ooxml_extension_manager_simple.py",
+        "tests/test_ooxml_extension_manager.py",
+        "tests/integration/test_ooxml_extension_manager_integration.py"
+      ],
+      "target_file": "test_ooxml_extension_manager_consolidated.py",
+      "strategy": "selective_merge",
+      "risk_level": "MEDIUM",
+      "estimated_effort_hours": 9.0,
+      "expected_size_reduction_pct": 30,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "unique_test_scenarios",
+        "specialized_fixtures"
+      ],
+      "conflict_resolution_approach": "automated_with_manual_verification",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check",
+        "coverage_analysis",
+        "integration_test_run",
+        "performance_regression_check"
+      ],
+      "migration_notes": [
+        "Consolidating 4 files using selective_merge strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline"
+      ]
+    },
+    "ooxml_processor": {
+      "pattern_name": "ooxml_processor",
+      "source_files": [
+        "tests/test_ooxml_processor_comprehensive.py",
+        "tests/test_ooxml_processor.py",
+        "tests/test_ooxml_processor_methods.py",
+        "tests/test_ooxml_processor_missing_coverage.py",
+        "tests/integration/test_ooxml_processor_integration.py"
+      ],
+      "target_file": "test_ooxml_processor_comprehensive.py",
+      "strategy": "comprehensive_base",
+      "risk_level": "HIGH",
+      "estimated_effort_hours": 18.75,
+      "expected_size_reduction_pct": 30,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "performance_tests",
+        "edge_case_tests",
+        "integration_tests",
+        "complex_fixtures",
+        "error_handling_tests"
+      ],
+      "conflict_resolution_approach": "manual_review_required",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check",
+        "coverage_analysis",
+        "integration_test_run",
+        "performance_regression_check",
+        "manual_code_review",
+        "full_test_suite_run",
+        "regression_testing"
+      ],
+      "migration_notes": [
+        "Consolidating 5 files using comprehensive_base strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline",
+        "Use most comprehensive existing file as base, merge others into it",
+        "Critical: Maintain namespace handling tests",
+        "Preserve composite token transformation tests",
+        "Keep all XML validation scenarios"
+      ]
+    },
+    "build": {
+      "pattern_name": "build",
+      "source_files": [
+        "tests/test_build_integration_modern.py",
+        "tests/test_build_integration.py"
+      ],
+      "target_file": "test_build_complete.py",
+      "strategy": "hierarchical",
+      "risk_level": "LOW",
+      "estimated_effort_hours": 3.0,
+      "expected_size_reduction_pct": 30,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "unique_test_scenarios",
+        "specialized_fixtures"
+      ],
+      "conflict_resolution_approach": "automated_merge",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check"
+      ],
+      "migration_notes": [
+        "Consolidating 2 files using hierarchical strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline"
+      ]
+    },
+    "token_parser": {
+      "pattern_name": "token_parser",
+      "source_files": [
+        "tests/test_token_parser.py",
+        "tests/test_token_parser_comprehensive.py",
+        "tests/test_token_parser_performance.py",
+        "tests/integration/test_token_parser_integration.py"
+      ],
+      "target_file": "test_token_parser_consolidated.py",
+      "strategy": "selective_merge",
+      "risk_level": "MEDIUM",
+      "estimated_effort_hours": 9.0,
+      "expected_size_reduction_pct": 30,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "unique_test_scenarios",
+        "specialized_fixtures"
+      ],
+      "conflict_resolution_approach": "automated_with_manual_verification",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check",
+        "coverage_analysis",
+        "integration_test_run",
+        "performance_regression_check"
+      ],
+      "migration_notes": [
+        "Consolidating 4 files using selective_merge strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline"
+      ]
+    },
+    "variable_substitution": {
+      "pattern_name": "variable_substitution",
+      "source_files": [
+        "tests/test_variable_substitution.py",
+        "tests/test_variable_substitution_modern.py",
+        "tests/integration/test_variable_substitution_integration.py"
+      ],
+      "target_file": "test_variable_substitution_complete.py",
+      "strategy": "hierarchical",
+      "risk_level": "LOW",
+      "estimated_effort_hours": 4.5,
+      "expected_size_reduction_pct": 30,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "unique_test_scenarios",
+        "specialized_fixtures"
+      ],
+      "conflict_resolution_approach": "automated_merge",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check"
+      ],
+      "migration_notes": [
+        "Consolidating 3 files using hierarchical strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline"
+      ]
+    },
+    "design_token_extractor": {
+      "pattern_name": "design_token_extractor",
+      "source_files": [
+        "tests/test_design_token_extractor_basic.py",
+        "tests/test_design_token_extractor_comprehensive.py",
+        "tests/test_design_token_extractor_foundation.py",
+        "tests/unit/test_design_token_extractor.py",
+        "tests/integration/test_design_token_extractor_integration.py"
+      ],
+      "target_file": "test_design_token_extractor_consolidated.py",
+      "strategy": "selective_merge",
+      "risk_level": "MEDIUM",
+      "estimated_effort_hours": 11.25,
+      "expected_size_reduction_pct": 30,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "unique_test_scenarios",
+        "specialized_fixtures"
+      ],
+      "conflict_resolution_approach": "automated_with_manual_verification",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check",
+        "coverage_analysis",
+        "integration_test_run",
+        "performance_regression_check"
+      ],
+      "migration_notes": [
+        "Consolidating 5 files using selective_merge strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline"
+      ]
+    },
+    "json_patch_parser": {
+      "pattern_name": "json_patch_parser",
+      "source_files": [
+        "tests/test_json_patch_parser_comprehensive.py",
+        "tests/unit/test_json_patch_parser.py",
+        "tests/integration/test_json_patch_parser_integration.py"
+      ],
+      "target_file": "test_json_patch_parser_complete.py",
+      "strategy": "hierarchical",
+      "risk_level": "LOW",
+      "estimated_effort_hours": 4.5,
+      "expected_size_reduction_pct": 30,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "unique_test_scenarios",
+        "specialized_fixtures"
+      ],
+      "conflict_resolution_approach": "automated_merge",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check"
+      ],
+      "migration_notes": [
+        "Consolidating 3 files using hierarchical strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline"
+      ]
+    },
+    "variable_resolver": {
+      "pattern_name": "variable_resolver",
+      "source_files": [
+        "tests/test_variable_resolver_comprehensive.py",
+        "tests/unit/test_variable_resolver.py",
+        "tests/integration/test_variable_resolver_integration.py"
+      ],
+      "target_file": "test_variable_resolver_complete.py",
+      "strategy": "hierarchical",
+      "risk_level": "MEDIUM",
+      "estimated_effort_hours": 6.75,
+      "expected_size_reduction_pct": 30,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "phase_specific_tests",
+        "version_compatibility_tests",
+        "performance_benchmarks"
+      ],
+      "conflict_resolution_approach": "automated_with_manual_verification",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check",
+        "coverage_analysis",
+        "integration_test_run",
+        "performance_regression_check"
+      ],
+      "migration_notes": [
+        "Consolidating 3 files using hierarchical strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline"
+      ]
+    },
+    "multi_format_ooxml_handler": {
+      "pattern_name": "multi_format_ooxml_handler",
+      "source_files": [
+        "tests/test_multi_format_ooxml_handler_modern.py",
+        "tests/integration/test_multi_format_ooxml_handler_integration.py"
+      ],
+      "target_file": "test_multi_format_ooxml_handler_complete.py",
+      "strategy": "hierarchical",
+      "risk_level": "LOW",
+      "estimated_effort_hours": 3.0,
+      "expected_size_reduction_pct": 30,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "unique_test_scenarios",
+        "specialized_fixtures"
+      ],
+      "conflict_resolution_approach": "automated_merge",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check"
+      ],
+      "migration_notes": [
+        "Consolidating 2 files using hierarchical strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline"
+      ]
+    },
+    "template_analyzer": {
+      "pattern_name": "template_analyzer",
+      "source_files": [
+        "tests/test_template_analyzer_modern.py",
+        "tests/test_template_analyzer_simple.py",
+        "tests/test_template_analyzer_comprehensive.py",
+        "tests/test_template_analyzer.py"
+      ],
+      "target_file": "tests/test_template_analyzer_comprehensive.py",
+      "strategy": "comprehensive_base",
+      "risk_level": "HIGH",
+      "estimated_effort_hours": 15.0,
+      "expected_size_reduction_pct": 30,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "performance_tests",
+        "edge_case_tests",
+        "integration_tests",
+        "complex_fixtures",
+        "error_handling_tests"
+      ],
+      "conflict_resolution_approach": "manual_review_required",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check",
+        "coverage_analysis",
+        "integration_test_run",
+        "performance_regression_check",
+        "manual_code_review",
+        "full_test_suite_run",
+        "regression_testing"
+      ],
+      "migration_notes": [
+        "Consolidating 4 files using comprehensive_base strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline",
+        "Use most comprehensive existing file as base, merge others into it",
+        "Preserve template format detection tests",
+        "Maintain variable coverage analysis tests",
+        "Keep performance benchmarking tests"
+      ]
+    },
+    "token_layer": {
+      "pattern_name": "token_layer",
+      "source_files": [
+        "tests/test_token_integration_layer_comprehensive.py",
+        "tests/test_token_integration_layer.py",
+        "tests/integration/test_token_integration_layer_integration.py"
+      ],
+      "target_file": "test_token_layer_complete.py",
+      "strategy": "hierarchical",
+      "risk_level": "LOW",
+      "estimated_effort_hours": 4.5,
+      "expected_size_reduction_pct": 30,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "unique_test_scenarios",
+        "specialized_fixtures"
+      ],
+      "conflict_resolution_approach": "automated_merge",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check"
+      ],
+      "migration_notes": [
+        "Consolidating 3 files using hierarchical strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline"
+      ]
+    },
+    "formula_variable_resolver": {
+      "pattern_name": "formula_variable_resolver",
+      "source_files": [
+        "tests/test_formula_variable_resolver.py",
+        "tests/integration/test_formula_variable_resolver_integration.py"
+      ],
+      "target_file": "test_formula_variable_resolver_complete.py",
+      "strategy": "hierarchical",
+      "risk_level": "LOW",
+      "estimated_effort_hours": 3.0,
+      "expected_size_reduction_pct": 30,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "unique_test_scenarios",
+        "specialized_fixtures"
+      ],
+      "conflict_resolution_approach": "automated_merge",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check"
+      ],
+      "migration_notes": [
+        "Consolidating 2 files using hierarchical strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline"
+      ]
+    },
+    "formula_parser": {
+      "pattern_name": "formula_parser",
+      "source_files": [
+        "tests/test_formula_parser.py",
+        "tests/integration/test_formula_parser_integration.py"
+      ],
+      "target_file": "test_formula_parser_complete.py",
+      "strategy": "hierarchical",
+      "risk_level": "LOW",
+      "estimated_effort_hours": 3.0,
+      "expected_size_reduction_pct": 30,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "unique_test_scenarios",
+        "specialized_fixtures"
+      ],
+      "conflict_resolution_approach": "automated_merge",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check"
+      ],
+      "migration_notes": [
+        "Consolidating 2 files using hierarchical strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline"
+      ]
+    },
+    "optimized_batch_processor": {
+      "pattern_name": "optimized_batch_processor",
+      "source_files": [
+        "tests/test_optimized_batch_processor_comprehensive.py",
+        "tests/unit/test_optimized_batch_processor.py",
+        "tests/integration/test_optimized_batch_processor_integration.py"
+      ],
+      "target_file": "test_optimized_batch_processor_complete.py",
+      "strategy": "hierarchical",
+      "risk_level": "LOW",
+      "estimated_effort_hours": 4.5,
+      "expected_size_reduction_pct": 30,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "unique_test_scenarios",
+        "specialized_fixtures"
+      ],
+      "conflict_resolution_approach": "automated_merge",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check"
+      ],
+      "migration_notes": [
+        "Consolidating 3 files using hierarchical strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline"
+      ]
+    },
+    "ooxml_analyzer": {
+      "pattern_name": "ooxml_analyzer",
+      "source_files": [
+        "tests/unit/test_ooxml_analyzer.py",
+        "tests/integration/test_ooxml_analyzer_integration.py"
+      ],
+      "target_file": "test_ooxml_analyzer_unified.py",
+      "strategy": "merge_all",
+      "risk_level": "LOW",
+      "estimated_effort_hours": 3.0,
+      "expected_size_reduction_pct": 50.0,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "unique_test_scenarios",
+        "specialized_fixtures"
+      ],
+      "conflict_resolution_approach": "automated_merge",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check"
+      ],
+      "migration_notes": [
+        "Consolidating 2 files using merge_all strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline",
+        "Create new unified file combining all existing functionality"
+      ]
+    },
+    "token_resolver": {
+      "pattern_name": "token_resolver",
+      "source_files": [
+        "tests/unit/test_token_resolver.py",
+        "tests/integration/test_token_resolver_integration.py"
+      ],
+      "target_file": "test_token_resolver_unified.py",
+      "strategy": "merge_all",
+      "risk_level": "LOW",
+      "estimated_effort_hours": 3.0,
+      "expected_size_reduction_pct": 50.0,
+      "coverage_preservation": 100.0,
+      "sections_to_merge": [
+        "imports",
+        "basic_tests",
+        "common_fixtures",
+        "utility_functions",
+        "duplicate_test_methods"
+      ],
+      "sections_to_preserve": [
+        "unique_test_scenarios",
+        "specialized_fixtures"
+      ],
+      "conflict_resolution_approach": "automated_merge",
+      "validation_requirements": [
+        "syntax_validation",
+        "import_verification",
+        "test_discovery_check"
+      ],
+      "migration_notes": [
+        "Consolidating 2 files using merge_all strategy",
+        "Preserve all existing test coverage and functionality",
+        "Maintain compatibility with existing CI/CD pipeline",
+        "Create new unified file combining all existing functionality"
+      ]
+    }
+  },
+  "implementation_plan": {
+    "implementation_phases": {
+      "phase_1_low_risk": [
+        "transaction_pipeline",
+        "build",
+        "variable_substitution",
+        "json_patch_parser",
+        "multi_format_ooxml_handler",
+        "token_layer",
+        "formula_variable_resolver",
+        "formula_parser",
+        "optimized_batch_processor",
+        "ooxml_analyzer",
+        "token_resolver"
+      ],
+      "phase_2_medium_risk": [
+        "theme_resolver",
+        "ooxml_extension_manager",
+        "token_parser",
+        "design_token_extractor",
+        "variable_resolver"
+      ],
+      "phase_3_high_risk": [
+        "ooxml_processor",
+        "template_analyzer"
+      ]
+    },
+    "total_estimated_effort_hours": 117.75,
+    "file_reduction": {
+      "before": 55,
+      "after": 18,
+      "reduction_count": 37,
+      "reduction_percentage": 67.27272727272727
+    },
+    "risk_distribution": {
+      "low_risk_patterns": 11,
+      "medium_risk_patterns": 5,
+      "high_risk_patterns": 2
+    }
+  },
+  "design_timestamp": 1757645152.366743
+}
