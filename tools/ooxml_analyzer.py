@@ -11,23 +11,28 @@ Usage:
 """
 
 
-from typing import Any, Dict
+# Use shared utilities to eliminate duplication
+from tools.core import (
+    Any, Dict, Path, get_logger, zipfile,
+    safe_ooxml_reader, error_boundary, ET, etree, LXML_AVAILABLE
+)
 import argparse
 import sys
-import zipfile
-import json
-from pathlib import Path
-import xml.etree.ElementTree as ET
 
 try:
-    import lxml.etree as lxml_ET
-    from lxml.etree import XMLSyntaxError
     import xmltodict
+    if LXML_AVAILABLE:
+        from lxml.etree import XMLSyntaxError
+    else:
+        XMLSyntaxError = ET.ParseError
 except ImportError as e:
     print(f"ERROR: Required dependencies not found. Did you activate venv?")
     print(f"Run: source venv/bin/activate")
     print(f"Missing: {e}")
     sys.exit(1)
+
+# Configure logging
+logger = get_logger(__name__)
 
 
 class OOXMLAnalyzer:
@@ -71,7 +76,7 @@ class OOXMLAnalyzer:
         }
         
         try:
-            with zipfile.ZipFile(self.template_path, 'r') as zip_file:
+            with safe_ooxml_reader(self.template_path) as zip_file:
                 files = zip_file.namelist()
                 contents['total_files'] = len(files)
                 

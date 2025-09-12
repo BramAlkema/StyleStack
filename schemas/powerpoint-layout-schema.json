@@ -1,0 +1,233 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PowerPoint Layout Schema",
+  "description": "Schema for PowerPoint-compatible slide layouts with parameterized positioning",
+  "version": "1.0.0",
+  
+  "definitions": {
+    "parameterized_position": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "string",
+          "description": "X coordinate as design token variable or EMU value",
+          "pattern": "^(\\${[^}]+}|\\d+)$"
+        },
+        "y": {
+          "type": "string", 
+          "description": "Y coordinate as design token variable or EMU value",
+          "pattern": "^(\\${[^}]+}|\\d+)$"
+        },
+        "width": {
+          "type": "string",
+          "description": "Width as design token variable or EMU value", 
+          "pattern": "^(\\${[^}]+}|\\d+)$"
+        },
+        "height": {
+          "type": "string",
+          "description": "Height as design token variable or EMU value",
+          "pattern": "^(\\${[^}]+}|\\d+)$"
+        }
+      },
+      "required": ["x", "y", "width", "height"]
+    },
+    
+    "placeholder": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique placeholder identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable placeholder name"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["ctrTitle", "subTitle", "title", "body", "pic", "dt", "ftr", "sldNum", "chart", "tbl", "media"],
+          "description": "PowerPoint placeholder type"
+        },
+        "size": {
+          "type": "string",
+          "enum": ["full", "half", "quarter", "custom"],
+          "description": "Relative size specification"
+        },
+        "index": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Placeholder index for PowerPoint ordering"
+        },
+        "position": {
+          "$ref": "#/definitions/parameterized_position"
+        },
+        "typography": {
+          "type": "object",
+          "properties": {
+            "font_size": {
+              "type": "string",
+              "pattern": "^(\\${[^}]+}|\\d+)$",
+              "description": "Font size as design token or hundredths of a point"
+            },
+            "alignment": {
+              "type": "string", 
+              "enum": ["l", "ctr", "r", "just"],
+              "description": "Text alignment (left, center, right, justify)"
+            },
+            "anchor": {
+              "type": "string",
+              "enum": ["t", "ctr", "b"],
+              "description": "Vertical text anchor (top, center, bottom)"
+            }
+          }
+        },
+        "shape_properties": {
+          "type": "object",
+          "properties": {
+            "no_group": {
+              "type": "boolean",
+              "default": true,
+              "description": "Prevent grouping with other shapes"
+            },
+            "auto_fit": {
+              "type": "string",
+              "enum": ["none", "normal", "shape"],
+              "default": "none",
+              "description": "Text auto-fit behavior"
+            }
+          }
+        }
+      },
+      "required": ["id", "name", "type", "index", "position"]
+    },
+    
+    "layout": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique layout identifier"
+        },
+        "name": {
+          "type": "string", 
+          "description": "Professional PowerPoint layout name"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["title", "obj", "secHead", "twoObj", "twoTxTwoObj", "titleOnly", "blank", "objTx", "picTx", "pic"],
+          "description": "PowerPoint OOXML layout type"
+        },
+        "description": {
+          "type": "string",
+          "description": "Layout purpose and usage description"
+        },
+        "aspect_ratio_support": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["16:9", "4:3", "16:10"]
+          },
+          "description": "Supported aspect ratios for responsive positioning"
+        },
+        "placeholders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/placeholder"
+          },
+          "description": "Layout placeholder definitions"
+        },
+        "master_relationship": {
+          "type": "object",
+          "properties": {
+            "inherit_background": {
+              "type": "boolean",
+              "default": true
+            },
+            "show_master_shapes": {
+              "type": "boolean", 
+              "default": false
+            }
+          }
+        }
+      },
+      "required": ["id", "name", "type", "placeholders"]
+    }
+  },
+  
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "positioning_variables": {
+      "type": "object",
+      "description": "Design token variables for responsive positioning",
+      "properties": {
+        "slide_dimensions": {
+          "type": "object",
+          "properties": {
+            "16:9": {
+              "type": "object",
+              "properties": {
+                "width": {"type": "integer", "const": 9144000},
+                "height": {"type": "integer", "const": 5143500}
+              }
+            },
+            "4:3": {
+              "type": "object", 
+              "properties": {
+                "width": {"type": "integer", "const": 9144000},
+                "height": {"type": "integer", "const": 6858000}
+              }
+            },
+            "16:10": {
+              "type": "object",
+              "properties": {
+                "width": {"type": "integer", "const": 9144000},
+                "height": {"type": "integer", "const": 5715000}
+              }
+            }
+          }
+        },
+        "margins": {
+          "type": "object",
+          "properties": {
+            "standard": {
+              "type": "object",
+              "properties": {
+                "left": {"type": "string", "default": "${slide.width * 0.083}"},
+                "right": {"type": "string", "default": "${slide.width * 0.083}"},
+                "top": {"type": "string", "default": "${slide.height * 0.071}"},
+                "bottom": {"type": "string", "default": "${slide.height * 0.071}"}
+              }
+            }
+          }
+        },
+        "content_areas": {
+          "type": "object",
+          "properties": {
+            "full_width": {"type": "string", "default": "${slide.width - margins.left - margins.right}"},
+            "half_width": {"type": "string", "default": "${content_areas.full_width / 2 - gutter.horizontal / 2}"},
+            "quarter_width": {"type": "string", "default": "${content_areas.full_width / 4 - gutter.horizontal * 3 / 4}"}
+          }
+        },
+        "gutters": {
+          "type": "object",
+          "properties": {
+            "horizontal": {"type": "string", "default": "${slide.width * 0.022}"},
+            "vertical": {"type": "string", "default": "${slide.height * 0.039}"}
+          }
+        }
+      }
+    },
+    "layouts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/layout"
+      },
+      "description": "All PowerPoint layout definitions"
+    }
+  },
+  "required": ["schema_version", "positioning_variables", "layouts"]
+}

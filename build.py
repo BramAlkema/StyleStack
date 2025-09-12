@@ -626,7 +626,10 @@ def process_extension_variables(context: BuildContext, pkg_dir: pathlib.Path):
 @click.option('--verbose', '-v', is_flag=True, help='Verbose output with detailed error reporting')
 @click.option('--org', help='Organization name for extension variable lookup')
 @click.option('--channel', help='Channel name for extension variable lookup')
-def main(src, as_potx, as_dotx, as_xltx, out, verbose, org, channel):
+@click.option('--supertheme', is_flag=True, help='Generate Microsoft SuperTheme package (.thmx)')
+@click.option('--designs', help='Directory containing design variant JSON files')
+@click.option('--ratios', help='Aspect ratios (comma-separated: 16:9,4:3,a4,letter)')
+def main(src, as_potx, as_dotx, as_xltx, out, verbose, org, channel, supertheme, designs, ratios):
     """StyleStack OOXML Extension Variable System"""
     
     # License validation for commercial use (GitHub-native)
@@ -645,7 +648,126 @@ def main(src, as_potx, as_dotx, as_xltx, out, verbose, org, channel):
     log_level = logging.DEBUG if verbose else logging.INFO
     logging.basicConfig(level=log_level, format='%(levelname)s: %(message)s')
     
-    # Determine output format
+    # SuperTheme generation mode
+    if supertheme:
+        # Handle SuperTheme generation separately
+        if verbose:
+            click.echo("🎨 Generating Microsoft SuperTheme package...")
+        
+        # Validate SuperTheme parameters
+        if not designs:
+            click.echo("❌ Error: --designs directory is required for SuperTheme generation")
+            click.echo("   Usage: build.py --supertheme --designs ./designs --ratios 16:9,4:3 --out theme.thmx")
+            sys.exit(1)
+        
+        # Import SuperTheme generator
+        try:
+            from tools.supertheme_generator import SuperThemeGenerator
+            from tools.aspect_ratio_resolver import create_standard_aspect_ratios
+            import json
+        except ImportError as e:
+            click.echo(f"❌ Error: SuperTheme generator not available: {e}")
+            sys.exit(1)
+        
+        # Load design variants
+        design_variants = {}
+        designs_path = pathlib.Path(designs)
+        
+        if not designs_path.exists():
+            click.echo(f"❌ Error: Designs directory not found: {designs}")
+            sys.exit(1)
+        
+        if verbose:
+            click.echo(f"📂 Loading design variants from: {designs}")
+        
+        for json_file in designs_path.glob("*.json"):
+            try:
+                with open(json_file) as f:
+                    design_data = json.load(f)
+                    design_name = json_file.stem.replace('_', ' ').title()
+                    design_variants[design_name] = design_data
+                    if verbose:
+                        click.echo(f"   ✓ Loaded: {design_name}")
+            except Exception as e:
+                click.echo(f"   ⚠️  Failed to load {json_file.name}: {e}")
+        
+        if not design_variants:
+            click.echo("❌ Error: No valid design files found in designs directory")
+            sys.exit(1)
+        
+        # Parse aspect ratios
+        aspect_ratio_list = []
+        if ratios:
+            # Map user-friendly names to token paths
+            ratio_mapping = {
+                '16:9': 'aspectRatios.widescreen_16_9',
+                '16:10': 'aspectRatios.standard_16_10',
+                '4:3': 'aspectRatios.classic_4_3',
+                'a4': 'aspectRatios.a4_landscape',
+                'a4-portrait': 'aspectRatios.a4_portrait',
+                'letter': 'aspectRatios.letter_landscape',
+                'letter-portrait': 'aspectRatios.letter_portrait'
+            }
+            
+            for ratio in ratios.split(','):
+                ratio = ratio.strip().lower()
+                if ratio in ratio_mapping:
+                    aspect_ratio_list.append(ratio_mapping[ratio])
+                else:
+                    click.echo(f"⚠️  Warning: Unknown aspect ratio '{ratio}', skipping")
+                    click.echo(f"   Available: {', '.join(ratio_mapping.keys())}")
+        else:
+            # Default aspect ratios
+            aspect_ratio_list = [
+                'aspectRatios.widescreen_16_9',
+                'aspectRatios.standard_16_10',
+                'aspectRatios.classic_4_3'
+            ]
+        
+        if verbose:
+            click.echo(f"🖼️  Using aspect ratios: {len(aspect_ratio_list)}")
+            for ratio in aspect_ratio_list:
+                click.echo(f"   • {ratio.split('.')[-1].replace('_', ' ').title()}")
+        
+        # Generate SuperTheme
+        try:
+            generator = SuperThemeGenerator(verbose=verbose)
+            
+            if verbose:
+                click.echo("🔨 Generating SuperTheme package...")
+                click.echo(f"   Designs: {len(design_variants)}")
+                click.echo(f"   Aspect ratios: {len(aspect_ratio_list)}")
+                click.echo(f"   Total variants: {len(design_variants) * len(aspect_ratio_list)}")
+            
+            # Generate the SuperTheme package
+            supertheme_bytes = generator.generate_supertheme(
+                design_variants=design_variants,
+                aspect_ratios=aspect_ratio_list
+            )
+            
+            # Write output file
+            out_path = pathlib.Path(out)
+            out_path.write_bytes(supertheme_bytes)
+            
+            # Report success
+            size_mb = len(supertheme_bytes) / (1024 * 1024)
+            click.echo(f"✅ SuperTheme generated: {out_path}")
+            click.echo(f"   Size: {size_mb:.2f} MB")
+            click.echo(f"   Variants: {len(design_variants) * len(aspect_ratio_list)}")
+            
+            if size_mb > 5.0:
+                click.echo(f"⚠️  Warning: Package size ({size_mb:.2f}MB) exceeds recommended 5MB limit")
+            
+        except Exception as e:
+            click.echo(f"❌ Error generating SuperTheme: {e}")
+            if verbose:
+                import traceback
+                click.echo(traceback.format_exc())
+            sys.exit(1)
+        
+        return  # Exit after SuperTheme generation
+    
+    # Determine output format for regular template processing
     target_format = None
     if as_potx:
         target_format = "potx"

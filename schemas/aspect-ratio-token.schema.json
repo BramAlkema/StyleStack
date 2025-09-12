@@ -1,0 +1,281 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://stylestack.dev/schemas/aspect-ratio-token.schema.json",
+  "title": "StyleStack Aspect Ratio Token Schema",
+  "description": "W3C DTCG-compliant schema for aspect ratio tokens enabling conditional layout resolution",
+  "version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "Reference to this JSON schema"
+    },
+    "aspectRatios": {
+      "$ref": "#/definitions/aspectRatioTokenGroup",
+      "description": "Aspect ratio token definitions"
+    }
+  },
+  "additionalProperties": {
+    "anyOf": [
+      {"$ref": "#/definitions/aspectRatioConditionalToken"},
+      {"$ref": "#/definitions/tokenGroup"}
+    ]
+  },
+  "definitions": {
+    "aspectRatioToken": {
+      "type": "object",
+      "description": "A single aspect ratio token following W3C DTCG specification with StyleStack EMU extensions",
+      "properties": {
+        "$type": {
+          "type": "string",
+          "const": "aspectRatio",
+          "description": "Token type identifier for aspect ratios"
+        },
+        "$value": {
+          "type": "object",
+          "description": "Aspect ratio value object with dimensions and metadata",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Human-readable name for the aspect ratio",
+              "examples": ["16:9 Widescreen", "A4 Landscape", "Letter Portrait"]
+            },
+            "width": {
+              "type": "string",
+              "pattern": "^[0-9]+$",
+              "description": "Width dimension in EMU (English Metric Units)"
+            },
+            "height": {
+              "type": "string", 
+              "pattern": "^[0-9]+$",
+              "description": "Height dimension in EMU (English Metric Units)"
+            },
+            "powerpoint_type": {
+              "type": "string",
+              "enum": ["screen16x9", "screen16x10", "screen4x3", "custom"],
+              "description": "PowerPoint slide size type identifier"
+            },
+            "description": {
+              "type": "string",
+              "description": "Optional description of the aspect ratio use case"
+            }
+          },
+          "required": ["name", "width", "height", "powerpoint_type"],
+          "additionalProperties": false
+        },
+        "$description": {
+          "type": "string",
+          "description": "Optional description of the token"
+        },
+        "$extensions": {
+          "type": "object",
+          "description": "StyleStack-specific extensions for OOXML integration",
+          "properties": {
+            "stylestack": {
+              "type": "object",
+              "properties": {
+                "emu": {
+                  "type": "object",
+                  "description": "EMU precision metadata",
+                  "properties": {
+                    "precision": {
+                      "type": "string",
+                      "enum": ["exact", "rounded"],
+                      "description": "EMU calculation precision level"
+                    },
+                    "source_unit": {
+                      "type": "string",
+                      "enum": ["mm", "inches", "pixels"],
+                      "description": "Original measurement unit"
+                    },
+                    "source_value": {
+                      "type": "object",
+                      "properties": {
+                        "width": {"type": "number"},
+                        "height": {"type": "number"}
+                      }
+                    }
+                  }
+                },
+                "xpath": {
+                  "type": "string",
+                  "description": "XPath for OOXML element targeting"
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": ["$type", "$value"],
+      "additionalProperties": false
+    },
+    "aspectRatioTokenGroup": {
+      "type": "object",
+      "description": "Collection of aspect ratio tokens",
+      "patternProperties": {
+        "^[a-zA-Z][a-zA-Z0-9_]*$": {
+          "$ref": "#/definitions/aspectRatioToken"
+        }
+      },
+      "additionalProperties": false
+    },
+    "aspectRatioConditionalToken": {
+      "type": "object",
+      "description": "Token with aspect ratio conditional values",
+      "properties": {
+        "$aspectRatio": {
+          "type": "object",
+          "description": "Aspect ratio conditional resolution mapping",
+          "patternProperties": {
+            "^\\{aspectRatios\\.[a-zA-Z][a-zA-Z0-9_]*\\}$": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\{aspectRatios\\.[a-zA-Z][a-zA-Z0-9_]*\\.(\\$value\\.)?(name|width|height|powerpoint_type)\\}$",
+                  "description": "Token reference to aspect ratio property"
+                },
+                {
+                  "type": "string",
+                  "description": "Direct value for this aspect ratio"
+                },
+                {
+                  "type": "number",
+                  "description": "Numeric value for this aspect ratio"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "minProperties": 1
+        }
+      },
+      "required": ["$aspectRatio"],
+      "additionalProperties": true
+    },
+    "tokenGroup": {
+      "type": "object",
+      "description": "Generic token group for nested structures",
+      "additionalProperties": {
+        "anyOf": [
+          {"$ref": "#/definitions/aspectRatioToken"},
+          {"$ref": "#/definitions/aspectRatioConditionalToken"},
+          {"$ref": "#/definitions/tokenGroup"},
+          {"$ref": "#/definitions/standardToken"}
+        ]
+      }
+    },
+    "standardToken": {
+      "type": "object",
+      "description": "Standard W3C DTCG token",
+      "properties": {
+        "$type": {
+          "type": "string",
+          "enum": ["color", "dimension", "fontFamily", "fontWeight", "duration", "cubicBezier", "number", "string"]
+        },
+        "$value": {
+          "anyOf": [
+            {"type": "string"},
+            {"type": "number"},
+            {"type": "object"}
+          ]
+        },
+        "$description": {
+          "type": "string"
+        },
+        "$extensions": {
+          "type": "object"
+        }
+      },
+      "required": ["$type", "$value"]
+    }
+  },
+  "examples": [
+    {
+      "aspectRatios": {
+        "widescreen": {
+          "$type": "aspectRatio",
+          "$value": {
+            "name": "16:9 Widescreen",
+            "width": "12192000",
+            "height": "6858000", 
+            "powerpoint_type": "screen16x9"
+          },
+          "$description": "Standard widescreen presentation format"
+        },
+        "a4_landscape": {
+          "$type": "aspectRatio",
+          "$value": {
+            "name": "A4 Landscape",
+            "width": "10692000",
+            "height": "7560000",
+            "powerpoint_type": "custom",
+            "description": "A4 paper in landscape orientation"
+          },
+          "$extensions": {
+            "stylestack": {
+              "emu": {
+                "precision": "exact",
+                "source_unit": "mm", 
+                "source_value": {
+                  "width": 297,
+                  "height": 210
+                }
+              }
+            }
+          }
+        },
+        "letter_portrait": {
+          "$type": "aspectRatio",
+          "$value": {
+            "name": "Letter Portrait",
+            "width": "7772400", 
+            "height": "10058400",
+            "powerpoint_type": "custom"
+          },
+          "$extensions": {
+            "stylestack": {
+              "emu": {
+                "precision": "exact",
+                "source_unit": "inches",
+                "source_value": {
+                  "width": 8.5,
+                  "height": 11
+                }
+              }
+            }
+          }
+        }
+      },
+      "layout": {
+        "slide": {
+          "width": {
+            "$aspectRatio": {
+              "{aspectRatios.widescreen}": "{aspectRatios.widescreen.$value.width}",
+              "{aspectRatios.a4_landscape}": "{aspectRatios.a4_landscape.$value.width}",
+              "{aspectRatios.letter_portrait}": "{aspectRatios.letter_portrait.$value.width}"
+            }
+          },
+          "height": {
+            "$aspectRatio": {
+              "{aspectRatios.widescreen}": "{aspectRatios.widescreen.$value.height}",
+              "{aspectRatios.a4_landscape}": "{aspectRatios.a4_landscape.$value.height}",
+              "{aspectRatios.letter_portrait}": "{aspectRatios.letter_portrait.$value.height}"
+            }
+          }
+        }
+      },
+      "typography": {
+        "title": {
+          "size": {
+            "$aspectRatio": {
+              "{aspectRatios.widescreen}": "44pt",
+              "{aspectRatios.a4_landscape}": "36pt", 
+              "{aspectRatios.letter_portrait}": "32pt"
+            }
+          }
+        }
+      }
+    }
+  ]
+}
