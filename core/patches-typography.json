@@ -144,7 +144,7 @@
         {
           "set": {
             "xpath": "//w:style[@w:styleId='Normal']/w:rPr/w:sz/@w:val",
-            "value": "{tokens.computed_values.type_scale.base_size_half_points}"
+            "value": "{computed_values_type_scale_base_size_half_points}"
           }
         },
         {
@@ -174,7 +174,7 @@
         {
           "set": {
             "xpath": "//w:style[@w:styleId='Heading1']/w:rPr/w:sz/@w:val",
-            "value": "{tokens.computed_values.type_scale.heading1_size_half_points}"
+            "value": "{computed_values_type_scale_heading1_size_half_points}"
           }
         },
         {
@@ -198,7 +198,7 @@
         {
           "set": {
             "xpath": "//w:style[@w:styleId='Heading2']/w:rPr/w:sz/@w:val",
-            "value": "{tokens.computed_values.type_scale.heading2_size_half_points}"
+            "value": "{computed_values_type_scale_heading2_size_half_points}"
           }
         },
         {
@@ -210,7 +210,7 @@
         {
           "set": {
             "xpath": "//w:style[@w:styleId='Quote']/w:rPr/w:sz/@w:val",
-            "value": "{tokens.computed_values.type_scale.quote_size_half_points}"
+            "value": "{computed_values_type_scale_quote_size_half_points}"
           }
         },
         {
@@ -335,13 +335,13 @@
   ],
   "computed_tokens": {
     "type_scale": {
-      "display_size_twentieths": 976,
-      "subtitle_size_twentieths": 640,
-      "body_size_twentieths": 320,
-      "base_size_half_points": 32,
-      "heading1_size_half_points": 78,
-      "heading2_size_half_points": 62,
-      "quote_size_half_points": 40,
+      "display_size_twentieths": 1120,
+      "subtitle_size_twentieths": 800,
+      "body_size_twentieths": 480,
+      "base_size_half_points": 24,
+      "heading1_size_half_points": 40,
+      "heading2_size_half_points": 32,
+      "quote_size_half_points": 24,
       "excel_base_size_points": 11,
       "excel_header_size_points": 12
     },

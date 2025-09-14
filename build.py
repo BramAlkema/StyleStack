@@ -567,16 +567,64 @@ def process_extension_variables(context: BuildContext, pkg_dir: pathlib.Path):
     """Process extension variables using the substitution pipeline"""
     if not context.substitution_pipeline:
         return
-    
+
     try:
+        # Load variables from the variable resolver
+        variables = {}
+        if context.variable_resolver:
+            try:
+                # First, get basic variables from VariableResolver
+                resolved_vars = context.variable_resolver.resolve_all_variables()
+
+                # Convert ResolvedVariable objects to simple dict
+                basic_variables = {}
+                for var_id, resolved_var in resolved_vars.items():
+                    basic_variables[var_id] = resolved_var.value
+
+                # Now try to evaluate formulas using FormulaVariableResolver
+                try:
+                    from tools.formula_variable_resolver import FormulaVariableResolver
+                    formula_resolver = FormulaVariableResolver()
+
+                    # Add basic variables as a layer
+                    formula_resolver.add_layer("core", basic_variables)
+
+                    # Resolve all variables using the formula resolver
+                    resolved_formulas = formula_resolver.resolve_all()
+
+                    # Use formula-resolved values if available, otherwise fall back to basic
+                    variables.update(basic_variables)  # Start with basic
+                    variables.update(resolved_formulas)  # Override with formula results
+
+                    if context.verbose:
+                        print(f"   Loaded {len(variables)} variables ({len(resolved_formulas)} formula-resolved)")
+
+                        # Show sample variables for debugging
+                        formula_vars = [k for k, v in variables.items() if isinstance(v, (int, float)) and k in resolved_formulas]
+                        if formula_vars:
+                            print("   Formula-resolved variables:")
+                            for var_id in formula_vars[:3]:
+                                print(f"     {var_id} = {variables[var_id]}")
+
+                except ImportError:
+                    # Fall back to basic variables if formula resolver not available
+                    variables = basic_variables
+                    if context.verbose:
+                        print(f"   Loaded {len(variables)} variables (formula resolver not available)")
+
+            except Exception as e:
+                if context.verbose:
+                    print(f"   Warning: Could not load variables: {e}")
+                    print(f"   Error details: {str(e)}")
+
         # Look for OOXML files that may have extension variables
         ooxml_files = []
         for ext in ["*.xml"]:
             ooxml_files.extend(pkg_dir.rglob(ext))
-        
+
         if not ooxml_files:
             return
-        
+
         # Process variables in each OOXML file
         for xml_file in ooxml_files:
             try:
@@ -584,12 +632,14 @@ def process_extension_variables(context: BuildContext, pkg_dir: pathlib.Path):
                 content = xml_file.read_text(encoding='utf-8')
                 if 'stylestack.extension.variables' not in content:
                     continue
-                
+
                 # Process the file with the substitution pipeline
+                # FIX: Pass content and variables dict instead of file path
                 result = context.substitution_pipeline.substitute_variables_in_document(
-                    str(xml_file),
-                    backup_original=True,
-                    validate_result=True
+                    content,  # Pass XML content, not file path
+                    variables,  # Pass variables dict
+                    preserve_structure=True,
+                    preserve_namespaces=True
                 )
                 
                 if not result.success:
@@ -599,7 +649,13 @@ def process_extension_variables(context: BuildContext, pkg_dir: pathlib.Path):
                         {"file": str(xml_file), "errors": result.validation_errors}
                     ))
                 else:
-                    context.add_warning(f"Processed extension variables in {xml_file.relative_to(pkg_dir)}")
+                    # Write the processed content back to the file
+                    if result.processed_content:
+                        xml_file.write_text(result.processed_content, encoding='utf-8')
+                        if context.verbose:
+                            print(f"   Processed extension variables in {xml_file.relative_to(pkg_dir)}")
+                    else:
+                        context.add_warning(f"No processed content returned for {xml_file.relative_to(pkg_dir)}")
                     
             except Exception as e:
                 context.add_error(StyleStackError(
