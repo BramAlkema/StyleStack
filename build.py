@@ -10,7 +10,7 @@ Usage examples:
 """
 
 import os, shutil, sys, tempfile, zipfile, pathlib
-import traceback, logging
+import traceback, logging, json
 from typing import Dict, Any, Optional
 from dataclasses import dataclass, field
 from enum import Enum
@@ -466,22 +466,45 @@ def process_json_patches(context: BuildContext, pkg_dir: pathlib.Path, org: Opti
         return
     
     try:
+        # Helper function to filter actual patch files
+        def is_patch_file(json_path):
+            """Check if a JSON file is a valid patch file"""
+            try:
+                with open(json_path) as f:
+                    data = json.load(f)
+
+                # Check for required patch structure
+                if not all(key in data for key in ['metadata', 'targets']):
+                    return False
+
+                # Check if targets have operations
+                if not isinstance(data['targets'], list):
+                    return False
+
+                for target in data['targets']:
+                    if 'ops' in target or 'relsAdd' in target:
+                        return True
+
+                return False
+            except Exception:
+                return False
+
         # Find JSON patch files
         patch_files = []
-        
+
         # Look for org-specific patches
         if org:
-            org_patches = pathlib.Path(f"org/{org}").glob("*.json")
-            patch_files.extend(org_patches)
-            
+            org_candidates = pathlib.Path(f"org/{org}").glob("*.json")
+            patch_files.extend([p for p in org_candidates if is_patch_file(p)])
+
         # Look for channel-specific patches
         if channel:
-            channel_patches = pathlib.Path(f"channels/{channel}").glob("*.json")
-            patch_files.extend(channel_patches)
-        
+            channel_candidates = pathlib.Path(f"channels/{channel}").glob("*.json")
+            patch_files.extend([p for p in channel_candidates if is_patch_file(p)])
+
         # Look for core patches
-        core_patches = pathlib.Path("core").glob("*.json")
-        patch_files.extend(core_patches)
+        core_candidates = pathlib.Path("core").glob("*.json")
+        patch_files.extend([p for p in core_candidates if is_patch_file(p)])
         
         if not patch_files:
             if context.verbose:
