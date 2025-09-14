@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"
+           xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">
+
+  <!-- Application properties with StyleStack branding -->
+  <Application>{{application.name|Microsoft Excel}}</Application>
+  <DocSecurity>0</DocSecurity>
+  <Lines>{{document.metrics.lines|500}}</Lines>
+  <Paragraphs>{{document.metrics.paragraphs|150}}</Paragraphs>
+  <ScaleCrop>false</ScaleCrop>
+  <Company>{{company.name|Your Company}}</Company>
+  <LinksUpToDate>false</LinksUpToDate>
+  <SharedDoc>false</SharedDoc>
+  <HyperlinksChanged>false</HyperlinksChanged>
+  <AppVersion>{{application.version|16.0000}}</AppVersion>
+
+  <!-- StyleStack-specific application metadata -->
+  <Manager>{{company.design_system_manager|StyleStack Administrator}}</Manager>
+  <PresentationFormat>{{document.presentation_format|StyleStack Modern Dashboard}}</PresentationFormat>
+
+  <!-- Document statistics with design token metrics -->
+  <Characters>{{document.metrics.characters|15000}}</Characters>
+  <CharactersWithSpaces>{{document.metrics.characters_with_spaces|18000}}</CharactersWithSpaces>
+  <Words>{{document.metrics.words|2500}}</Words>
+
+  <!-- Custom document properties for design system tracking -->
+  <Template>{{template.source|StyleStack Modern Excel Template v2025.1}}</Template>
+  <TotalTime>{{document.creation_time|120}}</TotalTime>
+
+  <!-- Security and sharing properties -->
+  <HiddenSlides>{{document.hidden_sheets|0}}</HiddenSlides>
+  <MMClips>{{document.multimedia_clips|0}}</MMClips>
+  <Notes>{{document.notes|0}}</Notes>
+
+</Properties>

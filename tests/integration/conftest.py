@@ -18,7 +18,9 @@ import sys
 # Add tools directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools"))
 
-from tools.multi_format_ooxml_handler import MultiFormatOOXMLHandler
+from tools.handlers.formats import FormatRegistry, create_format_processor
+from tools.handlers.types import FormatConfiguration
+from tools.core.types import RecoveryStrategy
 from tools.transaction_pipeline import TransactionPipeline
 
 # Configure logging for tests
@@ -102,20 +104,29 @@ def temp_workspace():
     if temp_dir.exists():
         shutil.rmtree(temp_dir, ignore_errors=True)
 
-@pytest.fixture(scope="function") 
-def ooxml_handler():
-    """Provide a fresh MultiFormatOOXMLHandler for each test."""
-    return MultiFormatOOXMLHandler(enable_token_integration=True)
+@pytest.fixture(scope="function")
+def format_registry():
+    """Provide a fresh FormatRegistry for each test."""
+    return FormatRegistry()
+
+@pytest.fixture(scope="function")
+def format_processor_factory():
+    """Provide a factory for creating format processors."""
+    def create_processor(format_type, enable_token_integration=True):
+        config = FormatConfiguration(
+            format_type=format_type,
+            recovery_strategy=RecoveryStrategy.RETRY_WITH_FALLBACK.value,
+            enable_token_integration=enable_token_integration
+        )
+        return create_format_processor(format_type, config)
+    return create_processor
 
 @pytest.fixture(scope="function")
 def transaction_pipeline():
     """Provide a fresh TransactionPipeline for each test."""
     return TransactionPipeline(enable_audit_trail=True)
 
-@pytest.fixture(scope="function")
-def json_processor():
-    """Provide a fresh JSONPatchProcessor for each test."""
-    return JSONPatchProcessor()
+# JSONPatchProcessor removed as part of architectural cleanup
 
 @pytest.fixture(scope="function")
 def template_factory(temp_workspace, templates_available):
@@ -221,6 +232,25 @@ def test_metrics():
     return TestMetrics()
 
 # Utility functions for tests
+
+def discover_python_modules() -> List[Dict[str, str]]:
+    """Discover Python modules in the tools directory."""
+    modules = []
+    tools_path = Path(__file__).parent.parent.parent / "tools"
+
+    if tools_path.exists():
+        for py_file in tools_path.rglob("*.py"):
+            if py_file.name != "__init__.py":
+                relative_path = py_file.relative_to(tools_path.parent)
+                module_name = str(relative_path).replace("/", ".").replace(".py", "")
+                modules.append({
+                    "name": module_name,
+                    "path": str(py_file),
+                    "relative_path": str(relative_path)
+                })
+
+    return modules
+
 
 def verify_ooxml_structure(file_path: Path, expected_format: str) -> bool:
     """Verify OOXML file structure."""

@@ -19,7 +19,8 @@ import re
 from tools.formula_parser import FormulaParser, FormulaError
 from tools.variable_resolver import VariableResolver as ProductionVariableResolver
 from tools.formula_variable_resolver import FormulaVariableResolver
-from tools.emu_types import EMUValue
+from tools.emu_types import EMUValue, EMUConversionError
+from tools.json_patch_parser import JSONPatchParser
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -273,7 +274,7 @@ class TokenIntegrationLayer:
             
         logger.debug(f"Registered token '{name}' in {scope.value} scope for {template_type or 'all'} templates")
     
-    def integrate_with_processor(self, processor: JSONPatchProcessor):
+    def integrate_with_processor(self, processor: JSONPatchParser):
         """
         Integrate token resolution with JSON-to-OOXML processor.
         
@@ -556,7 +557,7 @@ def create_default_integration_layer() -> TokenIntegrationLayer:
     """Create a token integration layer with default configuration."""
     return TokenIntegrationLayer()
 
-def integrate_tokens_with_processor(processor: JSONPatchProcessor) -> TokenIntegrationLayer:
+def integrate_tokens_with_processor(processor: JSONPatchParser) -> TokenIntegrationLayer:
     """
     Integrate token resolution with an existing JSON-to-OOXML processor.
     

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+                   xmlns:dc="http://purl.org/dc/elements/1.1/"
+                   xmlns:dcterms="http://purl.org/dc/terms/"
+                   xmlns:dcmitype="http://purl.org/dc/dcmitype/"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <!-- Core presentation properties with design token variables -->
+  <dc:title>{{presentation.title|StyleStack Design System Presentation}}</dc:title>
+  <dc:subject>{{presentation.subject|Corporate Brand Guidelines and Design Token Implementation}}</dc:subject>
+  <dc:creator>{{presentation.creator|StyleStack Design System}}</dc:creator>
+  <dc:description>{{presentation.description|Professional presentation template with StyleStack Modern design system integration. Features hierarchical design tokens, corporate brand overrides, and accessibility-compliant typography and color schemes.}}</dc:description>
+  <dc:language>{{presentation.language|en-US}}</dc:language>
+  <cp:keywords>{{presentation.keywords|design tokens, presentation, StyleStack, corporate branding, design system, accessibility, PowerPoint}}</cp:keywords>
+  <cp:category>{{presentation.category|Design System Presentation}}</cp:category>
+
+  <!-- Version and revision tracking -->
+  <cp:revision>{{presentation.revision|1}}</cp:revision>
+  <cp:version>{{presentation.version|1.0.0}}</cp:version>
+
+  <!-- Temporal properties -->
+  <dcterms:created xsi:type="dcterms:W3CDTF">{{presentation.created|2025-01-15T10:00:00Z}}</dcterms:created>
+  <dcterms:modified xsi:type="dcterms:W3CDTF">{{presentation.modified|2025-01-15T10:00:00Z}}</dcterms:modified>
+
+  <!-- Corporate identity metadata -->
+  <cp:lastModifiedBy>{{company.name|Your Company}} - {{presentation.last_modified_by|StyleStack System}}</cp:lastModifiedBy>
+
+</cp:coreProperties>

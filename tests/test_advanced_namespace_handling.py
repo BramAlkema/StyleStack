@@ -12,6 +12,9 @@ Part of Task 6.6: Advanced Namespace Handling for Complex XPath Expressions.
 import unittest
 import os
 from lxml import etree
+from tools.handlers.formats import FormatRegistry, create_format_processor
+from tools.handlers.types import FormatConfiguration
+from tools.core.types import RecoveryStrategy
 
 
 
@@ -20,8 +23,10 @@ class TestAdvancedNamespaceHandling(unittest.TestCase):
     
     def setUp(self):
         """Set up test fixtures."""
-        self.processor = JSONPatchProcessor(
-            recovery_strategy=RecoveryStrategy.RETRY_WITH_FALLBACK
+        # Use direct processor approach
+        self.registry = FormatRegistry()
+        config = FormatConfiguration(
+            recovery_strategy=RecoveryStrategy.RETRY_WITH_FALLBACK.value
         )
         
         # Sample XML documents with namespace challenges

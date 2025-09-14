@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <!-- Document defaults inspired by LibreOffice -->
+  <w:docDefaults>
+    <w:rPrDefault>
+      <w:rPr>
+        <w:rFonts w:ascii="{{typography.font.theme.minor}}" 
+                  w:hAnsi="{{typography.font.theme.minor}}" 
+                  w:eastAsia="{{typography.font.theme.minor.eastAsian}}" 
+                  w:cs="{{typography.font.theme.minor.complexScript}}"/>
+        <w:kern w:val="2"/>
+        <w:sz w:val="{{typography.size.body}}"/>
+        <w:szCs w:val="{{typography.size.body}}"/>
+        <w:lang w:val="en-US"/>
+      </w:rPr>
+    </w:rPrDefault>
+    <w:pPrDefault>
+      <w:spacing w:line="{{spacing.line.normal}}" w:lineRule="exact"/>
+    </w:pPrDefault>
+  </w:docDefaults>
+  
+  <!-- ====== PARAGRAPH STYLES ====== -->
+  
+  <!-- Base Normal style -->
+  <w:style w:type="paragraph" w:default="1" w:styleId="Normal">
+    <w:name w:val="Normal"/>
+    <w:qFormat/>
+    <w:pPr>
+      <w:spacing w:line="{{spacing.line.normal}}" w:lineRule="exact"/>
+    </w:pPr>
+    <w:rPr>
+      <w:rFonts w:ascii="{{typography.font.theme.minor}}" 
+                w:hAnsi="{{typography.font.theme.minor}}" 
+                w:eastAsia="{{typography.font.theme.minor.eastAsian}}" 
+                w:cs="{{typography.font.theme.minor.complexScript}}"/>
+      <w:sz w:val="{{typography.size.body}}"/>
+      <w:szCs w:val="{{typography.size.body}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <!-- Document Structure Styles -->
+  <w:style w:type="paragraph" w:styleId="Title">
+    <w:name w:val="Title"/>
+    <w:basedOn w:val="Normal"/>
+    <w:next w:val="Subtitle"/>
+    <w:qFormat/>
+    <w:pPr>
+      <w:spacing w:before="{{spacing.title.before}}" w:after="{{spacing.title.after}}"/>
+      <w:jc w:val="center"/>
+      <w:keepNext/>
+    </w:pPr>
+    <w:rPr>
+      <w:rFonts w:ascii="{{typography.font.theme.major}}" 
+                w:hAnsi="{{typography.font.theme.major}}" 
+                w:eastAsia="{{typography.font.theme.major.eastAsian}}" 
+                w:cs="{{typography.font.theme.major.complexScript}}"/>
+      <w:sz w:val="{{typography.size.title}}"/>
+      <w:szCs w:val="{{typography.size.title}}"/>
+      <w:b/>
+      <w:color w:val="{{color.text.primary}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="paragraph" w:styleId="Subtitle">
+    <w:name w:val="Subtitle"/>
+    <w:basedOn w:val="Normal"/>
+    <w:next w:val="Normal"/>
+    <w:qFormat/>
+    <w:pPr>
+      <w:spacing w:before="{{spacing.subtitle.before}}" w:after="{{spacing.subtitle.after}}"/>
+      <w:jc w:val="center"/>
+    </w:pPr>
+    <w:rPr>
+      <w:rFonts w:ascii="{{typography.font.heading}}" w:hAnsi="{{typography.font.heading}}"/>
+      <w:sz w:val="{{typography.size.subtitle}}"/>
+      <w:szCs w:val="{{typography.size.subtitle}}"/>
+      <w:color w:val="{{color.text.secondary}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <!-- Heading Hierarchy -->
+  <w:style w:type="paragraph" w:styleId="Heading1">
+    <w:name w:val="Heading 1"/>
+    <w:basedOn w:val="Normal"/>
+    <w:next w:val="Normal"/>
+    <w:qFormat/>
+    <w:pPr>
+      <w:spacing w:before="{{spacing.heading1.before}}" w:after="{{spacing.heading1.after}}" w:line="{{spacing.heading1.line}}" w:lineRule="exact"/>
+      <w:outlineLvl w:val="0"/>
+      <w:keepNext/>
+    </w:pPr>
+    <w:rPr>
+      <w:rFonts w:ascii="{{typography.font.heading}}" w:hAnsi="{{typography.font.heading}}"/>
+      <w:sz w:val="{{typography.size.h1}}"/>
+      <w:szCs w:val="{{typography.size.h1}}"/>
+      <w:b/>
+      <w:color w:val="{{color.heading.primary}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="paragraph" w:styleId="Heading2">
+    <w:name w:val="Heading 2"/>
+    <w:basedOn w:val="Heading1"/>
+    <w:next w:val="Normal"/>
+    <w:qFormat/>
+    <w:pPr>
+      <w:spacing w:before="{{spacing.heading2.before}}" w:after="{{spacing.heading2.after}}"/>
+      <w:outlineLvl w:val="1"/>
+    </w:pPr>
+    <w:rPr>
+      <w:sz w:val="{{typography.size.h2}}"/>
+      <w:szCs w:val="{{typography.size.h2}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="paragraph" w:styleId="Heading3">
+    <w:name w:val="Heading 3"/>
+    <w:basedOn w:val="Heading1"/>
+    <w:next w:val="Normal"/>
+    <w:qFormat/>
+    <w:pPr>
+      <w:spacing w:before="{{spacing.heading3.before}}" w:after="{{spacing.heading3.after}}"/>
+      <w:outlineLvl w:val="2"/>
+    </w:pPr>
+    <w:rPr>
+      <w:sz w:val="{{typography.size.h3}}"/>
+      <w:szCs w:val="{{typography.size.h3}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="paragraph" w:styleId="Heading4">
+    <w:name w:val="Heading 4"/>
+    <w:basedOn w:val="Heading1"/>
+    <w:next w:val="Normal"/>
+    <w:qFormat/>
+    <w:pPr>
+      <w:spacing w:before="{{spacing.heading4.before}}" w:after="{{spacing.heading4.after}}"/>
+      <w:outlineLvl w:val="3"/>
+    </w:pPr>
+    <w:rPr>
+      <w:sz w:val="{{typography.size.h4}}"/>
+      <w:szCs w:val="{{typography.size.h4}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="paragraph" w:styleId="Heading5">
+    <w:name w:val="Heading 5"/>
+    <w:basedOn w:val="Heading1"/>
+    <w:next w:val="Normal"/>
+    <w:qFormat/>
+    <w:pPr>
+      <w:spacing w:before="{{spacing.heading5.before}}" w:after="{{spacing.heading5.after}}"/>
+      <w:outlineLvl w:val="4"/>
+    </w:pPr>
+    <w:rPr>
+      <w:sz w:val="{{typography.size.h5}}"/>
+      <w:szCs w:val="{{typography.size.h5}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="paragraph" w:styleId="Heading6">
+    <w:name w:val="Heading 6"/>
+    <w:basedOn w:val="Heading1"/>
+    <w:next w:val="Normal"/>
+    <w:qFormat/>
+    <w:pPr>
+      <w:spacing w:before="{{spacing.heading6.before}}" w:after="{{spacing.heading6.after}}"/>
+      <w:outlineLvl w:val="5"/>
+    </w:pPr>
+    <w:rPr>
+      <w:sz w:val="{{typography.size.h6}}"/>
+      <w:szCs w:val="{{typography.size.h6}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <!-- Body Text Variations -->
+  <w:style w:type="paragraph" w:styleId="BodyText">
+    <w:name w:val="Body Text"/>
+    <w:basedOn w:val="Normal"/>
+    <w:pPr>
+      <w:spacing w:after="{{spacing.paragraph.after}}"/>
+    </w:pPr>
+  </w:style>
+  
+  <w:style w:type="paragraph" w:styleId="BodyText2">
+    <w:name w:val="Body Text 2"/>
+    <w:basedOn w:val="BodyText"/>
+    <w:rPr>
+      <w:sz w:val="{{typography.size.small}}"/>
+      <w:szCs w:val="{{typography.size.small}}"/>
+      <w:color w:val="{{color.text.secondary}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="paragraph" w:styleId="BodyText3">
+    <w:name w:val="Body Text 3"/>
+    <w:basedOn w:val="BodyText"/>
+    <w:pPr>
+      <w:ind w:left="{{spacing.indent.body}}"/>
+    </w:pPr>
+  </w:style>
+  
+  <!-- Quotation Styles -->
+  <w:style w:type="paragraph" w:styleId="Quote">
+    <w:name w:val="Quote"/>
+    <w:basedOn w:val="Normal"/>
+    <w:pPr>
+      <w:spacing w:before="{{spacing.quote.before}}" w:after="{{spacing.quote.after}}"/>
+      <w:ind w:left="{{spacing.quote.indent}}" w:right="{{spacing.quote.indent}}"/>
+    </w:pPr>
+    <w:rPr>
+      <w:i/>
+      <w:color w:val="{{color.text.quote}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="paragraph" w:styleId="IntenseQuote">
+    <w:name w:val="Intense Quote"/>
+    <w:basedOn w:val="Quote"/>
+    <w:pPr>
+      <w:shd w:val="clear" w:color="auto" w:fill="{{color.background.quote}}"/>
+      <w:ind w:left="{{spacing.quote.intense.indent}}" w:right="{{spacing.quote.intense.indent}}"/>
+    </w:pPr>
+    <w:rPr>
+      <w:b/>
+      <w:color w:val="{{color.text.quote.intense}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <!-- List Styles -->
+  <w:style w:type="paragraph" w:styleId="ListParagraph">
+    <w:name w:val="List Paragraph"/>
+    <w:basedOn w:val="Normal"/>
+    <w:qFormat/>
+    <w:pPr>
+      <w:ind w:left="{{spacing.list.indent}}"/>
+    </w:pPr>
+  </w:style>
+  
+  <!-- Caption and Reference Styles -->
+  <w:style w:type="paragraph" w:styleId="Caption">
+    <w:name w:val="Caption"/>
+    <w:basedOn w:val="Normal"/>
+    <w:pPr>
+      <w:spacing w:before="{{spacing.caption.before}}" w:after="{{spacing.caption.after}}"/>
+    </w:pPr>
+    <w:rPr>
+      <w:sz w:val="{{typography.size.caption}}"/>
+      <w:szCs w:val="{{typography.size.caption}}"/>
+      <w:i/>
+      <w:color w:val="{{color.text.caption}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <!-- Table of Contents Styles -->
+  <w:style w:type="paragraph" w:styleId="TOCHeading">
+    <w:name w:val="TOC Heading"/>
+    <w:basedOn w:val="Heading1"/>
+    <w:next w:val="Normal"/>
+    <w:pPr>
+      <w:outlineLvl w:val="9"/>
+    </w:pPr>
+  </w:style>
+  
+  <w:style w:type="paragraph" w:styleId="TOC1">
+    <w:name w:val="TOC 1"/>
+    <w:basedOn w:val="Normal"/>
+    <w:next w:val="Normal"/>
+    <w:pPr>
+      <w:spacing w:after="{{spacing.toc.after}}"/>
+      <w:tabs>
+        <w:tab w:val="right" w:leader="dot" w:pos="{{spacing.toc.tab.pos}}"/>
+      </w:tabs>
+    </w:pPr>
+    <w:rPr>
+      <w:b/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="paragraph" w:styleId="TOC2">
+    <w:name w:val="TOC 2"/>
+    <w:basedOn w:val="TOC1"/>
+    <w:pPr>
+      <w:ind w:left="{{spacing.toc2.indent}}"/>
+    </w:pPr>
+    <w:rPr>
+      <w:b w:val="0"/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="paragraph" w:styleId="TOC3">
+    <w:name w:val="TOC 3"/>
+    <w:basedOn w:val="TOC2"/>
+    <w:pPr>
+      <w:ind w:left="{{spacing.toc3.indent}}"/>
+    </w:pPr>
+  </w:style>
+  
+  <!-- Header and Footer Styles -->
+  <w:style w:type="paragraph" w:styleId="Header">
+    <w:name w:val="Header"/>
+    <w:basedOn w:val="Normal"/>
+    <w:pPr>
+      <w:tabs>
+        <w:tab w:val="center" w:pos="{{spacing.header.center}}"/>
+        <w:tab w:val="right" w:pos="{{spacing.header.right}}"/>
+      </w:tabs>
+    </w:pPr>
+    <w:rPr>
+      <w:sz w:val="{{typography.size.header}}"/>
+      <w:szCs w:val="{{typography.size.header}}"/>
+      <w:color w:val="{{color.text.header}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="paragraph" w:styleId="Footer">
+    <w:name w:val="Footer"/>
+    <w:basedOn w:val="Header"/>
+    <w:rPr>
+      <w:sz w:val="{{typography.size.footer}}"/>
+      <w:szCs w:val="{{typography.size.footer}}"/>
+      <w:color w:val="{{color.text.footer}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <!-- ====== CHARACTER STYLES ====== -->
+  
+  <w:style w:type="character" w:default="1" w:styleId="DefaultParagraphFont">
+    <w:name w:val="Default Paragraph Font"/>
+    <w:uiPriority w:val="1"/>
+  </w:style>
+  
+  <w:style w:type="character" w:styleId="Strong">
+    <w:name w:val="Strong"/>
+    <w:qFormat/>
+    <w:rPr>
+      <w:b/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="character" w:styleId="Emphasis">
+    <w:name w:val="Emphasis"/>
+    <w:qFormat/>
+    <w:rPr>
+      <w:i/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="character" w:styleId="IntenseEmphasis">
+    <w:name w:val="Intense Emphasis"/>
+    <w:qFormat/>
+    <w:rPr>
+      <w:i/>
+      <w:b/>
+      <w:color w:val="{{color.emphasis.intense}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="character" w:styleId="SubtleEmphasis">
+    <w:name w:val="Subtle Emphasis"/>
+    <w:qFormat/>
+    <w:rPr>
+      <w:color w:val="{{color.emphasis.subtle}}"/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="character" w:styleId="BookTitle">
+    <w:name w:val="Book Title"/>
+    <w:qFormat/>
+    <w:rPr>
+      <w:i/>
+      <w:u w:val="single"/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="character" w:styleId="Hyperlink">
+    <w:name w:val="Hyperlink"/>
+    <w:rPr>
+      <w:color w:val="{{color.link.primary}}"/>
+      <w:u w:val="single"/>
+    </w:rPr>
+  </w:style>
+  
+  <w:style w:type="character" w:styleId="FollowedHyperlink">
+    <w:name w:val="FollowedHyperlink"/>
+    <w:rPr>
+      <w:color w:val="{{color.link.visited}}"/>
+      <w:u w:val="single"/>
+    </w:rPr>
+  </w:style>
+  
+  <!-- ====== TABLE STYLES ====== -->
+  
+  <w:style w:type="table" w:default="1" w:styleId="TableNormal">
+    <w:name w:val="Normal Table"/>
+    <w:uiPriority w:val="99"/>
+    <w:tblPr>
+      <w:tblCellMar>
+        <w:top w:w="0" w:type="dxa"/>
+        <w:left w:w="{{spacing.table.cell.left}}" w:type="dxa"/>
+        <w:bottom w:w="0" w:type="dxa"/>
+        <w:right w:w="{{spacing.table.cell.right}}" w:type="dxa"/>
+      </w:tblCellMar>
+    </w:tblPr>
+  </w:style>
+  
+  <w:style w:type="table" w:styleId="TableGrid">
+    <w:name w:val="Table Grid"/>
+    <w:basedOn w:val="TableNormal"/>
+    <w:tblPr>
+      <w:tblBorders>
+        <w:top w:val="single" w:sz="4" w:space="0" w:color="{{color.table.border}}"/>
+        <w:left w:val="single" w:sz="4" w:space="0" w:color="{{color.table.border}}"/>
+        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="{{color.table.border}}"/>
+        <w:right w:val="single" w:sz="4" w:space="0" w:color="{{color.table.border}}"/>
+        <w:insideH w:val="single" w:sz="4" w:space="0" w:color="{{color.table.border}}"/>
+        <w:insideV w:val="single" w:sz="4" w:space="0" w:color="{{color.table.border}}"/>
+      </w:tblBorders>
+    </w:tblPr>
+  </w:style>
+  
+  <w:style w:type="table" w:styleId="LightShading">
+    <w:name w:val="Light Shading"/>
+    <w:basedOn w:val="TableGrid"/>
+    <w:tblPr>
+      <w:tblBorders>
+        <w:top w:val="single" w:sz="4" w:space="0" w:color="{{color.table.light.border}}"/>
+        <w:left w:val="single" w:sz="4" w:space="0" w:color="{{color.table.light.border}}"/>
+        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="{{color.table.light.border}}"/>
+        <w:right w:val="single" w:sz="4" w:space="0" w:color="{{color.table.light.border}}"/>
+        <w:insideH w:val="single" w:sz="4" w:space="0" w:color="{{color.table.light.border}}"/>
+        <w:insideV w:val="single" w:sz="4" w:space="0" w:color="{{color.table.light.border}}"/>
+      </w:tblBorders>
+    </w:tblPr>
+    <w:tblStylePr w:type="firstRow">
+      <w:tcPr>
+        <w:shd w:val="clear" w:color="auto" w:fill="{{color.table.header.background}}"/>
+      </w:tcPr>
+      <w:rPr>
+        <w:b/>
+        <w:color w:val="{{color.table.header.text}}"/>
+      </w:rPr>
+    </w:tblStylePr>
+  </w:style>
+  
+  <w:style w:type="table" w:styleId="LightList">
+    <w:name w:val="Light List"/>
+    <w:basedOn w:val="TableNormal"/>
+    <w:tblPr>
+      <w:tblBorders>
+        <w:top w:val="single" w:sz="12" w:space="0" w:color="{{color.table.accent}}"/>
+        <w:left w:val="none"/>
+        <w:bottom w:val="none"/>
+        <w:right w:val="none"/>
+        <w:insideH w:val="none"/>
+        <w:insideV w:val="none"/>
+      </w:tblBorders>
+    </w:tblPr>
+    <w:tblStylePr w:type="firstRow">
+      <w:rPr>
+        <w:b/>
+        <w:color w:val="{{color.table.accent}}"/>
+      </w:rPr>
+    </w:tblStylePr>
+  </w:style>
+  
+</w:styles>

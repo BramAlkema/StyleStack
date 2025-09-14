@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- LibreOffice Writer ODT Styles with Design Token Integration -->
+<!-- This provides ODF style structures that design tokens can patch against -->
+
+<office:document-styles xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+                        xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+                        xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+                        xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+                        xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+                        xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        xmlns:dc="http://purl.org/dc/elements/1.1/"
+                        xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+                        xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+                        xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0">
+  
+  <!-- Font Face Declarations - Design token controlled fonts -->
+  <office:font-face-decls>
+    <!-- Body/Minor Font -->
+    <style:font-face style:name="MinorFont" 
+                     svg:font-family="{{typography.font.theme.minor}}" 
+                     style:font-family-generic="{{typography.font.theme.minor.generic}}" 
+                     style:font-pitch="{{typography.font.theme.minor.pitch}}"/>
+    
+    <!-- Heading/Major Font -->
+    <style:font-face style:name="MajorFont" 
+                     svg:font-family="{{typography.font.theme.major}}" 
+                     style:font-family-generic="{{typography.font.theme.major.generic}}" 
+                     style:font-pitch="{{typography.font.theme.major.pitch}}"/>
+    
+    <!-- East Asian Fonts -->
+    <style:font-face style:name="MinorFontEA" 
+                     svg:font-family="{{typography.font.theme.minor.eastAsian}}"/>
+    <style:font-face style:name="MajorFontEA" 
+                     svg:font-family="{{typography.font.theme.major.eastAsian}}"/>
+    
+    <!-- Complex Script Fonts -->
+    <style:font-face style:name="MinorFontCS" 
+                     svg:font-family="{{typography.font.theme.minor.complexScript}}"/>
+    <style:font-face style:name="MajorFontCS" 
+                     svg:font-family="{{typography.font.theme.major.complexScript}}"/>
+  </office:font-face-decls>
+  
+  <!-- Styles -->
+  <office:styles>
+    
+    <!-- Default Paragraph Style -->
+    <style:default-style style:family="paragraph">
+      <style:paragraph-properties fo:language="{{typography.language.primary}}" 
+                                  fo:country="{{typography.language.country}}" 
+                                  style:language-asian="{{typography.language.eastAsian}}" 
+                                  style:country-asian="{{typography.language.eastAsian.country}}" 
+                                  style:language-complex="{{typography.language.complexScript}}" 
+                                  style:country-complex="{{typography.language.complexScript.country}}" 
+                                  fo:hyphenate="{{typography.hyphenation.enabled}}" 
+                                  fo:hyphenation-remain-char-count="{{typography.hyphenation.remainChars}}" 
+                                  fo:hyphenation-push-char-count="{{typography.hyphenation.pushChars}}" 
+                                  fo:margin-top="{{spacing.paragraph.top}}" 
+                                  fo:margin-bottom="{{spacing.paragraph.bottom}}" 
+                                  style:line-height-at-least="{{typography.lineHeight.minimum}}" 
+                                  style:punctuation-wrap="{{typography.punctuation.wrap}}" 
+                                  style:line-break="{{typography.lineBreak.mode}}" 
+                                  style:text-autospace="{{typography.autoSpace.mode}}" 
+                                  style:writing-mode="{{typography.writingMode}}"/>
+      
+      <style:text-properties fo:font-family="MinorFont" 
+                             style:font-family-generic="{{typography.font.theme.minor.generic}}" 
+                             style:font-pitch="{{typography.font.theme.minor.pitch}}" 
+                             fo:font-size="{{typography.size.body}}" 
+                             fo:language="{{typography.language.primary}}" 
+                             fo:country="{{typography.language.country}}" 
+                             style:font-family-asian="MinorFontEA" 
+                             style:font-size-asian="{{typography.size.body}}" 
+                             style:language-asian="{{typography.language.eastAsian}}" 
+                             style:country-asian="{{typography.language.eastAsian.country}}" 
+                             style:font-family-complex="MinorFontCS" 
+                             style:font-size-complex="{{typography.size.body}}" 
+                             style:language-complex="{{typography.language.complexScript}}" 
+                             style:country-complex="{{typography.language.complexScript.country}}" 
+                             fo:color="{{color.text.primary}}" 
+                             style:text-outline="{{typography.outline.enabled}}" 
+                             style:text-line-through-style="{{typography.strikethrough.style}}" 
+                             style:text-line-through-width="{{typography.strikethrough.width}}" 
+                             style:text-position="{{typography.position.superscript}}" 
+                             fo:font-weight="{{typography.weight.normal}}" 
+                             fo:font-style="{{typography.style.normal}}" 
+                             style:text-underline-style="{{typography.underline.style}}" 
+                             style:text-underline-width="{{typography.underline.width}}" 
+                             style:text-underline-color="{{typography.underline.color}}" 
+                             fo:text-shadow="{{typography.shadow.definition}}" 
+                             fo:text-transform="{{typography.transform.case}}" 
+                             style:use-window-font-color="{{typography.useWindowFontColor}}" 
+                             style:font-relief="{{typography.relief.mode}}" 
+                             style:text-combine="{{typography.combine.mode}}" 
+                             style:text-emphasize="{{typography.emphasize.mode}}" 
+                             style:text-scale="{{typography.scale.percentage}}" 
+                             style:text-rotation-angle="{{typography.rotation.angle}}" 
+                             style:text-rotation-scale="{{typography.rotation.scale}}" 
+                             style:letter-kerning="{{typography.kerning.enabled}}"/>
+    </style:default-style>
+    
+    <!-- Standard Paragraph Style -->
+    <style:style style:name="Standard" style:family="paragraph" style:class="text">
+      <style:paragraph-properties fo:margin-top="{{spacing.paragraph.standard.top}}" 
+                                  fo:margin-bottom="{{spacing.paragraph.standard.bottom}}" 
+                                  style:line-height-at-least="{{typography.lineHeight.standard}}" 
+                                  fo:text-align="{{typography.alignment.standard}}" 
+                                  style:justify-single-word="{{typography.justifySingleWord}}" 
+                                  fo:orphans="{{typography.orphans.count}}" 
+                                  fo:widows="{{typography.widows.count}}" 
+                                  fo:hyphenate="{{typography.hyphenation.enabled}}" 
+                                  style:drop-cap="{{typography.dropCap.enabled}}" 
+                                  style:register-true="{{typography.registerTrue}}"/>
+      
+      <style:text-properties fo:font-family="MinorFont" 
+                             fo:font-size="{{typography.size.body}}" 
+                             fo:color="{{color.text.primary}}"/>
+    </style:style>
+    
+    <!-- Heading Styles with Design Token Integration -->
+    <style:style style:name="Heading_20_1" style:display-name="Heading 1" 
+                 style:family="paragraph" 
+                 style:parent-style-name="Heading" 
+                 style:next-style-name="Text_20_body" 
+                 style:class="text" 
+                 style:outline-level="1">
+      <style:paragraph-properties fo:margin-top="{{spacing.heading1.top}}" 
+                                  fo:margin-bottom="{{spacing.heading1.bottom}}" 
+                                  style:line-height-at-least="{{typography.lineHeight.heading1}}" 
+                                  fo:text-align="{{typography.alignment.heading1}}" 
+                                  fo:text-align-last="{{typography.alignmentLast.heading1}}" 
+                                  style:justify-single-word="{{typography.justifySingleWord.heading1}}" 
+                                  fo:keep-with-next="{{typography.keepWithNext.heading1}}" 
+                                  fo:break-before="{{page.break.before.heading1}}" 
+                                  fo:break-after="{{page.break.after.heading1}}"/>
+      
+      <style:text-properties fo:font-family="MajorFont" 
+                             fo:font-size="{{typography.size.h1}}" 
+                             fo:font-weight="{{typography.weight.heading1}}" 
+                             fo:color="{{color.heading.primary}}" 
+                             style:font-family-asian="MajorFontEA" 
+                             style:font-size-asian="{{typography.size.h1}}" 
+                             style:font-weight-asian="{{typography.weight.heading1}}" 
+                             style:font-family-complex="MajorFontCS" 
+                             style:font-size-complex="{{typography.size.h1}}" 
+                             style:font-weight-complex="{{typography.weight.heading1}}"/>
+    </style:style>
+    
+    <style:style style:name="Heading_20_2" style:display-name="Heading 2" 
+                 style:family="paragraph" 
+                 style:parent-style-name="Heading" 
+                 style:next-style-name="Text_20_body" 
+                 style:class="text" 
+                 style:outline-level="2">
+      <style:paragraph-properties fo:margin-top="{{spacing.heading2.top}}" 
+                                  fo:margin-bottom="{{spacing.heading2.bottom}}" 
+                                  style:line-height-at-least="{{typography.lineHeight.heading2}}" 
+                                  fo:text-align="{{typography.alignment.heading2}}"/>
+      
+      <style:text-properties fo:font-family="MajorFont" 
+                             fo:font-size="{{typography.size.h2}}" 
+                             fo:font-weight="{{typography.weight.heading2}}" 
+                             fo:color="{{color.heading.secondary}}" 
+                             style:font-family-asian="MajorFontEA" 
+                             style:font-size-asian="{{typography.size.h2}}" 
+                             style:font-family-complex="MajorFontCS" 
+                             style:font-size-complex="{{typography.size.h2}}"/>
+    </style:style>
+    
+    <style:style style:name="Heading_20_3" style:display-name="Heading 3" 
+                 style:family="paragraph" 
+                 style:parent-style-name="Heading" 
+                 style:next-style-name="Text_20_body" 
+                 style:class="text" 
+                 style:outline-level="3">
+      <style:paragraph-properties fo:margin-top="{{spacing.heading3.top}}" 
+                                  fo:margin-bottom="{{spacing.heading3.bottom}}" 
+                                  style:line-height-at-least="{{typography.lineHeight.heading3}}"/>
+      
+      <style:text-properties fo:font-family="MajorFont" 
+                             fo:font-size="{{typography.size.h3}}" 
+                             fo:font-weight="{{typography.weight.heading3}}" 
+                             fo:color="{{color.heading.tertiary}}" 
+                             style:font-family-asian="MajorFontEA" 
+                             style:font-size-asian="{{typography.size.h3}}" 
+                             style:font-family-complex="MajorFontCS" 
+                             style:font-size-complex="{{typography.size.h3}}"/>
+    </style:style>
+    
+    <!-- Text Body Styles -->
+    <style:style style:name="Text_20_body" style:display-name="Text Body" 
+                 style:family="paragraph" 
+                 style:parent-style-name="Standard" 
+                 style:class="text">
+      <style:paragraph-properties fo:margin-top="{{spacing.textBody.top}}" 
+                                  fo:margin-bottom="{{spacing.textBody.bottom}}" 
+                                  style:line-height-at-least="{{typography.lineHeight.textBody}}"/>
+    </style:style>
+    
+    <style:style style:name="Text_20_body_20_indent" style:display-name="Text Body Indent" 
+                 style:family="paragraph" 
+                 style:parent-style-name="Text_20_body" 
+                 style:class="text">
+      <style:paragraph-properties fo:margin-left="{{spacing.textBodyIndent.left}}" 
+                                  fo:margin-right="{{spacing.textBodyIndent.right}}" 
+                                  fo:text-indent="{{spacing.textBodyIndent.firstLine}}" 
+                                  style:auto-text-indent="{{typography.autoTextIndent}}"/>
+    </style:style>
+    
+    <!-- List Styles -->
+    <style:style style:name="List_20_1" style:display-name="List 1" 
+                 style:family="paragraph" 
+                 style:parent-style-name="Text_20_body" 
+                 style:class="list">
+      <style:paragraph-properties fo:margin-left="{{spacing.list1.marginLeft}}" 
+                                  fo:margin-right="{{spacing.list1.marginRight}}" 
+                                  fo:text-indent="{{spacing.list1.textIndent}}" 
+                                  style:auto-text-indent="{{typography.list1.autoTextIndent}}" 
+                                  fo:margin-top="{{spacing.list1.top}}" 
+                                  fo:margin-bottom="{{spacing.list1.bottom}}"/>
+    </style:style>
+    
+    <style:style style:name="List_20_2" style:display-name="List 2" 
+                 style:family="paragraph" 
+                 style:parent-style-name="Text_20_body" 
+                 style:class="list">
+      <style:paragraph-properties fo:margin-left="{{spacing.list2.marginLeft}}" 
+                                  fo:margin-right="{{spacing.list2.marginRight}}" 
+                                  fo:text-indent="{{spacing.list2.textIndent}}" 
+                                  fo:margin-top="{{spacing.list2.top}}" 
+                                  fo:margin-bottom="{{spacing.list2.bottom}}"/>
+    </style:style>
+    
+    <!-- Table Styles -->
+    <style:style style:name="Table_20_Contents" style:display-name="Table Contents" 
+                 style:family="paragraph" 
+                 style:parent-style-name="Standard" 
+                 style:class="extra">
+      <style:paragraph-properties text:number-lines="{{table.numberLines}}" 
+                                  text:line-number="{{table.lineNumber}}" 
+                                  fo:margin-top="{{spacing.tableContents.top}}" 
+                                  fo:margin-bottom="{{spacing.tableContents.bottom}}"/>
+      
+      <style:text-properties fo:font-size="{{typography.size.tableContents}}" 
+                             style:font-size-asian="{{typography.size.tableContents}}" 
+                             style:font-size-complex="{{typography.size.tableContents}}"/>
+    </style:style>
+    
+    <style:style style:name="Table_20_Heading" style:display-name="Table Heading" 
+                 style:family="paragraph" 
+                 style:parent-style-name="Table_20_Contents" 
+                 style:class="extra">
+      <style:paragraph-properties fo:text-align="{{typography.alignment.tableHeading}}" 
+                                  style:justify-single-word="{{typography.justifySingleWord.tableHeading}}" 
+                                  text:number-lines="{{table.heading.numberLines}}" 
+                                  text:line-number="{{table.heading.lineNumber}}"/>
+      
+      <style:text-properties fo:font-weight="{{typography.weight.tableHeading}}" 
+                             style:font-weight-asian="{{typography.weight.tableHeading}}" 
+                             style:font-weight-complex="{{typography.weight.tableHeading}}" 
+                             fo:color="{{color.table.heading}}"/>
+    </style:style>
+    
+    <!-- Caption Style -->
+    <style:style style:name="Caption" style:family="paragraph" 
+                 style:parent-style-name="Standard" 
+                 style:class="extra">
+      <style:paragraph-properties fo:margin-top="{{spacing.caption.top}}" 
+                                  fo:margin-bottom="{{spacing.caption.bottom}}" 
+                                  text:number-lines="{{caption.numberLines}}" 
+                                  text:line-number="{{caption.lineNumber}}"/>
+      
+      <style:text-properties fo:font-size="{{typography.size.caption}}" 
+                             fo:font-style="{{typography.style.caption}}" 
+                             style:font-size-asian="{{typography.size.caption}}" 
+                             style:font-style-asian="{{typography.style.caption}}" 
+                             style:font-size-complex="{{typography.size.caption}}" 
+                             style:font-style-complex="{{typography.style.caption}}" 
+                             fo:color="{{color.text.caption}}"/>
+    </style:style>
+    
+    <!-- Index/TOC Styles -->
+    <style:style style:name="Index" style:family="paragraph" 
+                 style:parent-style-name="Standard" 
+                 style:class="index">
+      <style:paragraph-properties text:number-lines="{{index.numberLines}}" 
+                                  text:line-number="{{index.lineNumber}}" 
+                                  fo:margin-left="{{spacing.index.marginLeft}}" 
+                                  fo:margin-right="{{spacing.index.marginRight}}" 
+                                  fo:text-indent="{{spacing.index.textIndent}}" 
+                                  style:auto-text-indent="{{typography.index.autoTextIndent}}"/>
+      
+      <style:text-properties fo:font-size="{{typography.size.index}}" 
+                             style:font-size-asian="{{typography.size.index}}" 
+                             style:font-size-complex="{{typography.size.index}}" 
+                             fo:color="{{color.text.index}}"/>
+    </style:style>
+    
+    <!-- Character Styles -->
+    <style:style style:name="Strong_20_Emphasis" style:display-name="Strong Emphasis" 
+                 style:family="text">
+      <style:text-properties fo:font-weight="{{typography.weight.strong}}" 
+                             style:font-weight-asian="{{typography.weight.strong}}" 
+                             style:font-weight-complex="{{typography.weight.strong}}" 
+                             fo:color="{{color.text.strong}}"/>
+    </style:style>
+    
+    <style:style style:name="Emphasis" style:family="text">
+      <style:text-properties fo:font-style="{{typography.style.emphasis}}" 
+                             style:font-style-asian="{{typography.style.emphasis}}" 
+                             style:font-style-complex="{{typography.style.emphasis}}" 
+                             fo:color="{{color.text.emphasis}}"/>
+    </style:style>
+    
+    <style:style style:name="Citation" style:family="text">
+      <style:text-properties fo:font-style="{{typography.style.citation}}" 
+                             style:font-style-asian="{{typography.style.citation}}" 
+                             style:font-style-complex="{{typography.style.citation}}" 
+                             fo:color="{{color.text.citation}}"/>
+    </style:style>
+    
+    <!-- Hyperlink Styles -->
+    <style:style style:name="Internet_20_link" style:display-name="Internet Link" 
+                 style:family="text">
+      <style:text-properties fo:color="{{color.link.primary}}" 
+                             style:text-underline-style="{{typography.link.underlineStyle}}" 
+                             style:text-underline-width="{{typography.link.underlineWidth}}" 
+                             style:text-underline-color="{{color.link.underline}}"/>
+    </style:style>
+    
+    <style:style style:name="Visited_20_Internet_20_Link" style:display-name="Visited Internet Link" 
+                 style:family="text">
+      <style:text-properties fo:color="{{color.link.visited}}" 
+                             style:text-underline-style="{{typography.link.visited.underlineStyle}}" 
+                             style:text-underline-width="{{typography.link.visited.underlineWidth}}" 
+                             style:text-underline-color="{{color.link.visited.underline}}"/>
+    </style:style>
+    
+    <!-- Frame/Graphics Styles -->
+    <style:style style:name="Graphics" style:family="graphic">
+      <style:graphic-properties text:anchor-type="{{graphics.anchorType}}" 
+                                svg:x="{{graphics.position.x}}" 
+                                svg:y="{{graphics.position.y}}" 
+                                style:wrap="{{graphics.wrap.mode}}" 
+                                style:number-wrapped-paragraphs="{{graphics.wrap.paragraphCount}}" 
+                                style:wrap-contour="{{graphics.wrap.contour}}" 
+                                style:vertical-pos="{{graphics.verticalPosition}}" 
+                                style:vertical-rel="{{graphics.verticalRelative}}" 
+                                style:horizontal-pos="{{graphics.horizontalPosition}}" 
+                                style:horizontal-rel="{{graphics.horizontalRelative}}" 
+                                fo:padding="{{graphics.padding}}" 
+                                fo:border="{{graphics.border.definition}}" 
+                                style:shadow="{{graphics.shadow.definition}}" 
+                                style:flow-with-text="{{graphics.flowWithText}}"/>
+    </style:style>
+    
+    <!-- Table Styles -->
+    <style:style style:name="TableStyle1" style:family="table">
+      <style:table-properties style:width="{{table.width}}" 
+                              fo:margin-left="{{table.marginLeft}}" 
+                              fo:margin-right="{{table.marginRight}}" 
+                              fo:margin-top="{{table.marginTop}}" 
+                              fo:margin-bottom="{{table.marginBottom}}" 
+                              fo:background-color="{{color.table.background}}" 
+                              style:page-number="{{table.pageNumber}}" 
+                              style:break-before="{{page.break.before.table}}" 
+                              style:break-after="{{page.break.after.table}}" 
+                              table:align="{{table.alignment}}" 
+                              style:writing-mode="{{typography.writingMode.table}}"/>
+    </style:style>
+    
+    <!-- Table Column Style -->
+    <style:style style:name="TableColumn1" style:family="table-column">
+      <style:table-column-properties style:column-width="{{table.column1.width}}" 
+                                     style:rel-column-width="{{table.column1.relativeWidth}}"/>
+    </style:style>
+    
+    <!-- Table Row Style -->
+    <style:style style:name="TableRow1" style:family="table-row">
+      <style:table-row-properties style:min-row-height="{{table.row.minHeight}}" 
+                                  style:row-height="{{table.row.height}}" 
+                                  fo:break-before="{{page.break.before.tableRow}}" 
+                                  fo:break-after="{{page.break.after.tableRow}}" 
+                                  style:keep-together="{{table.row.keepTogether}}"/>
+    </style:style>
+    
+    <!-- Table Cell Style -->
+    <style:style style:name="TableCell1" style:family="table-cell">
+      <style:table-cell-properties fo:padding="{{table.cell.padding}}" 
+                                   fo:border-left="{{table.cell.borderLeft}}" 
+                                   fo:border-right="{{table.cell.borderRight}}" 
+                                   fo:border-top="{{table.cell.borderTop}}" 
+                                   fo:border-bottom="{{table.cell.borderBottom}}" 
+                                   fo:background-color="{{color.table.cell.background}}" 
+                                   style:vertical-align="{{table.cell.verticalAlign}}" 
+                                   style:text-align-source="{{table.cell.textAlignSource}}" 
+                                   style:direction="{{typography.direction.tableCell}}" 
+                                   style:rotation-angle="{{table.cell.rotationAngle}}" 
+                                   style:rotation-align="{{table.cell.rotationAlign}}" 
+                                   style:shrink-to-fit="{{table.cell.shrinkToFit}}" 
+                                   style:wrap-option="{{table.cell.wrapOption}}"/>
+    </style:style>
+  </office:styles>
+  
+  <!-- Automatic Styles -->
+  <office:automatic-styles>
+    <!-- Page Layout -->
+    <style:page-layout style:name="PageLayout1">
+      <style:page-layout-properties fo:page-width="{{page.width}}" 
+                                    fo:page-height="{{page.height}}" 
+                                    style:num-format="{{page.numberFormat}}" 
+                                    style:paper-tray-number="{{page.paperTray}}" 
+                                    style:print-orientation="{{page.orientation}}" 
+                                    fo:margin-top="{{page.margin.top}}" 
+                                    fo:margin-bottom="{{page.margin.bottom}}" 
+                                    fo:margin-left="{{page.margin.left}}" 
+                                    fo:margin-right="{{page.margin.right}}" 
+                                    style:writing-mode="{{typography.writingMode.page}}" 
+                                    style:footnote-max-height="{{page.footnote.maxHeight}}" 
+                                    style:layout-grid-mode="{{page.layoutGrid.mode}}" 
+                                    style:layout-grid-base-height="{{page.layoutGrid.baseHeight}}" 
+                                    style:layout-grid-ruby-height="{{page.layoutGrid.rubyHeight}}" 
+                                    style:layout-grid-lines="{{page.layoutGrid.lines}}" 
+                                    style:layout-grid-color="{{color.page.layoutGrid}}" 
+                                    style:layout-grid-ruby-below="{{page.layoutGrid.rubyBelow}}" 
+                                    style:layout-grid-print="{{page.layoutGrid.print}}" 
+                                    style:layout-grid-display="{{page.layoutGrid.display}}">
+        
+        <!-- Header Style -->
+        <style:header-style>
+          <style:header-footer-properties fo:min-height="{{page.header.minHeight}}" 
+                                          fo:margin-left="{{page.header.marginLeft}}" 
+                                          fo:margin-right="{{page.header.marginRight}}" 
+                                          fo:margin-bottom="{{page.header.marginBottom}}" 
+                                          fo:background-color="{{color.page.header.background}}" 
+                                          style:dynamic-spacing="{{page.header.dynamicSpacing}}" 
+                                          fo:border="{{page.header.border}}" 
+                                          fo:padding="{{page.header.padding}}"/>
+        </style:header-style>
+        
+        <!-- Footer Style -->
+        <style:footer-style>
+          <style:header-footer-properties fo:min-height="{{page.footer.minHeight}}" 
+                                          fo:margin-left="{{page.footer.marginLeft}}" 
+                                          fo:margin-right="{{page.footer.marginRight}}" 
+                                          fo:margin-top="{{page.footer.marginTop}}" 
+                                          fo:background-color="{{color.page.footer.background}}" 
+                                          style:dynamic-spacing="{{page.footer.dynamicSpacing}}" 
+                                          fo:border="{{page.footer.border}}" 
+                                          fo:padding="{{page.footer.padding}}"/>
+        </style:footer-style>
+      </style:page-layout-properties>
+    </style:page-layout>
+  </office:automatic-styles>
+  
+  <!-- Master Styles -->
+  <office:master-styles>
+    <style:master-page style:name="Standard" style:page-layout-name="PageLayout1">
+      <!-- Header content -->
+      <style:header>
+        <text:p text:style-name="Header">
+          <text:span text:style-name="Header_20_Char">{{content.header.text}}</text:span>
+        </text:p>
+      </style:header>
+      
+      <!-- Footer content -->
+      <style:footer>
+        <text:p text:style-name="Footer">
+          <text:span text:style-name="Footer_20_Char">{{content.footer.text}}</text:span>
+          <text:tab/>
+          <text:page-number text:select-page="current">{{content.footer.pageNumber}}</text:page-number>
+        </text:p>
+      </style:footer>
+    </style:master-page>
+  </office:master-styles>
+</office:document-styles>

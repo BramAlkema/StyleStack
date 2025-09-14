@@ -20,12 +20,15 @@ Usage:
             print(f"Error: {error.message}")
 """
 
-from typing import Any, Dict, List, Optional, Union
+# Use shared utilities to eliminate duplication
+from tools.core import (
+    Any, Dict, List, Optional, Union, Path, get_logger,
+    safe_load_json, dataclass, field, Enum
+)
 import re
-import json
-from dataclasses import dataclass, field
-from enum import Enum
-from pathlib import Path
+
+# Configure logging
+logger = get_logger(__name__)
 
 
 class TokenType(Enum):
@@ -451,8 +454,7 @@ def load_token_definitions(definitions_path: Union[str, Path]) -> Dict[str, Any]
     if not path.exists():
         return {}
     
-    with open(path, 'r', encoding='utf-8') as f:
-        data = json.load(f)
+    data = safe_load_json(path)
     
     # Flatten nested variable definitions
     definitions = {}

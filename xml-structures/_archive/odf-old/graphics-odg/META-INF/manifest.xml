@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.3">
+  <!-- OpenDocument Graphics Manifest with StyleStack Design System Integration -->
+
+  <!-- Main content files -->
+  <manifest:file-entry manifest:full-path="/" manifest:version="1.3" manifest:media-type="application/vnd.oasis.opendocument.graphics"/>
+  <manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>
+  <manifest:file-entry manifest:full-path="styles.xml" manifest:media-type="text/xml"/>
+  <manifest:file-entry manifest:full-path="meta.xml" manifest:media-type="text/xml"/>
+  <manifest:file-entry manifest:full-path="settings.xml" manifest:media-type="text/xml"/>
+
+  <!-- Manifest itself -->
+  <manifest:file-entry manifest:full-path="META-INF/" manifest:media-type="application/vnd.sun.xml.ui.configuration"/>
+  <manifest:file-entry manifest:full-path="META-INF/manifest.xml" manifest:media-type="text/xml"/>
+
+  <!-- StyleStack brand assets and vector graphics -->
+  <manifest:file-entry manifest:full-path="Pictures/" manifest:media-type=""/>
+  <manifest:file-entry manifest:full-path="Pictures/stylestack_logo.svg" manifest:media-type="image/svg+xml"/>
+  <manifest:file-entry manifest:full-path="Pictures/company_logo.svg" manifest:media-type="image/svg+xml"/>
+  <manifest:file-entry manifest:full-path="Pictures/brand_icons.svg" manifest:media-type="image/svg+xml"/>
+  <manifest:file-entry manifest:full-path="Pictures/design_patterns.png" manifest:media-type="image/png"/>
+  <manifest:file-entry manifest:full-path="Pictures/texture_bg.jpg" manifest:media-type="image/jpeg"/>
+  <manifest:file-entry manifest:full-path="Pictures/gradient_overlay.png" manifest:media-type="image/png"/>
+
+  <!-- Embedded objects for complex graphics -->
+  <manifest:file-entry manifest:full-path="Object 1/" manifest:media-type="application/vnd.oasis.opendocument.graphics"/>
+  <manifest:file-entry manifest:full-path="Object 1/content.xml" manifest:media-type="text/xml"/>
+  <manifest:file-entry manifest:full-path="Object 1/styles.xml" manifest:media-type="text/xml"/>
+
+  <!-- 3D objects and models -->
+  <manifest:file-entry manifest:full-path="Object 2/" manifest:media-type="application/vnd.oasis.opendocument.graphics"/>
+  <manifest:file-entry manifest:full-path="Object 2/content.xml" manifest:media-type="text/xml"/>
+  <manifest:file-entry manifest:full-path="Object 2/styles.xml" manifest:media-type="text/xml"/>
+
+  <!-- Thumbnail -->
+  <manifest:file-entry manifest:full-path="Thumbnails/" manifest:media-type=""/>
+  <manifest:file-entry manifest:full-path="Thumbnails/thumbnail.png" manifest:media-type="image/png"/>
+
+  <!-- Configuration files for design system UI -->
+  <manifest:file-entry manifest:full-path="Configurations2/" manifest:media-type="application/vnd.sun.xml.ui.configuration"/>
+  <manifest:file-entry manifest:full-path="Configurations2/accelerator/" manifest:media-type="application/vnd.sun.xml.ui.configuration"/>
+  <manifest:file-entry manifest:full-path="Configurations2/accelerator/current.xml" manifest:media-type="text/xml"/>
+  <manifest:file-entry manifest:full-path="Configurations2/floater/" manifest:media-type="application/vnd.sun.xml.ui.configuration"/>
+  <manifest:file-entry manifest:full-path="Configurations2/images/" manifest:media-type="application/vnd.sun.xml.ui.configuration"/>
+  <manifest:file-entry manifest:full-path="Configurations2/images/Bitmaps/" manifest:media-type="application/vnd.sun.xml.ui.configuration"/>
+  <manifest:file-entry manifest:full-path="Configurations2/menubar/" manifest:media-type="application/vnd.sun.xml.ui.configuration"/>
+  <manifest:file-entry manifest:full-path="Configurations2/menubar/current.xml" manifest:media-type="text/xml"/>
+  <manifest:file-entry manifest:full-path="Configurations2/popupmenu/" manifest:media-type="application/vnd.sun.xml.ui.configuration"/>
+  <manifest:file-entry manifest:full-path="Configurations2/progressbar/" manifest:media-type="application/vnd.sun.xml.ui.configuration"/>
+  <manifest:file-entry manifest:full-path="Configurations2/statusbar/" manifest:media-type="application/vnd.sun.xml.ui.configuration"/>
+  <manifest:file-entry manifest:full-path="Configurations2/statusbar/current.xml" manifest:media-type="text/xml"/>
+  <manifest:file-entry manifest:full-path="Configurations2/toolbar/" manifest:media-type="application/vnd.sun.xml.ui.configuration"/>
+  <manifest:file-entry manifest:full-path="Configurations2/toolbar/current.xml" manifest:media-type="text/xml"/>
+
+  <!-- External design libraries and resources -->
+  <manifest:file-entry manifest:full-path="External-Data/" manifest:media-type=""/>
+  <manifest:file-entry manifest:full-path="External-Data/design-library.xml" manifest:media-type="text/xml"/>
+  <manifest:file-entry manifest:full-path="External-Data/brand-assets.json" manifest:media-type="application/json"/>
+  <manifest:file-entry manifest:full-path="External-Data/vector-icons.svg" manifest:media-type="image/svg+xml"/>
+
+  <!-- Encryption information (if applicable) -->
+  <manifest:encryption-data manifest:checksum-type="SHA256">
+    <manifest:algorithm manifest:algorithm-name="http://www.w3.org/2001/04/xmlenc#aes256-cbc" manifest:initialisation-vector="{{security.encryption.iv|base64_encoded_iv}}"/>
+    <manifest:key-derivation manifest:key-derivation-name="PBKDF2" manifest:salt="{{security.encryption.salt|base64_encoded_salt}}" manifest:iteration-count="{{security.encryption.iterations|100000}}"/>
+  </manifest:encryption-data>
+
+</manifest:manifest>

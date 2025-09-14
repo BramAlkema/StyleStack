@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+          xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+          mc:Ignorable="x14ac xr xr2 xr3">
+
+  <!-- Design Token Examples Sheet -->
+  <sheetPr tabColor="rgb" codeName="Design_Token_Examples">
+    <tabColor rgb="{{brand.colors.secondary|8B5CF6}}"/>
+  </sheetPr>
+
+  <!-- Sheet dimensions -->
+  <dimension ref="A1:H30"/>
+
+  <!-- Sheet views -->
+  <sheetViews>
+    <sheetView tabSelected="0" workbookViewId="0">
+      <selection activeCell="A1" sqref="A1"/>
+    </sheetView>
+  </sheetViews>
+
+  <!-- Sheet format properties -->
+  <sheetFormatPr baseColWidth="10" defaultColWidth="14" defaultRowHeight="15" customHeight="1"/>
+
+  <!-- Column definitions -->
+  <cols>
+    <col min="1" max="1" width="25" customWidth="1" style="1"/>
+    <col min="2" max="2" width="20" customWidth="1" style="2"/>
+    <col min="3" max="3" width="30" customWidth="1" style="3"/>
+    <col min="4" max="8" width="18" customWidth="1" style="4"/>
+  </cols>
+
+  <!-- Sheet data with comprehensive design token examples -->
+  <sheetData>
+    <!-- Header section -->
+    <row r="1" spans="1:8" ht="35" customHeight="1" s="5">
+      <c r="A1" s="6" t="inlineStr">
+        <is>
+          <t>{{sheets.examples.title|Design Token Examples}}</t>
+        </is>
+      </c>
+    </row>
+
+    <row r="2" spans="1:8" ht="20" customHeight="1">
+      <c r="A2" s="7" t="inlineStr">
+        <is>
+          <t>{{sheets.examples.subtitle|StyleStack Modern Design System Reference}}</t>
+        </is>
+      </c>
+    </row>
+
+    <!-- Color palette section -->
+    <row r="4" spans="1:8" ht="25" customHeight="1">
+      <c r="A4" s="8" t="inlineStr">
+        <is>
+          <t>{{sections.colors.title|Brand Colors}}</t>
+        </is>
+      </c>
+    </row>
+
+    <!-- Primary colors row -->
+    <row r="5" spans="1:8">
+      <c r="A5" s="9" t="inlineStr">
+        <is>
+          <t>{{colors.primary.label|Primary}}</t>
+        </is>
+      </c>
+      <c r="B5" s="10" t="inlineStr">
+        <is>
+          <t>{{brand.colors.primary|#0EA5E9}}</t>
+        </is>
+      </c>
+      <c r="C5" s="11">
+        <!-- Color swatch cell with primary brand color -->
+      </c>
+    </row>
+
+    <!-- Secondary colors row -->
+    <row r="6" spans="1:8">
+      <c r="A6" s="9" t="inlineStr">
+        <is>
+          <t>{{colors.secondary.label|Secondary}}</t>
+        </is>
+      </c>
+      <c r="B6" s="10" t="inlineStr">
+        <is>
+          <t>{{brand.colors.secondary|#8B5CF6}}</t>
+        </is>
+      </c>
+      <c r="C6" s="12">
+        <!-- Color swatch cell with secondary brand color -->
+      </c>
+    </row>
+
+    <!-- Success colors row -->
+    <row r="7" spans="1:8">
+      <c r="A7" s="9" t="inlineStr">
+        <is>
+          <t>{{colors.success.label|Success}}</t>
+        </is>
+      </c>
+      <c r="B7" s="10" t="inlineStr">
+        <is>
+          <t>{{brand.colors.success|#10B981}}</t>
+        </is>
+      </c>
+      <c r="C7" s="13">
+        <!-- Color swatch cell with success color -->
+      </c>
+    </row>
+
+    <!-- Warning colors row -->
+    <row r="8" spans="1:8">
+      <c r="A8" s="9" t="inlineStr">
+        <is>
+          <t>{{colors.warning.label|Warning}}</t>
+        </is>
+      </c>
+      <c r="B8" s="10" t="inlineStr">
+        <is>
+          <t>{{brand.colors.warning|#F59E0B}}</t>
+        </is>
+      </c>
+      <c r="C8" s="14">
+        <!-- Color swatch cell with warning color -->
+      </c>
+    </row>
+
+    <!-- Error colors row -->
+    <row r="9" spans="1:8">
+      <c r="A9" s="9" t="inlineStr">
+        <is>
+          <t>{{colors.error.label|Error}}</t>
+        </is>
+      </c>
+      <c r="B9" s="10" t="inlineStr">
+        <is>
+          <t>{{brand.colors.error|#EF4444}}</t>
+        </is>
+      </c>
+      <c r="C9" s="15">
+        <!-- Color swatch cell with error color -->
+      </c>
+    </row>
+
+    <!-- Typography section -->
+    <row r="11" spans="1:8" ht="25" customHeight="1">
+      <c r="A11" s="8" t="inlineStr">
+        <is>
+          <t>{{sections.typography.title|Typography Scale}}</t>
+        </is>
+      </c>
+    </row>
+
+    <!-- Font family row -->
+    <row r="12" spans="1:8">
+      <c r="A12" s="9" t="inlineStr">
+        <is>
+          <t>{{typography.font.family.label|Font Family}}</t>
+        </is>
+      </c>
+      <c r="B12" s="16" t="inlineStr">
+        <is>
+          <t>{{typography.font.family|Inter}}</t>
+        </is>
+      </c>
+    </row>
+
+    <!-- Heading sizes -->
+    <row r="13" spans="1:8">
+      <c r="A13" s="9" t="inlineStr">
+        <is>
+          <t>{{typography.sizes.h1.label|Heading 1}}</t>
+        </is>
+      </c>
+      <c r="B13" s="10" t="inlineStr">
+        <is>
+          <t>{{typography.sizes.h1|32px}}</t>
+        </is>
+      </c>
+      <c r="C13" s="17" t="inlineStr">
+        <is>
+          <t>{{examples.typography.h1|Large Heading}}</t>
+        </is>
+      </c>
+    </row>
+
+    <row r="14" spans="1:8">
+      <c r="A14" s="9" t="inlineStr">
+        <is>
+          <t>{{typography.sizes.h2.label|Heading 2}}</t>
+        </is>
+      </c>
+      <c r="B14" s="10" t="inlineStr">
+        <is>
+          <t>{{typography.sizes.h2|24px}}</t>
+        </is>
+      </c>
+      <c r="C14" s="18" t="inlineStr">
+        <is>
+          <t>{{examples.typography.h2|Medium Heading}}</t>
+        </is>
+      </c>
+    </row>
+
+    <row r="15" spans="1:8">
+      <c r="A15" s="9" t="inlineStr">
+        <is>
+          <t>{{typography.sizes.body.label|Body Text}}</t>
+        </is>
+      </c>
+      <c r="B15" s="10" t="inlineStr">
+        <is>
+          <t>{{typography.sizes.body|16px}}</t>
+        </is>
+      </c>
+      <c r="C15" s="19" t="inlineStr">
+        <is>
+          <t>{{examples.typography.body|Regular body text example}}</t>
+        </is>
+      </c>
+    </row>
+
+    <!-- Spacing section -->
+    <row r="17" spans="1:8" ht="25" customHeight="1">
+      <c r="A17" s="8" t="inlineStr">
+        <is>
+          <t>{{sections.spacing.title|Spacing Scale}}</t>
+        </is>
+      </c>
+    </row>
+
+    <!-- Spacing examples -->
+    <row r="18" spans="1:8">
+      <c r="A18" s="9" t="inlineStr">
+        <is>
+          <t>{{spacing.xs.label|XS (4px)}}</t>
+        </is>
+      </c>
+      <c r="B18" s="10" t="inlineStr">
+        <is>
+          <t>{{spacing.xs|4px}}</t>
+        </is>
+      </c>
+    </row>
+
+    <row r="19" spans="1:8">
+      <c r="A19" s="9" t="inlineStr">
+        <is>
+          <t>{{spacing.sm.label|Small (8px)}}</t>
+        </is>
+      </c>
+      <c r="B19" s="10" t="inlineStr">
+        <is>
+          <t>{{spacing.sm|8px}}</t>
+        </is>
+      </c>
+    </row>
+
+    <row r="20" spans="1:8">
+      <c r="A20" s="9" t="inlineStr">
+        <is>
+          <t>{{spacing.md.label|Medium (16px)}}</t>
+        </is>
+      </c>
+      <c r="B20" s="10" t="inlineStr">
+        <is>
+          <t>{{spacing.md|16px}}</t>
+        </is>
+      </c>
+    </row>
+
+    <row r="21" spans="1:8">
+      <c r="A21" s="9" t="inlineStr">
+        <is>
+          <t>{{spacing.lg.label|Large (24px)}}</t>
+        </is>
+      </c>
+      <c r="B21" s="10" t="inlineStr">
+        <is>
+          <t>{{spacing.lg|24px}}</t>
+        </is>
+      </c>
+    </row>
+
+    <row r="22" spans="1:8">
+      <c r="A22" s="9" t="inlineStr">
+        <is>
+          <t>{{spacing.xl.label|XL (32px)}}</t>
+        </is>
+      </c>
+      <c r="B22" s="10" t="inlineStr">
+        <is>
+          <t>{{spacing.xl|32px}}</t>
+        </is>
+      </c>
+    </row>
+
+    <!-- Brand asset section -->
+    <row r="24" spans="1:8" ht="25" customHeight="1">
+      <c r="A24" s="8" t="inlineStr">
+        <is>
+          <t>{{sections.assets.title|Brand Assets}}</t>
+        </is>
+      </c>
+    </row>
+
+    <row r="25" spans="1:8">
+      <c r="A25" s="9" t="inlineStr">
+        <is>
+          <t>{{assets.logo.label|Logo URL}}</t>
+        </is>
+      </c>
+      <c r="B25" s="10" t="inlineStr">
+        <is>
+          <t>{{company.logo.url|https://your-company.com/logo.svg}}</t>
+        </is>
+      </c>
+    </row>
+
+    <row r="26" spans="1:8">
+      <c r="A26" s="9" t="inlineStr">
+        <is>
+          <t>{{assets.favicon.label|Favicon URL}}</t>
+        </is>
+      </c>
+      <c r="B26" s="10" t="inlineStr">
+        <is>
+          <t>{{company.favicon.url|https://your-company.com/favicon.ico}}</t>
+        </is>
+      </c>
+    </row>
+
+    <!-- Token usage metrics -->
+    <row r="28" spans="1:8" ht="25" customHeight="1">
+      <c r="A28" s="8" t="inlineStr">
+        <is>
+          <t>{{sections.metrics.title|Token Usage Metrics}}</t>
+        </is>
+      </c>
+    </row>
+
+    <row r="29" spans="1:8">
+      <c r="A29" s="9" t="inlineStr">
+        <is>
+          <t>{{metrics.tokens.total.label|Total Tokens}}</t>
+        </is>
+      </c>
+      <c r="B29" s="20">
+        <v>{{metrics.tokens.total|156}}</v>
+      </c>
+      <c r="C29" s="9" t="inlineStr">
+        <is>
+          <t>{{metrics.tokens.used.label|Tokens Used}}</t>
+        </is>
+      </c>
+      <c r="D29" s="20">
+        <v>{{metrics.tokens.used|142}}</v>
+      </c>
+      <c r="E29" s="9" t="inlineStr">
+        <is>
+          <t>{{metrics.compliance.label|Compliance Rate}}</t>
+        </is>
+      </c>
+      <c r="F29" s="21">
+        <v>{{metrics.compliance.rate|91.0}}</v>
+      </c>
+    </row>
+  </sheetData>
+
+  <!-- Page margins and setup -->
+  <pageMargins left="0.7" right="0.7" top="0.75" bottom="0.75" header="0.3" footer="0.3"/>
+  <pageSetup paperSize="9" orientation="portrait" useFirstPageNumber="1" fitToWidth="1" fitToHeight="1"/>
+
+  <!-- Header footer -->
+  <headerFooter differentOddEven="0" differentFirst="0">
+    <oddHeader>&amp;C&amp;"Inter,Bold"&amp;14{{sheets.examples.header|Design Token Reference}}</oddHeader>
+    <oddFooter>&amp;L{{company.name}}&amp;C{{document.version}}&amp;R{{document.date}}</oddFooter>
+  </headerFooter>
+
+</worksheet>

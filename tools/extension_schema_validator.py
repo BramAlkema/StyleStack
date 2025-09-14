@@ -7,15 +7,23 @@ Provides detailed error reporting and validation utilities.
 """
 
 
-from typing import Any, Dict, List, Optional
-import json
+# Use shared utilities to eliminate duplication
+from tools.core import (
+    Any, Dict, List, Optional, Path, get_logger, 
+    ValidationResult, ValidationError as CoreValidationError,
+    safe_load_json, error_boundary, handle_processing_error
+)
 import re
-from pathlib import Path
-from dataclasses import dataclass, field
 from enum import Enum
 import jsonschema
-from jsonschema import validate, ValidationError, Draft7Validator
+from jsonschema import validate, ValidationError as JSONSchemaError, Draft7Validator
 from lxml import etree as ET
+
+# Configure logging
+logger = get_logger(__name__)
+
+# Export alias for backward compatibility
+ValidationError = CoreValidationError
 
 
 class VariableType(Enum):
@@ -49,39 +57,9 @@ class OOXMLValueType(Enum):
     BOOLEAN = "boolean"
 
 
-@dataclass
-class ValidationError:
-    """Detailed validation error information"""
-    field: str
-    message: str
-    value: Any = None
-    severity: str = "error"  # "error", "warning", "info"
-    code: str = ""
-    suggestion: str = ""
-
-
-@dataclass
-class ValidationResult:
-    """Complete validation result"""
-    is_valid: bool
-    errors: List[ValidationError] = field(default_factory=list)
-    warnings: List[ValidationError] = field(default_factory=list)
-    variable_id: Optional[str] = None
-    
-    def add_error(self, field: str, message: str, value: Any = None, code: str = "", suggestion: str = ""):
-        """Add validation error"""
-        self.errors.append(ValidationError(
-            field=field, message=message, value=value, 
-            severity="error", code=code, suggestion=suggestion
-        ))
-        self.is_valid = False
-        
-    def add_warning(self, field: str, message: str, value: Any = None, code: str = "", suggestion: str = ""):
-        """Add validation warning"""
-        self.warnings.append(ValidationError(
-            field=field, message=message, value=value,
-            severity="warning", code=code, suggestion=suggestion
-        ))
+# Using shared ValidationResult and ValidationError from tools.core
+# This eliminates the duplicate ValidationResult class found in 4+ files
+# and provides consistent validation behavior across StyleStack
 
 
 class ExtensionSchemaValidator:
@@ -106,14 +84,13 @@ class ExtensionSchemaValidator:
         return Path(__file__).parent.parent / "schemas" / "extension-variable.schema.json"
         
     def _load_schema(self) -> Dict[str, Any]:
-        """Load JSON schema from file"""
+        """Load JSON schema from file using shared utility"""
         try:
-            with open(self.schema_path, 'r') as f:
-                return json.load(f)
+            return safe_load_json(self.schema_path)
         except FileNotFoundError:
             raise ValueError(f"Schema file not found: {self.schema_path}")
-        except json.JSONDecodeError as e:
-            raise ValueError(f"Invalid JSON schema: {e}")
+        except Exception as e:
+            raise ValueError(f"Failed to load schema: {e}")
     
     def validate_variable(self, variable: Dict[str, Any]) -> ValidationResult:
         """Validate a single variable definition"""
@@ -136,7 +113,7 @@ class ExtensionSchemaValidator:
             # Set final validation state
             result.is_valid = len(result.errors) == 0
             
-        except ValidationError as e:
+        except JSONSchemaError as e:
             result.add_error(
                 field=".".join(str(x) for x in e.absolute_path),
                 message=e.message,
@@ -476,11 +453,7 @@ def validate_variable_file(file_path: Path) -> List[ValidationResult]:
     validator = ExtensionSchemaValidator()
     
     try:
-        with open(file_path, 'r') as f:
-            if file_path.suffix.lower() in ['.json', '.yml']:
-                data = json.safe_load(f)
-            else:
-                data = json.load(f)
+        data = safe_load_json(file_path)
         
         # Handle different file formats
         if isinstance(data, dict) and "variables" in data:

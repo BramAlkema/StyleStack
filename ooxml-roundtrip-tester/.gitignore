@@ -1,0 +1,226 @@
+# ========================================
+# OOXML Round-Trip Tester - .gitignore
+# Archive non-essential files and cruft
+# ========================================
+
+# ========================================
+# CRUFT TO ARCHIVE - Parent Directory Files
+# ========================================
+
+# Analysis and documentation cruft from parent StyleStack directory
+../IMPORT_*.md
+../ADVANCED_*.md
+../CORRUPTION_*.md
+../TASK_*.md
+../PHASE_*.md
+../ARCHITECTURE_*.md
+../TEMPLATE_*.md
+../DEPENDENCY_*.md
+../CODEBASE_*.md
+../SUPERTHEME_*.md
+../TEST_*.md
+../coverage_report.md
+../test_consolidation_strategy_recap.md
+
+# Test artifacts and temporary files from parent
+../test*.potx
+../test*.dotx
+../test*.xltx
+../test*.docx
+../*test*.potx
+../*test*.dotx
+../*test*.xltx
+../*baseline*
+../*mime*
+../tmp/
+../temp/
+../OOXML*.docx
+../docs/OOXML*.docx
+../docs/odf-*.md
+../docs/ooxml-*.md
+../tmp/extracted_*/
+
+# Old releases, builds, and cruft directories from parent
+../releases/
+../saas-platform/
+../core/2026-MANIFEST.md
+../core/README.md
+
+# Parent project configuration cruft
+../pytest*.ini
+../conftest.py
+../requirements-test.txt
+../.pytest_cache/
+../htmlcov/
+../__pycache__/
+../.*_cache/
+
+# Parent project tests and tools (keep only ooxml-roundtrip-tester tests)
+../tests/
+../tools/production_load_testing.py
+../tools/optimization_validation_tests.py
+../tools/__pycache__/
+
+# ========================================
+# STANDARD PYTHON/DEV IGNORES
+# ========================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ========================================
+# PROJECT SPECIFIC IGNORES
+# ========================================
+
+# OOXML processing temporary files
+*.tmp.pptx
+*.tmp.docx
+*.tmp.xlsx
+*_converted.*
+*_roundtrip.*
+temp_*
+converted_*
+
+# Test outputs and reports (local)
+test_output/
+reports/
+*.json.bak
+*.csv.bak
+*.html.bak
+probe_files/
+conversion_results/
+
+# Logs
+*.log
+logs/
+
+# Generated documentation
+docs/_build/
+docs/build/
+
+# Local configuration overrides
+local_config.json
+config.local.yml
+.env.local
+
+# Office document test files (keep templates in templates/)
+*.docx
+*.pptx
+*.xlsx
+*.odt
+*.odp
+*.ods
+
+# But preserve essential template files
+!templates/**/*.docx
+!templates/**/*.pptx
+!templates/**/*.xlsx
+!fixtures/**/*.docx
+!fixtures/**/*.pptx
+!fixtures/**/*.xlsx
+
+# ========================================
+# ARCHIVE MANIFEST
+# ========================================
+# This .gitignore ensures only essential OOXML Round-Trip Tester files remain:
+#
+# CORE STRUCTURE PRESERVED:
+# ooxml_tester/               - Core package
+# ├── __init__.py
+# ├── cli.py                  - Command-line interface
+# ├── core/                   - Core utilities
+# ├── analyze/                - XML analysis and comparison
+# ├── convert/                - Cross-platform conversion
+# ├── probe/                  - Test file generation
+# └── report/                 - Reporting and analytics
+#
+# tests/                      - Complete test suite
+# requirements.txt            - Dependencies
+# setup.py                    - Package setup
+# README.md                   - Documentation
+# .gitignore                  - This file
+#
+# ARCHIVED (IGNORED):
+# - Parent StyleStack analysis documents (60+ files)
+# - Test artifacts and temporary files
+# - Old releases and build directories
+# - Parent project configuration cruft
+# - Cache files and compiled artifacts
+# - IDE and OS generated files
+# - Local configuration overrides
+#
+# The result is a clean, focused OOXML Round-Trip Testing Utility
+# ready for production use and distribution.

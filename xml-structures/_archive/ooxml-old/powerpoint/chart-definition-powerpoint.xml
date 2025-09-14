@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- PowerPoint Chart Definition with Complete OOXML Primitives -->
+<!-- This provides chart structures that design tokens can patch against -->
+
+<p:graphicFrame xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"
+                xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+                xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart"
+                xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+  
+  <!-- Chart Frame Properties -->
+  <p:nvGraphicFramePr>
+    <p:cNvPr id="{{chart.id}}" name="{{chart.name}}"/>
+    <p:cNvGraphicFramePr>
+      <a:graphicFrameLocks noGrp="1"/>
+    </p:cNvGraphicFramePr>
+    <p:nvPr/>
+  </p:nvGraphicFramePr>
+  
+  <!-- Chart Position and Size - controlled by design tokens -->
+  <p:xfrm>
+    <a:off x="{{chart.position.x}}" y="{{chart.position.y}}"/>
+    <a:ext cx="{{chart.size.width}}" cy="{{chart.size.height}}"/>
+  </p:xfrm>
+  
+  <!-- Chart Content -->
+  <a:graphic>
+    <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/chart">
+      <c:chart xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart"
+               r:id="{{chart.data.relationshipId}}"/>
+    </a:graphicData>
+  </a:graphic>
+</p:graphicFrame>
+
+<!-- Complete Chart Definition (chart1.xml content) -->
+<c:chartSpace xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart"
+              xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+              xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+  
+  <!-- Chart-level properties -->
+  <c:date1904 val="{{chart.date1904}}"/>
+  <c:lang val="{{chart.language}}"/>
+  <c:roundedCorners val="{{chart.roundedCorners}}"/>
+  
+  <!-- Chart area styling -->
+  <c:chart>
+    <!-- Chart title -->
+    <c:title>
+      <c:tx>
+        <c:rich>
+          <a:bodyPr/>
+          <a:lstStyle/>
+          <a:p>
+            <a:pPr>
+              <a:defRPr sz="{{chart.title.font.size}}" b="{{chart.title.font.bold}}">
+                <a:solidFill>
+                  <a:srgbClr val="{{chart.title.font.color}}"/>
+                </a:solidFill>
+                <a:latin typeface="{{chart.title.font.family}}"/>
+              </a:defRPr>
+            </a:pPr>
+            <a:r>
+              <a:rPr lang="en-US" sz="{{chart.title.font.size}}" b="{{chart.title.font.bold}}">
+                <a:solidFill>
+                  <a:srgbClr val="{{chart.title.font.color}}"/>
+                </a:solidFill>
+                <a:latin typeface="{{chart.title.font.family}}"/>
+              </a:rPr>
+              <a:t>{{chart.title.text}}</a:t>
+            </a:r>
+          </a:p>
+        </c:rich>
+      </c:tx>
+      <c:layout/>
+    </c:title>
+    
+    <!-- Plot area -->
+    <c:plotArea>
+      <c:layout/>
+      
+      <!-- Column Chart Definition -->
+      <c:barChart>
+        <c:barDir val="col"/>
+        <c:grouping val="{{chart.bar.grouping}}"/> <!-- clustered, stacked, percentStacked -->
+        <c:varyColors val="{{chart.colors.vary}}"/>
+        
+        <!-- Data Series 1 -->
+        <c:ser>
+          <c:idx val="0"/>
+          <c:order val="0"/>
+          
+          <!-- Series formatting - design tokens control colors -->
+          <c:spPr>
+            <a:solidFill>
+              <a:srgbClr val="{{chart.series1.color}}"/>
+            </a:solidFill>
+            <a:ln w="{{chart.series1.border.width}}">
+              <a:solidFill>
+                <a:srgbClr val="{{chart.series1.border.color}}"/>
+              </a:solidFill>
+            </a:ln>
+            <a:effectLst/>
+          </c:spPr>
+          
+          <!-- Data labels -->
+          <c:dLbls>
+            <c:showLegendKey val="{{chart.dataLabels.showLegendKey}}"/>
+            <c:showVal val="{{chart.dataLabels.showValue}}"/>
+            <c:showCatName val="{{chart.dataLabels.showCategoryName}}"/>
+            <c:showSerName val="{{chart.dataLabels.showSeriesName}}"/>
+            <c:showPercent val="{{chart.dataLabels.showPercent}}"/>
+            <c:showBubbleSize val="{{chart.dataLabels.showBubbleSize}}"/>
+            
+            <!-- Data label text formatting -->
+            <c:txPr>
+              <a:bodyPr/>
+              <a:lstStyle/>
+              <a:p>
+                <a:pPr>
+                  <a:defRPr sz="{{chart.dataLabels.font.size}}">
+                    <a:solidFill>
+                      <a:srgbClr val="{{chart.dataLabels.font.color}}"/>
+                    </a:solidFill>
+                    <a:latin typeface="{{chart.dataLabels.font.family}}"/>
+                  </a:defRPr>
+                </a:pPr>
+              </a:p>
+            </c:txPr>
+          </c:dLbls>
+          
+          <!-- Category axis data -->
+          <c:cat>
+            <c:strRef>
+              <c:f>{{chart.categories.range}}</c:f> <!-- e.g., Sheet1!$A$2:$A$5 -->
+              <c:strCache>
+                <c:ptCount val="{{chart.categories.count}}"/>
+                <c:pt idx="0"><c:v>{{chart.categories.value1}}</c:v></c:pt>
+                <c:pt idx="1"><c:v>{{chart.categories.value2}}</c:v></c:pt>
+                <c:pt idx="2"><c:v>{{chart.categories.value3}}</c:v></c:pt>
+                <c:pt idx="3"><c:v>{{chart.categories.value4}}</c:v></c:pt>
+              </c:strCache>
+            </c:strRef>
+          </c:cat>
+          
+          <!-- Values data -->
+          <c:val>
+            <c:numRef>
+              <c:f>{{chart.series1.values.range}}</c:f> <!-- e.g., Sheet1!$B$2:$B$5 -->
+              <c:numCache>
+                <c:formatCode>{{chart.series1.values.formatCode}}</c:formatCode>
+                <c:ptCount val="{{chart.series1.values.count}}"/>
+                <c:pt idx="0"><c:v>{{chart.series1.values.value1}}</c:v></c:pt>
+                <c:pt idx="1"><c:v>{{chart.series1.values.value2}}</c:v></c:pt>
+                <c:pt idx="2"><c:v>{{chart.series1.values.value3}}</c:v></c:pt>
+                <c:pt idx="3"><c:v>{{chart.series1.values.value4}}</c:v></c:pt>
+              </c:numCache>
+            </c:numRef>
+          </c:val>
+        </c:ser>
+        
+        <!-- Data Series 2 -->
+        <c:ser>
+          <c:idx val="1"/>
+          <c:order val="1"/>
+          
+          <c:spPr>
+            <a:solidFill>
+              <a:srgbClr val="{{chart.series2.color}}"/>
+            </a:solidFill>
+            <a:ln w="{{chart.series2.border.width}}">
+              <a:solidFill>
+                <a:srgbClr val="{{chart.series2.border.color}}"/>
+              </a:solidFill>
+            </a:ln>
+          </c:spPr>
+          
+          <c:cat>
+            <c:strRef>
+              <c:f>{{chart.categories.range}}</c:f>
+              <c:strCache>
+                <c:ptCount val="{{chart.categories.count}}"/>
+                <c:pt idx="0"><c:v>{{chart.categories.value1}}</c:v></c:pt>
+                <c:pt idx="1"><c:v>{{chart.categories.value2}}</c:v></c:pt>
+                <c:pt idx="2"><c:v>{{chart.categories.value3}}</c:v></c:pt>
+                <c:pt idx="3"><c:v>{{chart.categories.value4}}</c:v></c:pt>
+              </c:strCache>
+            </c:strRef>
+          </c:cat>
+          
+          <c:val>
+            <c:numRef>
+              <c:f>{{chart.series2.values.range}}</c:f>
+              <c:numCache>
+                <c:formatCode>{{chart.series2.values.formatCode}}</c:formatCode>
+                <c:ptCount val="{{chart.series2.values.count}}"/>
+                <c:pt idx="0"><c:v>{{chart.series2.values.value1}}</c:v></c:pt>
+                <c:pt idx="1"><c:v>{{chart.series2.values.value2}}</c:v></c:pt>
+                <c:pt idx="2"><c:v>{{chart.series2.values.value3}}</c:v></c:pt>
+                <c:pt idx="3"><c:v>{{chart.series2.values.value4}}</c:v></c:pt>
+              </c:numCache>
+            </c:numRef>
+          </c:val>
+        </c:ser>
+        
+        <!-- Gap width between bars -->
+        <c:gapWidth val="{{chart.bar.gapWidth}}"/>
+        
+        <!-- Overlap between series -->
+        <c:overlap val="{{chart.bar.overlap}}"/>
+        
+        <!-- Axis references -->
+        <c:axId val="{{chart.categoryAxis.id}}"/>
+        <c:axId val="{{chart.valueAxis.id}}"/>
+      </c:barChart>
+      
+      <!-- Category Axis -->
+      <c:catAx>
+        <c:axId val="{{chart.categoryAxis.id}}"/>
+        <c:scaling>
+          <c:orientation val="minMax"/>
+        </c:scaling>
+        <c:delete val="{{chart.categoryAxis.delete}}"/>
+        <c:axPos val="b"/> <!-- bottom -->
+        
+        <!-- Major gridlines -->
+        <c:majorGridlines>
+          <c:spPr>
+            <a:ln w="{{chart.gridlines.major.width}}">
+              <a:solidFill>
+                <a:srgbClr val="{{chart.gridlines.major.color}}"/>
+              </a:solidFill>
+            </a:ln>
+          </c:spPr>
+        </c:majorGridlines>
+        
+        <!-- Axis title -->
+        <c:title>
+          <c:tx>
+            <c:rich>
+              <a:bodyPr/>
+              <a:lstStyle/>
+              <a:p>
+                <a:pPr>
+                  <a:defRPr sz="{{chart.categoryAxis.title.font.size}}">
+                    <a:solidFill>
+                      <a:srgbClr val="{{chart.categoryAxis.title.font.color}}"/>
+                    </a:solidFill>
+                    <a:latin typeface="{{chart.categoryAxis.title.font.family}}"/>
+                  </a:defRPr>
+                </a:pPr>
+                <a:r>
+                  <a:t>{{chart.categoryAxis.title.text}}</a:t>
+                </a:r>
+              </a:p>
+            </c:rich>
+          </c:tx>
+          <c:layout/>
+        </c:title>
+        
+        <!-- Axis number format -->
+        <c:numFmt formatCode="{{chart.categoryAxis.numberFormat}}" sourceLinked="{{chart.categoryAxis.sourceLinked}}"/>
+        
+        <!-- Major and minor tick marks -->
+        <c:majorTickMark val="{{chart.categoryAxis.majorTickMark}}"/>
+        <c:minorTickMark val="{{chart.categoryAxis.minorTickMark}}"/>
+        
+        <!-- Tick label position -->
+        <c:tickLblPos val="{{chart.categoryAxis.tickLabelPosition}}"/>
+        
+        <!-- Axis formatting -->
+        <c:spPr>
+          <a:ln w="{{chart.categoryAxis.line.width}}">
+            <a:solidFill>
+              <a:srgbClr val="{{chart.categoryAxis.line.color}}"/>
+            </a:solidFill>
+          </a:ln>
+        </c:spPr>
+        
+        <!-- Tick labels formatting -->
+        <c:txPr>
+          <a:bodyPr/>
+          <a:lstStyle/>
+          <a:p>
+            <a:pPr>
+              <a:defRPr sz="{{chart.categoryAxis.labels.font.size}}">
+                <a:solidFill>
+                  <a:srgbClr val="{{chart.categoryAxis.labels.font.color}}"/>
+                </a:solidFill>
+                <a:latin typeface="{{chart.categoryAxis.labels.font.family}}"/>
+              </a:defRPr>
+            </a:pPr>
+          </a:p>
+        </c:txPr>
+        
+        <c:crossAx val="{{chart.valueAxis.id}}"/>
+        <c:crosses val="{{chart.categoryAxis.crosses}}"/>
+        <c:auto val="1"/>
+        <c:lblAlgn val="ctr"/>
+        <c:lblOffset val="100"/>
+        <c:noMultiLvlLbl val="0"/>
+      </c:catAx>
+      
+      <!-- Value Axis -->
+      <c:valAx>
+        <c:axId val="{{chart.valueAxis.id}}"/>
+        <c:scaling>
+          <c:orientation val="minMax"/>
+          <c:min val="{{chart.valueAxis.min}}"/>
+          <c:max val="{{chart.valueAxis.max}}"/>
+        </c:scaling>
+        <c:delete val="{{chart.valueAxis.delete}}"/>
+        <c:axPos val="l"/> <!-- left -->
+        
+        <!-- Major gridlines -->
+        <c:majorGridlines>
+          <c:spPr>
+            <a:ln w="{{chart.gridlines.major.width}}">
+              <a:solidFill>
+                <a:srgbClr val="{{chart.gridlines.major.color}}"/>
+              </a:solidFill>
+            </a:ln>
+          </c:spPr>
+        </c:majorGridlines>
+        
+        <!-- Value axis title -->
+        <c:title>
+          <c:tx>
+            <c:rich>
+              <a:bodyPr/>
+              <a:lstStyle/>
+              <a:p>
+                <a:pPr>
+                  <a:defRPr sz="{{chart.valueAxis.title.font.size}}">
+                    <a:solidFill>
+                      <a:srgbClr val="{{chart.valueAxis.title.font.color}}"/>
+                    </a:solidFill>
+                    <a:latin typeface="{{chart.valueAxis.title.font.family}}"/>
+                  </a:defRPr>
+                </a:pPr>
+                <a:r>
+                  <a:t>{{chart.valueAxis.title.text}}</a:t>
+                </a:r>
+              </a:p>
+            </c:rich>
+          </c:tx>
+          <c:layout/>
+        </c:title>
+        
+        <c:numFmt formatCode="{{chart.valueAxis.numberFormat}}" sourceLinked="{{chart.valueAxis.sourceLinked}}"/>
+        <c:majorTickMark val="{{chart.valueAxis.majorTickMark}}"/>
+        <c:minorTickMark val="{{chart.valueAxis.minorTickMark}}"/>
+        <c:tickLblPos val="{{chart.valueAxis.tickLabelPosition}}"/>
+        
+        <!-- Value axis line formatting -->
+        <c:spPr>
+          <a:ln w="{{chart.valueAxis.line.width}}">
+            <a:solidFill>
+              <a:srgbClr val="{{chart.valueAxis.line.color}}"/>
+            </a:solidFill>
+          </a:ln>
+        </c:spPr>
+        
+        <!-- Value labels formatting -->
+        <c:txPr>
+          <a:bodyPr/>
+          <a:lstStyle/>
+          <a:p>
+            <a:pPr>
+              <a:defRPr sz="{{chart.valueAxis.labels.font.size}}">
+                <a:solidFill>
+                  <a:srgbClr val="{{chart.valueAxis.labels.font.color}}"/>
+                </a:solidFill>
+                <a:latin typeface="{{chart.valueAxis.labels.font.family}}"/>
+              </a:defRPr>
+            </a:pPr>
+          </a:p>
+        </c:txPr>
+        
+        <c:crossAx val="{{chart.categoryAxis.id}}"/>
+        <c:crosses val="{{chart.valueAxis.crosses}}"/>
+        <c:crossBetween val="between"/>
+        <c:majorUnit val="{{chart.valueAxis.majorUnit}}"/>
+        <c:minorUnit val="{{chart.valueAxis.minorUnit}}"/>
+      </c:valAx>
+    </c:plotArea>
+    
+    <!-- Legend -->
+    <c:legend>
+      <c:legendPos val="{{chart.legend.position}}"/> <!-- r, t, b, l, tr -->
+      <c:layout/>
+      
+      <!-- Legend text formatting -->
+      <c:txPr>
+        <a:bodyPr/>
+        <a:lstStyle/>
+        <a:p>
+          <a:pPr>
+            <a:defRPr sz="{{chart.legend.font.size}}">
+              <a:solidFill>
+                <a:srgbClr val="{{chart.legend.font.color}}"/>
+              </a:solidFill>
+              <a:latin typeface="{{chart.legend.font.family}}"/>
+            </a:defRPr>
+          </a:pPr>
+        </a:p>
+      </c:txPr>
+      
+      <c:overlay val="{{chart.legend.overlay}}"/>
+    </c:legend>
+    
+    <!-- Plot visibility -->
+    <c:plotVisOnly val="{{chart.plotVisibleOnly}}"/>
+    <c:dispBlanksAs val="{{chart.displayBlanksAs}}"/> <!-- gap, zero, span -->
+    <c:showDLblsOverMax val="{{chart.showDataLabelsOverMaximum}}"/>
+  </c:chart>
+  
+  <!-- Chart area formatting -->
+  <c:spPr>
+    <a:solidFill>
+      <a:srgbClr val="{{chart.background.color}}"/>
+    </a:solidFill>
+    <a:ln w="{{chart.border.width}}">
+      <a:solidFill>
+        <a:srgbClr val="{{chart.border.color}}"/>
+      </a:solidFill>
+    </a:ln>
+    <a:effectLst/>
+  </c:spPr>
+  
+  <!-- Text properties for chart area -->
+  <c:txPr>
+    <a:bodyPr/>
+    <a:lstStyle/>
+    <a:p>
+      <a:pPr>
+        <a:defRPr sz="{{chart.default.font.size}}">
+          <a:solidFill>
+            <a:srgbClr val="{{chart.default.font.color}}"/>
+          </a:solidFill>
+          <a:latin typeface="{{chart.default.font.family}}"/>
+        </a:defRPr>
+      </a:pPr>
+    </a:p>
+  </c:txPr>
+  
+  <!-- Print settings -->
+  <c:printSettings>
+    <c:headerFooter/>
+    <c:pageMargins b="{{chart.print.margins.bottom}}" 
+                   l="{{chart.print.margins.left}}" 
+                   r="{{chart.print.margins.right}}" 
+                   t="{{chart.print.margins.top}}" 
+                   header="{{chart.print.margins.header}}" 
+                   footer="{{chart.print.margins.footer}}"/>
+    <c:pageSetup/>
+  </c:printSettings>
+  
+</c:chartSpace>

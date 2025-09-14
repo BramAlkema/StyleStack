@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:theme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="{{theme.name|StyleStack Modern}}">
+
+  <!-- StyleStack Modern Theme Definition with Comprehensive Design Token Integration -->
+
+  <!-- Theme Elements: Colors, Fonts, and Format Scheme -->
+  <a:themeElements>
+
+    <!-- Color Scheme with StyleStack Brand Colors -->
+    <a:clrScheme name="{{colors.scheme.name|StyleStack Modern}}">
+      <!-- Light colors (backgrounds and subtle elements) -->
+      <a:lt1>
+        <a:sysClr val="windowText" lastClr="{{brand.colors.light1|FFFFFF}}"/>
+      </a:lt1>
+      <a:dk1>
+        <a:sysClr val="windowText" lastClr="{{brand.colors.dark1|1E293B}}"/>
+      </a:dk1>
+      <a:lt2>
+        <a:srgbClr val="{{brand.colors.light2|F8FAFC}}"/>
+      </a:lt2>
+      <a:dk2>
+        <a:srgbClr val="{{brand.colors.dark2|475569}}"/>
+      </a:dk2>
+
+      <!-- Accent colors for StyleStack brand identity -->
+      <a:accent1>
+        <a:srgbClr val="{{brand.colors.primary|0EA5E9}}"/>
+      </a:accent1>
+      <a:accent2>
+        <a:srgbClr val="{{brand.colors.secondary|8B5CF6}}"/>
+      </a:accent2>
+      <a:accent3>
+        <a:srgbClr val="{{brand.colors.success|10B981}}"/>
+      </a:accent3>
+      <a:accent4>
+        <a:srgbClr val="{{brand.colors.warning|F59E0B}}"/>
+      </a:accent4>
+      <a:accent5>
+        <a:srgbClr val="{{brand.colors.danger|EF4444}}"/>
+      </a:accent5>
+      <a:accent6>
+        <a:srgbClr val="{{brand.colors.info|6366F1}}"/>
+      </a:accent6>
+
+      <!-- Hyperlink colors -->
+      <a:hlink>
+        <a:srgbClr val="{{brand.colors.hyperlink|0EA5E9}}"/>
+      </a:hlink>
+      <a:folHlink>
+        <a:srgbClr val="{{brand.colors.hyperlink_visited|7C3AED}}"/>
+      </a:folHlink>
+    </a:clrScheme>
+
+    <!-- Font Scheme with StyleStack Typography System -->
+    <a:fontScheme name="{{fonts.scheme.name|StyleStack Modern}}">
+      <!-- Major fonts (headings) -->
+      <a:majorFont>
+        <a:latin typeface="{{typography.font.heading|Inter}}" panose="{{typography.panose.heading|020F0502020204030204}}" pitchFamily="{{typography.pitch_family.heading|34}}" charset="{{typography.charset.heading|0}}"/>
+        <a:ea typeface="{{typography.font.heading_ea|}}" panose="{{typography.panose.heading_ea|}}" pitchFamily="{{typography.pitch_family.heading_ea|}}" charset="{{typography.charset.heading_ea|}}"/>
+        <a:cs typeface="{{typography.font.heading_cs|}}" panose="{{typography.panose.heading_cs|}}" pitchFamily="{{typography.pitch_family.heading_cs|}}" charset="{{typography.charset.heading_cs|}}"/>
+
+        <!-- Font variations and fallbacks -->
+        <a:font script="Latn" typeface="{{typography.font.heading_latin|Inter}}"/>
+        <a:font script="Arab" typeface="{{typography.font.heading_arabic|Tahoma}}"/>
+        <a:font script="Hebr" typeface="{{typography.font.heading_hebrew|Arial}}"/>
+        <a:font script="Thai" typeface="{{typography.font.heading_thai|Tahoma}}"/>
+        <a:font script="Ethi" typeface="{{typography.font.heading_ethiopic|Nyala}}"/>
+        <a:font script="Beng" typeface="{{typography.font.heading_bengali|Vrinda}}"/>
+        <a:font script="Gujr" typeface="{{typography.font.heading_gujarati|Shruti}}"/>
+        <a:font script="Khmr" typeface="{{typography.font.heading_khmer|MoolBoran}}"/>
+        <a:font script="Knda" typeface="{{typography.font.heading_kannada|Tunga}}"/>
+        <a:font script="Guru" typeface="{{typography.font.heading_gurmukhi|Raavi}}"/>
+        <a:font script="Cans" typeface="{{typography.font.heading_canadian|Euphemia}}"/>
+        <a:font script="Cher" typeface="{{typography.font.heading_cherokee|Plantagenet Cherokee}}"/>
+        <a:font script="Yiii" typeface="{{typography.font.heading_yi|Microsoft Yi Baiti}}"/>
+        <a:font script="Tibt" typeface="{{typography.font.heading_tibetan|Microsoft Himalaya}}"/>
+        <a:font script="Thaa" typeface="{{typography.font.heading_thaana|MV Boli}}"/>
+        <a:font script="Deva" typeface="{{typography.font.heading_devanagari|Mangal}}"/>
+        <a:font script="Telu" typeface="{{typography.font.heading_telugu|Gautami}}"/>
+        <a:font script="Taml" typeface="{{typography.font.heading_tamil|Latha}}"/>
+        <a:font script="Syrc" typeface="{{typography.font.heading_syriac|Estrangelo Edessa}}"/>
+        <a:font script="Orya" typeface="{{typography.font.heading_oriya|Kalinga}}"/>
+        <a:font script="Mlym" typeface="{{typography.font.heading_malayalam|Kartika}}"/>
+        <a:font script="Laoo" typeface="{{typography.font.heading_lao|DokChampa}}"/>
+        <a:font script="Sinh" typeface="{{typography.font.heading_sinhala|Iskoola Pota}}"/>
+        <a:font script="Mong" typeface="{{typography.font.heading_mongolian|Mongolian Baiti}}"/>
+        <a:font script="Viet" typeface="{{typography.font.heading_vietnamese|Times New Roman}}"/>
+        <a:font script="Uigh" typeface="{{typography.font.heading_uyghur|Microsoft Uighur}}"/>
+        <a:font script="Geor" typeface="{{typography.font.heading_georgian|Sylfaen}}"/>
+      </a:majorFont>
+
+      <!-- Minor fonts (body text) -->
+      <a:minorFont>
+        <a:latin typeface="{{typography.font.body|Inter}}" panose="{{typography.panose.body|020F0502020204030204}}" pitchFamily="{{typography.pitch_family.body|34}}" charset="{{typography.charset.body|0}}"/>
+        <a:ea typeface="{{typography.font.body_ea|}}" panose="{{typography.panose.body_ea|}}" pitchFamily="{{typography.pitch_family.body_ea|}}" charset="{{typography.charset.body_ea|}}"/>
+        <a:cs typeface="{{typography.font.body_cs|}}" panose="{{typography.panose.body_cs|}}" pitchFamily="{{typography.pitch_family.body_cs|}}" charset="{{typography.charset.body_cs|}}"/>
+
+        <!-- Font variations and fallbacks for body text -->
+        <a:font script="Latn" typeface="{{typography.font.body_latin|Inter}}"/>
+        <a:font script="Arab" typeface="{{typography.font.body_arabic|Tahoma}}"/>
+        <a:font script="Hebr" typeface="{{typography.font.body_hebrew|Arial}}"/>
+        <a:font script="Thai" typeface="{{typography.font.body_thai|Tahoma}}"/>
+        <a:font script="Ethi" typeface="{{typography.font.body_ethiopic|Nyala}}"/>
+        <a:font script="Beng" typeface="{{typography.font.body_bengali|Vrinda}}"/>
+        <a:font script="Gujr" typeface="{{typography.font.body_gujarati|Shruti}}"/>
+        <a:font script="Khmr" typeface="{{typography.font.body_khmer|MoolBoran}}"/>
+        <a:font script="Knda" typeface="{{typography.font.body_kannada|Tunga}}"/>
+        <a:font script="Guru" typeface="{{typography.font.body_gurmukhi|Raavi}}"/>
+        <a:font script="Cans" typeface="{{typography.font.body_canadian|Euphemia}}"/>
+        <a:font script="Cher" typeface="{{typography.font.body_cherokee|Plantagenet Cherokee}}"/>
+        <a:font script="Yiii" typeface="{{typography.font.body_yi|Microsoft Yi Baiti}}"/>
+        <a:font script="Tibt" typeface="{{typography.font.body_tibetan|Microsoft Himalaya}}"/>
+        <a:font script="Thaa" typeface="{{typography.font.body_thaana|MV Boli}}"/>
+        <a:font script="Deva" typeface="{{typography.font.body_devanagari|Mangal}}"/>
+        <a:font script="Telu" typeface="{{typography.font.body_telugu|Gautami}}"/>
+        <a:font script="Taml" typeface="{{typography.font.body_tamil|Latha}}"/>
+        <a:font script="Syrc" typeface="{{typography.font.body_syriac|Estrangelo Edessa}}"/>
+        <a:font script="Orya" typeface="{{typography.font.body_oriya|Kalinga}}"/>
+        <a:font script="Mlym" typeface="{{typography.font.body_malayalam|Kartika}}"/>
+        <a:font script="Laoo" typeface="{{typography.font.body_lao|DokChampa}}"/>
+        <a:font script="Sinh" typeface="{{typography.font.body_sinhala|Iskoola Pota}}"/>
+        <a:font script="Mong" typeface="{{typography.font.body_mongolian|Mongolian Baiti}}"/>
+        <a:font script="Viet" typeface="{{typography.font.body_vietnamese|Times New Roman}}"/>
+        <a:font script="Uigh" typeface="{{typography.font.body_uyghur|Microsoft Uighur}}"/>
+        <a:font script="Geor" typeface="{{typography.font.body_georgian|Sylfaen}}"/>
+      </a:minorFont>
+    </a:fontScheme>
+
+    <!-- Format Scheme: Line, Fill, and Effect Styles -->
+    <a:fmtScheme name="{{format.scheme.name|StyleStack Modern}}">
+
+      <!-- Fill Styles with brand-compliant patterns -->
+      <a:fillStyleLst>
+        <!-- Subtle fill (background) -->
+        <a:solidFill>
+          <a:schemeClr val="phClr"/>
+        </a:solidFill>
+
+        <!-- Moderate fill -->
+        <a:gradFill rotWithShape="1">
+          <a:gsLst>
+            <a:gs pos="0">
+              <a:schemeClr val="phClr">
+                <a:lumMod val="{{effects.gradient.lum_mod_start|110000}}"/>
+                <a:satMod val="{{effects.gradient.sat_mod_start|105000}}"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="100000">
+              <a:schemeClr val="phClr">
+                <a:lumMod val="{{effects.gradient.lum_mod_end|105000}}"/>
+                <a:satMod val="{{effects.gradient.sat_mod_end|103000}}"/>
+              </a:schemeClr>
+            </a:gs>
+          </a:gsLst>
+          <a:lin ang="{{effects.gradient.angle|5400000}}" scaled="0"/>
+        </a:gradFill>
+
+        <!-- Intense fill -->
+        <a:gradFill rotWithShape="1">
+          <a:gsLst>
+            <a:gs pos="0">
+              <a:schemeClr val="phClr">
+                <a:lumMod val="{{effects.intense.lum_mod_start|102000}}"/>
+                <a:satMod val="{{effects.intense.sat_mod_start|150000}}"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="100000">
+              <a:schemeClr val="phClr">
+                <a:lumMod val="{{effects.intense.lum_mod_end|94000}}"/>
+                <a:satMod val="{{effects.intense.sat_mod_end|140000}}"/>
+              </a:schemeClr>
+            </a:gs>
+          </a:gsLst>
+          <a:lin ang="{{effects.intense.angle|5400000}}" scaled="0"/>
+        </a:gradFill>
+      </a:fillStyleLst>
+
+      <!-- Line Styles with consistent stroke patterns -->
+      <a:lnStyleLst>
+        <!-- Subtle line -->
+        <a:ln w="{{borders.subtle.width|9525}}" cap="{{borders.subtle.cap|flat}}" cmpd="{{borders.subtle.compound|sng}}" algn="{{borders.subtle.align|ctr}}">
+          <a:solidFill>
+            <a:schemeClr val="phClr">
+              <a:shade val="{{borders.subtle.shade|95000}}"/>
+              <a:satMod val="{{borders.subtle.sat_mod|105000}}"/>
+            </a:schemeClr>
+          </a:solidFill>
+          <a:prstDash val="{{borders.subtle.dash|solid}}"/>
+        </a:ln>
+
+        <!-- Moderate line -->
+        <a:ln w="{{borders.moderate.width|25400}}" cap="{{borders.moderate.cap|flat}}" cmpd="{{borders.moderate.compound|sng}}" algn="{{borders.moderate.align|ctr}}">
+          <a:solidFill>
+            <a:schemeClr val="phClr"/>
+          </a:solidFill>
+          <a:prstDash val="{{borders.moderate.dash|solid}}"/>
+        </a:ln>
+
+        <!-- Intense line -->
+        <a:ln w="{{borders.intense.width|38100}}" cap="{{borders.intense.cap|flat}}" cmpd="{{borders.intense.compound|sng}}" algn="{{borders.intense.align|ctr}}">
+          <a:solidFill>
+            <a:schemeClr val="phClr"/>
+          </a:solidFill>
+          <a:prstDash val="{{borders.intense.dash|solid}}"/>
+        </a:ln>
+      </a:lnStyleLst>
+
+      <!-- Effect Styles with professional shadows and lighting -->
+      <a:effectStyleLst>
+        <!-- Subtle effect -->
+        <a:effectStyle>
+          <a:effectLst>
+            <a:outerShdw blurRad="{{effects.subtle.blur|40000}}" dist="{{effects.subtle.distance|20000}}" dir="{{effects.subtle.direction|5400000}}" rotWithShape="0">
+              <a:srgbClr val="{{effects.subtle.color|000000}}">
+                <a:alpha val="{{effects.subtle.alpha|38000}}"/>
+              </a:srgbClr>
+            </a:outerShdw>
+          </a:effectLst>
+        </a:effectStyle>
+
+        <!-- Moderate effect -->
+        <a:effectStyle>
+          <a:effectLst>
+            <a:outerShdw blurRad="{{effects.moderate.blur|40000}}" dist="{{effects.moderate.distance|23000}}" dir="{{effects.moderate.direction|5400000}}" rotWithShape="0">
+              <a:srgbClr val="{{effects.moderate.color|000000}}">
+                <a:alpha val="{{effects.moderate.alpha|35000}}"/>
+              </a:srgbClr>
+            </a:outerShdw>
+          </a:effectLst>
+        </a:effectStyle>
+
+        <!-- Intense effect -->
+        <a:effectStyle>
+          <a:effectLst>
+            <a:outerShdw blurRad="{{effects.intense.blur|40000}}" dist="{{effects.intense.distance|23000}}" dir="{{effects.intense.direction|5400000}}" rotWithShape="0">
+              <a:srgbClr val="{{effects.intense.color|000000}}">
+                <a:alpha val="{{effects.intense.alpha|25000}}"/>
+              </a:srgbClr>
+            </a:outerShdw>
+          </a:effectLst>
+          <!-- Scene 3D properties for advanced effects -->
+          <a:scene3d>
+            <a:camera prst="{{camera.preset|orthographicFront}}">
+              <a:rot lat="{{camera.rotation.lat|0}}" lon="{{camera.rotation.lon|0}}" rev="{{camera.rotation.rev|0}}"/>
+            </a:camera>
+            <a:lightRig rig="{{lighting.rig|threePt}}" dir="{{lighting.direction|t}}">
+              <a:rot lat="{{lighting.rotation.lat|0}}" lon="{{lighting.rotation.lon|0}}" rev="{{lighting.rotation.rev|1200000}}"/>
+            </a:lightRig>
+          </a:scene3d>
+          <a:sp3d>
+            <a:bevelT w="{{bevel.width|63500}}" h="{{bevel.height|25400}}"/>
+          </a:sp3d>
+        </a:effectStyle>
+      </a:effectStyleLst>
+
+      <!-- Background Fill Styles -->
+      <a:bgFillStyleLst>
+        <!-- Subtle background -->
+        <a:solidFill>
+          <a:schemeClr val="phClr"/>
+        </a:solidFill>
+
+        <!-- Moderate background -->
+        <a:gradFill rotWithShape="1">
+          <a:gsLst>
+            <a:gs pos="0">
+              <a:schemeClr val="phClr">
+                <a:tint val="{{background.moderate.tint_start|40000}}"/>
+                <a:satMod val="{{background.moderate.sat_mod_start|350000}}"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="40000">
+              <a:schemeClr val="phClr">
+                <a:tint val="{{background.moderate.tint_mid|45000}}"/>
+                <a:shade val="{{background.moderate.shade_mid|99000}}"/>
+                <a:satMod val="{{background.moderate.sat_mod_mid|350000}}"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="100000">
+              <a:schemeClr val="phClr">
+                <a:shade val="{{background.moderate.shade_end|20000}}"/>
+                <a:satMod val="{{background.moderate.sat_mod_end|255000}}"/>
+              </a:schemeClr>
+            </a:gs>
+          </a:gsLst>
+          <a:path path="{{background.moderate.path|circle}}">
+            <a:fillToRect l="{{background.moderate.fill_rect.l|50000}}" t="{{background.moderate.fill_rect.t|-80000}}" r="{{background.moderate.fill_rect.r|50000}}" b="{{background.moderate.fill_rect.b|180000}}"/>
+          </a:path>
+        </a:gradFill>
+
+        <!-- Intense background -->
+        <a:gradFill rotWithShape="1">
+          <a:gsLst>
+            <a:gs pos="0">
+              <a:schemeClr val="phClr">
+                <a:tint val="{{background.intense.tint_start|80000}}"/>
+                <a:satMod val="{{background.intense.sat_mod_start|300000}}"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="100000">
+              <a:schemeClr val="phClr">
+                <a:shade val="{{background.intense.shade_end|30000}}"/>
+                <a:satMod val="{{background.intense.sat_mod_end|200000}}"/>
+              </a:schemeClr>
+            </a:gs>
+          </a:gsLst>
+          <a:path path="{{background.intense.path|circle}}">
+            <a:fillToRect l="{{background.intense.fill_rect.l|50000}}" t="{{background.intense.fill_rect.t|50000}}" r="{{background.intense.fill_rect.r|50000}}" b="{{background.intense.fill_rect.b|50000}}"/>
+          </a:path>
+        </a:gradFill>
+      </a:bgFillStyleLst>
+    </a:fmtScheme>
+  </a:themeElements>
+
+  <!-- Object Defaults for consistent styling -->
+  <a:objectDefaults>
+    <!-- Shape defaults -->
+    <a:spDef>
+      <a:spPr/>
+      <a:bodyPr/>
+      <a:lstStyle/>
+      <a:style>
+        <a:lnRef idx="{{defaults.shape.line_idx|1}}">
+          <a:schemeClr val="{{defaults.shape.line_color|accent1}}"/>
+        </a:lnRef>
+        <a:fillRef idx="{{defaults.shape.fill_idx|3}}">
+          <a:schemeClr val="{{defaults.shape.fill_color|accent1}}"/>
+        </a:fillRef>
+        <a:effectRef idx="{{defaults.shape.effect_idx|2}}">
+          <a:schemeClr val="{{defaults.shape.effect_color|accent1}}"/>
+        </a:effectRef>
+        <a:fontRef idx="{{defaults.shape.font_idx|minor}}">
+          <a:schemeClr val="{{defaults.shape.font_color|lt1}}"/>
+        </a:fontRef>
+      </a:style>
+    </a:spDef>
+
+    <!-- Line defaults -->
+    <a:lnDef>
+      <a:spPr/>
+      <a:bodyPr/>
+      <a:lstStyle/>
+      <a:style>
+        <a:lnRef idx="{{defaults.line.line_idx|2}}">
+          <a:schemeClr val="{{defaults.line.line_color|accent1}}"/>
+        </a:lnRef>
+        <a:fillRef idx="{{defaults.line.fill_idx|0}}">
+          <a:schemeClr val="{{defaults.line.fill_color|accent1}}"/>
+        </a:fillRef>
+        <a:effectRef idx="{{defaults.line.effect_idx|1}}">
+          <a:schemeClr val="{{defaults.line.effect_color|accent1}}"/>
+        </a:effectRef>
+        <a:fontRef idx="{{defaults.line.font_idx|minor}}">
+          <a:schemeClr val="{{defaults.line.font_color|tx1}}"/>
+        </a:fontRef>
+      </a:style>
+    </a:lnDef>
+  </a:objectDefaults>
+
+  <!-- Extra Color Scheme for additional brand variations -->
+  <a:extraClrSchemeLst/>
+
+</a:theme>

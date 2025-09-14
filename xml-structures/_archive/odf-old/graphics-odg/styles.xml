@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-styles xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+                       xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+                       xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+                       xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+                       xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+                       xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+                       xmlns:xlink="http://www.w3.org/1999/xlink"
+                       xmlns:dc="http://purl.org/dc/elements/1.1/"
+                       xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+                       xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+                       xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+                       xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0"
+                       xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0"
+                       xmlns:math="http://www.w3.org/1998/Math/MathML"
+                       xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0"
+                       xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0"
+                       xmlns:ooo="http://openoffice.org/2004/office"
+                       xmlns:ooow="http://openoffice.org/2004/writer"
+                       xmlns:oooc="http://openoffice.org/2004/calc"
+                       xmlns:dom="http://www.w3.org/2001/xml-events"
+                       xmlns:rpt="http://openoffice.org/2005/report"
+                       xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2"
+                       xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                       xmlns:grddl="http://www.w3.org/2003/g/data-view#"
+                       xmlns:officeooo="http://openoffice.org/2009/office"
+                       xmlns:tableooo="http://openoffice.org/2009/table"
+                       xmlns:drawooo="http://openoffice.org/2010/draw"
+                       xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0"
+                       xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0"
+                       xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0"
+                       xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0"
+                       xmlns:css3t="http://www.w3.org/TR/css3-text/"
+                       office:version="1.3">
+
+  <!-- StyleStack Modern Graphics Styles with Design Token Integration -->
+
+  <!-- Font face declarations -->
+  <office:font-face-decls>
+    <style:font-face style:name="Inter" svg:font-family="{{typography.font.family|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"/>
+    <style:font-face style:name="Liberation Sans" svg:font-family="'Liberation Sans'" style:font-family-generic="swiss" style:font-pitch="variable"/>
+    <style:font-face style:name="DejaVu Sans" svg:font-family="'DejaVu Sans'" style:font-family-generic="system" style:font-pitch="variable"/>
+  </office:font-face-decls>
+
+  <!-- Document styles -->
+  <office:styles>
+    <!-- Default paragraph style -->
+    <style:style style:name="Standard" style:family="paragraph" style:class="text">
+      <style:paragraph-properties fo:margin-top="{{spacing.paragraph.margin.top|0cm}}" fo:margin-bottom="{{spacing.paragraph.margin.bottom|0.212cm}}"
+                                 fo:text-align="start" style:justify-single-word="false"/>
+      <style:text-properties style:use-window-font-color="true" style:font-name="Inter" fo:font-size="{{typography.sizes.default|12pt}}"
+                            fo:language="{{locale.language|en}}" fo:country="{{locale.country|US}}" style:font-name-asian="DejaVu Sans"
+                            style:font-size-asian="{{typography.sizes.default|12pt}}" style:language-asian="{{locale.language_asian|zh}}"
+                            style:country-asian="{{locale.country_asian|CN}}" style:font-name-complex="Liberation Sans"
+                            style:font-size-complex="{{typography.sizes.default|12pt}}" style:language-complex="{{locale.language_complex|hi}}"
+                            style:country-complex="{{locale.country_complex|IN}}" fo:color="{{brand.colors.text.default|#475569}}"/>
+    </style:style>
+
+    <!-- Gradient definitions with design tokens -->
+    <draw:gradient draw:name="StyleStack_Canvas" draw:style="linear" draw:start-color="{{gradients.canvas.start|#F8FAFC}}"
+                  draw:end-color="{{gradients.canvas.end|#F1F5F9}}" draw:angle="{{gradients.canvas.angle|45deg}}"
+                  draw:border="{{gradients.canvas.border|20%}}"/>
+
+    <draw:gradient draw:name="Secondary_Gradient" draw:style="radial" draw:start-color="{{gradients.secondary.start|#8B5CF6}}"
+                  draw:end-color="{{gradients.secondary.end|#6D28D9}}" draw:cx="{{gradients.secondary.cx|50%}}"
+                  draw:cy="{{gradients.secondary.cy|50%}}" draw:border="{{gradients.secondary.border|0%}}"/>
+
+    <draw:gradient draw:name="Accent_Gradient" draw:style="linear" draw:start-color="{{gradients.accent.start|#0EA5E9}}"
+                  draw:end-color="{{gradients.accent.end|#0284C7}}" draw:angle="{{gradients.accent.angle|90deg}}"
+                  draw:border="{{gradients.accent.border|10%}}"/>
+
+    <!-- Fill patterns with StyleStack branding -->
+    <draw:fill-image draw:name="StyleStack_Pattern" xlink:href="{{patterns.fill.url|Pictures/brand_pattern.png}}"
+                    xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
+
+    <!-- Marker definitions for connectors -->
+    <draw:marker draw:name="Arrow" svg:viewBox="{{markers.arrow.viewbox|0 0 20 30}}" svg:d="{{markers.arrow.path|M0,0 L0,30 L20,15 Z}}"/>
+    <draw:marker draw:name="Circle" svg:viewBox="{{markers.circle.viewbox|0 0 20 20}}" svg:d="{{markers.circle.path|M10,10 A10,10 0 0,1 10,10 Z}}"/>
+
+    <!-- Default drawing page style -->
+    <style:style style:name="Standard-dp" style:family="drawing-page">
+      <style:drawing-page-properties draw:background-size="full" draw:fill="gradient"
+                                    draw:fill-gradient-name="{{gradients.page_bg|StyleStack_Canvas}}"
+                                    draw:guide-colour="{{colors.guides|#CBD5E1}}" draw:guide-style="{{guides.style|solid}}"/>
+    </style:style>
+
+    <!-- Graphics frame style -->
+    <style:style style:name="Graphics" style:family="graphic">
+      <style:graphic-properties text:anchor-type="paragraph" svg:x="{{positioning.default.x|0cm}}" svg:y="{{positioning.default.y|0cm}}"
+                               style:wrap="{{wrapping.graphics.default|none}}" style:number-wrapped-paragraphs="no-limit"
+                               style:wrap-contour="false" style:vertical-pos="{{positioning.vertical|top}}"
+                               style:vertical-rel="{{positioning.vertical_rel|paragraph}}"
+                               style:horizontal-pos="{{positioning.horizontal|center}}"
+                               style:horizontal-rel="{{positioning.horizontal_rel|paragraph}}"
+                               draw:stroke="solid" draw:stroke-width="{{borders.graphics.width|0.05cm}}"
+                               draw:stroke-color="{{brand.colors.graphics.border|#E2E8F0}}"
+                               draw:fill="solid" draw:fill-color="{{brand.colors.graphics.fill|#FFFFFF}}"
+                               draw:shadow="{{effects.graphics.shadow|visible}}" draw:shadow-offset-x="{{effects.graphics.shadow.x|0.2cm}}"
+                               draw:shadow-offset-y="{{effects.graphics.shadow.y|0.2cm}}" draw:shadow-color="{{effects.graphics.shadow.color|#64748B}}"
+                               fo:padding-top="{{spacing.graphics.padding.top|0.2cm}}" fo:padding-bottom="{{spacing.graphics.padding.bottom|0.2cm}}"
+                               fo:padding-left="{{spacing.graphics.padding.left|0.3cm}}" fo:padding-right="{{spacing.graphics.padding.right|0.3cm}}"/>
+    </style:style>
+  </office:styles>
+
+  <!-- Automatic styles -->
+  <office:automatic-styles>
+    <!-- Master page layout -->
+    <style:page-layout style:name="PM1">
+      <style:page-layout-properties fo:page-width="{{layout.page.width|29.7cm}}" fo:page-height="{{layout.page.height|21cm}}"
+                                   style:num-format="1" style:print-orientation="landscape"
+                                   fo:margin-top="{{spacing.page.margin.top|2cm}}" fo:margin-bottom="{{spacing.page.margin.bottom|2cm}}"
+                                   fo:margin-left="{{spacing.page.margin.left|2cm}}" fo:margin-right="{{spacing.page.margin.right|2cm}}"
+                                   style:writing-mode="lr-tb" style:first-page-number="continue"/>
+      <!-- Header style -->
+      <style:header-style>
+        <style:header-footer-properties fo:min-height="{{layout.header.min_height|1.2cm}}" fo:margin-left="0cm" fo:margin-right="0cm"
+                                       fo:margin-bottom="{{spacing.header.margin_bottom|0.5cm}}" fo:background-color="{{brand.colors.header.bg|#F8FAFC}}"
+                                       fo:border-bottom="{{borders.header.bottom|0.1pt solid #E2E8F0}}" style:dynamic-spacing="false"/>
+      </style:header-style>
+      <!-- Footer style -->
+      <style:footer-style>
+        <style:header-footer-properties fo:min-height="{{layout.footer.min_height|0.8cm}}" fo:margin-left="0cm" fo:margin-right="0cm"
+                                       fo:margin-top="{{spacing.footer.margin_top|0.5cm}}" fo:background-color="{{brand.colors.footer.bg|#F8FAFC}}"
+                                       fo:border-top="{{borders.footer.top|0.1pt solid #E2E8F0}}" style:dynamic-spacing="false"/>
+      </style:footer-style>
+    </style:page-layout>
+
+    <!-- Text styles for graphics -->
+    <style:style style:name="MP1" style:family="paragraph" style:parent-style-name="Standard">
+      <style:paragraph-properties fo:text-align="start"/>
+      <style:text-properties fo:font-weight="bold" fo:font-size="{{typography.sizes.header_small|11pt}}"
+                            fo:color="{{brand.colors.header.text|#1E293B}}"/>
+    </style:style>
+
+    <style:style style:name="MP2" style:family="paragraph" style:parent-style-name="Standard">
+      <style:paragraph-properties fo:text-align="center"/>
+      <style:text-properties fo:font-size="{{typography.sizes.footer|9pt}}" fo:color="{{brand.colors.footer.text|#64748B}}"/>
+    </style:style>
+  </office:automatic-styles>
+
+  <!-- Master styles -->
+  <office:master-styles>
+    <style:master-page style:name="Default" style:page-layout-name="PM1">
+      <!-- Header content -->
+      <style:header>
+        <text:p text:style-name="MP1">{{document.header.title|StyleStack Graphics - Design System Showcase}}</text:p>
+      </style:header>
+      <!-- Footer content -->
+      <style:footer>
+        <text:p text:style-name="MP2">
+          <text:span>{{document.footer.left|Page}} <text:page-number text:select-page="current"/> {{document.footer.separator|of}} <text:page-count/></text:span>
+          <text:tab/>
+          <text:span>{{document.footer.center|Generated by StyleStack}}</text:span>
+          <text:tab/>
+          <text:span>{{document.footer.right|<text:date style:data-style-name="N37"/>}}</text:span>
+        </text:p>
+      </style:footer>
+    </style:master-page>
+  </office:master-styles>
+
+</office:document-styles>

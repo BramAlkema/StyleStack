@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"
+           xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">
+
+  <!-- Application properties with StyleStack branding -->
+  <Application>{{application.name|Microsoft Office PowerPoint}}</Application>
+  <PresentationFormat>{{presentation.format|On-screen Show (16:9)}}</PresentationFormat>
+  <Slides>{{presentation.metrics.slides|5}}</Slides>
+  <Words>{{presentation.metrics.words|750}}</Words>
+  <Characters>{{presentation.metrics.characters|4500}}</Characters>
+  <CharactersWithSpaces>{{presentation.metrics.characters_with_spaces|5250}}</Characters>
+  <Notes>{{presentation.metrics.notes|5}}</Notes>
+  <Paragraphs>{{presentation.metrics.paragraphs|125}}</Paragraphs>
+  <DocSecurity>0</DocSecurity>
+  <Lines>{{presentation.metrics.lines|85}}</Lines>
+  <ScaleCrop>false</ScaleCrop>
+  <Company>{{company.name|Your Company}}</Company>
+  <LinksUpToDate>false</LinksUpToDate>
+  <SharedDoc>false</SharedDoc>
+  <HyperlinksChanged>false</HyperlinksChanged>
+  <AppVersion>{{application.version|16.0000}}</AppVersion>
+
+  <!-- StyleStack-specific presentation metadata -->
+  <Manager>{{company.design_system_manager|StyleStack Administrator}}</Manager>
+  <Template>{{template.source|StyleStack Modern PowerPoint Template v2025.1}}</Template>
+  <TotalTime>{{presentation.creation_time|240}}</TotalTime>
+
+  <!-- Design system specific properties -->
+  <HiddenSlides>{{presentation.hidden_slides|0}}</HiddenSlides>
+  <MMClips>{{presentation.multimedia_clips|2}}</MMClips>
+
+  <!-- Security properties -->
+  <DigSig/>
+
+</Properties>

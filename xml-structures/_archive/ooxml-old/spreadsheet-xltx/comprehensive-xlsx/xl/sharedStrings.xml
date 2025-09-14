@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" count="25" uniqueCount="20">
+  <!-- Shared strings with design token variables -->
+
+  <!-- Document metadata strings -->
+  <si>
+    <t>{{document.title|StyleStack Dashboard}}</t>
+  </si>
+  <si>
+    <t>{{document.subtitle|Design System Analytics}}</t>
+  </si>
+  <si>
+    <t>{{document.description|Brand compliance and design token usage metrics}}</t>
+  </si>
+
+  <!-- Brand identity strings -->
+  <si>
+    <t>{{company.name|Your Company}}</t>
+  </si>
+  <si>
+    <t>{{company.tagline|Powered by StyleStack}}</t>
+  </si>
+
+  <!-- UI labels with variable substitution -->
+  <si>
+    <t>{{ui.labels.primary_color|Primary Brand Color}}</t>
+  </si>
+  <si>
+    <t>{{ui.labels.secondary_color|Secondary Brand Color}}</t>
+  </si>
+  <si>
+    <t>{{ui.labels.logo|Company Logo}}</t>
+  </si>
+
+  <!-- Typography strings -->
+  <si>
+    <t>{{typography.labels.font_family|Typography System}}</t>
+  </si>
+  <si>
+    <t>{{typography.font.family|Inter}}</t>
+  </si>
+  <si>
+    <t>{{typography.labels.font_sizes|Font Scale}}</t>
+  </si>
+
+  <!-- Data table headers -->
+  <si>
+    <t>{{table.headers.metric|Design Metric}}</t>
+  </si>
+  <si>
+    <t>{{table.headers.value|Current Value}}</t>
+  </si>
+  <si>
+    <t>{{table.headers.target|Target Value}}</t>
+  </si>
+  <si>
+    <t>{{table.headers.status|Compliance Status}}</t>
+  </si>
+
+  <!-- Status indicators -->
+  <si>
+    <t>{{status.complete|Complete}}</t>
+  </si>
+  <si>
+    <t>{{status.in_progress|In Progress}}</t>
+  </si>
+  <si>
+    <t>{{status.at_risk|At Risk}}</t>
+  </si>
+  <si>
+    <t>{{status.not_started|Not Started}}</t>
+  </si>
+
+  <!-- Chart and visualization strings -->
+  <si>
+    <t>{{chart.title|Design System Adoption}}</t>
+  </si>
+
+</sst>

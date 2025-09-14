@@ -1,0 +1,1413 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            mc:Ignorable="x14ac x16r2 xr">
+
+  <!-- Number formats -->
+  <numFmts count="4">
+    <numFmt numFmtId="164" formatCode="{{currency.format}}"/>
+    <numFmt numFmtId="165" formatCode="{{percentage.format}}"/>
+    <numFmt numFmtId="166" formatCode="{{date.format}}"/>
+    <numFmt numFmtId="167" formatCode="{{number.format}}"/>
+  </numFmts>
+
+  <!-- ============================================ -->
+  <!-- COMPREHENSIVE BUILT-IN STYLE OVERRIDES -->
+  <!-- Complete StyleStack takeover of Excel built-in styles -->
+  <!-- ============================================ -->
+
+  <!-- Font definitions with StyleStack typography and hidden properties -->
+  <fonts count="50">
+    <!-- Default font -->
+    <font>
+      <sz val="11"/>
+      <color theme="1"/>
+      <name val="Inter"/>
+      <family val="2"/>
+      <scheme val="minor"/>
+    </font>
+
+    <!-- StyleStack title font -->
+    <font>
+      <sz val="22"/>
+      <color rgb="FF1F2937"/>
+      <name val="Inter"/>
+      <family val="2"/>
+      <b/>
+    </font>
+
+    <!-- StyleStack subtitle font -->
+    <font>
+      <sz val="14"/>
+      <color rgb="FF6B7280"/>
+      <name val="Inter"/>
+      <family val="2"/>
+    </font>
+
+    <!-- Brand primary font -->
+    <font>
+      <sz val="12"/>
+      <color rgb="FF0EA5E9"/>
+      <name val="Inter"/>
+      <family val="2"/>
+      <b/>
+    </font>
+
+    <!-- Brand secondary font -->
+    <font>
+      <sz val="12"/>
+      <color rgb="FF8B5CF6"/>
+      <name val="Inter"/>
+      <family val="2"/>
+      <b/>
+    </font>
+
+    <!-- Success font -->
+    <font>
+      <sz val="11"/>
+      <color rgb="FF10B981"/>
+      <name val="Inter"/>
+      <family val="2"/>
+      <b/>
+    </font>
+
+    <!-- Warning font -->
+    <font>
+      <sz val="11"/>
+      <color rgb="FFF59E0B"/>
+      <name val="Inter"/>
+      <family val="2"/>
+      <b/>
+    </font>
+
+    <!-- Error font -->
+    <font>
+      <sz val="11"/>
+      <color rgb="FFEF4444"/>
+      <name val="Inter"/>
+      <family val="2"/>
+      <b/>
+    </font>
+
+    <!-- Header font -->
+    <font>
+      <sz val="12"/>
+      <color rgb="FF1F2937"/>
+      <name val="Inter"/>
+      <family val="2"/>
+      <b/>
+    </font>
+
+    <!-- Body font -->
+    <font>
+      <sz val="11"/>
+      <color rgb="FF374151"/>
+      <name val="Inter"/>
+      <family val="2"/>
+    </font>
+
+    <!-- Accent font -->
+    <font>
+      <sz val="11"/>
+      <color rgb="FF6B7280"/>
+      <name val="Inter"/>
+      <family val="2"/>
+      <i/>
+    </font>
+
+    <!-- Data font -->
+    <font>
+      <sz val="11"/>
+      <color theme="1"/>
+      <name val="Inter"/>
+      <family val="2"/>
+    </font>
+
+    <!-- Chart title font -->
+    <font>
+      <sz val="16"/>
+      <color rgb="FF1F2937"/>
+      <name val="Inter"/>
+      <family val="2"/>
+      <b/>
+    </font>
+
+    <!-- Variable text font -->
+    <font>
+      <sz val="11"/>
+      <color rgb="FF8B5CF6"/>
+      <name val="Inter"/>
+      <family val="2"/>
+      <i/>
+    </font>
+
+    <!-- Corporate override font -->
+    <font>
+      <sz val="{{typography.size.corporate_override|11}}"/>
+      <color rgb="{{brand.colors.text|FF374151}}"/>
+      <name val="{{typography.font.family|Inter}}"/>
+      <family val="{{typography.font.family_type|2}}"/>
+      <!-- Hidden Properties: Advanced Font Control -->
+      <charset val="{{typography.font.charset|0}}"/>
+      <vertAlign val="{{typography.vertical_alignment|baseline}}"/>
+      <u val="{{typography.underline.style|none}}"/>
+      <strike val="{{typography.strikethrough|false}}"/>
+      <outline val="{{typography.outline|false}}"/>
+      <shadow val="{{typography.shadow|false}}"/>
+      <condense val="{{typography.condense|false}}"/>
+      <extend val="{{typography.extend|false}}"/>
+    </font>
+
+    <!-- BUILT-IN EXCEL STYLES OVERRIDE FONTS -->
+    <!-- Good Style Font -->
+    <font>
+      <sz val="{{typography.size.good|11}}"/>
+      <color rgb="{{brand.colors.good.text|FF16A34A}}"/>
+      <name val="{{typography.font.good|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.good.bold|true}}"/>
+    </font>
+
+    <!-- Bad Style Font -->
+    <font>
+      <sz val="{{typography.size.bad|11}}"/>
+      <color rgb="{{brand.colors.bad.text|FFDC2626}}"/>
+      <name val="{{typography.font.bad|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.bad.bold|true}}"/>
+    </font>
+
+    <!-- Neutral Style Font -->
+    <font>
+      <sz val="{{typography.size.neutral|11}}"/>
+      <color rgb="{{brand.colors.neutral.text|FF6B7280}}"/>
+      <name val="{{typography.font.neutral|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <!-- Calculation Font -->
+    <font>
+      <sz val="{{typography.size.calculation|10}}"/>
+      <color rgb="{{brand.colors.calculation.text|FF1F2937}}"/>
+      <name val="{{typography.font.calculation|JetBrains Mono}}"/>
+      <family val="{{typography.font.monospace.family_type|3}}"/>
+    </font>
+
+    <!-- Check Cell Font -->
+    <font>
+      <sz val="{{typography.size.check_cell|11}}"/>
+      <color rgb="{{brand.colors.check_cell.text|FF059669}}"/>
+      <name val="{{typography.font.check_cell|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.check_cell.bold|true}}"/>
+    </font>
+
+    <!-- Explanatory Text Font -->
+    <font>
+      <sz val="{{typography.size.explanatory|9}}"/>
+      <color rgb="{{brand.colors.explanatory.text|FF4B5563}}"/>
+      <name val="{{typography.font.explanatory|Inter}}"/>
+      <family val="2"/>
+      <i val="{{typography.style.explanatory.italic|true}}"/>
+    </font>
+
+    <!-- Input Font -->
+    <font>
+      <sz val="{{typography.size.input|11}}"/>
+      <color rgb="{{brand.colors.input.text|FF1F2937}}"/>
+      <name val="{{typography.font.input|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.input.bold|true}}"/>
+    </font>
+
+    <!-- Linked Cell Font -->
+    <font>
+      <sz val="{{typography.size.linked_cell|11}}"/>
+      <color rgb="{{brand.colors.linked_cell.text|FF0EA5E9}}"/>
+      <name val="{{typography.font.linked_cell|Inter}}"/>
+      <family val="2"/>
+      <u val="{{typography.underline.linked_cell|single}}"/>
+    </font>
+
+    <!-- Note Font -->
+    <font>
+      <sz val="{{typography.size.note|8}}"/>
+      <color rgb="{{brand.colors.note.text|FF9CA3AF}}"/>
+      <name val="{{typography.font.note|Inter}}"/>
+      <family val="2"/>
+      <i val="{{typography.style.note.italic|true}}"/>
+    </font>
+
+    <!-- Output Font -->
+    <font>
+      <sz val="{{typography.size.output|12}}"/>
+      <color rgb="{{brand.colors.output.text|FF1F2937}}"/>
+      <name val="{{typography.font.output|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.output.bold|true}}"/>
+    </font>
+
+    <!-- Warning Text Font -->
+    <font>
+      <sz val="{{typography.size.warning_text|10}}"/>
+      <color rgb="{{brand.colors.warning_text.text|FFDC2626}}"/>
+      <name val="{{typography.font.warning_text|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.warning_text.bold|true}}"/>
+    </font>
+
+    <!-- Heading 1 Font -->
+    <font>
+      <sz val="{{typography.size.heading1|18}}"/>
+      <color rgb="{{brand.colors.heading1.text|FF1F2937}}"/>
+      <name val="{{typography.font.heading1|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.heading1.bold|true}}"/>
+    </font>
+
+    <!-- Heading 2 Font -->
+    <font>
+      <sz val="{{typography.size.heading2|14}}"/>
+      <color rgb="{{brand.colors.heading2.text|FF374151}}"/>
+      <name val="{{typography.font.heading2|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.heading2.bold|true}}"/>
+    </font>
+
+    <!-- Heading 3 Font -->
+    <font>
+      <sz val="{{typography.size.heading3|12}}"/>
+      <color rgb="{{brand.colors.heading3.text|FF4B5563}}"/>
+      <name val="{{typography.font.heading3|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.heading3.bold|true}}"/>
+    </font>
+
+    <!-- Heading 4 Font -->
+    <font>
+      <sz val="{{typography.size.heading4|11}}"/>
+      <color rgb="{{brand.colors.heading4.text|FF6B7280}}"/>
+      <name val="{{typography.font.heading4|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.heading4.bold|true}}"/>
+    </font>
+
+    <!-- Title Font -->
+    <font>
+      <sz val="{{typography.size.title_builtin|20}}"/>
+      <color rgb="{{brand.colors.title_builtin.text|FF1F2937}}"/>
+      <name val="{{typography.font.title_builtin|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.title_builtin.bold|true}}"/>
+    </font>
+
+    <!-- Total Font -->
+    <font>
+      <sz val="{{typography.size.total|12}}"/>
+      <color rgb="{{brand.colors.total.text|FF1F2937}}"/>
+      <name val="{{typography.font.total|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.total.bold|true}}"/>
+    </font>
+
+    <!-- Currency Font -->
+    <font>
+      <sz val="{{typography.size.currency|11}}"/>
+      <color rgb="{{brand.colors.currency.text|FF059669}}"/>
+      <name val="{{typography.font.currency|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.currency.bold|true}}"/>
+    </font>
+
+    <!-- Percent Font -->
+    <font>
+      <sz val="{{typography.size.percent|11}}"/>
+      <color rgb="{{brand.colors.percent.text|FF0EA5E9}}"/>
+      <name val="{{typography.font.percent|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <!-- Comma [0] Font -->
+    <font>
+      <sz val="{{typography.size.comma_0|11}}"/>
+      <color rgb="{{brand.colors.comma_0.text|FF374151}}"/>
+      <name val="{{typography.font.comma_0|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <!-- Currency [0] Font -->
+    <font>
+      <sz val="{{typography.size.currency_0|11}}"/>
+      <color rgb="{{brand.colors.currency_0.text|FF059669}}"/>
+      <name val="{{typography.font.currency_0|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <!-- Hyperlink Font -->
+    <font>
+      <sz val="{{typography.size.hyperlink|11}}"/>
+      <color rgb="{{brand.colors.hyperlink.text|FF2563EB}}"/>
+      <name val="{{typography.font.hyperlink|Inter}}"/>
+      <family val="2"/>
+      <u val="{{typography.underline.hyperlink|single}}"/>
+    </font>
+
+    <!-- Followed Hyperlink Font -->
+    <font>
+      <sz val="{{typography.size.followed_hyperlink|11}}"/>
+      <color rgb="{{brand.colors.followed_hyperlink.text|FF7C3AED}}"/>
+      <name val="{{typography.font.followed_hyperlink|Inter}}"/>
+      <family val="2"/>
+      <u val="{{typography.underline.followed_hyperlink|single}}"/>
+    </font>
+
+    <!-- Accent1 Font -->
+    <font>
+      <sz val="{{typography.size.accent1|11}}"/>
+      <color rgb="{{brand.colors.accent1.text|FF0EA5E9}}"/>
+      <name val="{{typography.font.accent1|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <!-- Accent2 Font -->
+    <font>
+      <sz val="{{typography.size.accent2|11}}"/>
+      <color rgb="{{brand.colors.accent2.text|FF8B5CF6}}"/>
+      <name val="{{typography.font.accent2|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <!-- Accent3 Font -->
+    <font>
+      <sz val="{{typography.size.accent3|11}}"/>
+      <color rgb="{{brand.colors.accent3.text|FF10B981}}"/>
+      <name val="{{typography.font.accent3|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <!-- Accent4 Font -->
+    <font>
+      <sz val="{{typography.size.accent4|11}}"/>
+      <color rgb="{{brand.colors.accent4.text|FFF59E0B}}"/>
+      <name val="{{typography.font.accent4|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <!-- Accent5 Font -->
+    <font>
+      <sz val="{{typography.size.accent5|11}}"/>
+      <color rgb="{{brand.colors.accent5.text|FFEF4444}}"/>
+      <name val="{{typography.font.accent5|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <!-- Accent6 Font -->
+    <font>
+      <sz val="{{typography.size.accent6|11}}"/>
+      <color rgb="{{brand.colors.accent6.text|FF6B7280}}"/>
+      <name val="{{typography.font.accent6|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <!-- 20% Accent Variants -->
+    <font>
+      <sz val="{{typography.size.accent1_20|11}}"/>
+      <color rgb="{{brand.colors.accent1_20.text|FFDBEAFE}}"/>
+      <name val="{{typography.font.accent1_20|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <font>
+      <sz val="{{typography.size.accent2_20|11}}"/>
+      <color rgb="{{brand.colors.accent2_20.text|FFE0E7FF}}"/>
+      <name val="{{typography.font.accent2_20|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <!-- 40% Accent Variants -->
+    <font>
+      <sz val="{{typography.size.accent1_40|11}}"/>
+      <color rgb="{{brand.colors.accent1_40.text|FF93C5FD}}"/>
+      <name val="{{typography.font.accent1_40|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <font>
+      <sz val="{{typography.size.accent2_40|11}}"/>
+      <color rgb="{{brand.colors.accent2_40.text|FFC4B5FD}}"/>
+      <name val="{{typography.font.accent2_40|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <!-- 60% Accent Variants -->
+    <font>
+      <sz val="{{typography.size.accent1_60|11}}"/>
+      <color rgb="{{brand.colors.accent1_60.text|FF3B82F6}}"/>
+      <name val="{{typography.font.accent1_60|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <font>
+      <sz val="{{typography.size.accent2_60|11}}"/>
+      <color rgb="{{brand.colors.accent2_60.text|FFA855F7}}"/>
+      <name val="{{typography.font.accent2_60|Inter}}"/>
+      <family val="2"/>
+    </font>
+
+    <!-- Table Style Fonts -->
+    <font>
+      <sz val="{{typography.size.table_header|12}}"/>
+      <color rgb="{{brand.colors.table_header.text|FFFFFFFF}}"/>
+      <name val="{{typography.font.table_header|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.table_header.bold|true}}"/>
+    </font>
+
+    <font>
+      <sz val="{{typography.size.table_total|11}}"/>
+      <color rgb="{{brand.colors.table_total.text|FF1F2937}}"/>
+      <name val="{{typography.font.table_total|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.table_total.bold|true}}"/>
+    </font>
+
+    <!-- PivotTable Style Fonts -->
+    <font>
+      <sz val="{{typography.size.pivot_header|11}}"/>
+      <color rgb="{{brand.colors.pivot_header.text|FF1F2937}}"/>
+      <name val="{{typography.font.pivot_header|Inter}}"/>
+      <family val="2"/>
+      <b val="{{typography.weight.pivot_header.bold|true}}"/>
+    </font>
+
+    <font>
+      <sz val="{{typography.size.pivot_data|10}}"/>
+      <color rgb="{{brand.colors.pivot_data.text|FF374151}}"/>
+      <name val="{{typography.font.pivot_data|Inter}}"/>
+      <family val="2"/>
+    </font>
+  </fonts>
+
+  <!-- Fill definitions with brand colors and comprehensive built-in style support -->
+  <fills count="100">
+    <!-- Default fills -->
+    <fill>
+      <patternFill patternType="none"/>
+    </fill>
+    <fill>
+      <patternFill patternType="gray125"/>
+    </fill>
+
+    <!-- StyleStack brand fills -->
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="FF0EA5E9"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="FF8B5CF6"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="FF10B981"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="FFF59E0B"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="FFEF4444"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <!-- Light backgrounds -->
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="FFF9FAFB"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="FFDBEAFE"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="FFE0E7FF"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="FFD1FAE5"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="FFFEF3C7"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="FFFEE2E2"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <!-- Gradient fills for charts -->
+    <fill>
+      <gradientFill degree="90">
+        <stop position="0">
+          <color rgb="FF0EA5E9"/>
+        </stop>
+        <stop position="1">
+          <color rgb="FF3B82F6"/>
+        </stop>
+      </gradientFill>
+    </fill>
+
+    <fill>
+      <gradientFill degree="90">
+        <stop position="0">
+          <color rgb="FF8B5CF6"/>
+        </stop>
+        <stop position="1">
+          <color rgb="FFA855F7"/>
+        </stop>
+      </gradientFill>
+    </fill>
+
+    <!-- Corporate brand override fills -->
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="{{brand.colors.primary}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="{{brand.colors.secondary}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="{{brand.colors.accent}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="{{brand.colors.background}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="solid">
+        <fgColor rgb="{{brand.colors.surface|FFF9FAFB}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <!-- BUILT-IN EXCEL STYLES OVERRIDE FILLS -->
+    <!-- Good Fill -->
+    <fill>
+      <patternFill patternType="{{patterns.good.type|solid}}">
+        <fgColor rgb="{{brand.colors.good.background|FFD1FAE5}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <!-- Bad Fill -->
+    <fill>
+      <patternFill patternType="{{patterns.bad.type|solid}}">
+        <fgColor rgb="{{brand.colors.bad.background|FFFEE2E2}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <!-- Neutral Fill -->
+    <fill>
+      <patternFill patternType="{{patterns.neutral.type|solid}}">
+        <fgColor rgb="{{brand.colors.neutral.background|FFF3F4F6}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <!-- Calculation Fill -->
+    <fill>
+      <patternFill patternType="{{patterns.calculation.type|solid}}">
+        <fgColor rgb="{{brand.colors.calculation.background|FFF1F5F9}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <!-- Check Cell Fill -->
+    <fill>
+      <patternFill patternType="{{patterns.check_cell.type|solid}}">
+        <fgColor rgb="{{brand.colors.check_cell.background|FFECFDF5}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <!-- Input Fill -->
+    <fill>
+      <patternFill patternType="{{patterns.input.type|solid}}">
+        <fgColor rgb="{{brand.colors.input.background|FFFEF7FF}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <!-- Output Fill -->
+    <fill>
+      <patternFill patternType="{{patterns.output.type|solid}}">
+        <fgColor rgb="{{brand.colors.output.background|FFF0F9FF}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <!-- Heading Fills -->
+    <fill>
+      <patternFill patternType="{{patterns.heading1.type|solid}}">
+        <fgColor rgb="{{brand.colors.heading1.background|FF1F2937}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.heading2.type|solid}}">
+        <fgColor rgb="{{brand.colors.heading2.background|FF374151}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.heading3.type|solid}}">
+        <fgColor rgb="{{brand.colors.heading3.background|FF4B5563}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.heading4.type|solid}}">
+        <fgColor rgb="{{brand.colors.heading4.background|FF6B7280}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <!-- Accent Fills (20% variants) -->
+    <fill>
+      <patternFill patternType="{{patterns.accent1_20.type|solid}}">
+        <fgColor rgb="{{brand.colors.accent1_20.background|FFDBEAFE}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.accent2_20.type|solid}}">
+        <fgColor rgb="{{brand.colors.accent2_20.background|FFE0E7FF}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.accent3_20.type|solid}}">
+        <fgColor rgb="{{brand.colors.accent3_20.background|FFD1FAE5}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.accent4_20.type|solid}}">
+        <fgColor rgb="{{brand.colors.accent4_20.background|FFFEF3C7}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.accent5_20.type|solid}}">
+        <fgColor rgb="{{brand.colors.accent5_20.background|FFFEE2E2}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.accent6_20.type|solid}}">
+        <fgColor rgb="{{brand.colors.accent6_20.background|FFF3F4F6}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <!-- Accent Fills (40% variants) -->
+    <fill>
+      <patternFill patternType="{{patterns.accent1_40.type|solid}}">
+        <fgColor rgb="{{brand.colors.accent1_40.background|FF93C5FD}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.accent2_40.type|solid}}">
+        <fgColor rgb="{{brand.colors.accent2_40.background|FFC4B5FD}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.accent3_40.type|solid}}">
+        <fgColor rgb="{{brand.colors.accent3_40.background|FF6EE7B7}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.accent4_40.type|solid}}">
+        <fgColor rgb="{{brand.colors.accent4_40.background|FFFDE68A}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.accent5_40.type|solid}}">
+        <fgColor rgb="{{brand.colors.accent5_40.background|FFFCACA}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.accent6_40.type|solid}}">
+        <fgColor rgb="{{brand.colors.accent6_40.background|FFD1D5DB}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <!-- Accent Fills (60% variants) -->
+    <fill>
+      <patternFill patternType="{{patterns.accent1_60.type|solid}}">
+        <fgColor rgb="{{brand.colors.accent1_60.background|FF3B82F6}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.accent2_60.type|solid}}">
+        <fgColor rgb="{{brand.colors.accent2_60.background|FFA855F7}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <!-- Table Style Fills -->
+    <fill>
+      <patternFill patternType="{{patterns.table_header.type|solid}}">
+        <fgColor rgb="{{brand.colors.table_header.background|FF0EA5E9}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.table_total.type|solid}}">
+        <fgColor rgb="{{brand.colors.table_total.background|FF1F2937}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.table_stripe1.type|solid}}">
+        <fgColor rgb="{{brand.colors.table_stripe1.background|FFF9FAFB}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.table_stripe2.type|solid}}">
+        <fgColor rgb="{{brand.colors.table_stripe2.background|FFFFFF}}"/>
+        <bgColor indexed="64"/>
+      </patternFill>
+    </fill>
+
+    <!-- Hidden Properties: Pattern Fills -->
+    <fill>
+      <patternFill patternType="{{patterns.advanced.dot_pattern|lightUp}}">
+        <fgColor rgb="{{brand.colors.pattern.foreground|FF0EA5E9}}"/>
+        <bgColor rgb="{{brand.colors.pattern.background|FFFFFF}}"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.advanced.diagonal_stripe|darkTrellis}}">
+        <fgColor rgb="{{brand.colors.pattern.diagonal.foreground|FF6B7280}}"/>
+        <bgColor rgb="{{brand.colors.pattern.diagonal.background|FFF3F4F6}}"/>
+      </patternFill>
+    </fill>
+
+    <!-- Hidden Properties: Gradient Fills for Advanced Effects -->
+    <fill>
+      <gradientFill degree="{{gradients.advanced.angle|45}}" left="{{gradients.advanced.left|0}}" right="{{gradients.advanced.right|0}}" top="{{gradients.advanced.top|0}}" bottom="{{gradients.advanced.bottom|0}}">
+        <stop position="{{gradients.advanced.stop1.position|0}}">
+          <color rgb="{{gradients.advanced.stop1.color|FF0EA5E9}}"/>
+        </stop>
+        <stop position="{{gradients.advanced.stop2.position|0.5}}">
+          <color rgb="{{gradients.advanced.stop2.color|FF3B82F6}}"/>
+        </stop>
+        <stop position="{{gradients.advanced.stop3.position|1}}">
+          <color rgb="{{gradients.advanced.stop3.color|FF1E40AF}}"/>
+        </stop>
+      </gradientFill>
+    </fill>
+
+    <!-- Additional pattern variations for complete coverage -->
+    <fill>
+      <patternFill patternType="{{patterns.variations.type1|lightDown}}">
+        <fgColor rgb="{{brand.colors.variations.type1.foreground|FF8B5CF6}}"/>
+        <bgColor rgb="{{brand.colors.variations.type1.background|FFFFFF}}"/>
+      </patternFill>
+    </fill>
+
+    <fill>
+      <patternFill patternType="{{patterns.variations.type2|lightGrid}}">
+        <fgColor rgb="{{brand.colors.variations.type2.foreground|FF10B981}}"/>
+        <bgColor rgb="{{brand.colors.variations.type2.background|FFFFFF}}"/>
+      </patternFill>
+    </fill>
+
+    <!-- Continue pattern fills up to 100 total for comprehensive coverage -->
+    <!-- Additional 50+ fills with pattern variants, accent combinations, and hidden properties -->
+  </fills>
+
+  <!-- Border definitions -->
+  <borders count="10">
+    <!-- No border -->
+    <border>
+      <left/>
+      <right/>
+      <top/>
+      <bottom/>
+      <diagonal/>
+    </border>
+
+    <!-- Thin border -->
+    <border>
+      <left style="thin">
+        <color rgb="FFE5E7EB"/>
+      </left>
+      <right style="thin">
+        <color rgb="FFE5E7EB"/>
+      </right>
+      <top style="thin">
+        <color rgb="FFE5E7EB"/>
+      </top>
+      <bottom style="thin">
+        <color rgb="FFE5E7EB"/>
+      </bottom>
+      <diagonal/>
+    </border>
+
+    <!-- Brand border -->
+    <border>
+      <left style="medium">
+        <color rgb="FF0EA5E9"/>
+      </left>
+      <right style="medium">
+        <color rgb="FF0EA5E9"/>
+      </right>
+      <top style="medium">
+        <color rgb="FF0EA5E9"/>
+      </top>
+      <bottom style="medium">
+        <color rgb="FF0EA5E9"/>
+      </bottom>
+      <diagonal/>
+    </border>
+
+    <!-- Header border -->
+    <border>
+      <left/>
+      <right/>
+      <top/>
+      <bottom style="thick">
+        <color rgb="FF1F2937"/>
+      </bottom>
+      <diagonal/>
+    </border>
+
+    <!-- Table borders -->
+    <border>
+      <left style="thin">
+        <color rgb="FFD1D5DB"/>
+      </left>
+      <right style="thin">
+        <color rgb="FFD1D5DB"/>
+      </right>
+      <top style="thin">
+        <color rgb="FFD1D5DB"/>
+      </top>
+      <bottom style="thin">
+        <color rgb="FFD1D5DB"/>
+      </bottom>
+      <diagonal/>
+    </border>
+
+    <!-- Corporate brand borders -->
+    <border>
+      <left style="medium">
+        <color rgb="{{brand.colors.border}}"/>
+      </left>
+      <right style="medium">
+        <color rgb="{{brand.colors.border}}"/>
+      </right>
+      <top style="medium">
+        <color rgb="{{brand.colors.border}}"/>
+      </top>
+      <bottom style="medium">
+        <color rgb="{{brand.colors.border}}"/>
+      </bottom>
+      <diagonal/>
+    </border>
+
+    <!-- Success border -->
+    <border>
+      <left style="medium">
+        <color rgb="FF10B981"/>
+      </left>
+      <right/>
+      <top/>
+      <bottom/>
+      <diagonal/>
+    </border>
+
+    <!-- Warning border -->
+    <border>
+      <left style="medium">
+        <color rgb="FFF59E0B"/>
+      </left>
+      <right/>
+      <top/>
+      <bottom/>
+      <diagonal/>
+    </border>
+
+    <!-- Error border -->
+    <border>
+      <left style="medium">
+        <color rgb="FFEF4444"/>
+      </left>
+      <right/>
+      <top/>
+      <bottom/>
+      <diagonal/>
+    </border>
+
+    <!-- Chart border -->
+    <border>
+      <left style="thin">
+        <color rgb="FF6B7280"/>
+      </left>
+      <right style="thin">
+        <color rgb="FF6B7280"/>
+      </right>
+      <top style="thin">
+        <color rgb="FF6B7280"/>
+      </right>
+      <bottom style="thin">
+        <color rgb="FF6B7280"/>
+      </bottom>
+      <diagonal/>
+    </border>
+  </borders>
+
+  <!-- Cell style definitions -->
+  <cellStyleXfs count="1">
+    <xf numFmtId="0" fontId="0" fillId="0" borderId="0"/>
+  </cellStyleXfs>
+
+  <!-- Cell format definitions with comprehensive built-in style support -->
+  <cellXfs count="150">
+    <!-- Default -->
+    <xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>
+
+    <!-- Title styles -->
+    <xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/>
+    <xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/>
+
+    <!-- Brand color styles -->
+    <xf numFmtId="0" fontId="3" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/>
+    <xf numFmtId="0" fontId="4" fillId="3" borderId="0" xfId="0" applyFont="1" applyFill="1"/>
+
+    <!-- Header styles -->
+    <xf numFmtId="0" fontId="8" fillId="7" borderId="3" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/>
+
+    <!-- Data styles -->
+    <xf numFmtId="0" fontId="9" fillId="0" borderId="4" xfId="0" applyFont="1" applyBorder="1"/>
+    <xf numFmtId="167" fontId="11" fillId="0" borderId="4" xfId="0" applyFont="1" applyBorder="1" applyNumberFormat="1"/>
+
+    <!-- Status styles -->
+    <xf numFmtId="0" fontId="5" fillId="10" borderId="6" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/>
+    <xf numFmtId="0" fontId="6" fillId="11" borderId="7" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/>
+    <xf numFmtId="0" fontId="7" fillId="12" borderId="8" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/>
+
+    <!-- Chart title -->
+    <xf numFmtId="0" fontId="12" fillId="0" borderId="0" xfId="0" applyFont="1"/>
+
+    <!-- Corporate override styles -->
+    <xf numFmtId="0" fontId="14" fillId="15" borderId="5" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/>
+
+    <!-- Currency formats -->
+    <xf numFmtId="164" fontId="11" fillId="0" borderId="4" xfId="0" applyFont="1" applyBorder="1" applyNumberFormat="1"/>
+
+    <!-- Percentage formats -->
+    <xf numFmtId="165" fontId="11" fillId="0" borderId="4" xfId="0" applyFont="1" applyBorder="1" applyNumberFormat="1"/>
+
+    <!-- Date formats -->
+    <xf numFmtId="166" fontId="11" fillId="0" borderId="4" xfId="0" applyFont="1" applyBorder="1" applyNumberFormat="1"/>
+
+    <!-- Variable text styles -->
+    <xf numFmtId="0" fontId="13" fillId="0" borderId="0" xfId="0" applyFont="1"/>
+
+    <!-- Conditional formatting styles -->
+    <xf numFmtId="0" fontId="5" fillId="4" borderId="0" xfId="0" applyFont="1" applyFill="1"/>
+    <xf numFmtId="0" fontId="6" fillId="5" borderId="0" xfId="0" applyFont="1" applyFill="1"/>
+    <xf numFmtId="0" fontId="7" fillId="6" borderId="0" xfId="0" applyFont="1" applyFill="1"/>
+
+    <!-- Table styles -->
+    <xf numFmtId="0" fontId="8" fillId="7" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/>
+    <xf numFmtId="0" fontId="9" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1"/>
+
+    <!-- Chart data styles -->
+    <xf numFmtId="0" fontId="11" fillId="13" borderId="9" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/>
+    <xf numFmtId="0" fontId="11" fillId="14" borderId="9" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/>
+
+    <!-- Background styles -->
+    <xf numFmtId="0" fontId="0" fillId="16" borderId="0" xfId="0" applyFill="1"/>
+    <xf numFmtId="0" fontId="0" fillId="17" borderId="0" xfId="0" applyFill="1"/>
+
+    <!-- COMPREHENSIVE BUILT-IN EXCEL STYLES CELL FORMATS -->
+    <!-- Good Style Cell Format -->
+    <xf numFmtId="{{formats.good.number|0}}" fontId="{{fonts.good.index|16}}" fillId="{{fills.good.index|21}}" borderId="{{borders.good.index|0}}" xfId="0" applyFont="1" applyFill="1">
+      <!-- Hidden Properties: Advanced Cell Format Control -->
+      <alignment horizontal="{{alignment.good.horizontal|general}}" vertical="{{alignment.good.vertical|bottom}}"
+                textRotation="{{alignment.good.rotation|0}}" wrapText="{{alignment.good.wrap_text|false}}"
+                indent="{{alignment.good.indent|0}}" relativeIndent="{{alignment.good.relative_indent|0}}"
+                justifyLastLine="{{alignment.good.justify_last_line|false}}" shrinkToFit="{{alignment.good.shrink_to_fit|false}}"
+                readingOrder="{{alignment.good.reading_order|0}}"/>
+      <protection locked="{{protection.good.locked|true}}" hidden="{{protection.good.hidden|false}}"/>
+    </xf>
+
+    <!-- Bad Style Cell Format -->
+    <xf numFmtId="{{formats.bad.number|0}}" fontId="{{fonts.bad.index|17}}" fillId="{{fills.bad.index|22}}" borderId="{{borders.bad.index|8}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.bad.horizontal|general}}" vertical="{{alignment.bad.vertical|bottom}}"
+                textRotation="{{alignment.bad.rotation|0}}" wrapText="{{alignment.bad.wrap_text|false}}"
+                shrinkToFit="{{alignment.bad.shrink_to_fit|false}}"/>
+      <protection locked="{{protection.bad.locked|true}}" hidden="{{protection.bad.hidden|false}}"/>
+    </xf>
+
+    <!-- Neutral Style Cell Format -->
+    <xf numFmtId="{{formats.neutral.number|0}}" fontId="{{fonts.neutral.index|18}}" fillId="{{fills.neutral.index|23}}" borderId="{{borders.neutral.index|0}}" xfId="0" applyFont="1" applyFill="1">
+      <alignment horizontal="{{alignment.neutral.horizontal|general}}" vertical="{{alignment.neutral.vertical|bottom}}"/>
+      <protection locked="{{protection.neutral.locked|true}}" hidden="{{protection.neutral.hidden|false}}"/>
+    </xf>
+
+    <!-- Calculation Style Cell Format -->
+    <xf numFmtId="{{formats.calculation.number|0}}" fontId="{{fonts.calculation.index|19}}" fillId="{{fills.calculation.index|24}}" borderId="{{borders.calculation.index|1}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.calculation.horizontal|left}}" vertical="{{alignment.calculation.vertical|center}}"
+                wrapText="{{alignment.calculation.wrap_text|true}}" shrinkToFit="{{alignment.calculation.shrink_to_fit|true}}"/>
+      <protection locked="{{protection.calculation.locked|false}}" hidden="{{protection.calculation.hidden|false}}"/>
+    </xf>
+
+    <!-- Check Cell Style Cell Format -->
+    <xf numFmtId="{{formats.check_cell.number|0}}" fontId="{{fonts.check_cell.index|20}}" fillId="{{fills.check_cell.index|25}}" borderId="{{borders.check_cell.index|6}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.check_cell.horizontal|center}}" vertical="{{alignment.check_cell.vertical|center}}"/>
+      <protection locked="{{protection.check_cell.locked|true}}" hidden="{{protection.check_cell.hidden|false}}"/>
+    </xf>
+
+    <!-- Input Style Cell Format -->
+    <xf numFmtId="{{formats.input.number|0}}" fontId="{{fonts.input.index|22}}" fillId="{{fills.input.index|26}}" borderId="{{borders.input.index|2}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.input.horizontal|left}}" vertical="{{alignment.input.vertical|center}}"
+                wrapText="{{alignment.input.wrap_text|false}}" shrinkToFit="{{alignment.input.shrink_to_fit|false}}"/>
+      <protection locked="{{protection.input.locked|false}}" hidden="{{protection.input.hidden|false}}"/>
+    </xf>
+
+    <!-- Output Style Cell Format -->
+    <xf numFmtId="{{formats.output.number|0}}" fontId="{{fonts.output.index|24}}" fillId="{{fills.output.index|27}}" borderId="{{borders.output.index|1}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.output.horizontal|right}}" vertical="{{alignment.output.vertical|center}}"/>
+      <protection locked="{{protection.output.locked|true}}" hidden="{{protection.output.hidden|false}}"/>
+    </xf>
+
+    <!-- Heading Styles Cell Formats -->
+    <xf numFmtId="{{formats.heading1.number|0}}" fontId="{{fonts.heading1.index|25}}" fillId="{{fills.heading1.index|28}}" borderId="{{borders.heading1.index|3}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.heading1.horizontal|center}}" vertical="{{alignment.heading1.vertical|center}}"
+                wrapText="{{alignment.heading1.wrap_text|true}}"/>
+      <protection locked="{{protection.heading1.locked|true}}" hidden="{{protection.heading1.hidden|false}}"/>
+    </xf>
+
+    <xf numFmtId="{{formats.heading2.number|0}}" fontId="{{fonts.heading2.index|26}}" fillId="{{fills.heading2.index|29}}" borderId="{{borders.heading2.index|1}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.heading2.horizontal|center}}" vertical="{{alignment.heading2.vertical|center}}"
+                wrapText="{{alignment.heading2.wrap_text|true}}"/>
+      <protection locked="{{protection.heading2.locked|true}}" hidden="{{protection.heading2.hidden|false}}"/>
+    </xf>
+
+    <xf numFmtId="{{formats.heading3.number|0}}" fontId="{{fonts.heading3.index|27}}" fillId="{{fills.heading3.index|30}}" borderId="{{borders.heading3.index|1}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.heading3.horizontal|left}}" vertical="{{alignment.heading3.vertical|center}}"/>
+      <protection locked="{{protection.heading3.locked|true}}" hidden="{{protection.heading3.hidden|false}}"/>
+    </xf>
+
+    <xf numFmtId="{{formats.heading4.number|0}}" fontId="{{fonts.heading4.index|28}}" fillId="{{fills.heading4.index|31}}" borderId="{{borders.heading4.index|1}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.heading4.horizontal|left}}" vertical="{{alignment.heading4.vertical|center}}"/>
+      <protection locked="{{protection.heading4.locked|true}}" hidden="{{protection.heading4.hidden|false}}"/>
+    </xf>
+
+    <!-- Accent Style Cell Formats (20% variants) -->
+    <xf numFmtId="{{formats.accent1_20.number|0}}" fontId="{{fonts.accent1_20.index|34}}" fillId="{{fills.accent1_20.index|32}}" borderId="{{borders.accent1_20.index|1}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.accent1_20.horizontal|general}}" vertical="{{alignment.accent1_20.vertical|bottom}}"/>
+    </xf>
+
+    <xf numFmtId="{{formats.accent2_20.number|0}}" fontId="{{fonts.accent2_20.index|35}}" fillId="{{fills.accent2_20.index|33}}" borderId="{{borders.accent2_20.index|1}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.accent2_20.horizontal|general}}" vertical="{{alignment.accent2_20.vertical|bottom}}"/>
+    </xf>
+
+    <!-- Accent Style Cell Formats (40% variants) -->
+    <xf numFmtId="{{formats.accent1_40.number|0}}" fontId="{{fonts.accent1_40.index|36}}" fillId="{{fills.accent1_40.index|39}}" borderId="{{borders.accent1_40.index|1}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.accent1_40.horizontal|general}}" vertical="{{alignment.accent1_40.vertical|bottom}}"/>
+    </xf>
+
+    <xf numFmtId="{{formats.accent2_40.number|0}}" fontId="{{fonts.accent2_40.index|37}}" fillId="{{fills.accent2_40.index|40}}" borderId="{{borders.accent2_40.index|1}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.accent2_40.horizontal|general}}" vertical="{{alignment.accent2_40.vertical|bottom}}"/>
+    </xf>
+
+    <!-- Accent Style Cell Formats (60% variants) -->
+    <xf numFmtId="{{formats.accent1_60.number|0}}" fontId="{{fonts.accent1_60.index|38}}" fillId="{{fills.accent1_60.index|47}}" borderId="{{borders.accent1_60.index|1}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.accent1_60.horizontal|general}}" vertical="{{alignment.accent1_60.vertical|bottom}}"/>
+    </xf>
+
+    <xf numFmtId="{{formats.accent2_60.number|0}}" fontId="{{fonts.accent2_60.index|39}}" fillId="{{fills.accent2_60.index|48}}" borderId="{{borders.accent2_60.index|1}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.accent2_60.horizontal|general}}" vertical="{{alignment.accent2_60.vertical|bottom}}"/>
+    </xf>
+
+    <!-- Hyperlink Styles -->
+    <xf numFmtId="{{formats.hyperlink.number|0}}" fontId="{{fonts.hyperlink.index|30}}" fillId="{{fills.hyperlink.index|0}}" borderId="{{borders.hyperlink.index|0}}" xfId="0" applyFont="1">
+      <alignment horizontal="{{alignment.hyperlink.horizontal|general}}" vertical="{{alignment.hyperlink.vertical|bottom}}"/>
+    </xf>
+
+    <xf numFmtId="{{formats.followed_hyperlink.number|0}}" fontId="{{fonts.followed_hyperlink.index|31}}" fillId="{{fills.followed_hyperlink.index|0}}" borderId="{{borders.followed_hyperlink.index|0}}" xfId="0" applyFont="1">
+      <alignment horizontal="{{alignment.followed_hyperlink.horizontal|general}}" vertical="{{alignment.followed_hyperlink.vertical|bottom}}"/>
+    </xf>
+
+    <!-- Table Style Cell Formats -->
+    <xf numFmtId="{{formats.table_header.number|0}}" fontId="{{fonts.table_header.index|40}}" fillId="{{fills.table_header.index|49}}" borderId="{{borders.table_header.index|1}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.table_header.horizontal|center}}" vertical="{{alignment.table_header.vertical|center}}"
+                wrapText="{{alignment.table_header.wrap_text|true}}"/>
+      <protection locked="{{protection.table_header.locked|true}}" hidden="{{protection.table_header.hidden|false}}"/>
+    </xf>
+
+    <xf numFmtId="{{formats.table_total.number|0}}" fontId="{{fonts.table_total.index|41}}" fillId="{{fills.table_total.index|50}}" borderId="{{borders.table_total.index|3}}" xfId="0" applyFont="1" applyFill="1" applyBorder="1">
+      <alignment horizontal="{{alignment.table_total.horizontal|right}}" vertical="{{alignment.table_total.vertical|center}}"/>
+      <protection locked="{{protection.table_total.locked|true}}" hidden="{{protection.table_total.hidden|false}}"/>
+    </xf>
+
+    <!-- Continue with additional 100+ cell format definitions for complete coverage -->
+  </cellXfs>
+
+  <!-- Named cell styles with comprehensive built-in style override -->
+  <cellStyles count="50">
+    <cellStyle name="Normal" xfId="0" builtinId="0"/>
+    <cellStyle name="StyleStack Title" xfId="1" builtinId="15" customBuiltin="1"/>
+    <cellStyle name="StyleStack Header" xfId="5" builtinId="16" customBuiltin="1"/>
+    <cellStyle name="StyleStack Data" xfId="6" builtinId="17" customBuiltin="1"/>
+    <cellStyle name="StyleStack Brand" xfId="21" builtinId="18" customBuiltin="1"/>
+
+    <!-- COMPLETE BUILT-IN EXCEL STYLES OVERRIDE -->
+    <cellStyle name="Good" xfId="{{cell_formats.good.index|25}}" builtinId="26" customBuiltin="0"/>
+    <cellStyle name="Bad" xfId="{{cell_formats.bad.index|26}}" builtinId="27" customBuiltin="0"/>
+    <cellStyle name="Neutral" xfId="{{cell_formats.neutral.index|27}}" builtinId="28" customBuiltin="0"/>
+    <cellStyle name="Calculation" xfId="{{cell_formats.calculation.index|28}}" builtinId="22" customBuiltin="0"/>
+    <cellStyle name="Check Cell" xfId="{{cell_formats.check_cell.index|29}}" builtinId="23" customBuiltin="0"/>
+    <cellStyle name="Explanatory Text" xfId="{{cell_formats.explanatory.index|30}}" builtinId="53" customBuiltin="0"/>
+    <cellStyle name="Input" xfId="{{cell_formats.input.index|31}}" builtinId="20" customBuiltin="0"/>
+    <cellStyle name="Linked Cell" xfId="{{cell_formats.linked_cell.index|32}}" builtinId="24" customBuiltin="0"/>
+    <cellStyle name="Note" xfId="{{cell_formats.note.index|33}}" builtinId="10" customBuiltin="0"/>
+    <cellStyle name="Output" xfId="{{cell_formats.output.index|34}}" builtinId="21" customBuiltin="0"/>
+    <cellStyle name="Warning Text" xfId="{{cell_formats.warning_text.index|35}}" builtinId="11" customBuiltin="0"/>
+    <cellStyle name="Heading 1" xfId="{{cell_formats.heading1.index|36}}" builtinId="16" customBuiltin="0"/>
+    <cellStyle name="Heading 2" xfId="{{cell_formats.heading2.index|37}}" builtinId="17" customBuiltin="0"/>
+    <cellStyle name="Heading 3" xfId="{{cell_formats.heading3.index|38}}" builtinId="18" customBuiltin="0"/>
+    <cellStyle name="Heading 4" xfId="{{cell_formats.heading4.index|39}}" builtinId="19" customBuiltin="0"/>
+    <cellStyle name="Title" xfId="{{cell_formats.title_builtin.index|40}}" builtinId="15" customBuiltin="0"/>
+    <cellStyle name="Total" xfId="{{cell_formats.total.index|41}}" builtinId="25" customBuiltin="0"/>
+    <cellStyle name="Currency" xfId="{{cell_formats.currency.index|42}}" builtinId="4" customBuiltin="0"/>
+    <cellStyle name="Percent" xfId="{{cell_formats.percent.index|43}}" builtinId="5" customBuiltin="0"/>
+    <cellStyle name="Comma" xfId="{{cell_formats.comma.index|44}}" builtinId="3" customBuiltin="0"/>
+    <cellStyle name="Comma [0]" xfId="{{cell_formats.comma_0.index|45}}" builtinId="6" customBuiltin="0"/>
+    <cellStyle name="Currency [0]" xfId="{{cell_formats.currency_0.index|46}}" builtinId="7" customBuiltin="0"/>
+    <cellStyle name="Hyperlink" xfId="{{cell_formats.hyperlink.index|47}}" builtinId="8" customBuiltin="0"/>
+    <cellStyle name="Followed Hyperlink" xfId="{{cell_formats.followed_hyperlink.index|48}}" builtinId="9" customBuiltin="0"/>
+    <cellStyle name="20% - Accent1" xfId="{{cell_formats.accent1_20.index|49}}" builtinId="30" customBuiltin="0"/>
+    <cellStyle name="40% - Accent1" xfId="{{cell_formats.accent1_40.index|50}}" builtinId="31" customBuiltin="0"/>
+    <cellStyle name="60% - Accent1" xfId="{{cell_formats.accent1_60.index|51}}" builtinId="32" customBuiltin="0"/>
+    <cellStyle name="Accent1" xfId="{{cell_formats.accent1.index|52}}" builtinId="33" customBuiltin="0"/>
+    <cellStyle name="20% - Accent2" xfId="{{cell_formats.accent2_20.index|53}}" builtinId="34" customBuiltin="0"/>
+    <cellStyle name="40% - Accent2" xfId="{{cell_formats.accent2_40.index|54}}" builtinId="35" customBuiltin="0"/>
+    <cellStyle name="60% - Accent2" xfId="{{cell_formats.accent2_60.index|55}}" builtinId="36" customBuiltin="0"/>
+    <cellStyle name="Accent2" xfId="{{cell_formats.accent2.index|56}}" builtinId="37" customBuiltin="0"/>
+    <cellStyle name="20% - Accent3" xfId="{{cell_formats.accent3_20.index|57}}" builtinId="38" customBuiltin="0"/>
+    <cellStyle name="40% - Accent3" xfId="{{cell_formats.accent3_40.index|58}}" builtinId="39" customBuiltin="0"/>
+    <cellStyle name="60% - Accent3" xfId="{{cell_formats.accent3_60.index|59}}" builtinId="40" customBuiltin="0"/>
+    <cellStyle name="Accent3" xfId="{{cell_formats.accent3.index|60}}" builtinId="41" customBuiltin="0"/>
+    <cellStyle name="20% - Accent4" xfId="{{cell_formats.accent4_20.index|61}}" builtinId="42" customBuiltin="0"/>
+    <cellStyle name="40% - Accent4" xfId="{{cell_formats.accent4_40.index|62}}" builtinId="43" customBuiltin="0"/>
+    <cellStyle name="60% - Accent4" xfId="{{cell_formats.accent4_60.index|63}}" builtinId="44" customBuiltin="0"/>
+    <cellStyle name="Accent4" xfId="{{cell_formats.accent4.index|64}}" builtinId="45" customBuiltin="0"/>
+    <cellStyle name="20% - Accent5" xfId="{{cell_formats.accent5_20.index|65}}" builtinId="46" customBuiltin="0"/>
+    <cellStyle name="40% - Accent5" xfId="{{cell_formats.accent5_40.index|66}}" builtinId="47" customBuiltin="0"/>
+    <cellStyle name="60% - Accent5" xfId="{{cell_formats.accent5_60.index|67}}" builtinId="48" customBuiltin="0"/>
+    <cellStyle name="Accent5" xfId="{{cell_formats.accent5.index|68}}" builtinId="49" customBuiltin="0"/>
+    <cellStyle name="20% - Accent6" xfId="{{cell_formats.accent6_20.index|69}}" builtinId="50" customBuiltin="0"/>
+    <cellStyle name="40% - Accent6" xfId="{{cell_formats.accent6_40.index|70}}" builtinId="51" customBuiltin="0"/>
+    <cellStyle name="60% - Accent6" xfId="{{cell_formats.accent6_60.index|71}}" builtinId="52" customBuiltin="0"/>
+    <cellStyle name="Accent6" xfId="{{cell_formats.accent6.index|72}}" builtinId="53" customBuiltin="0"/>
+  </cellStyles>
+
+  <!-- Differential formatting for conditional formatting with comprehensive style support -->
+  <dxfs count="100">
+    <!-- Success formatting -->
+    <dxf>
+      <font>
+        <color rgb="FF10B981"/>
+        <b/>
+      </font>
+      <fill>
+        <patternFill patternType="solid">
+          <fgColor rgb="FFD1FAE5"/>
+        </patternFill>
+      </fill>
+    </dxf>
+
+    <!-- Warning formatting -->
+    <dxf>
+      <font>
+        <color rgb="FFF59E0B"/>
+        <b/>
+      </font>
+      <fill>
+        <patternFill patternType="solid">
+          <fgColor rgb="FFFEF3C7"/>
+        </patternFill>
+      </fill>
+    </dxf>
+
+    <!-- Error formatting -->
+    <dxf>
+      <font>
+        <color rgb="FFEF4444"/>
+        <b/>
+      </font>
+      <fill>
+        <patternFill patternType="solid">
+          <fgColor rgb="FFFEE2E2"/>
+        </patternFill>
+      </fill>
+    </dxf>
+  </dxfs>
+
+  <!-- Table styles with comprehensive built-in table style override -->
+  <tableStyles count="10" defaultTableStyle="{{table_styles.default.name|StyleStackTable}}" defaultPivotStyle="{{table_styles.pivot.default.name|StyleStackPivot}}">
+    <tableStyle name="{{table_styles.stylestack.name|StyleStackTable}}" table="{{table_styles.stylestack.table|1}}" count="{{table_styles.stylestack.count|7}}">
+      <tableStyleElement type="headerRow" dxfId="{{table_styles.stylestack.header_row.dxf|0}}"/>
+      <tableStyleElement type="totalRow" dxfId="{{table_styles.stylestack.total_row.dxf|1}}"/>
+      <tableStyleElement type="firstColumn" dxfId="{{table_styles.stylestack.first_column.dxf|2}}"/>
+      <tableStyleElement type="lastColumn" dxfId="{{table_styles.stylestack.last_column.dxf|3}}"/>
+      <tableStyleElement type="firstRowStripe" dxfId="{{table_styles.stylestack.first_row_stripe.dxf|4}}"/>
+      <tableStyleElement type="secondRowStripe" dxfId="{{table_styles.stylestack.second_row_stripe.dxf|5}}"/>
+      <tableStyleElement type="firstColumnStripe" dxfId="{{table_styles.stylestack.first_column_stripe.dxf|6}}"/>
+    </tableStyle>
+
+    <!-- BUILT-IN TABLE STYLE OVERRIDES -->
+    <!-- Light Table Styles -->
+    <tableStyle name="{{table_styles.light1.name|TableStyleLight1}}" table="{{table_styles.light1.table|1}}" count="{{table_styles.light1.count|7}}">
+      <tableStyleElement type="headerRow" dxfId="{{table_styles.light1.header_row.dxf|7}}"/>
+      <tableStyleElement type="totalRow" dxfId="{{table_styles.light1.total_row.dxf|8}}"/>
+      <tableStyleElement type="firstColumn" dxfId="{{table_styles.light1.first_column.dxf|9}}"/>
+      <tableStyleElement type="lastColumn" dxfId="{{table_styles.light1.last_column.dxf|10}}"/>
+      <tableStyleElement type="firstRowStripe" dxfId="{{table_styles.light1.first_row_stripe.dxf|11}}"/>
+      <tableStyleElement type="secondRowStripe" dxfId="{{table_styles.light1.second_row_stripe.dxf|12}}"/>
+      <tableStyleElement type="firstColumnStripe" dxfId="{{table_styles.light1.first_column_stripe.dxf|13}}"/>
+    </tableStyle>
+
+    <tableStyle name="{{table_styles.light2.name|TableStyleLight2}}" table="{{table_styles.light2.table|1}}" count="{{table_styles.light2.count|7}}">
+      <tableStyleElement type="headerRow" dxfId="{{table_styles.light2.header_row.dxf|14}}"/>
+      <tableStyleElement type="totalRow" dxfId="{{table_styles.light2.total_row.dxf|15}}"/>
+      <tableStyleElement type="firstRowStripe" dxfId="{{table_styles.light2.first_row_stripe.dxf|16}}"/>
+      <tableStyleElement type="secondRowStripe" dxfId="{{table_styles.light2.second_row_stripe.dxf|17}}"/>
+    </tableStyle>
+
+    <!-- Medium Table Styles -->
+    <tableStyle name="{{table_styles.medium1.name|TableStyleMedium1}}" table="{{table_styles.medium1.table|1}}" count="{{table_styles.medium1.count|9}}">
+      <tableStyleElement type="wholeTable" dxfId="{{table_styles.medium1.whole_table.dxf|18}}"/>
+      <tableStyleElement type="headerRow" dxfId="{{table_styles.medium1.header_row.dxf|19}}"/>
+      <tableStyleElement type="totalRow" dxfId="{{table_styles.medium1.total_row.dxf|20}}"/>
+      <tableStyleElement type="firstColumn" dxfId="{{table_styles.medium1.first_column.dxf|21}}"/>
+      <tableStyleElement type="lastColumn" dxfId="{{table_styles.medium1.last_column.dxf|22}}"/>
+      <tableStyleElement type="firstRowStripe" dxfId="{{table_styles.medium1.first_row_stripe.dxf|23}}"/>
+      <tableStyleElement type="secondRowStripe" dxfId="{{table_styles.medium1.second_row_stripe.dxf|24}}"/>
+      <tableStyleElement type="firstColumnStripe" dxfId="{{table_styles.medium1.first_column_stripe.dxf|25}}"/>
+      <tableStyleElement type="secondColumnStripe" dxfId="{{table_styles.medium1.second_column_stripe.dxf|26}}"/>
+    </tableStyle>
+
+    <!-- Dark Table Styles -->
+    <tableStyle name="{{table_styles.dark1.name|TableStyleDark1}}" table="{{table_styles.dark1.table|1}}" count="{{table_styles.dark1.count|11}}">
+      <tableStyleElement type="wholeTable" dxfId="{{table_styles.dark1.whole_table.dxf|27}}"/>
+      <tableStyleElement type="headerRow" dxfId="{{table_styles.dark1.header_row.dxf|28}}"/>
+      <tableStyleElement type="totalRow" dxfId="{{table_styles.dark1.total_row.dxf|29}}"/>
+      <tableStyleElement type="firstColumn" dxfId="{{table_styles.dark1.first_column.dxf|30}}"/>
+      <tableStyleElement type="lastColumn" dxfId="{{table_styles.dark1.last_column.dxf|31}}"/>
+      <tableStyleElement type="firstRowStripe" dxfId="{{table_styles.dark1.first_row_stripe.dxf|32}}"/>
+      <tableStyleElement type="secondRowStripe" dxfId="{{table_styles.dark1.second_row_stripe.dxf|33}}"/>
+      <tableStyleElement type="firstColumnStripe" dxfId="{{table_styles.dark1.first_column_stripe.dxf|34}}"/>
+      <tableStyleElement type="secondColumnStripe" dxfId="{{table_styles.dark1.second_column_stripe.dxf|35}}"/>
+    </tableStyle>
+
+    <!-- PivotTable Styles -->
+    <tableStyle name="{{table_styles.pivot_light.name|PivotStyleLight1}}" pivot="{{table_styles.pivot_light.pivot|1}}" count="{{table_styles.pivot_light.count|13}}">
+      <tableStyleElement type="wholeTable" dxfId="{{table_styles.pivot_light.whole_table.dxf|36}}"/>
+      <tableStyleElement type="headerRow" dxfId="{{table_styles.pivot_light.header_row.dxf|37}}"/>
+      <tableStyleElement type="totalRow" dxfId="{{table_styles.pivot_light.total_row.dxf|38}}"/>
+      <tableStyleElement type="pageFieldLabels" dxfId="{{table_styles.pivot_light.page_field_labels.dxf|39}}"/>
+      <tableStyleElement type="pageFieldValues" dxfId="{{table_styles.pivot_light.page_field_values.dxf|40}}"/>
+      <tableStyleElement type="subtotalColumn1" dxfId="{{table_styles.pivot_light.subtotal_column1.dxf|41}}"/>
+      <tableStyleElement type="subtotalColumn2" dxfId="{{table_styles.pivot_light.subtotal_column2.dxf|42}}"/>
+      <tableStyleElement type="subtotalColumn3" dxfId="{{table_styles.pivot_light.subtotal_column3.dxf|43}}"/>
+      <tableStyleElement type="subtotalRow1" dxfId="{{table_styles.pivot_light.subtotal_row1.dxf|44}}"/>
+      <tableStyleElement type="subtotalRow2" dxfId="{{table_styles.pivot_light.subtotal_row2.dxf|45}}"/>
+      <tableStyleElement type="subtotalRow3" dxfId="{{table_styles.pivot_light.subtotal_row3.dxf|46}}"/>
+      <tableStyleElement type="blankRow" dxfId="{{table_styles.pivot_light.blank_row.dxf|47}}"/>
+      <tableStyleElement type="grandTotalColumn" dxfId="{{table_styles.pivot_light.grand_total_column.dxf|48}}"/>
+      <tableStyleElement type="grandTotalRow" dxfId="{{table_styles.pivot_light.grand_total_row.dxf|49}}"/>
+    </tableStyle>
+  </tableStyles>
+
+</styleSheet>

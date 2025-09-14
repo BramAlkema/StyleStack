@@ -15,6 +15,9 @@ Part of the StyleStack JSON-to-OOXML Processing Engine test suite.
 import unittest
 import time
 from lxml import etree
+from tools.handlers.formats import FormatRegistry, create_format_processor
+from tools.handlers.types import FormatConfiguration
+from tools.core.types import RecoveryStrategy
 
 
 class PerformanceIntegrationTestCase(unittest.TestCase):
@@ -22,7 +25,11 @@ class PerformanceIntegrationTestCase(unittest.TestCase):
     
     def setUp(self):
         """Set up test fixtures."""
-        self.processor = JSONPatchProcessor(RecoveryStrategy.RETRY_WITH_FALLBACK)
+        # Use direct processor approach
+        self.registry = FormatRegistry()
+        config = FormatConfiguration(
+            recovery_strategy=RecoveryStrategy.RETRY_WITH_FALLBACK.value
+        )
         
         # Sample OOXML content for performance testing
         self.large_sample_xml = '''<p:sld xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" 

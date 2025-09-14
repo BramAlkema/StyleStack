@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:presentation xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"
+               xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+               xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+               saveSubsetFonts="1" autoCompressPictures="0">
+
+  <!-- StyleStack Modern Presentation with Design Token Integration -->
+
+  <!-- Slide master list -->
+  <p:sldMasterIdLst>
+    <p:sldMasterId id="2147483648" r:id="rId1"/>
+  </p:sldMasterIdLst>
+
+  <!-- Notes master list -->
+  <p:notesMasterIdLst>
+    <p:notesMasterId r:id="rId2"/>
+  </p:notesMasterIdLst>
+
+  <!-- Handout master list -->
+  <p:handoutMasterIdLst>
+    <p:handoutMasterId r:id="rId3"/>
+  </p:handoutMasterIdLst>
+
+  <!-- Slide list with design token-based content -->
+  <p:sldIdLst>
+    <p:sldId id="256" r:id="rId4"/>
+    <p:sldId id="257" r:id="rId5"/>
+    <p:sldId id="258" r:id="rId6"/>
+    <p:sldId id="259" r:id="rId7"/>
+    <p:sldId id="260" r:id="rId8"/>
+  </p:sldIdLst>
+
+  <!-- Slide size with design system responsive dimensions -->
+  <p:sldSz cx="{{presentation.slide.width|12192000}}" cy="{{presentation.slide.height|6858000}}" type="screen16x9"/>
+
+  <!-- Notes size -->
+  <p:notesSz cx="{{presentation.notes.width|12192000}}" cy="{{presentation.notes.height|9144000}}"/>
+
+  <!-- Default text styles with StyleStack typography -->
+  <p:defaultTextStyle>
+    <!-- Title text properties -->
+    <a:lvl1pPr marL="0" algn="ctr" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
+      <a:defRPr sz="{{typography.sizes.title|4400}}" kern="1200">
+        <a:solidFill>
+          <a:schemeClr val="{{brand.colors.text.title|tx1}}"/>
+        </a:solidFill>
+        <a:latin typeface="{{typography.font.title.family|+mj-lt}}"/>
+        <a:ea typeface="{{typography.font.title.family.ea|+mj-ea}}"/>
+        <a:cs typeface="{{typography.font.title.family.cs|+mj-cs}}"/>
+      </a:defRPr>
+    </a:lvl1pPr>
+
+    <!-- Body text properties -->
+    <a:lvl2pPr marL="457200" algn="l" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
+      <a:defRPr sz="{{typography.sizes.body|2000}}" kern="1200">
+        <a:solidFill>
+          <a:schemeClr val="{{brand.colors.text.body|tx1}}"/>
+        </a:solidFill>
+        <a:latin typeface="{{typography.font.body.family|+mn-lt}}"/>
+        <a:ea typeface="{{typography.font.body.family.ea|+mn-ea}}"/>
+        <a:cs typeface="{{typography.font.body.family.cs|+mn-cs}}"/>
+      </a:defRPr>
+    </a:lvl2pPr>
+
+    <!-- Additional hierarchy levels with design token scaling -->
+    <a:lvl3pPr marL="914400" algn="l" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
+      <a:defRPr sz="{{typography.sizes.body_small|1800}}" kern="1200">
+        <a:solidFill>
+          <a:schemeClr val="{{brand.colors.text.secondary|tx1}}"/>
+        </a:solidFill>
+        <a:latin typeface="{{typography.font.body.family|+mn-lt}}"/>
+        <a:ea typeface="{{typography.font.body.family.ea|+mn-ea}}"/>
+        <a:cs typeface="{{typography.font.body.family.cs|+mn-cs}}"/>
+      </a:defRPr>
+    </a:lvl3pPr>
+
+    <a:lvl4pPr marL="1371600" algn="l" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
+      <a:defRPr sz="{{typography.sizes.caption|1600}}" kern="1200">
+        <a:solidFill>
+          <a:schemeClr val="{{brand.colors.text.muted|tx1}}"/>
+        </a:solidFill>
+        <a:latin typeface="{{typography.font.body.family|+mn-lt}}"/>
+        <a:ea typeface="{{typography.font.body.family.ea|+mn-ea}}"/>
+        <a:cs typeface="{{typography.font.body.family.cs|+mn-cs}}"/>
+      </a:defRPr>
+    </a:lvl4pPr>
+
+    <a:lvl5pPr marL="1828800" algn="l" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
+      <a:defRPr sz="{{typography.sizes.small|1400}}" kern="1200">
+        <a:solidFill>
+          <a:schemeClr val="{{brand.colors.text.muted|tx1}}"/>
+        </a:solidFill>
+        <a:latin typeface="{{typography.font.body.family|+mn-lt}}"/>
+        <a:ea typeface="{{typography.font.body.family.ea|+mn-ea}}"/>
+        <a:cs typeface="{{typography.font.body.family.cs|+mn-cs}}"/>
+      </a:defRPr>
+    </a:lvl5pPr>
+  </p:defaultTextStyle>
+
+  <!-- Embedded font list with corporate typography -->
+  <p:embeddedFontLst>
+    <p:embeddedFont>
+      <p:font typeface="{{typography.font.family|Inter}}" panose="020B0503020204030204" pitchFamily="34" charset="0"/>
+      <p:regular r:id="rId9"/>
+      <p:bold r:id="rId10"/>
+      <p:italic r:id="rId11"/>
+      <p:boldItalic r:id="rId12"/>
+    </p:embeddedFont>
+  </p:embeddedFontLst>
+
+  <!-- Custom show list for branded presentations -->
+  <p:custShowLst>
+    <p:custShow name="{{presentation.custom_shows.executive|Executive Summary}}" id="0">
+      <p:sldLst>
+        <p:sld r:id="rId4"/>
+        <p:sld r:id="rId5"/>
+        <p:sld r:id="rId8"/>
+      </p:sldLst>
+    </p:custShow>
+    <p:custShow name="{{presentation.custom_shows.detailed|Detailed Analysis}}" id="1">
+      <p:sldLst>
+        <p:sld r:id="rId4"/>
+        <p:sld r:id="rId5"/>
+        <p:sld r:id="rId6"/>
+        <p:sld r:id="rId7"/>
+        <p:sld r:id="rId8"/>
+      </p:sldLst>
+    </p:custShow>
+  </p:custShowLst>
+
+  <!-- Photo album properties for brand asset galleries -->
+  <p:photoAlbum bw="0" showCaptions="1" layout="fitToSlide"/>
+
+  <!-- Customer data list for dynamic content -->
+  <p:custDataLst>
+    <p:tags r:id="rId13"/>
+  </p:custDataLst>
+
+  <!-- Smart tags for automated content -->
+  <p:smartTags r:id="rId14"/>
+
+  <!-- Modification verifier for version control -->
+  <p:modifyVerifier cryptProviderType="rsaAES" cryptAlgorithmClass="hash" cryptAlgorithmType="typeAny"
+                   cryptAlgorithmSid="14" spinCount="100000"
+                   saltData="{{document.security.salt|YourSaltDataHere}}"
+                   hashData="{{document.security.hash|YourHashDataHere}}"/>
+
+</p:presentation>

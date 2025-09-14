@@ -3,8 +3,7 @@
 from .errors import ErrorRecoveryHandler, PerformanceTimer
 
 __all__ = [
-    'JSONPatchProcessor',
-    'PerformanceOptimizer', 
+    'PerformanceOptimizer',
     'ErrorRecoveryHandler',
     'PerformanceTimer'
 ]

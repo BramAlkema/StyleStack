@@ -1,0 +1,809 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:sldMaster xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"
+            xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+            xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+
+  <!-- StyleStack Modern Slide Master with Design Token Integration -->
+  <p:cSld>
+    <!-- Background with brand-aware styling -->
+    <p:bg>
+      <p:bgRef idx="1001">
+        <a:schemeClr val="{{brand.colors.background.master|bg1}}"/>
+      </p:bgRef>
+    </p:bg>
+
+    <!-- Shape tree with design token elements -->
+    <p:spTree>
+      <p:nvGrpSpPr>
+        <p:cNvPr id="1" name=""/>
+        <p:cNvGrpSpPr/>
+        <p:nvPr/>
+      </p:nvGrpSpPr>
+      <p:grpSpPr>
+        <a:xfrm>
+          <a:off x="0" y="0"/>
+          <a:ext cx="0" cy="0"/>
+          <a:chOff x="0" y="0"/>
+          <a:chExt cx="0" cy="0"/>
+        </a:xfrm>
+      </p:grpSpPr>
+
+      <!-- Title placeholder with StyleStack typography -->
+      <p:sp>
+        <p:nvSpPr>
+          <p:cNvPr id="2" name="Title Placeholder 1"/>
+          <p:cNvSpPr>
+            <a:spLocks noGrp="1"/>
+          </p:cNvSpPr>
+          <p:nvPr>
+            <p:ph type="title"/>
+          </p:nvPr>
+        </p:nvSpPr>
+        <p:spPr>
+          <a:xfrm>
+            <a:off x="{{layout.title.x|457200}}" y="{{layout.title.y|274320}}"/>
+            <a:ext cx="{{layout.title.width|8229600}}" cy="{{layout.title.height|1143000}}"/>
+          </a:xfrm>
+        </p:spPr>
+        <p:txBody>
+          <!-- Hidden Properties: Advanced Text Box Control -->
+          <a:bodyPr vert="{{layout.text.orientation|horz}}" lIns="{{spacing.text.horizontal|91440}}" tIns="{{spacing.text.vertical|45720}}"
+                   rIns="{{spacing.text.horizontal|91440}}" bIns="{{spacing.text.vertical|45720}}" rtlCol="{{layout.text.rtl|0}}" anchor="{{layout.text.anchor.vertical|ctr}}"
+                   anchorCtr="{{layout.text.anchor.center|0}}" horzOverflow="{{layout.text.overflow.horizontal|overflow}}"
+                   vertOverflow="{{layout.text.overflow.vertical|overflow}}" wrap="{{layout.text.wrap|square}}"
+                   lnSpcReduction="{{typography.line_spacing.reduction|0}}" numCol="{{layout.text.columns|1}}"
+                   spcCol="{{spacing.text.column_gap|0}}" fromWordArt="{{layout.text.wordart|0}}"
+                   forceAA="{{typography.antialiasing.force|0}}" compatLnSpc="{{typography.line_spacing.compatibility|1}}"/>
+          <a:lstStyle/>
+          <a:p>
+            <a:pPr algn="{{layout.title.alignment|ctr}}" marL="{{spacing.title.margin.left|0}}" marR="{{spacing.title.margin.right|0}}"
+                   indent="{{spacing.title.indent|0}}" lvl="{{hierarchy.title.level|0}}" rtl="{{layout.title.rtl|0}}"
+                   eaLnBrk="{{typography.line_break.east_asian|1}}" fontAlgn="{{typography.alignment.baseline|auto}}"
+                   hangingPunct="{{typography.hanging_punctuation|1}}" latinLnBrk="{{typography.line_break.latin|0}}">
+              <!-- Hidden Properties: Advanced Spacing Control -->
+              <a:spcBef>
+                <a:spcPts val="{{spacing.title.before.points|0}}"/>
+              </a:spcBef>
+              <a:spcAft>
+                <a:spcPts val="{{spacing.title.after.points|1200}}"/>
+              </a:spcAft>
+              <a:lnSpc>
+                <a:spcPct val="{{typography.line_spacing.title.percent|100000}}"/>
+              </a:lnSpc>
+              <a:defRPr sz="{{typography.sizes.title|4400}}" kern="{{typography.kerning.title|1200}}" b="{{typography.weight.title.bold|1}}"
+                       i="{{typography.style.title.italic|0}}" u="{{typography.underline.title|none}}"
+                       strike="{{typography.strikethrough.title|noStrike}}" cap="{{typography.capitalization.title|none}}"
+                       spc="{{typography.character_spacing.title|0}}" normalizeH="{{typography.height_normalization.title|0}}"
+                       baseline="{{typography.baseline_shift.title|0}}" noProof="{{typography.spellcheck.title|0}}"
+                       dirty="{{typography.dirty_flag.title|0}}" err="{{typography.error_flag.title|0}}"
+                       smtClean="{{typography.smart_tag_clean.title|1}}" smtId="{{typography.smart_tag_id.title|0}}">
+                <!-- Hidden Properties: Advanced Color and Effects -->
+                <a:solidFill>
+                  <a:schemeClr val="{{brand.colors.text.title|tx1}}">
+                    <!-- Hidden Properties: Color Transformations -->
+                    <a:alpha val="{{brand.colors.title.opacity|100000}}"/>
+                    <a:lumMod val="{{brand.colors.title.luminance.modulation|100000}}"/>
+                    <a:lumOff val="{{brand.colors.title.luminance.offset|0}}"/>
+                    <a:tint val="{{brand.colors.title.tint|0}}"/>
+                    <a:shade val="{{brand.colors.title.shade|0}}"/>
+                  </a:schemeClr>
+                </a:solidFill>
+                <!-- Hidden Properties: Typography Details -->
+                <a:latin typeface="{{typography.font.title.family|+mj-lt}}" pitchFamily="{{typography.font.title.pitch|34}}" charset="{{typography.font.title.charset|0}}"/>
+                <a:ea typeface="{{typography.font.title.family.ea|+mj-ea}}" pitchFamily="{{typography.font.title.pitch.ea|18}}" charset="{{typography.font.title.charset.ea|-122}}"/>
+                <a:cs typeface="{{typography.font.title.family.cs|+mj-cs}}" pitchFamily="{{typography.font.title.pitch.cs|34}}" charset="{{typography.font.title.charset.cs|0}}"/>
+                <!-- Hidden Properties: Advanced Text Effects -->
+                <a:effectLst>
+                  <a:outerShdw blurRad="{{effects.title.shadow.blur|38100}}" dist="{{effects.title.shadow.distance|38100}}" dir="{{effects.title.shadow.direction|2700000}}" sx="{{effects.title.shadow.scale.x|102000}}" sy="{{effects.title.shadow.scale.y|102000}}" kx="{{effects.title.shadow.skew.x|0}}" ky="{{effects.title.shadow.skew.y|0}}" algn="{{effects.title.shadow.alignment|ctr}}" rotWithShape="{{effects.title.shadow.rotate|1}}">
+                    <a:srgbClr val="{{effects.title.shadow.color|000000}}">
+                      <a:alpha val="{{effects.title.shadow.opacity|40000}}"/>
+                    </a:srgbClr>
+                  </a:outerShdw>
+                  <a:reflection blurRad="{{effects.title.reflection.blur|6350}}" stA="{{effects.title.reflection.start_opacity|50000}}" stPos="{{effects.title.reflection.start_position|0}}" endA="{{effects.title.reflection.end_opacity|300}}" endPos="{{effects.title.reflection.end_position|100000}}" dist="{{effects.title.reflection.distance|0}}" dir="{{effects.title.reflection.direction|5400000}}" fadeDir="{{effects.title.reflection.fade_direction|5400000}}" sx="{{effects.title.reflection.scale.x|100000}}" sy="{{effects.title.reflection.scale.y|-100000}}" kx="{{effects.title.reflection.skew.x|0}}" ky="{{effects.title.reflection.skew.y|0}}" algn="{{effects.title.reflection.alignment|bl}}" rotWithShape="{{effects.title.reflection.rotate|1}}"/>
+                  <a:glow rad="{{effects.title.glow.radius|0}}">
+                    <a:srgbClr val="{{effects.title.glow.color|FFFFFF}}">
+                      <a:alpha val="{{effects.title.glow.opacity|0}}"/>
+                    </a:srgbClr>
+                  </a:glow>
+                </a:effectLst>
+                <!-- Hidden Properties: 3D Scene Properties -->
+                <a:scene3d>
+                  <a:camera prst="{{effects.title.camera.preset|orthographicFront}}" fov="{{effects.title.camera.field_of_view|0}}" zoom="{{effects.title.camera.zoom|100000}}">
+                    <a:rot lat="{{effects.title.camera.rotation.latitude|0}}" lon="{{effects.title.camera.rotation.longitude|0}}" rev="{{effects.title.camera.rotation.revolution|0}}"/>
+                  </a:camera>
+                  <a:lightRig rig="{{effects.title.lighting.rig|threePt}}" dir="{{effects.title.lighting.direction|t}}">
+                    <a:rot lat="{{effects.title.lighting.rotation.latitude|0}}" lon="{{effects.title.lighting.rotation.longitude|0}}" rev="{{effects.title.lighting.rotation.revolution|1200000}}"/>
+                  </a:lightRig>
+                  <a:backdrop anchor="{{effects.title.backdrop.anchor|ctr}}">
+                    <a:norm dx="{{effects.title.backdrop.normal.x|0}}" dy="{{effects.title.backdrop.normal.y|0}}" dz="{{effects.title.backdrop.normal.z|1000000}}"/>
+                    <a:up dx="{{effects.title.backdrop.up.x|0}}" dy="{{effects.title.backdrop.up.y|1000000}}" dz="{{effects.title.backdrop.up.z|0}}"/>
+                  </a:backdrop>
+                </a:scene3d>
+                <!-- Hidden Properties: 3D Shape Properties -->
+                <a:sp3d extrusionH="{{effects.title.extrusion.height|0}}" contourW="{{effects.title.extrusion.contour_width|0}}" prstMaterial="{{effects.title.material.preset|warmMatte}}">
+                  <a:bevelT w="{{effects.title.bevel.top.width|63500}}" h="{{effects.title.bevel.top.height|25400}}" prst="{{effects.title.bevel.top.preset|relaxedInset}}"/>
+                  <a:bevelB w="{{effects.title.bevel.bottom.width|63500}}" h="{{effects.title.bevel.bottom.height|25400}}" prst="{{effects.title.bevel.bottom.preset|relaxedInset}}"/>
+                  <a:extrusionClr>
+                    <a:schemeClr val="{{effects.title.extrusion.color.scheme|phClr}}">
+                      <a:lumMod val="{{effects.title.extrusion.color.luminance.modulation|40000}}"/>
+                      <a:lumOff val="{{effects.title.extrusion.color.luminance.offset|60000}}"/>
+                    </a:schemeClr>
+                  </a:extrusionClr>
+                  <a:contourClr>
+                    <a:schemeClr val="{{effects.title.contour.color.scheme|phClr}}">
+                      <a:lumMod val="{{effects.title.contour.color.luminance.modulation|75000}}"/>
+                    </a:schemeClr>
+                  </a:contourClr>
+                </a:sp3d>
+              </a:defRPr>
+            </a:pPr>
+            <a:endParaRPr sz="{{typography.sizes.title|4400}}" kern="1200" b="1" lang="en-US">
+              <a:solidFill>
+                <a:schemeClr val="{{brand.colors.text.title|tx1}}"/>
+              </a:solidFill>
+              <a:latin typeface="{{typography.font.title.family|+mj-lt}}"/>
+            </a:endParaRPr>
+          </a:p>
+        </p:txBody>
+      </p:sp>
+
+      <!-- Content placeholder -->
+      <p:sp>
+        <p:nvSpPr>
+          <p:cNvPr id="3" name="Content Placeholder 2"/>
+          <p:cNvSpPr>
+            <a:spLocks noGrp="1"/>
+          </p:cNvSpPr>
+          <p:nvPr>
+            <p:ph idx="1"/>
+          </p:nvPr>
+        </p:nvSpPr>
+        <p:spPr>
+          <a:xfrm>
+            <a:off x="{{layout.content.x|457200}}" y="{{layout.content.y|1600200}}"/>
+            <a:ext cx="{{layout.content.width|8229600}}" cy="{{layout.content.height|4525963}}"/>
+          </a:xfrm>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr vert="horz" lIns="{{spacing.text.horizontal|91440}}" tIns="{{spacing.text.vertical|45720}}"
+                   rIns="{{spacing.text.horizontal|91440}}" bIns="{{spacing.text.vertical|45720}}" rtlCol="0" anchor="t"/>
+          <a:lstStyle/>
+          <a:p>
+            <a:pPr lvl="0" marL="{{spacing.list.level0|342900}}" indent="{{spacing.list.indent|-342900}}">
+              <a:buNone/>
+              <a:defRPr sz="{{typography.sizes.body|2000}}" kern="1200">
+                <a:solidFill>
+                  <a:schemeClr val="{{brand.colors.text.body|tx1}}"/>
+                </a:solidFill>
+                <a:latin typeface="{{typography.font.body.family|+mn-lt}}"/>
+                <a:ea typeface="{{typography.font.body.family.ea|+mn-ea}}"/>
+                <a:cs typeface="{{typography.font.body.family.cs|+mn-cs}}"/>
+              </a:defRPr>
+            </a:pPr>
+            <a:endParaRPr sz="{{typography.sizes.body|2000}}" kern="1200" lang="en-US">
+              <a:solidFill>
+                <a:schemeClr val="{{brand.colors.text.body|tx1}}"/>
+              </a:solidFill>
+              <a:latin typeface="{{typography.font.body.family|+mn-lt}}"/>
+            </a:endParaRPr>
+          </a:p>
+        </p:txBody>
+      </p:sp>
+
+      <!-- Date placeholder -->
+      <p:sp>
+        <p:nvSpPr>
+          <p:cNvPr id="4" name="Date Placeholder 3"/>
+          <p:cNvSpPr>
+            <a:spLocks noGrp="1"/>
+          </p:cNvSpPr>
+          <p:nvPr>
+            <p:ph type="dt" sz="half" idx="2"/>
+          </p:nvPr>
+        </p:nvSpPr>
+        <p:spPr>
+          <a:xfrm>
+            <a:off x="{{layout.date.x|10287840}}" y="{{layout.date.y|6325440}}"/>
+            <a:ext cx="{{layout.date.width|1895040}}" cy="{{layout.date.height|365760}}"/>
+          </a:xfrm>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr vert="horz" lIns="{{spacing.text.horizontal|91440}}" tIns="{{spacing.text.vertical|45720}}"
+                   rIns="{{spacing.text.horizontal|91440}}" bIns="{{spacing.text.vertical|45720}}" rtlCol="0" anchor="ctr"/>
+          <a:lstStyle/>
+          <a:p>
+            <a:pPr algn="r">
+              <a:defRPr sz="{{typography.sizes.caption|1200}}" kern="1200">
+                <a:solidFill>
+                  <a:schemeClr val="{{brand.colors.text.muted|tx2}}"/>
+                </a:solidFill>
+                <a:latin typeface="{{typography.font.caption.family|+mn-lt}}"/>
+              </a:defRPr>
+            </a:pPr>
+            <a:endParaRPr sz="{{typography.sizes.caption|1200}}" kern="1200" lang="en-US">
+              <a:solidFill>
+                <a:schemeClr val="{{brand.colors.text.muted|tx2}}"/>
+              </a:solidFill>
+              <a:latin typeface="{{typography.font.caption.family|+mn-lt}}"/>
+            </a:endParaRPr>
+          </a:p>
+        </p:txBody>
+      </p:sp>
+
+      <!-- Footer placeholder -->
+      <p:sp>
+        <p:nvSpPr>
+          <p:cNvPr id="5" name="Footer Placeholder 4"/>
+          <p:cNvSpPr>
+            <a:spLocks noGrp="1"/>
+          </p:cNvSpPr>
+          <p:nvPr>
+            <p:ph type="ftr" sz="quarter" idx="3"/>
+          </p:nvPr>
+        </p:nvSpPr>
+        <p:spPr>
+          <a:xfrm>
+            <a:off x="{{layout.footer.x|0}}" y="{{layout.footer.y|6325440}}"/>
+            <a:ext cx="{{layout.footer.width|9144000}}" cy="{{layout.footer.height|365760}}"/>
+          </a:xfrm>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr vert="horz" lIns="{{spacing.text.horizontal|91440}}" tIns="{{spacing.text.vertical|45720}}"
+                   rIns="{{spacing.text.horizontal|91440}}" bIns="{{spacing.text.vertical|45720}}" rtlCol="0" anchor="ctr"/>
+          <a:lstStyle/>
+          <a:p>
+            <a:pPr>
+              <a:defRPr sz="{{typography.sizes.caption|1200}}" kern="1200">
+                <a:solidFill>
+                  <a:schemeClr val="{{brand.colors.text.muted|tx2}}"/>
+                </a:solidFill>
+                <a:latin typeface="{{typography.font.caption.family|+mn-lt}}"/>
+              </a:defRPr>
+            </a:pPr>
+            <a:endParaRPr sz="{{typography.sizes.caption|1200}}" kern="1200" lang="en-US">
+              <a:solidFill>
+                <a:schemeClr val="{{brand.colors.text.muted|tx2}}"/>
+              </a:solidFill>
+              <a:latin typeface="{{typography.font.caption.family|+mn-lt}}"/>
+            </a:endParaRPr>
+          </a:p>
+        </p:txBody>
+      </p:sp>
+
+      <!-- Slide number placeholder -->
+      <p:sp>
+        <p:nvSpPr>
+          <p:cNvPr id="6" name="Slide Number Placeholder 5"/>
+          <p:cNvSpPr>
+            <a:spLocks noGrp="1"/>
+          </p:cNvSpPr>
+          <p:nvPr>
+            <p:ph type="sldNum" sz="quarter" idx="4"/>
+          </p:nvPr>
+        </p:nvSpPr>
+        <p:spPr>
+          <a:xfrm>
+            <a:off x="{{layout.slide_number.x|10287840}}" y="{{layout.slide_number.y|6325440}}"/>
+            <a:ext cx="{{layout.slide_number.width|1895040}}" cy="{{layout.slide_number.height|365760}}"/>
+          </a:xfrm>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr vert="horz" lIns="{{spacing.text.horizontal|91440}}" tIns="{{spacing.text.vertical|45720}}"
+                   rIns="{{spacing.text.horizontal|91440}}" bIns="{{spacing.text.vertical|45720}}" rtlCol="0" anchor="ctr"/>
+          <a:lstStyle/>
+          <a:p>
+            <a:pPr algn="r">
+              <a:defRPr sz="{{typography.sizes.caption|1200}}" kern="1200">
+                <a:solidFill>
+                  <a:schemeClr val="{{brand.colors.text.muted|tx2}}"/>
+                </a:solidFill>
+                <a:latin typeface="{{typography.font.caption.family|+mn-lt}}"/>
+              </a:defRPr>
+            </a:pPr>
+            <a:endParaRPr sz="{{typography.sizes.caption|1200}}" kern="1200" lang="en-US">
+              <a:solidFill>
+                <a:schemeClr val="{{brand.colors.text.muted|tx2}}"/>
+              </a:solidFill>
+              <a:latin typeface="{{typography.font.caption.family|+mn-lt}}"/>
+            </a:endParaRPr>
+          </a:p>
+        </p:txBody>
+      </p:sp>
+
+      <!-- Brand logo shape (corporate override) -->
+      <p:pic>
+        <p:nvPicPr>
+          <p:cNvPr id="7" name="Corporate Logo" descr="{{company.logo.alt_text|Company Logo}}"/>
+          <p:cNvPicPr>
+            <a:picLocks noChangeAspect="1"/>
+          </p:cNvPicPr>
+          <p:nvPr>
+            <p:ph type="obj" sz="quarter" idx="5"/>
+          </p:nvPr>
+        </p:nvPicPr>
+        <p:blipFill>
+          <a:blip r:embed="rId2" cstate="print">
+            <a:extLst>
+              <a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">
+                <a14:useLocalDpi xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main" val="0"/>
+              </a:ext>
+            </a:extLst>
+          </a:blip>
+          <a:stretch>
+            <a:fillRect/>
+          </a:stretch>
+        </p:blipFill>
+        <p:spPr>
+          <a:xfrm>
+            <a:off x="{{layout.logo.x|10668000}}" y="{{layout.logo.y|457200}}"/>
+            <a:ext cx="{{layout.logo.width|914400}}" cy="{{layout.logo.height|609600}}"/>
+          </a:xfrm>
+          <a:prstGeom prst="rect">
+            <a:avLst/>
+          </a:prstGeom>
+        </p:spPr>
+      </p:pic>
+    </p:spTree>
+
+    <!-- Common slide data -->
+    <p:extLst>
+      <p:ext uri="{BB962C8B-B14F-4D97-AF65-F5344CB8AC3E}">
+        <p14:creationId xmlns:p14="http://schemas.microsoft.com/office/powerpoint/2010/main" val="1024819115"/>
+      </p:ext>
+    </p:extLst>
+  </p:cSld>
+
+  <!-- Color map with theme color references -->
+  <p:clrMap bg1="lt1" tx1="dk1" bg2="lt2" tx2="dk2" accent1="accent1" accent2="accent2" accent3="accent3"
+           accent4="accent4" accent5="accent5" accent6="accent6" hlink="hlink" folHlink="folHlink"/>
+
+  <!-- Slide layout ID list -->
+  <p:sldLayoutIdLst>
+    <p:sldLayoutId id="2147483649" r:id="rId1"/>
+    <p:sldLayoutId id="2147483650" r:id="rId2"/>
+    <p:sldLayoutId id="2147483651" r:id="rId3"/>
+    <p:sldLayoutId id="2147483652" r:id="rId4"/>
+    <p:sldLayoutId id="2147483653" r:id="rId5"/>
+    <p:sldLayoutId id="2147483654" r:id="rId6"/>
+    <p:sldLayoutId id="2147483655" r:id="rId7"/>
+    <p:sldLayoutId id="2147483656" r:id="rId8"/>
+    <p:sldLayoutId id="2147483657" r:id="rId9"/>
+    <p:sldLayoutId id="2147483658" r:id="rId10"/>
+    <p:sldLayoutId id="2147483659" r:id="rId11"/>
+  </p:sldLayoutIdLst>
+
+  <!-- Transition settings -->
+  <p:transition spd="med">
+    <p:fade thruBlk="1"/>
+  </p:transition>
+
+  <!-- Timing for animations -->
+  <p:timing>
+    <p:tnLst>
+      <p:par>
+        <p:cTn id="1" dur="indefinite" restart="never" nodeType="tmRoot"/>
+      </p:par>
+    </p:tnLst>
+  </p:timing>
+
+  <!-- Header/Footer properties -->
+  <p:hf sldNum="0" hdr="0" ftr="1" dt="1"/>
+
+  <!-- ============================================ -->
+  <!-- COMPREHENSIVE BUILT-IN STYLE OVERRIDES -->
+  <!-- Complete StyleStack takeover of PowerPoint master styles -->
+  <!-- ============================================ -->
+
+  <!-- Text styles for different hierarchy levels -->
+  <p:txStyles>
+    <!-- Title text style with comprehensive overrides -->
+    <p:titleStyle>
+      <a:lvl1pPr marL="{{spacing.master.title.margin.left|0}}" marR="{{spacing.master.title.margin.right|0}}"
+                indent="{{spacing.master.title.indent|0}}" algn="{{layout.master.title.alignment|ctr}}"
+                defTabSz="{{layout.master.tab_size|914400}}" rtl="{{layout.master.title.rtl|0}}"
+                eaLnBrk="{{typography.line_break.east_asian|1}}" latinLnBrk="{{typography.line_break.latin|0}}"
+                hangingPunct="{{typography.hanging_punctuation|1}}" fontAlgn="{{typography.alignment.font|auto}}">
+        <!-- Hidden Properties: Master Title Spacing -->
+        <a:spcBef>
+          <a:spcPct val="{{spacing.master.title.before.percent|0}}"/>
+        </a:spcBef>
+        <a:spcAft>
+          <a:spcPct val="{{spacing.master.title.after.percent|0}}"/>
+        </a:spcAft>
+        <a:lnSpc>
+          <a:spcPct val="{{typography.line_spacing.master_title.percent|90000}}"/>
+        </a:lnSpc>
+        <a:buNone/>
+        <!-- Hidden Properties: Advanced Master Title Typography -->
+        <a:defRPr sz="{{typography.size.master_title|4400}}" kern="{{typography.kerning.master_title|1200}}"
+                 b="{{typography.bold.master_title|1}}" i="{{typography.italic.master_title|0}}"
+                 u="{{typography.underline.master_title|none}}" strike="{{typography.strikethrough.master_title|noStrike}}"
+                 cap="{{typography.capitalization.master_title|none}}" spc="{{typography.character_spacing.master_title|0}}"
+                 normalizeH="{{typography.height_normalization.master_title|0}}" baseline="{{typography.baseline_shift.master_title|0}}"
+                 noProof="{{typography.spellcheck.master_title|0}}" dirty="{{typography.dirty_flag.master_title|0}}"
+                 err="{{typography.error_flag.master_title|0}}" smtClean="{{typography.smart_tag_clean.master_title|1}}">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.master_title.scheme|dk1}}">
+              <!-- Hidden Properties: Master Title Color Effects -->
+              <a:alpha val="{{brand.colors.master_title.opacity|100000}}"/>
+              <a:lumMod val="{{brand.colors.master_title.luminance.modulation|100000}}"/>
+              <a:lumOff val="{{brand.colors.master_title.luminance.offset|0}}"/>
+              <a:satMod val="{{brand.colors.master_title.saturation.modulation|100000}}"/>
+              <a:satOff val="{{brand.colors.master_title.saturation.offset|0}}"/>
+              <a:hueMod val="{{brand.colors.master_title.hue.modulation|100000}}"/>
+              <a:hueOff val="{{brand.colors.master_title.hue.offset|0}}"/>
+            </a:schemeClr>
+          </a:solidFill>
+          <!-- Hidden Properties: Font Details with Fallbacks -->
+          <a:latin typeface="{{typography.font.master_title|Inter}}" pitchFamily="{{typography.font.master_title.pitch|34}}" charset="{{typography.font.master_title.charset|0}}"/>
+          <a:ea typeface="{{typography.font.master_title.east_asian|Noto Sans CJK SC}}" pitchFamily="{{typography.font.master_title.pitch.ea|18}}" charset="{{typography.font.master_title.charset.ea|-122}}"/>
+          <a:cs typeface="{{typography.font.master_title.complex_script|Noto Sans Arabic}}" pitchFamily="{{typography.font.master_title.pitch.cs|34}}" charset="{{typography.font.master_title.charset.cs|178}}"/>
+          <a:sym typeface="{{typography.font.master_title.symbol|Symbol}}" pitchFamily="{{typography.font.master_title.pitch.symbol|2}}" charset="{{typography.font.master_title.charset.symbol|2}}"/>
+          <!-- Hidden Properties: Master Title Effects -->
+          <a:effectLst>
+            <a:outerShdw blurRad="{{effects.master_title.shadow.blur|57150}}" dist="{{effects.master_title.shadow.distance|19050}}" dir="{{effects.master_title.shadow.direction|5400000}}" algn="{{effects.master_title.shadow.alignment|ctr}}" rotWithShape="{{effects.master_title.shadow.rotate|1}}">
+              <a:srgbClr val="{{effects.master_title.shadow.color|000000}}">
+                <a:alpha val="{{effects.master_title.shadow.opacity|63000}}"/>
+              </a:srgbClr>
+            </a:outerShdw>
+          </a:effectLst>
+        </a:defRPr>
+      </a:lvl1pPr>
+      <!-- Master Title Level 2 (for subtitle scenarios) -->
+      <a:lvl2pPr marL="{{spacing.master.subtitle.margin.left|0}}" algn="{{layout.master.subtitle.alignment|ctr}}"
+                defTabSz="{{layout.master.tab_size|914400}}" rtl="{{layout.master.subtitle.rtl|0}}">
+        <a:spcBef>
+          <a:spcPct val="{{spacing.master.subtitle.before.percent|0}}"/>
+        </a:spcBef>
+        <a:buNone/>
+        <a:defRPr sz="{{typography.size.master_subtitle|3200}}" kern="{{typography.kerning.master_subtitle|1200}}"
+                 b="{{typography.bold.master_subtitle|0}}" i="{{typography.italic.master_subtitle|0}}">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.master_subtitle.scheme|tx2}}">
+              <a:lumMod val="{{brand.colors.master_subtitle.luminance.modulation|75000}}"/>
+            </a:schemeClr>
+          </a:solidFill>
+          <a:latin typeface="{{typography.font.master_subtitle|Inter}}" pitchFamily="34" charset="0"/>
+          <a:ea typeface="{{typography.font.master_subtitle.east_asian|Noto Sans CJK SC}}" pitchFamily="18" charset="-122"/>
+          <a:cs typeface="{{typography.font.master_subtitle.complex_script|Noto Sans Arabic}}" pitchFamily="34" charset="178"/>
+        </a:defRPr>
+      </a:lvl2pPr>
+    </p:titleStyle>
+
+    <!-- Body text style with comprehensive hierarchy -->
+    <p:bodyStyle>
+      <!-- Level 1 - Primary content -->
+      <a:lvl1pPr marL="{{spacing.body.level1.margin.left|342900}}" marR="{{spacing.body.level1.margin.right|0}}"
+                indent="{{spacing.body.level1.indent|-342900}}" algn="{{layout.body.level1.alignment|l}}"
+                defTabSz="{{layout.body.tab_size|914400}}" rtl="{{layout.body.level1.rtl|0}}"
+                eaLnBrk="{{typography.line_break.east_asian|1}}" latinLnBrk="{{typography.line_break.latin|0}}"
+                hangingPunct="{{typography.hanging_punctuation|1}}" fontAlgn="{{typography.alignment.font|auto}}">
+        <!-- Hidden Properties: Level 1 Spacing -->
+        <a:spcBef>
+          <a:spcPct val="{{spacing.body.level1.before.percent|20000}}"/>
+        </a:spcBef>
+        <a:spcAft>
+          <a:spcPct val="{{spacing.body.level1.after.percent|0}}"/>
+        </a:spcAft>
+        <a:lnSpc>
+          <a:spcPct val="{{typography.line_spacing.body.level1.percent|100000}}"/>
+        </a:lnSpc>
+        <!-- Hidden Properties: Custom Bullet System -->
+        <a:buFont typeface="{{typography.bullet.level1.font|Segoe UI Symbol}}" pitchFamily="{{typography.bullet.level1.pitch|34}}" charset="{{typography.bullet.level1.charset|0}}"/>
+        <a:buChar char="{{typography.bullet.level1.character|•}}"/>
+        <a:buClr>
+          <a:schemeClr val="{{brand.colors.bullet.level1.scheme|accent1}}">
+            <a:lumMod val="{{brand.colors.bullet.level1.luminance.modulation|75000}}"/>
+          </a:schemeClr>
+        </a:buClr>
+        <a:buSzPct val="{{typography.bullet.level1.size.percent|100000}}"/>
+        <!-- Hidden Properties: Advanced Level 1 Typography -->
+        <a:defRPr sz="{{typography.size.body.level1|2000}}" kern="{{typography.kerning.body.level1|1200}}"
+                 b="{{typography.bold.body.level1|0}}" i="{{typography.italic.body.level1|0}}"
+                 u="{{typography.underline.body.level1|none}}" strike="{{typography.strikethrough.body.level1|noStrike}}"
+                 cap="{{typography.capitalization.body.level1|none}}" spc="{{typography.character_spacing.body.level1|0}}"
+                 normalizeH="{{typography.height_normalization.body.level1|0}}" baseline="{{typography.baseline_shift.body.level1|0}}">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.body.level1.scheme|tx1}}">
+              <a:alpha val="{{brand.colors.body.level1.opacity|100000}}"/>
+              <a:lumMod val="{{brand.colors.body.level1.luminance.modulation|100000}}"/>
+              <a:satMod val="{{brand.colors.body.level1.saturation.modulation|100000}}"/>
+            </a:schemeClr>
+          </a:solidFill>
+          <a:latin typeface="{{typography.font.body.level1|Inter}}" pitchFamily="{{typography.font.body.level1.pitch|34}}" charset="{{typography.font.body.level1.charset|0}}"/>
+          <a:ea typeface="{{typography.font.body.level1.east_asian|Noto Sans CJK SC}}" pitchFamily="{{typography.font.body.level1.pitch.ea|18}}" charset="{{typography.font.body.level1.charset.ea|-122}}"/>
+          <a:cs typeface="{{typography.font.body.level1.complex_script|Noto Sans Arabic}}" pitchFamily="{{typography.font.body.level1.pitch.cs|34}}" charset="{{typography.font.body.level1.charset.cs|178}}"/>
+        </a:defRPr>
+      </a:lvl1pPr>
+
+      <!-- Level 2 - Secondary content with advanced formatting -->
+      <a:lvl2pPr marL="{{spacing.body.level2.margin.left|742950}}" marR="{{spacing.body.level2.margin.right|0}}"
+                indent="{{spacing.body.level2.indent|-285750}}" algn="{{layout.body.level2.alignment|l}}"
+                defTabSz="{{layout.body.tab_size|914400}}" rtl="{{layout.body.level2.rtl|0}}"
+                eaLnBrk="{{typography.line_break.east_asian|1}}" latinLnBrk="{{typography.line_break.latin|0}}"
+                hangingPunct="{{typography.hanging_punctuation|1}}" fontAlgn="{{typography.alignment.font|auto}}">
+        <a:spcBef>
+          <a:spcPct val="{{spacing.body.level2.before.percent|20000}}"/>
+        </a:spcBef>
+        <a:lnSpc>
+          <a:spcPct val="{{typography.line_spacing.body.level2.percent|95000}}"/>
+        </a:lnSpc>
+        <!-- Hidden Properties: Level 2 Bullet System -->
+        <a:buFont typeface="{{typography.bullet.level2.font|Segoe UI Symbol}}" pitchFamily="{{typography.bullet.level2.pitch|34}}" charset="{{typography.bullet.level2.charset|0}}"/>
+        <a:buChar char="{{typography.bullet.level2.character|◦}}"/>
+        <a:buClr>
+          <a:schemeClr val="{{brand.colors.bullet.level2.scheme|accent2}}">
+            <a:lumMod val="{{brand.colors.bullet.level2.luminance.modulation|60000}}"/>
+          </a:schemeClr>
+        </a:buClr>
+        <a:buSzPct val="{{typography.bullet.level2.size.percent|90000}}"/>
+        <a:defRPr sz="{{typography.size.body.level2|1800}}" kern="{{typography.kerning.body.level2|1200}}"
+                 b="{{typography.bold.body.level2|0}}" i="{{typography.italic.body.level2|0}}"
+                 spc="{{typography.character_spacing.body.level2|0}}" normalizeH="{{typography.height_normalization.body.level2|0}}">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.body.level2.scheme|tx1}}">
+              <a:lumMod val="{{brand.colors.body.level2.luminance.modulation|85000}}"/>
+            </a:schemeClr>
+          </a:solidFill>
+          <a:latin typeface="{{typography.font.body.level2|Inter}}" pitchFamily="{{typography.font.body.level2.pitch|34}}" charset="{{typography.font.body.level2.charset|0}}"/>
+          <a:ea typeface="{{typography.font.body.level2.east_asian|Noto Sans CJK SC}}" pitchFamily="{{typography.font.body.level2.pitch.ea|18}}" charset="{{typography.font.body.level2.charset.ea|-122}}"/>
+          <a:cs typeface="{{typography.font.body.level2.complex_script|Noto Sans Arabic}}" pitchFamily="{{typography.font.body.level2.pitch.cs|34}}" charset="{{typography.font.body.level2.charset.cs|178}}"/>
+        </a:defRPr>
+      </a:lvl2pPr>
+
+      <!-- Level 3 - Tertiary content with micro-typography -->
+      <a:lvl3pPr marL="{{spacing.body.level3.margin.left|1143000}}" indent="{{spacing.body.level3.indent|-228600}}"
+                algn="{{layout.body.level3.alignment|l}}" defTabSz="{{layout.body.tab_size|914400}}"
+                rtl="{{layout.body.level3.rtl|0}}" eaLnBrk="{{typography.line_break.east_asian|1}}"
+                latinLnBrk="{{typography.line_break.latin|0}}" hangingPunct="{{typography.hanging_punctuation|1}}">
+        <a:spcBef>
+          <a:spcPct val="{{spacing.body.level3.before.percent|15000}}"/>
+        </a:spcBef>
+        <a:lnSpc>
+          <a:spcPct val="{{typography.line_spacing.body.level3.percent|90000}}"/>
+        </a:lnSpc>
+        <!-- Hidden Properties: Level 3 Advanced Bullet -->
+        <a:buFont typeface="{{typography.bullet.level3.font|Wingdings}}" pitchFamily="{{typography.bullet.level3.pitch|2}}" charset="{{typography.bullet.level3.charset|2}}"/>
+        <a:buChar char="{{typography.bullet.level3.character|§}}"/>
+        <a:buClr>
+          <a:schemeClr val="{{brand.colors.bullet.level3.scheme|accent3}}">
+            <a:lumMod val="{{brand.colors.bullet.level3.luminance.modulation|50000}}"/>
+          </a:schemeClr>
+        </a:buClr>
+        <a:buSzPct val="{{typography.bullet.level3.size.percent|80000}}"/>
+        <!-- Hidden Properties: Level 3 Micro Typography -->
+        <a:defRPr sz="{{typography.size.body.level3|1600}}" kern="{{typography.kerning.body.level3|1000}}"
+                 b="{{typography.bold.body.level3|0}}" i="{{typography.italic.body.level3|0}}"
+                 spc="{{typography.character_spacing.body.level3|50}}" normalizeH="{{typography.height_normalization.body.level3|0}}">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.body.level3.scheme|tx1}}">
+              <a:lumMod val="{{brand.colors.body.level3.luminance.modulation|70000}}"/>
+            </a:schemeClr>
+          </a:solidFill>
+          <a:latin typeface="{{typography.font.body.level3|Inter}}" pitchFamily="{{typography.font.body.level3.pitch|34}}" charset="{{typography.font.body.level3.charset|0}}"/>
+          <a:ea typeface="{{typography.font.body.level3.east_asian|Noto Sans CJK SC}}" pitchFamily="18" charset="-122"/>
+        </a:defRPr>
+      </a:lvl3pPr>
+
+      <!-- Level 4 - Detailed content with precise control -->
+      <a:lvl4pPr marL="{{spacing.body.level4.margin.left|1600200}}" indent="{{spacing.body.level4.indent|-228600}}"
+                algn="{{layout.body.level4.alignment|l}}" defTabSz="{{layout.body.tab_size|914400}}"
+                rtl="{{layout.body.level4.rtl|0}}">
+        <a:spcBef>
+          <a:spcPct val="{{spacing.body.level4.before.percent|10000}}"/>
+        </a:spcBef>
+        <a:lnSpc>
+          <a:spcPct val="{{typography.line_spacing.body.level4.percent|85000}}"/>
+        </a:lnSpc>
+        <!-- Hidden Properties: Level 4 Specialized Bullet -->
+        <a:buFont typeface="{{typography.bullet.level4.font|Symbol}}" pitchFamily="{{typography.bullet.level4.pitch|2}}" charset="{{typography.bullet.level4.charset|2}}"/>
+        <a:buChar char="{{typography.bullet.level4.character|·}}"/>
+        <a:buClr>
+          <a:schemeClr val="{{brand.colors.bullet.level4.scheme|accent4}}">
+            <a:lumMod val="{{brand.colors.bullet.level4.luminance.modulation|40000}}"/>
+          </a:schemeClr>
+        </a:buClr>
+        <a:buSzPct val="{{typography.bullet.level4.size.percent|70000}}"/>
+        <a:defRPr sz="{{typography.size.body.level4|1400}}" kern="{{typography.kerning.body.level4|800}}"
+                 spc="{{typography.character_spacing.body.level4|100}}">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.body.level4.scheme|tx2}}">
+              <a:lumMod val="{{brand.colors.body.level4.luminance.modulation|60000}}"/>
+            </a:schemeClr>
+          </a:solidFill>
+          <a:latin typeface="{{typography.font.body.level4|Inter}}" pitchFamily="34" charset="0"/>
+        </a:defRPr>
+      </a:lvl4pPr>
+
+      <!-- Level 5 - Fine detail content with maximum precision -->
+      <a:lvl3pPr marL="{{spacing.list.level2|1143000}}" indent="{{spacing.list.indent|-228600}}"
+                algn="l" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
+        <a:spcBef>
+          <a:spcPct val="20000"/>
+        </a:spcBef>
+        <a:buFont typeface="Arial" pitchFamily="34" charset="0"/>
+        <a:buChar char="•"/>
+        <a:defRPr sz="{{typography.sizes.caption|1600}}" kern="1200">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.text.muted|tx1}}"/>
+          </a:solidFill>
+          <a:latin typeface="{{typography.font.body.family|+mn-lt}}"/>
+        </a:defRPr>
+      </a:lvl3pPr>
+
+      <a:lvl4pPr marL="{{spacing.list.level3|1600200}}" indent="{{spacing.list.indent|-228600}}"
+                algn="l" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
+        <a:spcBef>
+          <a:spcPct val="20000"/>
+        </a:spcBef>
+        <a:buFont typeface="Arial" pitchFamily="34" charset="0"/>
+        <a:buChar char="–"/>
+        <a:defRPr sz="{{typography.sizes.small|1400}}" kern="1200">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.text.muted|tx1}}"/>
+          </a:solidFill>
+          <a:latin typeface="{{typography.font.body.family|+mn-lt}}"/>
+        </a:defRPr>
+      </a:lvl4pPr>
+
+      <a:lvl5pPr marL="{{spacing.body.level5.margin.left|2057400}}" indent="{{spacing.body.level5.indent|-228600}}"
+                algn="{{layout.body.level5.alignment|l}}" defTabSz="{{layout.body.tab_size|914400}}"
+                rtl="{{layout.body.level5.rtl|0}}" eaLnBrk="{{typography.line_break.east_asian|1}}"
+                latinLnBrk="{{typography.line_break.latin|0}}" hangingPunct="{{typography.hanging_punctuation|1}}">
+        <a:spcBef>
+          <a:spcPct val="{{spacing.body.level5.before.percent|5000}}"/>
+        </a:spcBef>
+        <a:lnSpc>
+          <a:spcPct val="{{typography.line_spacing.body.level5.percent|80000}}"/>
+        </a:lnSpc>
+        <!-- Hidden Properties: Level 5 Ultra-Fine Bullet -->
+        <a:buFont typeface="{{typography.bullet.level5.font|Courier New}}" pitchFamily="{{typography.bullet.level5.pitch|49}}" charset="{{typography.bullet.level5.charset|0}}"/>
+        <a:buChar char="{{typography.bullet.level5.character|‣}}"/>
+        <a:buClr>
+          <a:schemeClr val="{{brand.colors.bullet.level5.scheme|accent5}}">
+            <a:lumMod val="{{brand.colors.bullet.level5.luminance.modulation|30000}}"/>
+          </a:schemeClr>
+        </a:buClr>
+        <a:buSzPct val="{{typography.bullet.level5.size.percent|60000}}"/>
+        <!-- Hidden Properties: Level 5 Precision Typography -->
+        <a:defRPr sz="{{typography.size.body.level5|1200}}" kern="{{typography.kerning.body.level5|600}}"
+                 spc="{{typography.character_spacing.body.level5|150}}" normalizeH="{{typography.height_normalization.body.level5|0}}"
+                 baseline="{{typography.baseline_shift.body.level5|0}}">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.body.level5.scheme|tx2}}">
+              <a:lumMod val="{{brand.colors.body.level5.luminance.modulation|50000}}"/>
+            </a:schemeClr>
+          </a:solidFill>
+          <a:latin typeface="{{typography.font.body.level5|Inter}}" pitchFamily="34" charset="0"/>
+          <a:ea typeface="{{typography.font.body.level5.east_asian|Noto Sans CJK SC}}" pitchFamily="18" charset="-122"/>
+        </a:defRPr>
+      </a:lvl5pPr>
+
+      <!-- Level 6-9 - Extended hierarchy for complex presentations -->
+      <a:lvl6pPr marL="{{spacing.body.level6.margin.left|2514600}}" indent="{{spacing.body.level6.indent|-228600}}"
+                algn="{{layout.body.level6.alignment|l}}" defTabSz="{{layout.body.tab_size|914400}}">
+        <a:buFont typeface="{{typography.bullet.level6.font|Webdings}}" pitchFamily="2" charset="2"/>
+        <a:buChar char="{{typography.bullet.level6.character|4}}"/>
+        <a:buSzPct val="{{typography.bullet.level6.size.percent|50000}}"/>
+        <a:defRPr sz="{{typography.size.body.level6|1000}}" kern="{{typography.kerning.body.level6|400}}">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.body.level6.scheme|tx2}}">
+              <a:lumMod val="{{brand.colors.body.level6.luminance.modulation|40000}}"/>
+            </a:schemeClr>
+          </a:solidFill>
+          <a:latin typeface="{{typography.font.body.level6|Inter}}" pitchFamily="34" charset="0"/>
+        </a:defRPr>
+      </a:lvl6pPr>
+
+      <a:lvl7pPr marL="{{spacing.body.level7.margin.left|2971800}}" indent="{{spacing.body.level7.indent|-228600}}"
+                algn="{{layout.body.level7.alignment|l}}" defTabSz="{{layout.body.tab_size|914400}}">
+        <a:buChar char="{{typography.bullet.level7.character|o}}"/>
+        <a:defRPr sz="{{typography.size.body.level7|900}}">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.body.level7.scheme|tx2}}">
+              <a:lumMod val="{{brand.colors.body.level7.luminance.modulation|35000}}"/>
+            </a:schemeClr>
+          </a:solidFill>
+          <a:latin typeface="{{typography.font.body.level7|Inter}}" pitchFamily="34" charset="0"/>
+        </a:defRPr>
+      </a:lvl7pPr>
+
+      <a:lvl8pPr marL="{{spacing.body.level8.margin.left|3429000}}" indent="{{spacing.body.level8.indent|-228600}}"
+                algn="{{layout.body.level8.alignment|l}}" defTabSz="{{layout.body.tab_size|914400}}">
+        <a:buChar char="{{typography.bullet.level8.character|▪}}"/>
+        <a:defRPr sz="{{typography.size.body.level8|800}}">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.body.level8.scheme|tx2}}">
+              <a:lumMod val="{{brand.colors.body.level8.luminance.modulation|30000}}"/>
+            </a:schemeClr>
+          </a:solidFill>
+          <a:latin typeface="{{typography.font.body.level8|Inter}}" pitchFamily="34" charset="0"/>
+        </a:defRPr>
+      </a:lvl8pPr>
+
+      <a:lvl9pPr marL="{{spacing.body.level9.margin.left|3886200}}" indent="{{spacing.body.level9.indent|-228600}}"
+                algn="{{layout.body.level9.alignment|l}}" defTabSz="{{layout.body.tab_size|914400}}">
+        <a:buChar char="{{typography.bullet.level9.character|•}}"/>
+        <a:defRPr sz="{{typography.size.body.level9|700}}">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.body.level9.scheme|tx2}}">
+              <a:lumMod val="{{brand.colors.body.level9.luminance.modulation|25000}}"/>
+            </a:schemeClr>
+          </a:solidFill>
+          <a:latin typeface="{{typography.font.body.level9|Inter}}" pitchFamily="34" charset="0"/>
+        </a:defRPr>
+      </a:lvl9pPr>
+    </p:bodyStyle>
+
+    <!-- Other text style for captions, annotations, and special content -->
+    <p:otherStyle>
+      <!-- Level 1 - Standard captions and annotations -->
+      <a:lvl1pPr marL="{{spacing.other.level1.margin.left|0}}" marR="{{spacing.other.level1.margin.right|0}}"
+                indent="{{spacing.other.level1.indent|0}}" algn="{{layout.other.level1.alignment|l}}"
+                defTabSz="{{layout.other.tab_size|914400}}" rtl="{{layout.other.level1.rtl|0}}"
+                eaLnBrk="{{typography.line_break.east_asian|1}}" latinLnBrk="{{typography.line_break.latin|0}}"
+                hangingPunct="{{typography.hanging_punctuation|1}}">
+        <!-- Hidden Properties: Caption Spacing -->
+        <a:spcBef>
+          <a:spcPct val="{{spacing.other.level1.before.percent|0}}"/>
+        </a:spcBef>
+        <a:spcAft>
+          <a:spcPct val="{{spacing.other.level1.after.percent|0}}"/>
+        </a:spcAft>
+        <a:lnSpc>
+          <a:spcPct val="{{typography.line_spacing.other.level1.percent|95000}}"/>
+        </a:lnSpc>
+        <!-- Hidden Properties: Advanced Caption Typography -->
+        <a:defRPr sz="{{typography.size.other.level1|1600}}" kern="{{typography.kerning.other.level1|1200}}"
+                 b="{{typography.bold.other.level1|0}}" i="{{typography.italic.other.level1|1}}"
+                 u="{{typography.underline.other.level1|none}}" strike="{{typography.strikethrough.other.level1|noStrike}}"
+                 cap="{{typography.capitalization.other.level1|none}}" spc="{{typography.character_spacing.other.level1|0}}"
+                 normalizeH="{{typography.height_normalization.other.level1|0}}" baseline="{{typography.baseline_shift.other.level1|0}}">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.other.level1.scheme|tx2}}">
+              <a:alpha val="{{brand.colors.other.level1.opacity|80000}}"/>
+              <a:lumMod val="{{brand.colors.other.level1.luminance.modulation|75000}}"/>
+            </a:schemeClr>
+          </a:solidFill>
+          <a:latin typeface="{{typography.font.other.level1|Inter}}" pitchFamily="{{typography.font.other.level1.pitch|34}}" charset="{{typography.font.other.level1.charset|0}}"/>
+          <a:ea typeface="{{typography.font.other.level1.east_asian|Noto Sans CJK SC}}" pitchFamily="18" charset="-122"/>
+          <a:cs typeface="{{typography.font.other.level1.complex_script|Noto Sans Arabic}}" pitchFamily="34" charset="178"/>
+        </a:defRPr>
+      </a:lvl1pPr>
+
+      <!-- Level 2 - Small captions and fine annotations -->
+      <a:lvl2pPr marL="{{spacing.other.level2.margin.left|0}}" algn="{{layout.other.level2.alignment|l}}"
+                defTabSz="{{layout.other.tab_size|914400}}" rtl="{{layout.other.level2.rtl|0}}">
+        <a:lnSpc>
+          <a:spcPct val="{{typography.line_spacing.other.level2.percent|90000}}"/>
+        </a:lnSpc>
+        <a:defRPr sz="{{typography.size.other.level2|1200}}" kern="{{typography.kerning.other.level2|800}}"
+                 i="{{typography.italic.other.level2|1}}" spc="{{typography.character_spacing.other.level2|25}}">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.other.level2.scheme|tx2}}">
+              <a:alpha val="{{brand.colors.other.level2.opacity|60000}}"/>
+              <a:lumMod val="{{brand.colors.other.level2.luminance.modulation|60000}}"/>
+            </a:schemeClr>
+          </a:solidFill>
+          <a:latin typeface="{{typography.font.other.level2|Inter}}" pitchFamily="34" charset="0"/>
+        </a:defRPr>
+      </a:lvl2pPr>
+
+      <!-- Level 3 - Micro annotations and footnotes -->
+      <a:lvl3pPr marL="{{spacing.other.level3.margin.left|0}}" algn="{{layout.other.level3.alignment|l}}"
+                defTabSz="{{layout.other.tab_size|914400}}">
+        <a:defRPr sz="{{typography.size.other.level3|1000}}" kern="{{typography.kerning.other.level3|600}}"
+                 spc="{{typography.character_spacing.other.level3|50}}">
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.other.level3.scheme|tx2}}">
+              <a:alpha val="{{brand.colors.other.level3.opacity|50000}}"/>
+              <a:lumMod val="{{brand.colors.other.level3.luminance.modulation|50000}}"/>
+            </a:schemeClr>
+          </a:solidFill>
+          <a:latin typeface="{{typography.font.other.level3|Inter}}" pitchFamily="34" charset="0"/>
+        </a:defRPr>
+      </a:lvl3pPr>
+    </p:otherStyle>
+  </p:txStyles>
+
+</p:sldMaster>

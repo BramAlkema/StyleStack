@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:sldLayout xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"
+            xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+            xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+            type="title" preserve="1">
+
+  <!-- Title Slide Layout with StyleStack Modern Design -->
+  <p:cSld name="Title Slide">
+    <!-- Background with brand gradient -->
+    <p:bg>
+      <p:bgPr>
+        <a:gradFill flip="none" rotWithShape="1">
+          <a:gsLst>
+            <a:gs pos="0">
+              <a:schemeClr val="{{brand.colors.background.gradient.start|bg1}}">
+                <a:tint val="{{brand.colors.background.gradient.start_tint|95000}}"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="100000">
+              <a:schemeClr val="{{brand.colors.background.gradient.end|accent1}}">
+                <a:alpha val="{{brand.colors.background.gradient.end_alpha|15000}}"/>
+              </a:schemeClr>
+            </a:gs>
+          </a:gsLst>
+          <a:lin ang="{{brand.gradients.title_slide.angle|2700000}}" scaled="0"/>
+        </a:gradFill>
+        <a:effectLst/>
+      </p:bgPr>
+    </p:bg>
+
+    <!-- Shape tree with title slide elements -->
+    <p:spTree>
+      <p:nvGrpSpPr>
+        <p:cNvPr id="1" name=""/>
+        <p:cNvGrpSpPr/>
+        <p:nvPr/>
+      </p:nvGrpSpPr>
+      <p:grpSpPr>
+        <a:xfrm>
+          <a:off x="0" y="0"/>
+          <a:ext cx="0" cy="0"/>
+          <a:chOff x="0" y="0"/>
+          <a:chExt cx="0" cy="0"/>
+        </a:xfrm>
+      </p:grpSpPr>
+
+      <!-- Main title placeholder -->
+      <p:sp>
+        <p:nvSpPr>
+          <p:cNvPr id="2" name="Title 1"/>
+          <p:cNvSpPr>
+            <a:spLocks noGrp="1"/>
+          </p:cNvSpPr>
+          <p:nvPr>
+            <p:ph type="ctrTitle"/>
+          </p:nvPr>
+        </p:nvSpPr>
+        <p:spPr>
+          <a:xfrm>
+            <a:off x="{{layout.title.center.x|686105}}" y="{{layout.title.center.y|1825625}}"/>
+            <a:ext cx="{{layout.title.center.width|10819790}}" cy="{{layout.title.center.height|1982280}}"/>
+          </a:xfrm>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr vert="horz" lIns="{{spacing.text.horizontal|91440}}" tIns="{{spacing.text.vertical|45720}}"
+                   rIns="{{spacing.text.horizontal|91440}}" bIns="{{spacing.text.vertical|45720}}" rtlCol="0" anchor="ctr"/>
+          <a:lstStyle/>
+          <a:p>
+            <a:pPr algn="ctr">
+              <a:defRPr sz="{{typography.sizes.presentation_title|6000}}" kern="1200" b="1">
+                <a:solidFill>
+                  <a:schemeClr val="{{brand.colors.text.presentation_title|tx1}}"/>
+                </a:solidFill>
+                <a:latin typeface="{{typography.font.title.family|+mj-lt}}"/>
+                <a:ea typeface="{{typography.font.title.family.ea|+mj-ea}}"/>
+                <a:cs typeface="{{typography.font.title.family.cs|+mj-cs}}"/>
+                <a:effectLst>
+                  <a:outerShdw blurRad="{{effects.title.shadow.blur|38100}}" dist="{{effects.title.shadow.distance|38100}}"
+                              dir="2700000" algn="ctr" rotWithShape="0">
+                    <a:srgbClr val="{{effects.title.shadow.color|000000}}">
+                      <a:alpha val="{{effects.title.shadow.opacity|25000}}"/>
+                    </a:srgbClr>
+                  </a:outerShdw>
+                </a:effectLst>
+              </a:defRPr>
+            </a:pPr>
+            <a:endParaRPr sz="{{typography.sizes.presentation_title|6000}}" kern="1200" b="1" lang="en-US">
+              <a:solidFill>
+                <a:schemeClr val="{{brand.colors.text.presentation_title|tx1}}"/>
+              </a:solidFill>
+              <a:latin typeface="{{typography.font.title.family|+mj-lt}}"/>
+            </a:endParaRPr>
+          </a:p>
+        </p:txBody>
+      </p:sp>
+
+      <!-- Subtitle placeholder -->
+      <p:sp>
+        <p:nvSpPr>
+          <p:cNvPr id="3" name="Subtitle 2"/>
+          <p:cNvSpPr>
+            <a:spLocks noGrp="1"/>
+          </p:cNvSpPr>
+          <p:nvPr>
+            <p:ph type="subTitle" idx="1"/>
+          </p:nvPr>
+        </p:nvSpPr>
+        <p:spPr>
+          <a:xfrm>
+            <a:off x="{{layout.subtitle.x|1371600}}" y="{{layout.subtitle.y|4114800}}"/>
+            <a:ext cx="{{layout.subtitle.width|9448800}}" cy="{{layout.subtitle.height|1235520}}"/>
+          </a:xfrm>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr vert="horz" lIns="{{spacing.text.horizontal|91440}}" tIns="{{spacing.text.vertical|45720}}"
+                   rIns="{{spacing.text.horizontal|91440}}" bIns="{{spacing.text.vertical|45720}}" rtlCol="0" anchor="ctr"/>
+          <a:lstStyle/>
+          <a:p>
+            <a:pPr algn="ctr">
+              <a:defRPr sz="{{typography.sizes.subtitle|2400}}" kern="1200">
+                <a:solidFill>
+                  <a:schemeClr val="{{brand.colors.text.subtitle|tx2}}"/>
+                </a:solidFill>
+                <a:latin typeface="{{typography.font.subtitle.family|+mn-lt}}"/>
+                <a:ea typeface="{{typography.font.subtitle.family.ea|+mn-ea}}"/>
+                <a:cs typeface="{{typography.font.subtitle.family.cs|+mn-cs}}"/>
+              </a:defRPr>
+            </a:pPr>
+            <a:endParaRPr sz="{{typography.sizes.subtitle|2400}}" kern="1200" lang="en-US">
+              <a:solidFill>
+                <a:schemeClr val="{{brand.colors.text.subtitle|tx2}}"/>
+              </a:solidFill>
+              <a:latin typeface="{{typography.font.subtitle.family|+mn-lt}}"/>
+            </a:endParaRPr>
+          </a:p>
+        </p:txBody>
+      </p:sp>
+
+      <!-- Large corporate logo -->
+      <p:pic>
+        <p:nvPicPr>
+          <p:cNvPr id="4" name="Corporate Logo" descr="{{company.logo.alt_text|Corporate Logo}}"/>
+          <p:cNvPicPr>
+            <a:picLocks noChangeAspect="1"/>
+          </p:cNvPicPr>
+          <p:nvPr>
+            <p:ph type="obj" sz="half" idx="2"/>
+          </p:nvPr>
+        </p:nvPicPr>
+        <p:blipFill>
+          <a:blip r:embed="rId2" cstate="print">
+            <a:extLst>
+              <a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">
+                <a14:useLocalDpi xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main" val="0"/>
+              </a:ext>
+            </a:extLst>
+          </a:blip>
+          <a:stretch>
+            <a:fillRect/>
+          </a:stretch>
+        </p:blipFill>
+        <p:spPr>
+          <a:xfrm>
+            <a:off x="{{layout.logo.title_slide.x|9754560}}" y="{{layout.logo.title_slide.y|457200}}"/>
+            <a:ext cx="{{layout.logo.title_slide.width|1828800}}" cy="{{layout.logo.title_slide.height|1219200}}"/>
+          </a:xfrm>
+          <a:prstGeom prst="rect">
+            <a:avLst/>
+          </a:prstGeom>
+          <a:effectLst>
+            <a:outerShdw blurRad="{{effects.logo.shadow.blur|63500}}" dist="{{effects.logo.shadow.distance|25400}}"
+                        dir="2700000" algn="ctr" rotWithShape="0">
+              <a:srgbClr val="{{effects.logo.shadow.color|000000}}">
+                <a:alpha val="{{effects.logo.shadow.opacity|15000}}"/>
+              </a:srgbClr>
+            </a:outerShdw>
+          </a:effectLst>
+        </p:spPr>
+      </p:pic>
+
+      <!-- Brand accent line -->
+      <p:sp>
+        <p:nvSpPr>
+          <p:cNvPr id="5" name="Brand Accent Line"/>
+          <p:cNvSpPr>
+            <a:spLocks noGrp="1"/>
+          </p:cNvSpPr>
+          <p:nvPr/>
+        </p:nvSpPr>
+        <p:spPr>
+          <a:xfrm>
+            <a:off x="{{layout.accent_line.x|1371600}}" y="{{layout.accent_line.y|5715000}}"/>
+            <a:ext cx="{{layout.accent_line.width|9448800}}" cy="{{layout.accent_line.height|127000}}"/>
+          </a:xfrm>
+          <a:prstGeom prst="rect">
+            <a:avLst/>
+          </a:prstGeom>
+          <a:solidFill>
+            <a:schemeClr val="{{brand.colors.accent_line|accent1}}"/>
+          </a:solidFill>
+          <a:ln w="0">
+            <a:noFill/>
+          </a:ln>
+        </p:spPr>
+      </p:sp>
+    </p:spTree>
+
+    <!-- Common slide data -->
+    <p:extLst>
+      <p:ext uri="{BB962C8B-B14F-4D97-AF65-F5344CB8AC3E}">
+        <p14:creationId xmlns:p14="http://schemas.microsoft.com/office/powerpoint/2010/main" val="2048738516"/>
+      </p:ext>
+    </p:extLst>
+  </p:cSld>
+
+</p:sldLayout>

@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-styles xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+                       xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+                       xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+                       xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+                       xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+                       xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+                       xmlns:xlink="http://www.w3.org/1999/xlink"
+                       xmlns:dc="http://purl.org/dc/elements/1.1/"
+                       xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+                       xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+                       xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+                       xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0"
+                       xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0"
+                       xmlns:math="http://www.w3.org/1998/Math/MathML"
+                       xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0"
+                       xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0"
+                       xmlns:ooo="http://openoffice.org/2004/office"
+                       xmlns:ooow="http://openoffice.org/2004/writer"
+                       xmlns:oooc="http://openoffice.org/2004/calc"
+                       xmlns:dom="http://www.w3.org/2001/xml-events"
+                       xmlns:rpt="http://openoffice.org/2005/report"
+                       xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2"
+                       xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                       xmlns:grddl="http://www.w3.org/2003/g/data-view#"
+                       xmlns:officeooo="http://openoffice.org/2009/office"
+                       xmlns:tableooo="http://openoffice.org/2009/table"
+                       xmlns:drawooo="http://openoffice.org/2010/draw"
+                       xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0"
+                       xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0"
+                       xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0"
+                       xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0"
+                       xmlns:css3t="http://www.w3.org/TR/css3-text/"
+                       office:version="1.3">
+
+  <!-- ============================================ -->
+  <!-- COMPREHENSIVE ODF BUILT-IN STYLE OVERRIDES -->
+  <!-- Complete StyleStack takeover of LibreOffice Writer styles -->
+  <!-- ============================================ -->
+
+  <!-- StyleStack Modern Document Styles with Design Token Integration -->
+
+  <!-- Font face declarations -->
+  <office:font-face-decls>
+    <style:font-face style:name="Inter" svg:font-family="{{typography.font.family|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"/>
+    <style:font-face style:name="Liberation Serif" svg:font-family="'Liberation Serif'" style:font-family-generic="roman" style:font-pitch="variable"/>
+    <style:font-face style:name="Liberation Sans" svg:font-family="'Liberation Sans'" style:font-family-generic="swiss" style:font-pitch="variable"/>
+  </office:font-face-decls>
+
+  <!-- Document styles -->
+  <office:styles>
+    <!-- Default style -->
+    <style:default-style style:family="paragraph">
+      <style:paragraph-properties fo:language="en" fo:country="US" style:language-asian="zh" style:country-asian="CN"
+                                 style:language-complex="hi" style:country-complex="IN" fo:hyphenate="false"
+                                 fo:hyphenation-remain-char-count="2" fo:hyphenation-push-char-count="2"
+                                 loext:hyphenation-no-caps="false" loext:hyphenation-no-last-word="false"
+                                 loext:hyphenation-word-char-count="5" loext:hyphenation-zone="no-limit"/>
+      <style:text-properties style:use-window-font-color="true" style:font-name="Inter" fo:font-size="{{typography.sizes.default|11pt}}"
+                            fo:language="en" fo:country="US" style:font-name-asian="Source Han Serif SC"
+                            style:font-size-asian="{{typography.sizes.default|11pt}}" style:language-asian="zh" style:country-asian="CN"
+                            style:font-name-complex="Liberation Serif" style:font-size-complex="{{typography.sizes.default|11pt}}"
+                            style:language-complex="hi" style:country-complex="IN" fo:hyphenate="false"
+                            fo:color="{{brand.colors.text.default|#374151}}"/>
+    </style:default-style>
+
+    <style:default-style style:family="graphic">
+      <style:graphic-properties svg:stroke-color="{{brand.colors.graphics.stroke|#3f3f3f}}" draw:fill-color="{{brand.colors.graphics.fill|#729fcf}}"
+                               fo:wrap-option="no-wrap" draw:shadow-offset-x="0.3cm" draw:shadow-offset-y="0.3cm"
+                               draw:start-line-spacing-horizontal="0.283cm" draw:start-line-spacing-vertical="0.283cm"
+                               draw:end-line-spacing-horizontal="0.283cm" draw:end-line-spacing-vertical="0.283cm"
+                               style:flow-with-text="false"/>
+      <style:paragraph-properties style:text-autospace="ideograph-alpha" style:line-break="strict"
+                                 style:writing-mode="lr-tb" style:font-independent-line-spacing="false">
+        <style:tab-stops/>
+      </style:paragraph-properties>
+      <style:text-properties style:use-window-font-color="true" style:font-name="Inter" fo:font-size="{{typography.sizes.graphics|10pt}}"
+                            fo:language="en" fo:country="US" style:font-name-asian="Source Han Serif SC"
+                            style:font-size-asian="{{typography.sizes.graphics|10pt}}" style:language-asian="zh" style:country-asian="CN"
+                            style:font-name-complex="Liberation Serif" style:font-size-complex="{{typography.sizes.graphics|10pt}}"
+                            style:language-complex="hi" style:country-complex="IN" fo:color="{{brand.colors.text.graphics|#000000}}"/>
+    </style:default-style>
+
+    <style:default-style style:family="table">
+      <style:table-properties table:border-model="collapsing"/>
+    </style:default-style>
+
+    <style:default-style style:family="table-row">
+      <style:table-row-properties fo:keep-together="auto"/>
+    </style:default-style>
+
+    <!-- Standard paragraph style -->
+    <style:style style:name="Standard" style:family="paragraph" style:class="text"/>
+
+    <!-- Heading styles with StyleStack hierarchy -->
+    <style:style style:name="Heading" style:family="paragraph" style:parent-style-name="Standard" style:next-style-name="Text_20_body" style:class="text">
+      <style:paragraph-properties fo:margin-top="{{spacing.heading.top|0.423cm}}" fo:margin-bottom="{{spacing.heading.bottom|0.212cm}}"
+                                 loext:contextual-spacing="false" fo:keep-with-next="always"/>
+      <style:text-properties style:font-name="Inter" fo:font-family="{{typography.font.heading.family|Inter}}" style:font-family-generic="swiss"
+                            style:font-pitch="variable" fo:font-size="{{typography.sizes.heading|14pt}}" fo:font-weight="bold"
+                            style:font-name-asian="Source Han Serif SC" style:font-size-asian="{{typography.sizes.heading|14pt}}"
+                            style:font-weight-asian="bold" style:font-name-complex="Liberation Serif"
+                            style:font-size-complex="{{typography.sizes.heading|14pt}}" style:font-weight-complex="bold"
+                            fo:color="{{brand.colors.text.heading|#111827}}"/>
+    </style:style>
+
+    <!-- Heading 1 -->
+    <style:style style:name="Heading_20_1" style:display-name="Heading 1" style:family="paragraph" style:parent-style-name="Heading"
+                style:next-style-name="Text_20_body" style:class="text" style:default-outline-level="1">
+      <style:text-properties fo:font-size="{{typography.sizes.h1|18pt}}" style:font-size-asian="{{typography.sizes.h1|18pt}}"
+                            style:font-size-complex="{{typography.sizes.h1|18pt}}" fo:color="{{brand.colors.text.h1|#0F172A}}"/>
+    </style:style>
+
+    <!-- Heading 2 -->
+    <style:style style:name="Heading_20_2" style:display-name="Heading 2" style:family="paragraph" style:parent-style-name="Heading"
+                style:next-style-name="Text_20_body" style:class="text" style:default-outline-level="2">
+      <style:text-properties fo:font-size="{{typography.sizes.h2|16pt}}" style:font-size-asian="{{typography.sizes.h2|16pt}}"
+                            style:font-size-complex="{{typography.sizes.h2|16pt}}" fo:color="{{brand.colors.text.h2|#1E293B}}"/>
+    </style:style>
+
+    <!-- Title style -->
+    <style:style style:name="Title" style:family="paragraph" style:parent-style-name="Heading" style:next-style-name="Subtitle" style:class="chapter">
+      <style:paragraph-properties fo:text-align="center" style:justify-single-word="false"/>
+      <style:text-properties fo:font-size="{{typography.sizes.title|20pt}}" style:font-size-asian="{{typography.sizes.title|20pt}}"
+                            style:font-size-complex="{{typography.sizes.title|20pt}}" fo:font-weight="bold"
+                            style:font-weight-asian="bold" style:font-weight-complex="bold"
+                            fo:color="{{brand.colors.text.title|#0F172A}}"/>
+    </style:style>
+
+    <!-- Subtitle style -->
+    <style:style style:name="Subtitle" style:family="paragraph" style:parent-style-name="Heading" style:next-style-name="Text_20_body" style:class="chapter">
+      <style:paragraph-properties fo:text-align="center" style:justify-single-word="false"
+                                 fo:margin-top="{{spacing.subtitle.top|0.2cm}}" fo:margin-bottom="{{spacing.subtitle.bottom|0.5cm}}"/>
+      <style:text-properties fo:font-size="{{typography.sizes.subtitle|14pt}}" fo:font-style="italic"
+                            style:font-size-asian="{{typography.sizes.subtitle|14pt}}" style:font-style-asian="italic"
+                            style:font-size-complex="{{typography.sizes.subtitle|14pt}}" style:font-style-complex="italic"
+                            fo:color="{{brand.colors.text.subtitle|#64748B}}"/>
+    </style:style>
+
+    <!-- Body text style -->
+    <style:style style:name="Text_20_body" style:display-name="Text body" style:family="paragraph" style:parent-style-name="Standard" style:class="text">
+      <style:paragraph-properties fo:margin-top="{{spacing.body.top|0cm}}" fo:margin-bottom="{{spacing.body.bottom|0.247cm}}"
+                                 loext:contextual-spacing="false"/>
+      <style:text-properties fo:color="{{brand.colors.text.body|#374151}}"/>
+    </style:style>
+
+    <!-- List style -->
+    <style:style style:name="List" style:family="paragraph" style:parent-style-name="Text_20_body" style:class="list">
+      <style:text-properties style:font-size-complex="{{typography.sizes.list|11pt}}" fo:color="{{brand.colors.text.list|#4B5563}}"/>
+    </style:style>
+
+    <!-- Table styles with brand colors -->
+    <style:style style:name="Table_20_Contents" style:display-name="Table Contents" style:family="paragraph" style:parent-style-name="Standard" style:class="extra">
+      <style:paragraph-properties text:number-lines="false" text:line-number="0"/>
+      <style:text-properties fo:color="{{brand.colors.table.content|#374151}}" fo:font-size="{{typography.sizes.table_content|10pt}}"
+                            style:font-size-asian="{{typography.sizes.table_content|10pt}}" style:font-size-complex="{{typography.sizes.table_content|10pt}}"/>
+    </style:style>
+
+    <style:style style:name="Table_20_Heading" style:display-name="Table Heading" style:family="paragraph" style:parent-style-name="Table_20_Contents" style:class="extra">
+      <style:paragraph-properties fo:text-align="center" style:justify-single-word="false" text:number-lines="false" text:line-number="0"/>
+      <style:text-properties fo:font-weight="bold" style:font-weight-asian="bold" style:font-weight-complex="bold"
+                            fo:color="{{brand.colors.table.heading|#111827}}"/>
+    </style:style>
+
+    <!-- Footer style -->
+    <style:style style:name="Footer" style:family="paragraph" style:parent-style-name="Standard" style:class="extra">
+      <style:paragraph-properties fo:text-align="center" style:justify-single-word="false"
+                                 fo:margin-top="{{spacing.footer.top|1cm}}" text:number-lines="false" text:line-number="0"/>
+      <style:text-properties fo:font-size="{{typography.sizes.footer|9pt}}" fo:font-style="italic"
+                            style:font-size-asian="{{typography.sizes.footer|9pt}}" style:font-style-asian="italic"
+                            style:font-size-complex="{{typography.sizes.footer|9pt}}" style:font-style-complex="italic"
+                            fo:color="{{brand.colors.text.footer|#9CA3AF}}"/>
+    </style:style>
+
+    <!-- Frame style for brand elements -->
+    <style:style style:name="Frame" style:family="graphic">
+      <style:graphic-properties text:anchor-type="paragraph" svg:x="0cm" svg:y="0cm" fo:margin-left="{{spacing.frame.left|0.2cm}}"
+                               fo:margin-right="{{spacing.frame.right|0.2cm}}" fo:margin-top="{{spacing.frame.top|0.2cm}}"
+                               fo:margin-bottom="{{spacing.frame.bottom|0.2cm}}" style:wrap="dynamic" style:number-wrapped-paragraphs="no-limit"
+                               style:wrap-contour="false" style:vertical-pos="top" style:vertical-rel="paragraph"
+                               style:horizontal-pos="center" style:horizontal-rel="paragraph"/>
+    </style:style>
+
+    <!-- Graphics style -->
+    <style:style style:name="Graphics" style:family="graphic">
+      <style:graphic-properties text:anchor-type="paragraph" svg:x="0cm" svg:y="0cm" style:wrap="dynamic"
+                               style:number-wrapped-paragraphs="no-limit" style:wrap-contour="false"
+                               style:vertical-pos="top" style:vertical-rel="paragraph" style:horizontal-pos="center"
+                               style:horizontal-rel="paragraph" fo:border="{{borders.graphics|none}}"/>
+    </style:style>
+
+    <!-- ============================================ -->
+    <!-- COMPREHENSIVE BUILT-IN STYLE OVERRIDES -->
+    <!-- ============================================ -->
+
+    <!-- Advanced Heading Styles -->
+    <style:style style:name="Heading_20_3" style:display-name="Heading 3" style:family="paragraph" style:parent-style-name="Heading"
+                style:next-style-name="Text_20_body" style:class="text" style:default-outline-level="3">
+      <style:paragraph-properties fo:margin-top="{{spacing.heading3.top|0.353cm}}" fo:margin-bottom="{{spacing.heading3.bottom|0.212cm}}"
+                                 fo:keep-with-next="{{layout.heading3.keep_with_next|always}}" fo:break-before="{{layout.heading3.break_before|auto}}"/>
+      <style:text-properties fo:font-size="{{typography.size.h3|14pt}}" style:font-size-asian="{{typography.size.h3|14pt}}"
+                            style:font-size-complex="{{typography.size.h3|14pt}}" fo:color="{{brand.colors.text.h3|#334155}}"/>
+    </style:style>
+
+    <style:style style:name="Heading_20_4" style:display-name="Heading 4" style:family="paragraph" style:parent-style-name="Heading"
+                style:next-style-name="Text_20_body" style:class="text" style:default-outline-level="4">
+      <style:text-properties fo:font-size="{{typography.size.h4|12pt}}" style:font-size-asian="{{typography.size.h4|12pt}}"
+                            style:font-size-complex="{{typography.size.h4|12pt}}" fo:color="{{brand.colors.text.h4|#475569}}"/>
+    </style:style>
+
+    <style:style style:name="Heading_20_5" style:display-name="Heading 5" style:family="paragraph" style:parent-style-name="Heading"
+                style:next-style-name="Text_20_body" style:class="text" style:default-outline-level="5">
+      <style:text-properties fo:font-size="{{typography.size.h5|11pt}}" style:font-size-asian="{{typography.size.h5|11pt}}"
+                            style:font-size-complex="{{typography.size.h5|11pt}}" fo:color="{{brand.colors.text.h5|#64748B}}"/>
+    </style:style>
+
+    <style:style style:name="Heading_20_6" style:display-name="Heading 6" style:family="paragraph" style:parent-style-name="Heading"
+                style:next-style-name="Text_20_body" style:class="text" style:default-outline-level="6">
+      <style:text-properties fo:font-size="{{typography.size.h6|10pt}}" style:font-size-asian="{{typography.size.h6|10pt}}"
+                            style:font-size-complex="{{typography.size.h6|10pt}}" fo:color="{{brand.colors.text.h6|#94A3B8}}"/>
+    </style:style>
+
+    <!-- Advanced Body Text Styles -->
+    <style:style style:name="Text_20_body_20_indent" style:display-name="Text body indent" style:family="paragraph"
+                style:parent-style-name="Text_20_body" style:class="text">
+      <style:paragraph-properties fo:margin-left="{{spacing.body_indent.left|0.635cm}}"
+                                 fo:text-indent="{{spacing.body_indent.first_line|0cm}}" fo:margin-top="{{spacing.body_indent.top|0cm}}"
+                                 fo:margin-bottom="{{spacing.body_indent.bottom|0.247cm}}"/>
+    </style:style>
+
+    <style:style style:name="Salutation" style:family="paragraph" style:parent-style-name="Standard" style:class="text">
+      <style:paragraph-properties fo:margin-top="{{spacing.salutation.top|0cm}}" fo:margin-bottom="{{spacing.salutation.bottom|0.423cm}}"
+                                 fo:text-align="{{layout.salutation.align|start}}"/>
+      <style:text-properties fo:color="{{brand.colors.text.salutation|#374151}}"/>
+    </style:style>
+
+    <style:style style:name="Signature" style:family="paragraph" style:parent-style-name="Standard" style:class="text">
+      <style:paragraph-properties fo:margin-top="{{spacing.signature.top|0.423cm}}" fo:text-align="{{layout.signature.align|start}}"/>
+      <style:text-properties fo:color="{{brand.colors.text.signature|#6B7280}}"/>
+    </style:style>
+
+    <!-- Quote and Citation Styles -->
+    <style:style style:name="Quotations" style:family="paragraph" style:parent-style-name="Standard" style:class="text">
+      <style:paragraph-properties fo:margin-left="{{spacing.quote.left|1cm}}" fo:margin-right="{{spacing.quote.right|1cm}}"
+                                 fo:margin-top="{{spacing.quote.top|0cm}}" fo:margin-bottom="{{spacing.quote.bottom|0.5cm}}"
+                                 fo:text-align="{{layout.quote.align|justify}}" fo:background-color="{{brand.colors.quote.bg|#F8FAFC}}"
+                                 fo:padding="{{spacing.quote.padding|0.2cm}}" fo:border="{{borders.quote|0.05pt solid #E2E8F0}}"/>
+      <style:text-properties fo:font-style="{{typography.style.quote|italic}}" fo:color="{{brand.colors.text.quote|#6B7280}}"
+                            fo:font-size="{{typography.size.quote|10pt}}" style:font-size-asian="{{typography.size.quote|10pt}}"
+                            style:font-size-complex="{{typography.size.quote|10pt}}"/>
+    </style:style>
+
+    <style:style style:name="Source_20_Text" style:display-name="Source Text" style:family="paragraph"
+                style:parent-style-name="Standard" style:class="text">
+      <style:paragraph-properties fo:margin-top="{{spacing.source.top|0.212cm}}" fo:text-align="{{layout.source.align|right}}"
+                                 fo:margin-bottom="{{spacing.source.bottom|0.212cm}}"/>
+      <style:text-properties fo:font-size="{{typography.size.source|9pt}}" fo:font-style="{{typography.style.source|italic}}"
+                            style:font-size-asian="{{typography.size.source|9pt}}" style:font-style-asian="{{typography.style.source|italic}}"
+                            style:font-size-complex="{{typography.size.source|9pt}}" style:font-style-complex="{{typography.style.source|italic}}"
+                            fo:color="{{brand.colors.text.source|#9CA3AF}}"/>
+    </style:style>
+
+    <!-- List Styles -->
+    <style:style style:name="List_20_Indent" style:display-name="List Indent" style:family="paragraph"
+                style:parent-style-name="List" style:class="list">
+      <style:paragraph-properties fo:margin-left="{{spacing.list_indent.left|1.27cm}}"/>
+    </style:style>
+
+    <style:style style:name="List_20_Contents" style:display-name="List Contents" style:family="paragraph"
+                style:parent-style-name="Standard" style:class="list">
+      <style:paragraph-properties fo:margin-left="{{spacing.list_contents.left|1cm}}" fo:margin-bottom="{{spacing.list_contents.bottom|0cm}}"/>
+      <style:text-properties fo:color="{{brand.colors.text.list_contents|#4B5563}}"/>
+    </style:style>
+
+    <style:style style:name="List_20_Heading" style:display-name="List Heading" style:family="paragraph"
+                style:parent-style-name="List_20_Contents" style:class="list">
+      <style:text-properties fo:font-weight="{{typography.weight.list_heading|bold}}" fo:color="{{brand.colors.text.list_heading|#1F2937}}"/>
+    </style:style>
+
+    <!-- Table of Contents Styles -->
+    <style:style style:name="Contents_20_Heading" style:display-name="Contents Heading" style:family="paragraph"
+                style:parent-style-name="Heading" style:class="index">
+      <style:paragraph-properties fo:text-align="{{layout.contents_heading.align|center}}" style:justify-single-word="false"
+                                 text:number-lines="{{layout.contents_heading.number_lines|false}}" text:line-number="0"/>
+      <style:text-properties fo:font-size="{{typography.size.contents_heading|16pt}}" fo:font-weight="{{typography.weight.contents_heading|bold}}"
+                            style:font-size-asian="{{typography.size.contents_heading|16pt}}" style:font-weight-asian="{{typography.weight.contents_heading|bold}}"
+                            style:font-size-complex="{{typography.size.contents_heading|16pt}}" style:font-weight-complex="{{typography.weight.contents_heading|bold}}"
+                            fo:color="{{brand.colors.text.contents_heading|#111827}}"/>
+    </style:style>
+
+    <style:style style:name="Contents_20_1" style:display-name="Contents 1" style:family="paragraph"
+                style:parent-style-name="Standard" style:class="index">
+      <style:paragraph-properties fo:margin-left="{{spacing.contents_1.left|0cm}}" fo:margin-bottom="{{spacing.contents_1.bottom|0.212cm}}"
+                                 text:number-lines="{{layout.contents_1.number_lines|false}}" text:line-number="0">
+        <style:tab-stops>
+          <style:tab-stop style:position="{{tabs.contents_1.position|17cm}}" style:type="{{tabs.contents_1.type|right}}"
+                         style:leader-style="{{tabs.contents_1.leader|dotted}}" style:leader-color="{{brand.colors.tab.leader|#9CA3AF}}"/>
+        </style:tab-stops>
+      </style:paragraph-properties>
+      <style:text-properties fo:color="{{brand.colors.text.contents_1|#374151}}"/>
+    </style:style>
+
+    <style:style style:name="Contents_20_2" style:display-name="Contents 2" style:family="paragraph"
+                style:parent-style-name="Contents_20_1" style:class="index">
+      <style:paragraph-properties fo:margin-left="{{spacing.contents_2.left|0.635cm}}"/>
+      <style:text-properties fo:color="{{brand.colors.text.contents_2|#6B7280}}"/>
+    </style:style>
+
+    <style:style style:name="Contents_20_3" style:display-name="Contents 3" style:family="paragraph"
+                style:parent-style-name="Contents_20_1" style:class="index">
+      <style:paragraph-properties fo:margin-left="{{spacing.contents_3.left|1.27cm}}"/>
+      <style:text-properties fo:color="{{brand.colors.text.contents_3|#9CA3AF}}"/>
+    </style:style>
+
+    <!-- Index Styles -->
+    <style:style style:name="Index_20_Heading" style:display-name="Index Heading" style:family="paragraph"
+                style:parent-style-name="Heading" style:class="index">
+      <style:paragraph-properties fo:text-align="{{layout.index_heading.align|center}}" style:justify-single-word="false"
+                                 fo:margin-bottom="{{spacing.index_heading.bottom|0.212cm}}"/>
+      <style:text-properties fo:color="{{brand.colors.text.index_heading|#111827}}"/>
+    </style:style>
+
+    <style:style style:name="Index_20_1" style:display-name="Index 1" style:family="paragraph"
+                style:parent-style-name="Standard" style:class="index">
+      <style:paragraph-properties fo:margin-left="{{spacing.index_1.left|0cm}}" fo:margin-bottom="{{spacing.index_1.bottom|0cm}}"/>
+      <style:text-properties fo:color="{{brand.colors.text.index_1|#374151}}"/>
+    </style:style>
+
+    <style:style style:name="Index_20_2" style:display-name="Index 2" style:family="paragraph"
+                style:parent-style-name="Index_20_1" style:class="index">
+      <style:paragraph-properties fo:margin-left="{{spacing.index_2.left|0.635cm}}"/>
+      <style:text-properties fo:color="{{brand.colors.text.index_2|#6B7280}}"/>
+    </style:style>
+
+    <style:style style:name="Index_20_3" style:display-name="Index 3" style:family="paragraph"
+                style:parent-style-name="Index_20_1" style:class="index">
+      <style:paragraph-properties fo:margin-left="{{spacing.index_3.left|1.27cm}}"/>
+      <style:text-properties fo:color="{{brand.colors.text.index_3|#9CA3AF}}"/>
+    </style:style>
+
+    <!-- Caption Styles -->
+    <style:style style:name="Caption" style:family="paragraph" style:parent-style-name="Standard" style:class="extra">
+      <style:paragraph-properties fo:margin-top="{{spacing.caption.top|0.212cm}}" fo:margin-bottom="{{spacing.caption.bottom|0.212cm}}"
+                                 fo:text-align="{{layout.caption.align|center}}" style:justify-single-word="false"/>
+      <style:text-properties fo:font-size="{{typography.size.caption|9pt}}" fo:font-style="{{typography.style.caption|italic}}"
+                            style:font-size-asian="{{typography.size.caption|9pt}}" style:font-style-asian="{{typography.style.caption|italic}}"
+                            style:font-size-complex="{{typography.size.caption|9pt}}" style:font-style-complex="{{typography.style.caption|italic}}"
+                            fo:color="{{brand.colors.text.caption|#6B7280}}"/>
+    </style:style>
+
+    <style:style style:name="Illustration" style:family="paragraph" style:parent-style-name="Caption" style:class="extra">
+      <style:paragraph-properties fo:text-align="{{layout.illustration.align|center}}"/>
+    </style:style>
+
+    <style:style style:name="Table" style:family="paragraph" style:parent-style-name="Caption" style:class="extra">
+      <style:paragraph-properties fo:text-align="{{layout.table_caption.align|center}}"/>
+    </style:style>
+
+    <style:style style:name="Text" style:family="paragraph" style:parent-style-name="Caption" style:class="extra">
+      <style:paragraph-properties fo:text-align="{{layout.text_caption.align|center}}"/>
+    </style:style>
+
+    <style:style style:name="Drawing" style:family="paragraph" style:parent-style-name="Caption" style:class="extra">
+      <style:paragraph-properties fo:text-align="{{layout.drawing_caption.align|center}}"/>
+    </style:style>
+
+    <!-- Enhanced Header Styles -->
+    <style:style style:name="Header_20_left" style:display-name="Header left" style:family="paragraph"
+                style:parent-style-name="Header" style:class="extra">
+      <style:paragraph-properties fo:text-align="{{layout.header_left.align|left}}"/>
+    </style:style>
+
+    <style:style style:name="Header_20_right" style:display-name="Header right" style:family="paragraph"
+                style:parent-style-name="Header" style:class="extra">
+      <style:paragraph-properties fo:text-align="{{layout.header_right.align|right}}"/>
+    </style:style>
+
+    <!-- Enhanced Footer Styles -->
+    <style:style style:name="Footer_20_left" style:display-name="Footer left" style:family="paragraph"
+                style:parent-style-name="Footer" style:class="extra">
+      <style:paragraph-properties fo:text-align="{{layout.footer_left.align|left}}"/>
+    </style:style>
+
+    <style:style style:name="Footer_20_right" style:display-name="Footer right" style:family="paragraph"
+                style:parent-style-name="Footer" style:class="extra">
+      <style:paragraph-properties fo:text-align="{{layout.footer_right.align|right}}"/>
+    </style:style>
+
+    <!-- CHARACTER STYLES COMPREHENSIVE OVERRIDE -->
+    <style:style style:name="Emphasis" style:family="character">
+      <style:text-properties fo:font-style="{{typography.style.emphasis|italic}}" fo:color="{{brand.colors.text.emphasis|#6B7280}}"/>
+    </style:style>
+
+    <style:style style:name="Strong_20_Emphasis" style:display-name="Strong Emphasis" style:family="character">
+      <style:text-properties fo:font-weight="{{typography.weight.strong_emphasis|bold}}" fo:font-style="{{typography.style.strong_emphasis|italic}}"
+                            fo:color="{{brand.colors.text.strong_emphasis|#1F2937}}"/>
+    </style:style>
+
+    <style:style style:name="Citation" style:family="character">
+      <style:text-properties fo:font-style="{{typography.style.citation|italic}}" fo:color="{{brand.colors.text.citation|#8B5CF6}}"/>
+    </style:style>
+
+    <style:style style:name="Book_20_Title" style:display-name="Book Title" style:family="character">
+      <style:text-properties fo:font-style="{{typography.style.book_title|italic}}" fo:color="{{brand.colors.text.book_title|#7C3AED}}"/>
+    </style:style>
+
+    <style:style style:name="Source_20_Text_20_Char" style:display-name="Source Text Char" style:family="character">
+      <style:text-properties style:font-name="{{typography.font.source|JetBrains Mono}}" fo:font-size="{{typography.size.source|9pt}}"
+                            style:font-family-generic="modern" style:font-pitch="fixed" fo:color="{{brand.colors.text.source|#059669}}"/>
+    </style:style>
+
+    <style:style style:name="Teletype" style:family="character">
+      <style:text-properties style:font-name="{{typography.font.teletype|JetBrains Mono}}" style:font-family-generic="modern"
+                            style:font-pitch="fixed" fo:color="{{brand.colors.text.teletype|#DC2626}}"/>
+    </style:style>
+
+    <style:style style:name="Internet_20_link" style:display-name="Internet link" style:family="character">
+      <style:text-properties fo:color="{{brand.colors.link.internet|#2563EB}}" style:text-underline-style="{{typography.underline.internet|solid}}"
+                            style:text-underline-width="{{typography.underline.width|auto}}" style:text-underline-color="{{brand.colors.link.internet|#2563EB}}"/>
+    </style:style>
+
+    <style:style style:name="Visited_20_Internet_20_Link" style:display-name="Visited Internet Link" style:family="character">
+      <style:text-properties fo:color="{{brand.colors.link.visited|#7C3AED}}" style:text-underline-style="{{typography.underline.visited|solid}}"
+                            style:text-underline-width="{{typography.underline.width|auto}}" style:text-underline-color="{{brand.colors.link.visited|#7C3AED}}"/>
+    </style:style>
+  </office:styles>
+
+  <!-- Automatic styles -->
+  <office:automatic-styles>
+    <!-- Page layout -->
+    <style:page-layout style:name="Mpm1">
+      <style:page-layout-properties fo:page-width="{{layout.page.width|21cm}}" fo:page-height="{{layout.page.height|29.7cm}}"
+                                   style:num-format="1" style:print-orientation="portrait"
+                                   fo:margin-top="{{spacing.page.margin.top|2.5cm}}" fo:margin-bottom="{{spacing.page.margin.bottom|2cm}}"
+                                   fo:margin-left="{{spacing.page.margin.left|2cm}}" fo:margin-right="{{spacing.page.margin.right|2cm}}"
+                                   style:writing-mode="lr-tb" style:layout-grid-color="{{brand.colors.grid|#c0c0c0}}"
+                                   style:layout-grid-lines="20" style:layout-grid-base-height="{{spacing.grid.base_height|0.706cm}}"
+                                   style:layout-grid-ruby-height="{{spacing.grid.ruby_height|0.353cm}}" style:layout-grid-mode="none"
+                                   style:layout-grid-ruby-below="false" style:layout-grid-print="false"
+                                   style:layout-grid-display="false" style:footnote-max-height="0cm">
+        <style:footnote-sep style:width="0.018cm" style:distance-before-sep="0.101cm" style:distance-after-sep="0.101cm"
+                           style:line-style="solid" style:adjustment="left" style:rel-width="25%"
+                           style:color="{{brand.colors.separator|#000000}}"/>
+      </style:page-layout-properties>
+
+      <!-- Header properties -->
+      <style:header-style>
+        <style:header-footer-properties fo:min-height="{{layout.header.min_height|0.75cm}}" fo:margin-left="0cm" fo:margin-right="0cm"
+                                       fo:margin-bottom="{{spacing.header.margin_bottom|0.25cm}}" fo:border-bottom="{{borders.header|0.05pt solid #E5E7EB}}"
+                                       fo:padding="{{spacing.header.padding|0.15cm}}" fo:background-color="{{brand.colors.header.bg|transparent}}"
+                                       style:dynamic-spacing="false"/>
+      </style:header-style>
+
+      <!-- Footer properties -->
+      <style:footer-style>
+        <style:header-footer-properties fo:min-height="{{layout.footer.min_height|0.75cm}}" fo:margin-left="0cm" fo:margin-right="0cm"
+                                       fo:margin-top="{{spacing.footer.margin_top|0.25cm}}" fo:border-top="{{borders.footer|0.05pt solid #E5E7EB}}"
+                                       fo:padding="{{spacing.footer.padding|0.15cm}}" fo:background-color="{{brand.colors.footer.bg|transparent}}"
+                                       style:dynamic-spacing="false"/>
+      </style:footer-style>
+    </style:page-layout>
+  </office:automatic-styles>
+
+  <!-- Master styles -->
+  <office:master-styles>
+    <!-- Standard page master -->
+    <style:master-page style:name="Standard" style:page-layout-name="Mpm1">
+      <!-- Header content -->
+      <style:header>
+        <text:p text:style-name="Header">
+          <text:span text:style-name="T1">{{document.header.company|<text:user-field-get text:name="company_name"/>}}</text:span>
+          <text:tab/>
+          <text:span text:style-name="T2">{{document.header.title|<text:user-field-get text:name="document_title"/>}}</text:span>
+        </text:p>
+      </style:header>
+
+      <!-- Footer content -->
+      <style:footer>
+        <text:p text:style-name="Footer">
+          {{document.footer.left|Page}} <text:page-number text:select-page="current"/> {{document.footer.of|of}} <text:page-count/>
+          <text:tab/>
+          <text:date style:data-style-name="N2" text:date-value="{{document.footer.date|2025-01-15}}">{{document.footer.date_format|January 15, 2025}}</text:date>
+          <text:tab/>
+          {{document.footer.version|Version}} <text:user-field-get text:name="document_version"/>
+        </text:p>
+      </style:footer>
+    </style:master-page>
+  </office:master-styles>
+
+</office:document-styles>

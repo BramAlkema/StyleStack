@@ -329,7 +329,7 @@ class PatchExecutionEngine:
         logger.info(f"Executing {len(patches)} patches in {mode.value} mode")
         
         for i, patch in enumerate(patches):
-            logger.debug(f"Executing patch {i+1}/{len(patches)}: {patch.get("operation", "unknown")}")
+            logger.debug(f"Executing patch {i+1}/{len(patches)}: {patch.get("operation") or "unknown"}")
             
             # Execute pre-patch callbacks
             for callback in self.pre_patch_callbacks:
@@ -499,7 +499,7 @@ class PatchExecutionEngine:
             
             # Apply substitution to each patch
             substituted_patches = []
-            for patch in patches:
+            for patch in targets:
                 substituted_patch = substitute_value(patch)
                 substituted_patches.append(substituted_patch)
             
@@ -507,7 +507,7 @@ class PatchExecutionEngine:
             
         except Exception as e:
             logger.warning(f"Context variable substitution failed: {e}")
-            return patches
+            return targets
     
     def _create_failed_result(self,
                              xml_document: etree._Element,

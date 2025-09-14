@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+                        xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+                        xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+                        xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+                        xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+                        xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        xmlns:dc="http://purl.org/dc/elements/1.1/"
+                        xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+                        xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+                        xmlns:presentation="urn:oasis:names:tc:opendocument:xmlns:presentation:1.0"
+                        xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+                        xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0"
+                        xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0"
+                        xmlns:math="http://www.w3.org/1998/Math/MathML"
+                        xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0"
+                        xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0"
+                        xmlns:ooo="http://openoffice.org/2004/office"
+                        xmlns:ooow="http://openoffice.org/2004/writer"
+                        xmlns:oooc="http://openoffice.org/2004/calc"
+                        xmlns:dom="http://www.w3.org/2001/xml-events"
+                        xmlns:xforms="http://www.w3.org/2002/xforms"
+                        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xmlns:smil="urn:oasis:names:tc:opendocument:xmlns:smil-compatible:1.0"
+                        xmlns:anim="urn:oasis:names:tc:opendocument:xmlns:animation:1.0"
+                        xmlns:rpt="http://openoffice.org/2005/report"
+                        xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2"
+                        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                        xmlns:grddl="http://www.w3.org/2003/g/data-view#"
+                        xmlns:officeooo="http://openoffice.org/2009/office"
+                        xmlns:tableooo="http://openoffice.org/2009/table"
+                        xmlns:drawooo="http://openoffice.org/2010/draw"
+                        xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0"
+                        xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0"
+                        xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0"
+                        xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0"
+                        xmlns:css3t="http://www.w3.org/TR/css3-text/"
+                        office:version="1.3">
+
+  <!-- StyleStack Modern Graphics Content with Design Token Integration -->
+
+  <!-- Font face declarations with StyleStack typography -->
+  <office:font-face-decls>
+    <style:font-face style:name="Inter" svg:font-family="{{typography.font.family|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"/>
+    <style:font-face style:name="Liberation Sans" svg:font-family="'Liberation Sans'" style:font-family-generic="swiss" style:font-pitch="variable"/>
+  </office:font-face-decls>
+
+  <!-- Automatic styles with design token variables -->
+  <office:automatic-styles>
+    <!-- Drawing page style -->
+    <style:style style:name="dp1" style:family="drawing-page">
+      <style:drawing-page-properties draw:background-size="full" draw:fill="gradient" draw:fill-gradient-name="{{gradients.canvas|StyleStack_Canvas}}"
+                                    draw:guide-colour="{{colors.guides|#CBD5E1}}" draw:guide-style="{{guides.style|solid}}"/>
+    </style:style>
+
+    <!-- Text styles for graphics -->
+    <style:style style:name="P1" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="center" style:writing-mode="lr-tb"/>
+      <style:text-properties fo:font-family="{{typography.font.graphics.title|Inter}}" fo:font-size="{{typography.sizes.graphics_title|24pt}}"
+                            fo:font-weight="bold" fo:color="{{brand.colors.graphics.title|#1E293B}}" text:outline="false"/>
+    </style:style>
+
+    <style:style style:name="P2" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="start" style:writing-mode="lr-tb"/>
+      <style:text-properties fo:font-family="{{typography.font.graphics.body|Inter}}" fo:font-size="{{typography.sizes.graphics_body|12pt}}"
+                            fo:color="{{brand.colors.graphics.body|#475569}}" text:outline="false"/>
+    </style:style>
+
+    <style:style style:name="P3" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="center" style:writing-mode="lr-tb"/>
+      <style:text-properties fo:font-family="{{typography.font.graphics.label|Inter}}" fo:font-size="{{typography.sizes.graphics_label|10pt}}"
+                            fo:font-weight="bold" fo:color="{{brand.colors.graphics.label|#64748B}}" text:outline="false"/>
+    </style:style>
+
+    <!-- Shape styles with brand aesthetics -->
+    <style:style style:name="gr1" style:family="graphic">
+      <style:graphic-properties draw:stroke="solid" draw:stroke-width="{{borders.shape.width|0.05cm}}"
+                               draw:stroke-color="{{brand.colors.primary|#0EA5E9}}"
+                               draw:fill="solid" draw:fill-color="{{brand.colors.shape.fill|#F0F9FF}}"
+                               draw:shadow="{{effects.shape.shadow|visible}}" draw:shadow-offset-x="{{effects.shadow.x|0.2cm}}"
+                               draw:shadow-offset-y="{{effects.shadow.y|0.2cm}}" draw:shadow-color="{{effects.shadow.color|#64748B}}"
+                               draw:shadow-opacity="{{effects.shadow.opacity|50%}}"
+                               fo:padding-top="{{spacing.shape.padding|0.2cm}}" fo:padding-bottom="{{spacing.shape.padding|0.2cm}}"
+                               fo:padding-left="{{spacing.shape.padding|0.3cm}}" fo:padding-right="{{spacing.shape.padding|0.3cm}}"/>
+    </style:style>
+
+    <!-- Accent shape style -->
+    <style:style style:name="gr2" style:family="graphic">
+      <style:graphic-properties draw:stroke="solid" draw:stroke-width="{{borders.accent.width|0.1cm}}"
+                               draw:stroke-color="{{brand.colors.secondary|#8B5CF6}}"
+                               draw:fill="gradient" draw:fill-gradient-name="{{gradients.accent|Secondary_Gradient}}"
+                               draw:shadow="{{effects.accent.shadow|visible}}" draw:shadow-offset-x="{{effects.accent.shadow.x|0.15cm}}"
+                               draw:shadow-offset-y="{{effects.accent.shadow.y|0.15cm}}" draw:shadow-color="{{brand.colors.secondary.dark|#6D28D9}}"
+                               style:mirror="none"/>
+    </style:style>
+
+    <!-- Icon style -->
+    <style:style style:name="gr3" style:family="graphic">
+      <style:graphic-properties draw:stroke="none" draw:fill="solid" draw:fill-color="{{brand.colors.icon|#059669}}"
+                               draw:shadow="none" style:wrap="none"/>
+    </style:style>
+
+    <!-- Connector line style -->
+    <style:style style:name="gr4" style:family="graphic">
+      <style:graphic-properties draw:stroke="solid" draw:stroke-width="{{borders.connector.width|0.08cm}}"
+                               draw:stroke-color="{{brand.colors.connector|#94A3B8}}"
+                               draw:marker-start="{{markers.start|none}}" draw:marker-end="{{markers.end|Arrow}}"
+                               draw:marker-end-width="{{markers.end_width|0.3cm}}" draw:fill="none"/>
+    </style:style>
+
+    <!-- Background pattern style -->
+    <style:style style:name="gr5" style:family="graphic">
+      <style:graphic-properties draw:stroke="none" draw:fill="bitmap" draw:fill-image-name="{{patterns.bg|StyleStack_Pattern}}"
+                               draw:fill-image-width="{{patterns.scale.width|2cm}}" draw:fill-image-height="{{patterns.scale.height|2cm}}"
+                               style:repeat="repeat"/>
+    </style:style>
+
+    <!-- 3D object style -->
+    <style:style style:name="gr6" style:family="graphic">
+      <style:graphic-properties draw:stroke="solid" draw:stroke-width="{{borders.3d.width|0.05cm}}"
+                               draw:stroke-color="{{brand.colors.3d.edge|#475569}}"
+                               draw:fill="solid" draw:fill-color="{{brand.colors.3d.face|#E2E8F0}}"
+                               dr3d:material-diffuse-color="{{materials.3d.diffuse|#F1F5F9}}"
+                               dr3d:material-ambient-color="{{materials.3d.ambient|#CBD5E1}}"
+                               dr3d:material-specular-color="{{materials.3d.specular|#FFFFFF}}"
+                               dr3d:material-shininess="{{materials.3d.shininess|80}}"/>
+    </style:style>
+  </office:automatic-styles>
+
+  <!-- Document body -->
+  <office:body>
+    <office:drawing>
+
+      <!-- Main drawing page -->
+      <draw:page draw:name="{{pages.main.name|StyleStack Graphics}}" draw:style-name="dp1" draw:master-page-name="{{master_pages.graphics|Default}}">
+
+        <!-- Title text box -->
+        <draw:frame draw:style-name="gr1" draw:text-style-name="P1" draw:layer="layout"
+                   svg:width="{{layout.title.width|12cm}}" svg:height="{{layout.title.height|2cm}}"
+                   svg:x="{{layout.title.x|4cm}}" svg:y="{{layout.title.y|2cm}}">
+          <draw:text-box>
+            <text:p text:style-name="P1">{{graphics.title|StyleStack Design System Graphics}}</text:p>
+          </draw:text-box>
+        </draw:frame>
+
+        <!-- Company logo frame -->
+        <draw:frame draw:style-name="gr1" draw:name="CompanyLogo" draw:layer="layout"
+                   svg:width="{{layout.logo.width|3cm}}" svg:height="{{layout.logo.height|2cm}}"
+                   svg:x="{{layout.logo.x|17cm}}" svg:y="{{layout.logo.y|1cm}}">
+          <draw:image xlink:href="{{company.logo.url|Pictures/company_logo.svg}}" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
+        </draw:frame>
+
+        <!-- Brand color palette demonstration -->
+        <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P3" draw:layer="layout"
+                          svg:width="{{layout.color_primary.width|2.5cm}}" svg:height="{{layout.color_primary.height|2.5cm}}"
+                          svg:x="{{layout.color_primary.x|2cm}}" svg:y="{{layout.color_primary.y|6cm}}">
+          <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="ellipse"/>
+          <style:graphic-properties draw:fill-color="{{brand.colors.primary|#0EA5E9}}"/>
+          <draw:text-box>
+            <text:p text:style-name="P3">{{colors.primary.label|Primary}}</text:p>
+          </draw:text-box>
+        </draw:custom-shape>
+
+        <draw:custom-shape draw:style-name="gr2" draw:text-style-name="P3" draw:layer="layout"
+                          svg:width="{{layout.color_secondary.width|2.5cm}}" svg:height="{{layout.color_secondary.height|2.5cm}}"
+                          svg:x="{{layout.color_secondary.x|5cm}}" svg:y="{{layout.color_secondary.y|6cm}}">
+          <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="ellipse"/>
+          <style:graphic-properties draw:fill-color="{{brand.colors.secondary|#8B5CF6}}"/>
+          <draw:text-box>
+            <text:p text:style-name="P3">{{colors.secondary.label|Secondary}}</text:p>
+          </draw:text-box>
+        </draw:custom-shape>
+
+        <draw:custom-shape draw:style-name="gr3" draw:text-style-name="P3" draw:layer="layout"
+                          svg:width="{{layout.color_success.width|2.5cm}}" svg:height="{{layout.color_success.height|2.5cm}}"
+                          svg:x="{{layout.color_success.x|8cm}}" svg:y="{{layout.color_success.y|6cm}}">
+          <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="ellipse"/>
+          <style:graphic-properties draw:fill-color="{{brand.colors.success|#10B981}}"/>
+          <draw:text-box>
+            <text:p text:style-name="P3">{{colors.success.label|Success}}</text:p>
+          </draw:text-box>
+        </draw:custom-shape>
+
+        <!-- Design system component showcase -->
+        <draw:frame draw:style-name="gr1" draw:text-style-name="P2" draw:layer="layout"
+                   svg:width="{{layout.showcase.width|8cm}}" svg:height="{{layout.showcase.height|6cm}}"
+                   svg:x="{{layout.showcase.x|12cm}}" svg:y="{{layout.showcase.y|6cm}}">
+          <draw:text-box>
+            <text:p text:style-name="P2">{{showcase.title|Design System Components:}}</text:p>
+            <text:p text:style-name="P2">{{showcase.item1|• Typography: Inter font family}}</text:p>
+            <text:p text:style-name="P2">{{showcase.item2|• Colors: Brand-compliant palette}}</text:p>
+            <text:p text:style-name="P2">{{showcase.item3|• Spacing: Consistent grid system}}</text:p>
+            <text:p text:style-name="P2">{{showcase.item4|• Effects: Professional shadows}}</text:p>
+            <text:p text:style-name="P2">{{showcase.item5|• Accessibility: WCAG AAA compliance}}</text:p>
+          </draw:text-box>
+        </draw:frame>
+
+        <!-- Geometric shapes with design tokens -->
+        <draw:custom-shape draw:style-name="gr1" draw:layer="layout"
+                          svg:width="{{layout.shape1.width|3cm}}" svg:height="{{layout.shape1.height|3cm}}"
+                          svg:x="{{layout.shape1.x|2cm}}" svg:y="{{layout.shape1.y|10cm}}">
+          <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle"
+                                 draw:modifiers="{{shape.rect.corner_radius|2160}}"/>
+        </draw:custom-shape>
+
+        <draw:custom-shape draw:style-name="gr2" draw:layer="layout"
+                          svg:width="{{layout.shape2.width|3cm}}" svg:height="{{layout.shape2.height|3cm}}"
+                          svg:x="{{layout.shape2.x|6cm}}" svg:y="{{layout.shape2.y|10cm}}">
+          <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="diamond"/>
+        </draw:custom-shape>
+
+        <draw:custom-shape draw:style-name="gr3" draw:layer="layout"
+                          svg:width="{{layout.shape3.width|3cm}}" svg:height="{{layout.shape3.height|3cm}}"
+                          svg:x="{{layout.shape3.x|10cm}}" svg:y="{{layout.shape3.y|10cm}}">
+          <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="hexagon"/>
+        </draw:custom-shape>
+
+        <!-- Connector lines between shapes -->
+        <draw:connector draw:style-name="gr4" draw:layer="layout"
+                      svg:x1="{{connectors.line1.x1|5cm}}" svg:y1="{{connectors.line1.y1|11.5cm}}"
+                      svg:x2="{{connectors.line1.x2|6cm}}" svg:y2="{{connectors.line1.y2|11.5cm}}"
+                      draw:start-shape="shape1" draw:end-shape="shape2"/>
+
+        <draw:connector draw:style-name="gr4" draw:layer="layout"
+                      svg:x1="{{connectors.line2.x1|9cm}}" svg:y1="{{connectors.line2.y1|11.5cm}}"
+                      svg:x2="{{connectors.line2.x2|10cm}}" svg:y2="{{connectors.line2.y2|11.5cm}}"
+                      draw:start-shape="shape2" draw:end-shape="shape3"/>
+
+        <!-- Icon library showcase -->
+        <draw:g draw:name="IconLibrary" svg:x="{{layout.icons.x|14cm}}" svg:y="{{layout.icons.y|10cm}}">
+          <!-- Success icon -->
+          <draw:path draw:style-name="gr3" svg:d="{{icons.success.path|M 0,0 L 1,1 L 2,0 Z}}"
+                    svg:viewBox="{{icons.success.viewbox|0 0 24 24}}" svg:width="{{icons.size|1cm}}" svg:height="{{icons.size|1cm}}"/>
+
+          <!-- Warning icon -->
+          <draw:path draw:style-name="gr2" svg:d="{{icons.warning.path|M 1,0 L 2,2 L 0,2 Z}}"
+                    svg:viewBox="{{icons.warning.viewbox|0 0 24 24}}" svg:width="{{icons.size|1cm}}" svg:height="{{icons.size|1cm}}"
+                    svg:x="{{icons.warning.x|2cm}}" svg:y="{{icons.warning.y|0cm}}"/>
+
+          <!-- Info icon -->
+          <draw:path draw:style-name="gr1" svg:d="{{icons.info.path|M 1,0 A 1,1 0 0,1 1,2 A 1,1 0 0,1 1,0}}"
+                    svg:viewBox="{{icons.info.viewbox|0 0 24 24}}" svg:width="{{icons.size|1cm}}" svg:height="{{icons.size|1cm}}"
+                    svg:x="{{icons.info.x|4cm}}" svg:y="{{icons.info.y|0cm}}"/>
+        </draw:g>
+
+        <!-- 3D demonstration object -->
+        <dr3d:scene svg:width="{{layout.scene3d.width|4cm}}" svg:height="{{layout.scene3d.height|4cm}}"
+                   svg:x="{{layout.scene3d.x|15cm}}" svg:y="{{layout.scene3d.y|14cm}}"
+                   dr3d:transform="{{transforms.3d.scene|matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1)}}"
+                   dr3d:vrp="{{camera.3d.vrp|0 0 25000}}" dr3d:vpn="{{camera.3d.vpn|0 0 1}}"
+                   dr3d:vup="{{camera.3d.vup|0 1 0}}" dr3d:projection="{{camera.3d.projection|parallel}}"
+                   dr3d:distance="{{camera.3d.distance|25000}}" dr3d:focal-length="{{camera.3d.focal|25000}}"
+                   dr3d:shadow-slant="{{lighting.3d.shadow_slant|0}}" dr3d:shade-mode="{{lighting.3d.shade_mode|smooth}}"
+                   dr3d:ambient-color="{{lighting.3d.ambient|#F8FAFC}}" dr3d:lighting-mode="{{lighting.3d.mode|true}}">
+
+          <dr3d:light dr3d:diffuse-color="{{lighting.3d.diffuse|#FFFFFF}}" dr3d:direction="{{lighting.3d.direction|1 1 1}}"
+                     dr3d:enabled="true" dr3d:specular="true"/>
+
+          <dr3d:cube draw:style-name="gr6" dr3d:min-edge="{{shapes.3d.cube.min|-2500 -2500 -2500}}"
+                     dr3d:max-edge="{{shapes.3d.cube.max|2500 2500 2500}}"/>
+        </dr3d:scene>
+
+        <!-- Background pattern overlay -->
+        <draw:rect draw:style-name="gr5" draw:layer="background"
+                  svg:width="{{layout.canvas.width|21cm}}" svg:height="{{layout.canvas.height|15cm}}"
+                  svg:x="{{layout.canvas.x|0cm}}" svg:y="{{layout.canvas.y|0cm}}"/>
+
+        <!-- Design token reference table -->
+        <draw:frame draw:style-name="gr1" draw:name="TokenReference" draw:layer="layout"
+                   svg:width="{{layout.reference.width|6cm}}" svg:height="{{layout.reference.height|8cm}}"
+                   svg:x="{{layout.reference.x|2cm}}" svg:y="{{layout.reference.y|14cm}}">
+          <table:table table:name="DesignTokens">
+            <table:table-column/>
+            <table:table-column/>
+            <table:table-row>
+              <table:table-cell office:value-type="string">
+                <text:p text:style-name="P3">{{table.token.header|Token}}</text:p>
+              </table:table-cell>
+              <table:table-cell office:value-type="string">
+                <text:p text:style-name="P3">{{table.value.header|Value}}</text:p>
+              </table:table-cell>
+            </table:table-row>
+            <table:table-row>
+              <table:table-cell office:value-type="string">
+                <text:p text:style-name="P3">brand.primary</text:p>
+              </table:table-cell>
+              <table:table-cell office:value-type="string">
+                <text:p text:style-name="P3">{{brand.colors.primary|#0EA5E9}}</text:p>
+              </table:table-cell>
+            </table:table-row>
+            <table:table-row>
+              <table:table-cell office:value-type="string">
+                <text:p text:style-name="P3">typography.font</text:p>
+              </table:table-cell>
+              <table:table-cell office:value-type="string">
+                <text:p text:style-name="P3">{{typography.font.family|Inter}}</text:p>
+              </table:table-cell>
+            </table:table-row>
+            <table:table-row>
+              <table:table-cell office:value-type="string">
+                <text:p text:style-name="P3">spacing.default</text:p>
+              </table:table-cell>
+              <table:table-cell office:value-type="string">
+                <text:p text:style-name="P3">{{spacing.default|0.2cm}}</text:p>
+              </table:table-cell>
+            </table:table-row>
+          </table:table>
+        </draw:frame>
+
+        <!-- Embedded complex graphics object -->
+        <draw:frame draw:style-name="gr1" draw:name="ComplexGraphics" draw:layer="layout"
+                   svg:width="{{layout.complex.width|4cm}}" svg:height="{{layout.complex.height|4cm}}"
+                   svg:x="{{layout.complex.x|9cm}}" svg:y="{{layout.complex.y|14cm}}">
+          <draw:object xlink:href="./Object 1" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
+        </draw:frame>
+
+      </draw:page>
+
+    </office:drawing>
+  </office:body>
+
+</office:document-content>

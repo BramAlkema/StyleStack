@@ -596,6 +596,287 @@ class ThemeResolver:
                     new_theme.fonts[slot].typeface = font_name
         
         return new_theme
+    
+    # SuperTheme Extensions for Multi-Variant Theme Generation
+    
+    def generate_theme_variants_from_tokens(self, design_variants: Dict[str, Dict[str, Any]], 
+                                          aspect_ratios: Optional[List[str]] = None) -> Dict[str, Dict[str, Theme]]:
+        """
+        Generate multiple theme variants from design tokens with aspect ratio awareness.
+        
+        Args:
+            design_variants: Dictionary of design variant names to token structures
+            aspect_ratios: Optional list of aspect ratio tokens to generate variants for
+            
+        Returns:
+            Dictionary mapping variant names to aspect ratio themes
+        """
+        theme_variants = {}
+        
+        for variant_name, design_tokens in design_variants.items():
+            variant_themes = {}
+            
+            if aspect_ratios:
+                for aspect_ratio_token in aspect_ratios:
+                    # Create theme for this specific combination
+                    theme = self.create_theme_from_tokens_with_aspect_ratio(
+                        design_tokens, variant_name, aspect_ratio_token
+                    )
+                    variant_themes[aspect_ratio_token] = theme
+            else:
+                # Create single theme without aspect ratio awareness
+                theme = self.create_theme_from_tokens(design_tokens, variant_name)
+                variant_themes['default'] = theme
+            
+            theme_variants[variant_name] = variant_themes
+        
+        return theme_variants
+    
+    def create_theme_from_tokens_with_aspect_ratio(self, design_tokens: Dict[str, Any], 
+                                                 variant_name: str,
+                                                 aspect_ratio_token: str) -> Theme:
+        """Create theme from tokens with aspect ratio context"""
+        # Resolve tokens with aspect ratio conditional logic
+        try:
+            from tools.aspect_ratio_resolver import AspectRatioResolver
+            resolver = AspectRatioResolver()
+            
+            # Create standard aspect ratios for resolution
+            from tools.aspect_ratio_resolver import create_standard_aspect_ratios
+            standard_aspect_ratios = create_standard_aspect_ratios()
+            
+            # Resolve tokens with aspect ratio context
+            resolved_tokens = resolver.resolve_aspect_ratio_tokens(
+                {**design_tokens, **standard_aspect_ratios}, aspect_ratio_token
+            )
+            
+            # Create theme from resolved tokens
+            return self.create_theme_from_tokens(resolved_tokens, f"{variant_name} - {aspect_ratio_token}")
+            
+        except Exception as e:
+            logger.warning(f"Failed to resolve aspect ratio tokens for {variant_name}: {e}")
+            # Fallback to standard token resolution
+            return self.create_theme_from_tokens(design_tokens, variant_name)
+    
+    def create_theme_from_tokens(self, tokens: Dict[str, Any], theme_name: str) -> Theme:
+        """Create Theme object from StyleStack design tokens"""
+        theme = self.create_default_theme(theme_name)
+        
+        try:
+            # Extract colors from tokens
+            if "colors" in tokens:
+                color_overrides = self._extract_colors_from_tokens(tokens["colors"])
+                theme = self.create_theme_variation(theme, color_overrides, {})
+            
+            # Extract fonts from tokens
+            if "typography" in tokens:
+                font_overrides = self._extract_fonts_from_tokens(tokens["typography"])
+                theme = self.create_theme_variation(theme, {}, font_overrides)
+            
+            return theme
+            
+        except Exception as e:
+            logger.error(f"Failed to create theme from tokens: {e}")
+            return theme  # Return default theme on error
+    
+    def _extract_colors_from_tokens(self, color_tokens: Dict[str, Any]) -> Dict[str, str]:
+        """Extract color values from StyleStack color tokens"""
+        colors = {}
+        
+        try:
+            # Extract brand colors
+            if "brand" in color_tokens:
+                brand_colors = color_tokens["brand"]
+                if "primary" in brand_colors:
+                    colors["accent1"] = self._extract_color_value(brand_colors["primary"])
+                if "secondary" in brand_colors:
+                    colors["accent2"] = self._extract_color_value(brand_colors["secondary"])
+            
+            # Extract neutral colors  
+            if "neutral" in color_tokens:
+                neutral_colors = color_tokens["neutral"]
+                if "background" in neutral_colors:
+                    colors["lt1"] = self._extract_color_value(neutral_colors["background"])
+                if "text" in neutral_colors:
+                    colors["dk1"] = self._extract_color_value(neutral_colors["text"])
+            
+            # Extract semantic colors
+            if "semantic" in color_tokens:
+                semantic_colors = color_tokens["semantic"]
+                if "success" in semantic_colors:
+                    colors["accent3"] = self._extract_color_value(semantic_colors["success"])
+                if "warning" in semantic_colors:
+                    colors["accent4"] = self._extract_color_value(semantic_colors["warning"])
+                if "error" in semantic_colors:
+                    colors["accent5"] = self._extract_color_value(semantic_colors["error"])
+            
+        except Exception as e:
+            logger.warning(f"Error extracting colors from tokens: {e}")
+        
+        return colors
+    
+    def _extract_fonts_from_tokens(self, typography_tokens: Dict[str, Any]) -> Dict[str, str]:
+        """Extract font values from StyleStack typography tokens"""
+        fonts = {}
+        
+        try:
+            # Extract heading fonts
+            if "heading" in typography_tokens:
+                heading = typography_tokens["heading"]
+                if "font" in heading:
+                    fonts["majorFont"] = self._extract_font_value(heading["font"])
+                elif "fontFamily" in heading:
+                    fonts["majorFont"] = self._extract_font_value(heading["fontFamily"])
+            
+            # Extract body fonts
+            if "body" in typography_tokens:
+                body = typography_tokens["body"]
+                if "font" in body:
+                    fonts["minorFont"] = self._extract_font_value(body["font"])
+                elif "fontFamily" in body:
+                    fonts["minorFont"] = self._extract_font_value(body["fontFamily"])
+            
+            # Extract text fonts (fallback)
+            if "text" in typography_tokens:
+                text = typography_tokens["text"]
+                if "font" in text and "minorFont" not in fonts:
+                    fonts["minorFont"] = self._extract_font_value(text["font"])
+        
+        except Exception as e:
+            logger.warning(f"Error extracting fonts from tokens: {e}")
+        
+        return fonts
+    
+    def _extract_color_value(self, color_token: Any) -> str:
+        """Extract color value from various token formats"""
+        if isinstance(color_token, str):
+            return color_token
+        elif isinstance(color_token, dict):
+            # W3C DTCG token format
+            if "$value" in color_token:
+                return color_token["$value"]
+            # Legacy format
+            elif "value" in color_token:
+                return color_token["value"]
+        
+        return str(color_token)
+    
+    def _extract_font_value(self, font_token: Any) -> str:
+        """Extract font value from various token formats"""
+        if isinstance(font_token, str):
+            return font_token
+        elif isinstance(font_token, dict):
+            # W3C DTCG token format
+            if "$value" in font_token:
+                return font_token["$value"]
+            # Legacy format
+            elif "value" in font_token:
+                return font_token["value"]
+            # Font family specific
+            elif "fontFamily" in font_token:
+                return font_token["fontFamily"]
+        
+        return str(font_token)
+    
+    def generate_aspect_aware_theme_xml(self, theme: Theme, 
+                                      aspect_ratio_token: str) -> str:
+        """Generate theme XML with aspect ratio awareness"""
+        # This method integrates with OOXML processor for complete theme XML generation
+        
+        # Basic theme structure - production would be more comprehensive
+        xml_template = '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:theme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="{theme_name}">
+  <a:themeElements>
+    <a:clrScheme name="{theme_name} Colors">
+      <a:dk1><a:srgbClr val="{dk1}"/></a:dk1>
+      <a:lt1><a:srgbClr val="{lt1}"/></a:lt1>
+      <a:dk2><a:srgbClr val="{dk2}"/></a:dk2>
+      <a:lt2><a:srgbClr val="{lt2}"/></a:lt2>
+      <a:accent1><a:srgbClr val="{accent1}"/></a:accent1>
+      <a:accent2><a:srgbClr val="{accent2}"/></a:accent2>
+      <a:accent3><a:srgbClr val="{accent3}"/></a:accent3>
+      <a:accent4><a:srgbClr val="{accent4}"/></a:accent4>
+      <a:accent5><a:srgbClr val="{accent5}"/></a:accent5>
+      <a:accent6><a:srgbClr val="{accent6}"/></a:accent6>
+      <a:hlink><a:srgbClr val="{hlink}"/></a:hlink>
+      <a:folHlink><a:srgbClr val="{folHlink}"/></a:folHlink>
+    </a:clrScheme>
+    <a:fontScheme name="{theme_name} Fonts">
+      <a:majorFont>
+        <a:latin typeface="{major_font}"/>
+        <a:ea typeface=""/>
+        <a:cs typeface=""/>
+      </a:majorFont>
+      <a:minorFont>
+        <a:latin typeface="{minor_font}"/>
+        <a:ea typeface=""/>
+        <a:cs typeface=""/>
+      </a:minorFont>
+    </a:fontScheme>
+    <a:fmtScheme name="{theme_name} Effects">
+      <!-- Simplified format scheme - production would include full effects -->
+      <a:fillStyleLst>
+        <a:solidFill><a:schemeClr val="phClr"/></a:solidFill>
+      </a:fillStyleLst>
+      <a:lnStyleLst>
+        <a:ln><a:solidFill><a:schemeClr val="phClr"/></a:solidFill></a:ln>
+      </a:lnStyleLst>
+      <a:effectStyleLst>
+        <a:effectStyle><a:effectLst/></a:effectStyle>
+      </a:effectStyleLst>
+      <a:bgFillStyleLst>
+        <a:solidFill><a:schemeClr val="phClr"/></a:solidFill>
+      </a:bgFillStyleLst>
+    </a:fmtScheme>
+  </a:themeElements>
+  <a:objectDefaults/>
+  <a:extraClrSchemeLst/>
+  <a:extLst>
+    <a:ext uri="{{05A4C25C-085E-4340-85A3-A5531E510DB2}}">
+      <thm15:themeFamily xmlns:thm15="http://schemas.microsoft.com/office/thememl/2012/main" 
+                         name="{theme_name}" 
+                         id="{{{{THEME_GUID}}}}" 
+                         vid="{{{{VARIANT_GUID}}}}"/>
+    </a:ext>
+  </a:extLst>
+</a:theme>'''
+        
+        # Extract colors and fonts from theme
+        colors = {
+            'dk1': theme.get_color('dk1').rgb_value if theme.get_color('dk1') else '000000',
+            'lt1': theme.get_color('lt1').rgb_value if theme.get_color('lt1') else 'FFFFFF',
+            'dk2': theme.get_color('dk2').rgb_value if theme.get_color('dk2') else '1F4788',
+            'lt2': theme.get_color('lt2').rgb_value if theme.get_color('lt2') else 'EEECE1',
+            'accent1': theme.get_color('accent1').rgb_value if theme.get_color('accent1') else '4472C4',
+            'accent2': theme.get_color('accent2').rgb_value if theme.get_color('accent2') else '70AD47',
+            'accent3': theme.get_color('accent3').rgb_value if theme.get_color('accent3') else 'FFC000',
+            'accent4': theme.get_color('accent4').rgb_value if theme.get_color('accent4') else '8FAADC',
+            'accent5': theme.get_color('accent5').rgb_value if theme.get_color('accent5') else '7030A0',
+            'accent6': theme.get_color('accent6').rgb_value if theme.get_color('accent6') else 'C65911',
+            'hlink': theme.get_color('hlink').rgb_value if theme.get_color('hlink') else '0563C1',
+            'folHlink': theme.get_color('folHlink').rgb_value if theme.get_color('folHlink') else '954F72',
+        }
+        
+        fonts = {
+            'major_font': theme.get_font('majorFont').typeface if theme.get_font('majorFont') else 'Calibri Light',
+            'minor_font': theme.get_font('minorFont').typeface if theme.get_font('minorFont') else 'Calibri'
+        }
+        
+        # Generate unique GUIDs for this theme (simplified)
+        import hashlib
+        theme_guid = hashlib.md5(f"{theme.name}-{aspect_ratio_token}".encode()).hexdigest()
+        theme_guid = f"{theme_guid[:8]}-{theme_guid[8:12]}-{theme_guid[12:16]}-{theme_guid[16:20]}-{theme_guid[20:32]}".upper()
+        
+        variant_guid = hashlib.md5(f"{theme.name}-variant-{aspect_ratio_token}".encode()).hexdigest()
+        variant_guid = f"{variant_guid[:8]}-{variant_guid[8:12]}-{variant_guid[12:16]}-{variant_guid[16:20]}-{variant_guid[20:32]}".upper()
+        
+        return xml_template.format(
+            theme_name=theme.name,
+            **colors,
+            **fonts,
+            THEME_GUID=theme_guid,
+            VARIANT_GUID=variant_guid
+        )
 
 
 if __name__ == "__main__":

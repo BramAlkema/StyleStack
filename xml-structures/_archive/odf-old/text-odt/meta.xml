@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-meta xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                     xmlns:dc="http://purl.org/dc/elements/1.1/"
+                     xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+                     xmlns:ooo="http://openoffice.org/2004/office"
+                     xmlns:grddl="http://www.w3.org/2003/g/data-view#"
+                     office:version="1.3">
+
+  <!-- StyleStack Modern Document Metadata with Design Token Integration -->
+  <office:meta>
+    <!-- Core metadata with design token variables -->
+    <meta:generator>{{application.generator|LibreOffice/7.4.0.0$StyleStack_Template_Generator 2025.1.0}}</meta:generator>
+    <dc:title>{{document.title|StyleStack Modern Document}}</dc:title>
+    <dc:description>{{document.description|Professional document template with StyleStack Modern design system integration. Features hierarchical design tokens, corporate brand overrides, and accessibility-compliant typography and color schemes for OpenDocument Text format.}}</dc:description>
+    <dc:subject>{{document.subject|Design System Integration and Corporate Brand Guidelines}}</dc:subject>
+    <dc:creator>{{document.creator|StyleStack Design System}}</dc:creator>
+    <dc:language>{{document.language|en-US}}</dc:language>
+
+    <!-- Date and revision information -->
+    <meta:creation-date>{{document.created|2025-01-15T10:00:00.000000000}}</meta:creation-date>
+    <dc:date>{{document.modified|2025-01-15T10:00:00.000000000}}</dc:date>
+    <meta:editing-duration>{{document.editing_duration|PT2M30S}}</meta:editing-duration>
+    <meta:editing-cycles>{{document.editing_cycles|1}}</meta:editing-cycles>
+
+    <!-- Document statistics -->
+    <meta:document-statistic meta:table-count="{{document.stats.tables|1}}" meta:image-count="{{document.stats.images|2}}"
+                            meta:object-count="{{document.stats.objects|0}}" meta:page-count="{{document.stats.pages|3}}"
+                            meta:paragraph-count="{{document.stats.paragraphs|25}}" meta:word-count="{{document.stats.words|450}}"
+                            meta:character-count="{{document.stats.characters|2700}}" meta:character-count-no-spaces="{{document.stats.characters_no_spaces|2250}}"/>
+
+    <!-- StyleStack Design System Custom Metadata -->
+    <meta:user-defined meta:name="StyleStack.Version">{{stylestack.version|2025.1.0}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.DesignSystem">{{design_system.name|StyleStack Modern}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.CorporateOverride">{{design_system.corporate_override|true}}</meta:user-defined>
+
+    <!-- Brand identity metadata -->
+    <meta:user-defined meta:name="Brand.PrimaryColor">{{brand.colors.primary|#0EA5E9}}</meta:user-defined>
+    <meta:user-defined meta:name="Brand.SecondaryColor">{{brand.colors.secondary|#8B5CF6}}</meta:user-defined>
+    <meta:user-defined meta:name="Brand.FontFamily">{{typography.font.family|Inter}}</meta:user-defined>
+    <meta:user-defined meta:name="Brand.CompanyName">{{company.name|Your Company}}</meta:user-defined>
+    <meta:user-defined meta:name="Brand.LogoURL">{{company.logo.url|Pictures/company_logo.png}}</meta:user-defined>
+
+    <!-- Template configuration metadata -->
+    <meta:user-defined meta:name="Template.Type">{{template.type|Text Document}}</meta:user-defined>
+    <meta:user-defined meta:name="Template.Channel">{{template.channel|document}}</meta:user-defined>
+    <meta:user-defined meta:name="Template.AutoUpdate">{{template.auto_update|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Template.Source">{{template.source|StyleStack Modern ODT Template v2025.1}}</meta:user-defined>
+
+    <!-- Design token metrics -->
+    <meta:user-defined meta:name="DesignTokens.TotalCount">{{metrics.tokens.total|67}}</meta:user-defined>
+    <meta:user-defined meta:name="DesignTokens.UsedCount">{{metrics.tokens.used|58}}</meta:user-defined>
+    <meta:user-defined meta:name="DesignTokens.ComplianceScore">{{metrics.compliance.score|86.5}}</meta:user-defined>
+
+    <!-- Accessibility compliance -->
+    <meta:user-defined meta:name="Accessibility.WCAGLevel">{{accessibility.wcag_level|AAA}}</meta:user-defined>
+    <meta:user-defined meta:name="Accessibility.ColorContrastVerified">{{accessibility.contrast_verified|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Accessibility.ScreenReaderOptimized">{{accessibility.screen_reader_optimized|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Accessibility.KeyboardNavigable">{{accessibility.keyboard_navigable|true}}</meta:user-defined>
+
+    <!-- Corporate subscription metadata -->
+    <meta:user-defined meta:name="Organization.ID">{{organization.id|org_default}}</meta:user-defined>
+    <meta:user-defined meta:name="Organization.SubscriptionTier">{{organization.subscription.tier|Professional}}</meta:user-defined>
+    <meta:user-defined meta:name="Organization.DesignSystemManager">{{organization.design_system_manager|StyleStack Administrator}}</meta:user-defined>
+
+    <!-- Version control and collaboration -->
+    <meta:user-defined meta:name="Version.Major">{{version.major|1}}</meta:user-defined>
+    <meta:user-defined meta:name="Version.Minor">{{version.minor|0}}</meta:user-defined>
+    <meta:user-defined meta:name="Version.Patch">{{version.patch|0}}</meta:user-defined>
+    <meta:user-defined meta:name="Version.Build">{{version.build|2025011500}}</meta:user-defined>
+
+    <!-- Creation and modification tracking -->
+    <meta:user-defined meta:name="System.CreationMethod">{{system.creation_method|Automated Template Generation}}</meta:user-defined>
+    <meta:user-defined meta:name="System.GeneratorVersion">{{system.generator_version|2025.1.0-beta}}</meta:user-defined>
+    <meta:user-defined meta:name="System.LastTokenSync">{{system.last_token_sync|2025-01-15T10:00:00Z}}</meta:user-defined>
+
+    <!-- Print and export settings -->
+    <meta:user-defined meta:name="Print.ColorMode">{{print.color_mode|Color}}</meta:user-defined>
+    <meta:user-defined meta:name="Print.Quality">{{print.quality|High}}</meta:user-defined>
+    <meta:user-defined meta:name="Export.PDFCompliance">{{export.pdf_compliance|PDF/A-2}}</meta:user-defined>
+
+    <!-- Security and encryption -->
+    <meta:user-defined meta:name="Security.EncryptionEnabled">{{security.encryption_enabled|false}}</meta:user-defined>
+    <meta:user-defined meta:name="Security.PasswordProtected">{{security.password_protected|false}}</meta:user-defined>
+    <meta:user-defined meta:name="Security.DigitalSignature">{{security.digital_signature|none}}</meta:user-defined>
+
+    <!-- Localization metadata -->
+    <meta:user-defined meta:name="Localization.PrimaryLanguage">{{localization.primary_language|en-US}}</meta:user-defined>
+    <meta:user-defined meta:name="Localization.SupportedLanguages">{{localization.supported_languages|en-US,es-ES,fr-FR,de-DE}}</meta:user-defined>
+    <meta:user-defined meta:name="Localization.TextDirection">{{localization.text_direction|ltr}}</meta:user-defined>
+
+    <!-- Integration metadata -->
+    <meta:user-defined meta:name="Integration.CMSCompatible">{{integration.cms_compatible|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Integration.APIVersion">{{integration.api_version|v2025.1}}</meta:user-defined>
+    <meta:user-defined meta:name="Integration.CloudSyncEnabled">{{integration.cloud_sync_enabled|true}}</meta:user-defined>
+
+    <!-- Quality assurance -->
+    <meta:user-defined meta:name="QA.ValidationStatus">{{qa.validation_status|Passed}}</meta:user-defined>
+    <meta:user-defined meta:name="QA.LastValidated">{{qa.last_validated|2025-01-15T09:45:00Z}}</meta:user-defined>
+    <meta:user-defined meta:name="QA.ValidationScore">{{qa.validation_score|98.5}}</meta:user-defined>
+
+    <!-- Usage analytics metadata -->
+    <meta:user-defined meta:name="Analytics.TrackingEnabled">{{analytics.tracking_enabled|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Analytics.SessionID">{{analytics.session_id|sess_2025011510000001}}</meta:user-defined>
+    <meta:user-defined meta:name="Analytics.UserAgent">{{analytics.user_agent|LibreOffice/7.4.0}}</meta:user-defined>
+
+  </office:meta>
+
+</office:document-meta>

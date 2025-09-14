@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+                   xmlns:dc="http://purl.org/dc/elements/1.1/"
+                   xmlns:dcterms="http://purl.org/dc/terms/"
+                   xmlns:dcmitype="http://purl.org/dc/dcmitype/"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <!-- Core document properties with design token variables -->
+  <dc:title>{{document.title|StyleStack Design System Dashboard}}</dc:title>
+  <dc:subject>{{document.subject|Design Token Analytics and Brand Compliance Metrics}}</dc:subject>
+  <dc:creator>{{document.creator|StyleStack Design System}}</dc:creator>
+  <dc:description>{{document.description|Comprehensive design token reference and brand compliance dashboard for corporate design systems. Powered by StyleStack Modern design tokens with hierarchical inheritance and automated brand override capabilities.}}</dc:description>
+  <dc:language>{{document.language|en-US}}</dc:language>
+  <cp:keywords>{{document.keywords|design tokens, design system, brand compliance, StyleStack, corporate branding, accessibility, typography}}</cp:keywords>
+  <cp:category>{{document.category|Design System Analytics}}</cp:category>
+
+  <!-- Version and revision tracking -->
+  <cp:revision>{{document.revision|1}}</cp:revision>
+  <cp:version>{{document.version|1.0.0}}</cp:version>
+
+  <!-- Temporal properties -->
+  <dcterms:created xsi:type="dcterms:W3CDTF">{{document.created|2025-01-15T10:00:00Z}}</dcterms:created>
+  <dcterms:modified xsi:type="dcterms:W3CDTF">{{document.modified|2025-01-15T10:00:00Z}}</dcterms:modified>
+
+  <!-- Corporate identity metadata -->
+  <cp:lastModifiedBy>{{company.name|Your Company}} - {{document.last_modified_by|StyleStack System}}</cp:lastModifiedBy>
+
+</cp:coreProperties>

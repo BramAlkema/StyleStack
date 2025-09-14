@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-settings xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                         xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0"
+                         xmlns:ooo="http://openoffice.org/2004/office"
+                         office:version="1.3">
+
+  <!-- StyleStack Graphics Settings with Design Token Configuration -->
+
+  <office:settings>
+    <config:config-item-set config:name="ooo:view-settings">
+      <!-- View configuration with StyleStack defaults -->
+      <config:config-item config:name="VisibleAreaTop" config:type="int">{{view.area.top|-918}}</config:config-item>
+      <config:config-item config:name="VisibleAreaLeft" config:type="int">{{view.area.left|-1486}}</config:config-item>
+      <config:config-item config:name="VisibleAreaWidth" config:type="int">{{view.area.width|22400}}</config:config-item>
+      <config:config-item config:name="VisibleAreaHeight" config:type="int">{{view.area.height|15875}}</config:config-item>
+
+      <!-- Zoom and display settings optimized for design work -->
+      <config:config-item-map-indexed config:name="Views">
+        <config:config-item-map-entry>
+          <config:config-item config:name="ViewId" config:type="string">view1</config:config-item>
+          <config:config-item config:name="ZoomType" config:type="short">{{view.zoom.type|0}}</config:config-item>
+          <config:config-item config:name="ZoomFactor" config:type="short">{{view.zoom.factor|100}}</config:config-item>
+          <config:config-item config:name="VisibleAreaTop" config:type="int">{{view.area.top|-918}}</config:config-item>
+          <config:config-item config:name="VisibleAreaLeft" config:type="int">{{view.area.left|-1486}}</config:config-item>
+          <config:config-item config:name="VisibleAreaWidth" config:type="int">{{view.area.width|22400}}</config:config-item>
+          <config:config-item config:name="VisibleAreaHeight" config:type="int">{{view.area.height|15875}}</config:config-item>
+
+          <!-- Grid and guide settings for precise design -->
+          <config:config-item config:name="IsSnapToGrid" config:type="boolean">{{grid.snap_to|true}}</config:config-item>
+          <config:config-item config:name="GridVisible" config:type="boolean">{{grid.visible|true}}</config:config-item>
+          <config:config-item config:name="GridFront" config:type="boolean">{{grid.front|false}}</config:config-item>
+          <config:config-item config:name="IsSnapToPageMargins" config:type="boolean">{{snap.page_margins|true}}</config:config-item>
+          <config:config-item config:name="IsSnapToSnapLines" config:type="boolean">{{snap.snap_lines|true}}</config:config-item>
+          <config:config-item config:name="IsSnapToObjectFrame" config:type="boolean">{{snap.object_frame|true}}</config:config-item>
+          <config:config-item config:name="IsSnapToObjectPoints" config:type="boolean">{{snap.object_points|true}}</config:config-item>
+
+          <!-- Layer visibility for design system elements -->
+          <config:config-item config:name="ActiveLayer" config:type="string">{{layers.active|layout}}</config:config-item>
+          <config:config-item config:name="ShowGuides" config:type="boolean">{{guides.show|true}}</config:config-item>
+          <config:config-item config:name="ShowGrid" config:type="boolean">{{grid.show|true}}</config:config-item>
+          <config:config-item config:name="ShowSnapLines" config:type="boolean">{{snap_lines.show|true}}</config:config-item>
+
+          <!-- Measurement and ruler settings -->
+          <config:config-item config:name="HasRuler" config:type="boolean">{{ruler.visible|true}}</config:config-item>
+          <config:config-item config:name="RulerIsVisible" config:type="boolean">{{ruler.visible|true}}</config:config-item>
+          <config:config-item config:name="IsRasterVisible" config:type="boolean">{{raster.visible|false}}</config:config-item>
+          <config:config-item config:name="IsRasterFront" config:type="boolean">{{raster.front|false}}</config:config-item>
+
+          <!-- Color and appearance settings -->
+          <config:config-item config:name="IsHelpLinesVisible" config:type="boolean">{{help_lines.visible|true}}</config:config-item>
+          <config:config-item config:name="IsHelpLinesFront" config:type="boolean">{{help_lines.front|false}}</config:config-item>
+          <config:config-item config:name="SlidesPerRow" config:type="short">{{slides.per_row|1}}</config:config-item>
+          <config:config-item config:name="EditMode" config:type="int">{{edit.mode|0}}</config:config-item>
+        </config:config-item-map-entry>
+      </config:config-item-map-indexed>
+    </config:config-item-set>
+
+    <config:config-item-set config:name="ooo:configuration-settings">
+      <!-- Drawing-specific configuration -->
+      <config:config-item config:name="LoadReadonly" config:type="boolean">{{document.readonly|false}}</config:config-item>
+      <config:config-item config:name="IsKernAsianPunctuation" config:type="boolean">{{typography.kern_asian|true}}</config:config-item>
+      <config:config-item config:name="CharacterCompressionType" config:type="short">{{typography.compression|0}}</config:config-item>
+
+      <!-- Grid settings for consistent spacing -->
+      <config:config-item config:name="GridBaseWidth" config:type="int">{{grid.base_width|1000}}</config:config-item>
+      <config:config-item config:name="GridBaseHeight" config:type="int">{{grid.base_height|1000}}</config:config-item>
+      <config:config-item config:name="GridSnapWidthXNumerator" config:type="int">{{grid.snap_width_numerator|1000}}</config:config-item>
+      <config:config-item config:name="GridSnapWidthXDenominator" config:type="int">{{grid.snap_width_denominator|1}}</config:config-item>
+      <config:config-item config:name="GridSnapWidthYNumerator" config:type="int">{{grid.snap_width_y_numerator|1000}}</config:config-item>
+      <config:config-item config:name="GridSnapWidthYDenominator" config:type="int">{{grid.snap_width_y_denominator|1}}</config:config-item>
+
+      <!-- Page and printing settings -->
+      <config:config-item config:name="DefaultTabStop" config:type="int">{{tabs.default_stop|1250}}</config:config-item>
+      <config:config-item config:name="PrinterName" config:type="string">{{printer.name|}}</config:config-item>
+      <config:config-item config:name="PrinterSetup" config:type="base64Binary">{{printer.setup|}}</config:config-item>
+
+      <!-- StyleStack-specific settings -->
+      <config:config-item config:name="IsOutlineMode" config:type="boolean">{{outline.mode|false}}</config:config-item>
+      <config:config-item config:name="IsSummationOfParagraphs" config:type="boolean">{{paragraph.summation|false}}</config:config-item>
+      <config:config-item config:name="EmbedFonts" config:type="boolean">{{fonts.embed|true}}</config:config-item>
+      <config:config-item config:name="EmbedOnlyUsedFonts" config:type="boolean">{{fonts.embed_only_used|true}}</config:config-item>
+      <config:config-item config:name="EmbedLatinScriptFonts" config:type="boolean">{{fonts.embed_latin|true}}</config:config-item>
+      <config:config-item config:name="EmbedAsianScriptFonts" config:type="boolean">{{fonts.embed_asian|false}}</config:config-item>
+      <config:config-item config:name="EmbedComplexScriptFonts" config:type="boolean">{{fonts.embed_complex|false}}</config:config-item>
+
+      <!-- Color management for brand compliance -->
+      <config:config-item config:name="ColorTableURL" config:type="string">{{colors.table_url|$(user)/config/standard.soc}}</config:config-item>
+      <config:config-item config:name="DashTableURL" config:type="string">{{dash.table_url|$(user)/config/standard.sod}}</config:config-item>
+      <config:config-item config:name="LineEndTableURL" config:type="string">{{line_end.table_url|$(user)/config/standard.soe}}</config:config-item>
+      <config:config-item config:name="HatchTableURL" config:type="string">{{hatch.table_url|$(user)/config/standard.soh}}</config:config-item>
+      <config:config-item config:name="GradientTableURL" config:type="string">{{gradient.table_url|$(user)/config/standard.sog}}</config:config-item>
+      <config:config-item config:name="BitmapTableURL" config:type="string">{{bitmap.table_url|$(user)/config/standard.sob}}</config:config-item>
+
+      <!-- Accessibility and universal design -->
+      <config:config-item config:name="AllowAnimations" config:type="boolean">{{animations.allow|true}}</config:config-item>
+      <config:config-item config:name="ForbiddenCharacters" config:type="string">{{characters.forbidden|}}</config:config-item>
+
+      <!-- Advanced typography settings -->
+      <config:config-item config:name="ApplyUserData" config:type="boolean">{{user_data.apply|true}}</config:config-item>
+      <config:config-item config:name="SaveVersionOnClose" config:type="boolean">{{version.save_on_close|false}}</config:config-item>
+      <config:config-item config:name="UpdateFromTemplate" config:type="boolean">{{template.update_from|true}}</config:config-item>
+
+      <!-- Export and sharing settings -->
+      <config:config-item config:name="MeasureUnit" config:type="short">{{measure.unit|6}}</config:config-item>
+      <config:config-item config:name="ScaleNumerator" config:type="int">{{scale.numerator|1}}</config:config-item>
+      <config:config-item config:name="ScaleDenominator" config:type="int">{{scale.denominator|1}}</config:config-item>
+
+      <!-- Design system integration settings -->
+      <config:config-item config:name="StyleStackEnabled" config:type="boolean">{{stylestack.enabled|true}}</config:config-item>
+      <config:config-item config:name="StyleStackAutoUpdate" config:type="boolean">{{stylestack.auto_update|true}}</config:config-item>
+      <config:config-item config:name="StyleStackValidation" config:type="boolean">{{stylestack.validation|true}}</config:config-item>
+      <config:config-item config:name="StyleStackBrandCompliance" config:type="boolean">{{stylestack.brand_compliance|true}}</config:config-item>
+    </config:config-item-set>
+  </office:settings>
+
+</office:document-settings>

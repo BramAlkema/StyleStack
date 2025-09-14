@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <!-- PowerPoint OOXML Content Types with StyleStack Design System Extensions -->
+
+  <!-- Default extensions -->
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Default Extension="jpg" ContentType="image/jpeg"/>
+  <Default Extension="jpeg" ContentType="image/jpeg"/>
+  <Default Extension="png" ContentType="image/png"/>
+  <Default Extension="gif" ContentType="image/gif"/>
+  <Default Extension="svg" ContentType="image/svg+xml"/>
+  <Default Extension="emf" ContentType="image/x-emf"/>
+  <Default Extension="wmf" ContentType="image/x-wmf"/>
+  <Default Extension="bin" ContentType="application/vnd.openxmlformats-officedocument.oleObject"/>
+
+  <!-- Core PowerPoint document parts -->
+  <Override PartName="/ppt/presentation.xml" ContentType="application/vnd.openxmlformats-presentationml.presentation.main+xml"/>
+
+  <!-- Slide masters and layouts for design system templates -->
+  <Override PartName="/ppt/slideMasters/slideMaster1.xml" ContentType="application/vnd.openxmlformats-presentationml.slideMaster+xml"/>
+  <Override PartName="/ppt/slideLayouts/slideLayout1.xml" ContentType="application/vnd.openxmlformats-presentationml.slideLayout+xml"/>
+  <Override PartName="/ppt/slideLayouts/slideLayout2.xml" ContentType="application/vnd.openxmlformats-presentationml.slideLayout+xml"/>
+  <Override PartName="/ppt/slideLayouts/slideLayout3.xml" ContentType="application/vnd.openxmlformats-presentationml.slideLayout+xml"/>
+  <Override PartName="/ppt/slideLayouts/slideLayout4.xml" ContentType="application/vnd.openxmlformats-presentationml.slideLayout+xml"/>
+  <Override PartName="/ppt/slideLayouts/slideLayout5.xml" ContentType="application/vnd.openxmlformats-presentationml.slideLayout+xml"/>
+  <Override PartName="/ppt/slideLayouts/slideLayout6.xml" ContentType="application/vnd.openxmlformats-presentationml.slideLayout+xml"/>
+  <Override PartName="/ppt/slideLayouts/slideLayout7.xml" ContentType="application/vnd.openxmlformats-presentationml.slideLayout+xml"/>
+  <Override PartName="/ppt/slideLayouts/slideLayout8.xml" ContentType="application/vnd.openxmlformats-presentationml.slideLayout+xml"/>
+  <Override PartName="/ppt/slideLayouts/slideLayout9.xml" ContentType="application/vnd.openxmlformats-presentationml.slideLayout+xml"/>
+  <Override PartName="/ppt/slideLayouts/slideLayout10.xml" ContentType="application/vnd.openxmlformats-presentationml.slideLayout+xml"/>
+  <Override PartName="/ppt/slideLayouts/slideLayout11.xml" ContentType="application/vnd.openxmlformats-presentationml.slideLayout+xml"/>
+
+  <!-- Individual slides with design token integration -->
+  <Override PartName="/ppt/slides/slide1.xml" ContentType="application/vnd.openxmlformats-presentationml.slide+xml"/>
+  <Override PartName="/ppt/slides/slide2.xml" ContentType="application/vnd.openxmlformats-presentationml.slide+xml"/>
+  <Override PartName="/ppt/slides/slide3.xml" ContentType="application/vnd.openxmlformats-presentationml.slide+xml"/>
+  <Override PartName="/ppt/slides/slide4.xml" ContentType="application/vnd.openxmlformats-presentationml.slide+xml"/>
+  <Override PartName="/ppt/slides/slide5.xml" ContentType="application/vnd.openxmlformats-presentationml.slide+xml"/>
+
+  <!-- StyleStack theme with corporate brand overrides -->
+  <Override PartName="/ppt/theme/theme1.xml" ContentType="application/vnd.openxmlformats-officedocument.theme+xml"/>
+
+  <!-- Notes masters and slides for presenter notes -->
+  <Override PartName="/ppt/notesMasters/notesMaster1.xml" ContentType="application/vnd.openxmlformats-presentationml.notesMaster+xml"/>
+  <Override PartName="/ppt/notesSlides/notesSlide1.xml" ContentType="application/vnd.openxmlformats-presentationml.notesSlide+xml"/>
+  <Override PartName="/ppt/notesSlides/notesSlide2.xml" ContentType="application/vnd.openxmlformats-presentationml.notesSlide+xml"/>
+  <Override PartName="/ppt/notesSlides/notesSlide3.xml" ContentType="application/vnd.openxmlformats-presentationml.notesSlide+xml"/>
+  <Override PartName="/ppt/notesSlides/notesSlide4.xml" ContentType="application/vnd.openxmlformats-presentationml.notesSlide+xml"/>
+  <Override PartName="/ppt/notesSlides/notesSlide5.xml" ContentType="application/vnd.openxmlformats-presentationml.notesSlide+xml"/>
+
+  <!-- Handout masters for print layouts -->
+  <Override PartName="/ppt/handoutMasters/handoutMaster1.xml" ContentType="application/vnd.openxmlformats-presentationml.handoutMaster+xml"/>
+
+  <!-- Embedded media and brand assets -->
+  <Override PartName="/ppt/media/image1.png" ContentType="image/png"/>
+  <Override PartName="/ppt/media/image2.svg" ContentType="image/svg+xml"/>
+  <Override PartName="/ppt/media/logo.svg" ContentType="image/svg+xml"/>
+
+  <!-- Business charts with design token styling -->
+  <Override PartName="/ppt/charts/chart1.xml" ContentType="application/vnd.openxmlformats-drawingml.chart+xml"/>
+  <Override PartName="/ppt/charts/chart2.xml" ContentType="application/vnd.openxmlformats-drawingml.chart+xml"/>
+  <Override PartName="/ppt/charts/colors1.xml" ContentType="application/vnd.openxmlformats-drawingml.chartshapes+xml"/>
+  <Override PartName="/ppt/charts/colors2.xml" ContentType="application/vnd.openxmlformats-drawingml.chartshapes+xml"/>
+  <Override PartName="/ppt/charts/style1.xml" ContentType="application/vnd.openxmlformats-drawingml.chartstyle+xml"/>
+  <Override PartName="/ppt/charts/style2.xml" ContentType="application/vnd.openxmlformats-drawingml.chartstyle+xml"/>
+
+  <!-- SmartArt diagrams for business visualizations -->
+  <Override PartName="/ppt/diagrams/data1.xml" ContentType="application/vnd.openxmlformats-drawingml.diagramData+xml"/>
+  <Override PartName="/ppt/diagrams/layout1.xml" ContentType="application/vnd.openxmlformats-drawingml.diagramLayout+xml"/>
+  <Override PartName="/ppt/diagrams/colors1.xml" ContentType="application/vnd.openxmlformats-drawingml.diagramColors+xml"/>
+  <Override PartName="/ppt/diagrams/quickStyle1.xml" ContentType="application/vnd.openxmlformats-drawingml.diagramStyle+xml"/>
+
+  <!-- Embedded objects and external data -->
+  <Override PartName="/ppt/embeddings/oleObject1.bin" ContentType="application/vnd.openxmlformats-officedocument.oleObject"/>
+
+  <!-- Comments and collaboration -->
+  <Override PartName="/ppt/commentAuthors.xml" ContentType="application/vnd.openxmlformats-presentationml.commentAuthors+xml"/>
+
+  <!-- Custom tags and metadata -->
+  <Override PartName="/ppt/tags/tag1.xml" ContentType="application/vnd.openxmlformats-presentationml.tags+xml"/>
+
+  <!-- Document properties with StyleStack metadata -->
+  <Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>
+  <Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>
+  <Override PartName="/docProps/custom.xml" ContentType="application/vnd.openxmlformats-officedocument.custom-properties+xml"/>
+
+  <!-- Presentation properties -->
+  <Override PartName="/ppt/presProps.xml" ContentType="application/vnd.openxmlformats-presentationml.presProps+xml"/>
+  <Override PartName="/ppt/viewProps.xml" ContentType="application/vnd.openxmlformats-presentationml.viewProps+xml"/>
+  <Override PartName="/ppt/tableStyles.xml" ContentType="application/vnd.openxmlformats-presentationml.tableStyles+xml"/>
+
+</Types>

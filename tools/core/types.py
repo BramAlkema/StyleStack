@@ -50,6 +50,24 @@ class PatchError(Exception):
 
 
 @dataclass
+class ProcessingResult:
+    """Generic result of a processing operation"""
+    success: bool
+    data: Optional[Any] = None
+    errors: Optional[List[str]] = None
+    warnings: Optional[List[str]] = None
+    metadata: Optional[Dict[str, Any]] = None
+    
+    def __post_init__(self):
+        if self.errors is None:
+            self.errors = []
+        if self.warnings is None:
+            self.warnings = []
+        if self.metadata is None:
+            self.metadata = {}
+
+
+@dataclass
 class PatchResult:
     """Result of applying a single patch operation."""
     success: bool

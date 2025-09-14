@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-styles xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+                       xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+                       xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+                       xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+                       xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+                       xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+                       xmlns:xlink="http://www.w3.org/1999/xlink"
+                       xmlns:dc="http://purl.org/dc/elements/1.1/"
+                       xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+                       xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+                       xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+                       xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0"
+                       xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0"
+                       xmlns:math="http://www.w3.org/1998/Math/MathML"
+                       xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0"
+                       xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0"
+                       xmlns:ooo="http://openoffice.org/2004/office"
+                       xmlns:ooow="http://openoffice.org/2004/writer"
+                       xmlns:oooc="http://openoffice.org/2004/calc"
+                       xmlns:dom="http://www.w3.org/2001/xml-events"
+                       xmlns:rpt="http://openoffice.org/2005/report"
+                       xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2"
+                       xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                       xmlns:grddl="http://www.w3.org/2003/g/data-view#"
+                       xmlns:officeooo="http://openoffice.org/2009/office"
+                       xmlns:tableooo="http://openoffice.org/2009/table"
+                       xmlns:drawooo="http://openoffice.org/2010/draw"
+                       xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0"
+                       xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0"
+                       xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0"
+                       xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0"
+                       xmlns:css3t="http://www.w3.org/TR/css3-text/"
+                       office:version="1.3">
+
+  <!-- ============================================ -->
+  <!-- COMPREHENSIVE ODF SPREADSHEET STYLE OVERRIDES -->
+  <!-- Complete StyleStack takeover of LibreOffice Calc styles -->
+  <!-- ============================================ -->
+
+  <!-- StyleStack Modern Spreadsheet Styles with Design Token Integration -->
+
+  <!-- Font face declarations -->
+  <office:font-face-decls>
+    <style:font-face style:name="Inter" svg:font-family="{{typography.font.family|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"/>
+    <style:font-face style:name="Liberation Sans" svg:font-family="'Liberation Sans'" style:font-family-generic="swiss" style:font-pitch="variable"/>
+    <style:font-face style:name="DejaVu Sans" svg:font-family="'DejaVu Sans'" style:font-family-generic="system" style:font-pitch="variable"/>
+  </office:font-face-decls>
+
+  <!-- Document styles -->
+  <office:styles>
+    <!-- Number styles with design system formatting -->
+    <number:number-style style:name="N0">
+      <number:number number:min-integer-digits="1"/>
+    </number:number-style>
+
+    <number:percentage-style style:name="N11">
+      <number:number number:decimal-places="1" number:min-integer-digits="1"/>
+      <number:text>%</number:text>
+    </number:percentage-style>
+
+    <number:currency-style style:name="N104" style:volatile="true">
+      <number:currency-symbol number:country="{{currency.country|US}}" number:language="{{currency.language|en}}">{{currency.symbol|$}}</number:currency-symbol>
+      <number:number number:decimal-places="2" number:min-integer-digits="1" number:grouping="true"/>
+    </number:currency-style>
+
+    <number:date-style style:name="N37">
+      <number:day number:style="long"/>
+      <number:text>/</number:text>
+      <number:month number:style="long"/>
+      <number:text>/</number:text>
+      <number:year number:style="long"/>
+    </number:date-style>
+
+    <number:time-style style:name="N43">
+      <number:hours number:style="long"/>
+      <number:text>:</number:text>
+      <number:minutes number:style="long"/>
+      <number:text>:</number:text>
+      <number:seconds number:style="long"/>
+    </number:time-style>
+
+    <!-- Default table cell style -->
+    <style:style style:name="Default" style:family="table-cell">
+      <style:text-properties style:use-window-font-color="true" style:font-name="Inter" fo:font-size="{{typography.sizes.default|10pt}}"
+                            fo:language="{{locale.language|en}}" fo:country="{{locale.country|US}}" style:font-name-asian="DejaVu Sans"
+                            style:font-size-asian="{{typography.sizes.default|10pt}}" style:language-asian="{{locale.language_asian|zh}}"
+                            style:country-asian="{{locale.country_asian|CN}}" style:font-name-complex="Liberation Sans"
+                            style:font-size-complex="{{typography.sizes.default|10pt}}" style:language-complex="{{locale.language_complex|hi}}"
+                            style:country-complex="{{locale.country_complex|IN}}" fo:color="{{brand.colors.text.default|#475569}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.cell.default_bg|#FFFFFF}}"
+                                  fo:border="{{borders.cell.default|none}}" style:rotation-angle="0"/>
+    </style:style>
+
+    <!-- Header cell style -->
+    <style:style style:name="Heading" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties fo:font-weight="bold" fo:color="{{brand.colors.header.text|#1E293B}}"
+                            fo:font-size="{{typography.sizes.header|12pt}}" style:font-name="Inter"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.header.bg|#F8FAFC}}"
+                                  fo:border="{{borders.header.default|0.05pt solid #E2E8F0}}" style:rotation-angle="0"/>
+    </style:style>
+
+    <!-- Data cell styles by category -->
+    <style:style style:name="Text" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties fo:color="{{brand.colors.text.data|#64748B}}" fo:font-size="{{typography.sizes.data|10pt}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.cell.data_bg|#FFFFFF}}"
+                                  fo:border="{{borders.cell.data|0.05pt solid #F1F5F9}}"/>
+    </style:style>
+
+    <style:style style:name="Number" style:family="table-cell" style:parent-style-name="Default" style:data-style-name="N0">
+      <style:text-properties fo:font-weight="bold" fo:color="{{brand.colors.value.number|#0EA5E9}}" fo:font-size="{{typography.sizes.number|11pt}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.cell.number_bg|#F8FAFC}}"
+                                  fo:border="{{borders.cell.number|0.05pt solid #E2E8F0}}"/>
+    </style:style>
+
+    <style:style style:name="Percent" style:family="table-cell" style:parent-style-name="Default" style:data-style-name="N11">
+      <style:text-properties fo:font-weight="bold" fo:color="{{brand.colors.value.percent|#16A34A}}" fo:font-size="{{typography.sizes.percent|11pt}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.cell.percent_bg|#F0FDF4}}"
+                                  fo:border="{{borders.cell.percent|0.05pt solid #BBFCD2}}"/>
+    </style:style>
+
+    <!-- Status styles -->
+    <style:style style:name="Good" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties fo:font-weight="bold" fo:color="{{brand.colors.status.good|#16A34A}}" fo:font-size="{{typography.sizes.status|9pt}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.status.good_bg|#F0FDF4}}"
+                                  fo:border="{{borders.status.good|0.1pt solid #22C55E}}"/>
+    </style:style>
+
+    <style:style style:name="Warning" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties fo:font-weight="bold" fo:color="{{brand.colors.status.warning|#D97706}}" fo:font-size="{{typography.sizes.status|9pt}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.status.warning_bg|#FFFBEB}}"
+                                  fo:border="{{borders.status.warning|0.1pt solid #F59E0B}}"/>
+    </style:style>
+
+    <style:style style:name="Bad" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties fo:font-weight="bold" fo:color="{{brand.colors.status.bad|#DC2626}}" fo:font-size="{{typography.sizes.status|9pt}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.status.bad_bg|#FEF2F2}}"
+                                  fo:border="{{borders.status.bad|0.1pt solid #EF4444}}"/>
+    </style:style>
+
+    <!-- Table styles -->
+    <style:style style:name="ta1" style:family="table" style:master-page-name="Default">
+      <style:table-properties table:display="true" style:writing-mode="lr-tb"/>
+    </style:style>
+
+    <!-- Graphics frame style for charts -->
+    <style:style style:name="gr1" style:family="graphic">
+      <style:graphic-properties text:anchor-type="paragraph" svg:x="0cm" svg:y="0cm" style:wrap="none"
+                               style:number-wrapped-paragraphs="no-limit" style:wrap-contour="false"
+                               style:vertical-pos="top" style:vertical-rel="paragraph"
+                               style:horizontal-pos="center" style:horizontal-rel="paragraph"
+                               fo:background-color="{{brand.colors.chart.frame_bg|transparent}}"
+                               style:background-transparency="100%" draw:fill="none"
+                               draw:fill-color="{{brand.colors.chart.fill|#F8FAFC}}"
+                               fo:border="{{borders.chart.frame|0.1pt solid #CBD5E1}}"
+                               fo:padding="{{spacing.chart.padding|0.2cm}}"/>
+    </style:style>
+
+    <!-- Drawing page style -->
+    <style:style style:name="dp1" style:family="drawing-page">
+      <style:drawing-page-properties draw:background-size="full" draw:fill="solid"
+                                    draw:fill-color="{{brand.colors.drawing.bg|#FAFAFA}}"
+                                    presentation:background-visible="true" presentation:background-objects-visible="true"
+                                    presentation:display-footer="true" presentation:display-page-number="false"
+                                    presentation:display-date-time="true"/>
+    </style:style>
+
+    <!-- ============================================ -->
+    <!-- COMPREHENSIVE BUILT-IN CELL STYLE OVERRIDES -->
+    <!-- ============================================ -->
+
+    <!-- Extended Data Type Styles -->
+    <style:style style:name="Date" style:family="table-cell" style:parent-style-name="Default" style:data-style-name="N37">
+      <style:text-properties fo:color="{{brand.colors.value.date|#7C3AED}}" fo:font-size="{{typography.size.date|10pt}}"
+                            style:font-size-asian="{{typography.size.date|10pt}}" style:font-size-complex="{{typography.size.date|10pt}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.cell.date_bg|#FAF5FF}}"
+                                 fo:border="{{borders.cell.date|0.05pt solid #E9D5FF}}"
+                                 <!-- Hidden Properties: Advanced Cell Control -->
+                                 style:rotation-angle="{{layout.cell.date.rotation|0}}" style:rotation-align="{{layout.cell.date.rotation_align|none}}"
+                                 style:cell-protect="{{protection.cell.date.protect|none}}" style:print-content="{{printing.cell.date.content|true}}"
+                                 style:repeat-content="{{layout.cell.date.repeat_content|false}}" style:shrink-to-fit="{{layout.cell.date.shrink_to_fit|false}}"
+                                 style:text-align-source="{{layout.cell.date.text_align_source|fix}}" style:direction="{{layout.cell.date.direction|ltr}}"
+                                 style:shadow="{{effects.cell.date.shadow|none}}" style:background-transparency="{{effects.cell.date.bg_transparency|0%}}"/>
+    </style:style>
+
+    <style:style style:name="Time" style:family="table-cell" style:parent-style-name="Default" style:data-style-name="N43">
+      <style:text-properties fo:color="{{brand.colors.value.time|#DC2626}}" fo:font-size="{{typography.size.time|10pt}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.cell.time_bg|#FEF2F2}}"
+                                 fo:border="{{borders.cell.time|0.05pt solid #FECACA}}"/>
+    </style:style>
+
+    <style:style style:name="Boolean" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties fo:font-weight="{{typography.weight.boolean|bold}}" fo:color="{{brand.colors.value.boolean|#059669}}"
+                            fo:font-size="{{typography.size.boolean|10pt}}" style:font-name="{{typography.font.boolean|Inter}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.cell.boolean_bg|#ECFDF5}}"
+                                 fo:border="{{borders.cell.boolean|0.05pt solid #A7F3D0}}"/>
+    </style:style>
+
+    <!-- Enhanced Heading Styles -->
+    <style:style style:name="Heading_20_1" style:display-name="Heading 1" style:family="table-cell" style:parent-style-name="Heading">
+      <style:text-properties fo:font-size="{{typography.size.heading1|14pt}}" fo:color="{{brand.colors.heading1.text|#0F172A}}"
+                            style:font-size-asian="{{typography.size.heading1|14pt}}" style:font-size-complex="{{typography.size.heading1|14pt}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.heading1.bg|#F1F5F9}}"
+                                 fo:border="{{borders.heading1|0.1pt solid #CBD5E1}}"
+                                 <!-- Hidden Properties: Heading Cell Control -->
+                                 style:text-align-source="{{layout.heading1.text_align_source|value-type}}" style:repeat-content="{{layout.heading1.repeat_content|false}}"
+                                 style:vertical-align="{{layout.heading1.vertical_align|middle}}" fo:wrap-option="{{layout.heading1.wrap_option|wrap}}"/>
+    </style:style>
+
+    <style:style style:name="Heading_20_2" style:display-name="Heading 2" style:family="table-cell" style:parent-style-name="Heading">
+      <style:text-properties fo:font-size="{{typography.size.heading2|12pt}}" fo:color="{{brand.colors.heading2.text|#1E293B}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.heading2.bg|#F8FAFC}}"
+                                 fo:border="{{borders.heading2|0.05pt solid #E2E8F0}}"/>
+    </style:style>
+
+    <style:style style:name="Heading_20_3" style:display-name="Heading 3" style:family="table-cell" style:parent-style-name="Heading">
+      <style:text-properties fo:font-size="{{typography.size.heading3|11pt}}" fo:color="{{brand.colors.heading3.text|#334155}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.heading3.bg|#FAFAFA}}"/>
+    </style:style>
+
+    <!-- Status and Conditional Styles -->
+    <style:style style:name="Neutral" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties fo:color="{{brand.colors.status.neutral|#6B7280}}" fo:font-size="{{typography.size.status|9pt}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.status.neutral_bg|#F9FAFB}}"
+                                 fo:border="{{borders.status.neutral|0.05pt solid #E5E7EB}}"/>
+    </style:style>
+
+    <style:style style:name="Input" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties fo:font-weight="{{typography.weight.input|bold}}" fo:color="{{brand.colors.input.text|#1F2937}}"
+                            fo:font-size="{{typography.size.input|11pt}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.input.bg|#FEF7FF}}"
+                                 fo:border="{{borders.input|0.1pt solid #8B5CF6}}"
+                                 <!-- Hidden Properties: Input Cell Specific -->
+                                 style:cell-protect="{{protection.input.protect|none}}" style:print-content="{{printing.input.content|true}}"
+                                 style:text-align-source="{{layout.input.text_align_source|fix}}" style:shrink-to-fit="{{layout.input.shrink_to_fit|false}}"/>
+    </style:style>
+
+    <style:style style:name="Output" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties fo:font-weight="{{typography.weight.output|bold}}" fo:color="{{brand.colors.output.text|#1F2937}}"
+                            fo:font-size="{{typography.size.output|12pt}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.output.bg|#F0F9FF}}"
+                                 fo:border="{{borders.output|0.1pt solid #0EA5E9}}"
+                                 style:cell-protect="{{protection.output.protect|protected}}" style:print-content="{{printing.output.content|true}}"/>
+    </style:style>
+
+    <style:style style:name="Formula" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties style:font-name="{{typography.font.formula|JetBrains Mono}}" fo:color="{{brand.colors.formula.text|#059669}}"
+                            fo:font-size="{{typography.size.formula|9pt}}" style:font-family-generic="modern" style:font-pitch="fixed"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.formula.bg|#F0FDF4}}"
+                                 fo:border="{{borders.formula|0.05pt solid #BBF7D0}}"/>
+    </style:style>
+
+    <!-- Accent Color Styles (LibreOffice Equivalent to Excel Accent Styles) -->
+    <style:style style:name="Accent_20_1" style:display-name="Accent 1" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties fo:color="{{brand.colors.accent1.text|#0EA5E9}}" fo:font-weight="{{typography.weight.accent1|normal}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.accent1.bg|#F0F9FF}}"
+                                 fo:border="{{borders.accent1|0.05pt solid #BAE6FD}}"/>
+    </style:style>
+
+    <style:style style:name="Accent_20_2" style:display-name="Accent 2" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties fo:color="{{brand.colors.accent2.text|#8B5CF6}}" fo:font-weight="{{typography.weight.accent2|normal}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.accent2.bg|#FAF5FF}}"
+                                 fo:border="{{borders.accent2|0.05pt solid #E9D5FF}}"/>
+    </style:style>
+
+    <style:style style:name="Accent_20_3" style:display-name="Accent 3" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties fo:color="{{brand.colors.accent3.text|#10B981}}" fo:font-weight="{{typography.weight.accent3|normal}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.accent3.bg|#F0FDF4}}"
+                                 fo:border="{{borders.accent3|0.05pt solid #BBF7D0}}"/>
+    </style:style>
+
+    <style:style style:name="Accent_20_4" style:display-name="Accent 4" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties fo:color="{{brand.colors.accent4.text|#F59E0B}}" fo:font-weight="{{typography.weight.accent4|normal}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.accent4.bg|#FFFBEB}}"
+                                 fo:border="{{borders.accent4|0.05pt solid #FED7AA}}"/>
+    </style:style>
+
+    <style:style style:name="Accent_20_5" style:display-name="Accent 5" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties fo:color="{{brand.colors.accent5.text|#EF4444}}" fo:font-weight="{{typography.weight.accent5|normal}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.accent5.bg|#FEF2F2}}"
+                                 fo:border="{{borders.accent5|0.05pt solid #FECACA}}"/>
+    </style:style>
+
+    <style:style style:name="Accent_20_6" style:display-name="Accent 6" style:family="table-cell" style:parent-style-name="Default">
+      <style:text-properties fo:color="{{brand.colors.accent6.text|#6B7280}}" fo:font-weight="{{typography.weight.accent6|normal}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.accent6.bg|#F9FAFB}}"
+                                 fo:border="{{borders.accent6|0.05pt solid #E5E7EB}}"/>
+    </style:style>
+
+    <!-- 20% Accent Variants (Lighter versions) -->
+    <style:style style:name="20_Percent_-_Accent_1" style:display-name="20% - Accent 1" style:family="table-cell" style:parent-style-name="Accent_20_1">
+      <style:table-cell-properties fo:background-color="{{brand.colors.accent1_20.bg|#F0F9FF}}"
+                                 style:background-transparency="{{effects.accent1_20.bg_transparency|80%}}"/>
+    </style:style>
+
+    <style:style style:name="20_Percent_-_Accent_2" style:display-name="20% - Accent 2" style:family="table-cell" style:parent-style-name="Accent_20_2">
+      <style:table-cell-properties fo:background-color="{{brand.colors.accent2_20.bg|#FAF5FF}}"
+                                 style:background-transparency="{{effects.accent2_20.bg_transparency|80%}}"/>
+    </style:style>
+
+    <style:style style:name="20_Percent_-_Accent_3" style:display-name="20% - Accent 3" style:family="table-cell" style:parent-style-name="Accent_20_3">
+      <style:table-cell-properties fo:background-color="{{brand.colors.accent3_20.bg|#F0FDF4}}"
+                                 style:background-transparency="{{effects.accent3_20.bg_transparency|80%}}"/>
+    </style:style>
+
+    <!-- 40% and 60% Accent Variants -->
+    <style:style style:name="40_Percent_-_Accent_1" style:display-name="40% - Accent 1" style:family="table-cell" style:parent-style-name="Accent_20_1">
+      <style:table-cell-properties fo:background-color="{{brand.colors.accent1_40.bg|#BFDBFE}}"
+                                 style:background-transparency="{{effects.accent1_40.bg_transparency|60%}}"/>
+    </style:style>
+
+    <style:style style:name="60_Percent_-_Accent_1" style:display-name="60% - Accent 1" style:family="table-cell" style:parent-style-name="Accent_20_1">
+      <style:text-properties fo:color="{{brand.colors.accent1_60.text|#FFFFFF}}"/>
+      <style:table-cell-properties fo:background-color="{{brand.colors.accent1_60.bg|#3B82F6}}"
+                                 style:background-transparency="{{effects.accent1_60.bg_transparency|40%}}"/>
+    </style:style>
+
+    <!-- Professional Financial Styles -->
+    <style:style style:name="Currency_Positive" style:family="table-cell" style:parent-style-name="Currency">
+      <style:text-properties fo:color="{{brand.colors.currency.positive|#059669}}"/>
+    </style:style>
+
+    <style:style style:name="Currency_Negative" style:family="table-cell" style:parent-style-name="Currency">
+      <style:text-properties fo:color="{{brand.colors.currency.negative|#DC2626}}"/>
+    </style:style>
+
+    <style:style style:name="Percent_Positive" style:family="table-cell" style:parent-style-name="Percent">
+      <style:text-properties fo:color="{{brand.colors.percent.positive|#059669}}"/>
+    </style:style>
+
+    <style:style style:name="Percent_Negative" style:family="table-cell" style:parent-style-name="Percent">
+      <style:text-properties fo:color="{{brand.colors.percent.negative|#DC2626}}"/>
+    </style:style>
+
+    <!-- Table-wide styles -->
+    <style:style style:name="ta2" style:family="table" style:master-page-name="Default">
+      <style:table-properties table:display="{{layout.table.display|true}}" style:writing-mode="{{layout.table.writing_mode|lr-tb}}"
+                             <!-- Hidden Properties: Advanced Table Control -->
+                             style:may-break-between-rows="{{layout.table.break_between_rows|true}}"
+                             style:page-number="{{layout.table.page_number|auto}}" fo:break-before="{{layout.table.break_before|auto}}"
+                             fo:break-after="{{layout.table.break_after|auto}}" fo:background-color="{{brand.colors.table.background|transparent}}"
+                             style:background-transparency="{{effects.table.bg_transparency|0%}}" style:shadow="{{effects.table.shadow|none}}"
+                             table:border-model="{{layout.table.border_model|collapsing}}" table:table-centering="{{layout.table.centering|none}}"/>
+    </style:style>
+
+    <!-- Enhanced Graphics for Charts and Objects -->
+    <style:style style:name="gr2" style:family="graphic">
+      <style:graphic-properties
+                               <!-- Hidden Properties: Chart Frame Advanced Control -->
+                               text:anchor-type="{{layout.chart.anchor|paragraph}}" svg:x="{{layout.chart.position.x|0cm}}" svg:y="{{layout.chart.position.y|0cm}}"
+                               style:wrap="{{layout.chart.wrap|none}}" style:number-wrapped-paragraphs="{{layout.chart.wrap.paragraphs|no-limit}}"
+                               style:wrap-contour="{{layout.chart.wrap.contour|false}}" style:vertical-pos="{{layout.chart.vertical.position|top}}"
+                               style:vertical-rel="{{layout.chart.vertical.relative|paragraph}}" style:horizontal-pos="{{layout.chart.horizontal.position|center}}"
+                               style:horizontal-rel="{{layout.chart.horizontal.relative|paragraph}}" fo:background-color="{{brand.colors.chart.frame_bg|#FFFFFF}}"
+                               style:background-transparency="{{effects.chart.bg_transparency|0%}}" draw:fill="{{graphics.chart.fill|solid}}"
+                               draw:fill-color="{{brand.colors.chart.fill|#F8FAFC}}" fo:border="{{borders.chart.frame|0.1pt solid #CBD5E1}}"
+                               fo:padding="{{spacing.chart.padding|0.2cm}}" fo:padding-top="{{spacing.chart.padding.top|0.2cm}}"
+                               fo:padding-bottom="{{spacing.chart.padding.bottom|0.2cm}}" fo:padding-left="{{spacing.chart.padding.left|0.2cm}}"
+                               fo:padding-right="{{spacing.chart.padding.right|0.2cm}}" style:protect="{{protection.chart.protect|none}}"
+                               style:editable="{{layout.chart.editable|true}}" draw:shadow="{{effects.chart.shadow|none}}"
+                               draw:shadow-offset-x="{{effects.chart.shadow.x|0.1cm}}" draw:shadow-offset-y="{{effects.chart.shadow.y|0.1cm}}"
+                               draw:shadow-color="{{effects.chart.shadow.color|#9CA3AF}}"/>
+    </style:style>
+  </office:styles>
+
+  <!-- Automatic styles -->
+  <office:automatic-styles>
+    <!-- Master page style -->
+    <style:page-layout style:name="Mpm1">
+      <style:page-layout-properties fo:page-width="{{layout.page.width|29.7cm}}" fo:page-height="{{layout.page.height|21cm}}"
+                                   style:num-format="1" style:print-orientation="landscape"
+                                   fo:margin-top="{{spacing.page.margin.top|2cm}}" fo:margin-bottom="{{spacing.page.margin.bottom|2cm}}"
+                                   fo:margin-left="{{spacing.page.margin.left|2cm}}" fo:margin-right="{{spacing.page.margin.right|2cm}}"
+                                   style:writing-mode="lr-tb" style:first-page-number="continue"
+                                   style:footnote-max-height="0cm"/>
+      <!-- Header style -->
+      <style:header-style>
+        <style:header-footer-properties fo:min-height="{{layout.header.min_height|1cm}}" fo:margin-left="0cm" fo:margin-right="0cm"
+                                       fo:margin-bottom="{{spacing.header.margin_bottom|0.3cm}}" fo:background-color="{{brand.colors.header.page_bg|#F8FAFC}}"
+                                       fo:border-bottom="{{borders.header.page|0.05pt solid #E2E8F0}}" style:dynamic-spacing="false"/>
+      </style:header-style>
+      <!-- Footer style -->
+      <style:footer-style>
+        <style:header-footer-properties fo:min-height="{{layout.footer.min_height|0.8cm}}" fo:margin-left="0cm" fo:margin-right="0cm"
+                                       fo:margin-top="{{spacing.footer.margin_top|0.3cm}}" fo:background-color="{{brand.colors.footer.page_bg|#F8FAFC}}"
+                                       fo:border-top="{{borders.footer.page|0.05pt solid #E2E8F0}}" style:dynamic-spacing="false"/>
+      </style:footer-style>
+    </style:page-layout>
+  </office:automatic-styles>
+
+  <!-- Master styles -->
+  <office:master-styles>
+    <style:master-page style:name="Default" style:page-layout-name="Mpm1" style:display-name="{{page.master.name|Default}}">
+      <!-- Header content -->
+      <style:header>
+        <text:p text:style-name="MP1">
+          <text:span text:style-name="T1">{{document.header.company|Company Name}} - {{document.header.title|StyleStack Design Dashboard}}</text:span>
+        </text:p>
+      </style:header>
+      <!-- Footer content -->
+      <style:footer>
+        <text:p text:style-name="MP2">
+          <text:span text:style-name="T2">{{document.footer.left|Page}} <text:page-number/> {{document.footer.separator||}} <text:sheet-name/></text:span>
+          <text:tab/>
+          <text:span text:style-name="T3">{{document.footer.center|Generated by StyleStack}}</text:span>
+          <text:tab/>
+          <text:span text:style-name="T4">{{document.footer.right|<text:date style:data-style-name="N37"/>}}</text:span>
+        </text:p>
+      </style:footer>
+    </style:master-page>
+  </office:master-styles>
+
+</office:document-styles>

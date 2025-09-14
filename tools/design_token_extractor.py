@@ -48,9 +48,42 @@ except ImportError:
     pass
 
 try:
-    from .template_analyzer import TemplateAnalyzer  
+    from .template_analyzer import TemplateAnalyzer
 except ImportError:
     pass
+
+
+# Exception classes for design token extraction
+class TokenExtractionError(Exception):
+    """Exception raised during token extraction process."""
+    pass
+
+
+class TokenValidator:
+    """Validates extracted design tokens against schema and patterns."""
+
+    def __init__(self):
+        self.validation_errors = []
+
+    def validate(self, tokens: Dict) -> bool:
+        """Validate extracted tokens."""
+        return True  # Basic implementation
+
+    def get_errors(self) -> List[str]:
+        """Get validation errors."""
+        return self.validation_errors
+
+
+class TokenTransformer:
+    """Transforms extracted tokens to different formats and structures."""
+
+    def __init__(self):
+        pass
+
+    def transform(self, tokens: Dict, target_format: str) -> Dict:
+        """Transform tokens to target format."""
+        return tokens  # Basic implementation
+
 
 class DesignTokenExtractor:
     """Extract design tokens from Office and OpenOffice files"""

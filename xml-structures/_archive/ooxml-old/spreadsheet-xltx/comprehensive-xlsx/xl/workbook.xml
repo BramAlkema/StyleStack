@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+          xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+          mc:Ignorable="x15 xr xr6 xr10 xr2">
+
+  <!-- File version information -->
+  <fileVersion appName="xl" lastEdited="7" lowestEdited="7" rupBuild="9303"/>
+
+  <!-- Workbook properties -->
+  <workbookPr defaultThemeVersion="166925" filterPrivacy="1"/>
+
+  <!-- Book views -->
+  <bookViews>
+    <workbookView xWindow="0" yWindow="0" windowWidth="28800" windowHeight="17460"
+                  tabRatio="500" firstSheet="0" activeTab="0"/>
+  </bookViews>
+
+  <!-- Worksheet definitions -->
+  <sheets>
+    <sheet name="StyleStack Dashboard" sheetId="1" r:id="rId1"/>
+    <sheet name="Design Token Examples" sheetId="2" r:id="rId2"/>
+  </sheets>
+
+  <!-- Defined names for design tokens -->
+  <definedNames>
+    <definedName name="brand_primary_color">Dashboard!$A$1</definedName>
+    <definedName name="brand_secondary_color">Dashboard!$B$1</definedName>
+    <definedName name="company_logo_url">Dashboard!$C$1</definedName>
+    <definedName name="typography_font_family">Dashboard!$D$1</definedName>
+  </definedNames>
+
+  <!-- Calculation properties -->
+  <calcPr calcId="191029" calcMode="auto" calcOnSave="1" concurrentCalc="1"/>
+
+  <!-- External references (for data connections) -->
+  <externalReferences>
+    <externalReference r:id="rId5"/>
+  </externalReferences>
+
+</workbook>
