@@ -346,9 +346,79 @@
                 },
                 "letterSpacing": {
                   "type": "string"
+                },
+                "fontStyle": {
+                  "type": "string",
+                  "enum": ["normal", "italic", "oblique"]
+                },
+                "textDecoration": {
+                  "type": "string",
+                  "enum": ["none", "underline", "line-through", "overline"]
+                },
+                "textTransform": {
+                  "type": "string",
+                  "enum": ["none", "uppercase", "lowercase", "capitalize"]
                 }
               },
               "additionalProperties": false
+            },
+            "$extensions": {
+              "type": "object",
+              "properties": {
+                "stylestack": {
+                  "type": "object",
+                  "properties": {
+                    "emu": {
+                      "type": "object",
+                      "properties": {
+                        "fontSize": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "description": "Font size in EMUs"
+                        },
+                        "lineHeight": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "description": "Line height in EMUs"
+                        },
+                        "letterSpacing": {
+                          "type": "integer",
+                          "description": "Letter spacing in EMUs"
+                        },
+                        "baselineGrid": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "description": "Baseline grid size in EMUs"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "accessibility": {
+                      "type": "object",
+                      "properties": {
+                        "wcagLevel": {
+                          "type": "string",
+                          "enum": ["A", "AA", "AAA"],
+                          "description": "WCAG compliance level"
+                        },
+                        "minContrastRatio": {
+                          "type": "number",
+                          "minimum": 1,
+                          "description": "Minimum contrast ratio for accessibility"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "ooxml": {
+                      "type": "object",
+                      "description": "OOXML-specific typography properties",
+                      "additionalProperties": true
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": true
             }
           }
         }
