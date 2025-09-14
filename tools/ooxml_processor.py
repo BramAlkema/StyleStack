@@ -368,7 +368,7 @@ class OOXMLProcessor:
         if 'xpath' in variable:
             return XPathExpression(
                 expression=variable['xpath'],
-                description=f"Custom XPath for {variable.get("id", "unknown")}",
+                description=f"Custom XPath for {variable.get('id', 'unknown')}",
                 target_type=variable.get("type", "text"),
                 namespaces=XPathLibrary.NAMESPACES
             )

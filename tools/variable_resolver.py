@@ -18,6 +18,8 @@ import re
 from pathlib import Path
 from dataclasses import dataclass, field
 import xml.etree.ElementTree as ET
+import hashlib
+import time
 
 from tools.token_parser import TokenType, TokenScope, TokenParser
 import logging
@@ -25,8 +27,14 @@ import logging
 # Import existing components
 from tools.token_resolver import TokenResolver
 from tools.ooxml_extension_manager import OOXMLExtensionManager, StyleStackExtension
+from tools.aspect_ratio_resolver import AspectRatioResolver, AspectRatioTokenError
 
 logger = logging.getLogger(__name__)
+
+
+class CircularReferenceError(Exception):
+    """Exception raised when circular references are detected in nested resolution"""
+    pass
 
 
 @dataclass
@@ -73,16 +81,32 @@ class VariableResolver:
     - Performance optimization for large variable sets
     """
     
-    def __init__(self, verbose: bool = False):
+    def __init__(self, verbose: bool = False, enable_cache: bool = True, strict_mode: bool = True):
         self.verbose = verbose
+        self.enable_cache = enable_cache
+        self.strict_mode = strict_mode
         self.token_resolver = TokenResolver(verbose=verbose)
         self.token_parser = TokenParser()
         self.extension_manager = OOXMLExtensionManager()
+        self.aspect_ratio_resolver = AspectRatioResolver(verbose=verbose, enable_cache=enable_cache)
         
         # Resolution caches
         self._json_tokens_cache: Dict[str, Dict[str, str]] = {}
         self._extension_variables_cache: Dict[str, List[StyleStackExtension]] = {}
         self._resolved_cache: Dict[str, ResolvedVariable] = {}
+        
+        # Nested reference resolution
+        self._nested_resolution_cache: Dict[str, str] = {}
+        self._resolution_depth_limit = 5
+        self._max_cache_size = 1000
+        
+        # Regex patterns for nested reference detection
+        self._nested_reference_regex = re.compile(
+            r'\{([a-zA-Z][a-zA-Z0-9._]*|\s*)\.\{([a-zA-Z][a-zA-Z0-9._]*|\s*)\}\.([a-zA-Z][a-zA-Z0-9._]*|\s*)\}'
+        )
+        self._multi_nested_regex = re.compile(
+            r'\{([a-zA-Z][a-zA-Z0-9._]*|\s*)\.\{([a-zA-Z][a-zA-Z0-9._]*|\s*)\}\.\{([a-zA-Z][a-zA-Z0-9._]*|\s*)\}\.([a-zA-Z][a-zA-Z0-9._]*|\s*)\}'
+        )
         
         # Hierarchy levels for different sources
         self.hierarchy_levels = {
@@ -106,7 +130,8 @@ class VariableResolver:
                             group: Optional[str] = None, 
                             personal: Optional[str] = None,
                             channel: Optional[str] = None,
-                            extension_sources: Optional[List[Union[str, Path]]] = None
+                            extension_sources: Optional[List[Union[str, Path]]] = None,
+                            context: Optional[Dict[str, Any]] = None
                             ) -> Dict[str, ResolvedVariable]:
         """
         Resolve all variables from both JSON tokens and OOXML extensions.
@@ -114,6 +139,7 @@ class VariableResolver:
         Args:
             fork, org, group, personal, channel: JSON token layers
             extension_sources: OOXML files or XML content with extension variables
+            context: Additional context including aspect ratio, design variant, etc.
             
         Returns:
             Dictionary of resolved variables with precedence applied
@@ -539,6 +565,440 @@ class VariableResolver:
                 for v in variables.values()
             ]
         }
+
+    # ========================================================================
+    # Nested Reference Resolution Methods
+    # ========================================================================
+
+    def _is_nested_reference(self, pattern: str) -> bool:
+        """Check if a pattern contains nested references like {color.{theme}.primary}"""
+        return bool(self._nested_reference_regex.search(pattern) or 
+                   self._multi_nested_regex.search(pattern))
+
+    def _parse_nested_reference(self, pattern: str) -> Dict[str, str]:
+        """Parse nested reference pattern into its components"""
+        # Try multi-nested pattern first
+        multi_match = self._multi_nested_regex.match(pattern)
+        if multi_match:
+            return {
+                'base': multi_match.group(1),
+                'dynamic': multi_match.group(2),
+                'nested_dynamic': multi_match.group(3),
+                'property': multi_match.group(4),
+                'full_pattern': pattern
+            }
+        
+        # Try basic nested pattern
+        basic_match = self._nested_reference_regex.match(pattern)
+        if basic_match:
+            return {
+                'base': basic_match.group(1),
+                'dynamic': basic_match.group(2),
+                'property': basic_match.group(3),
+                'full_pattern': pattern
+            }
+        
+        raise ValueError(f"Invalid nested reference pattern: {pattern}")
+
+    def _validate_nested_pattern(self, pattern: str) -> None:
+        """Validate nested reference pattern structure"""
+        if not pattern.strip():
+            raise ValueError("Empty nested reference pattern")
+        
+        parts = self._parse_nested_reference(pattern)
+        
+        if not parts['base']:
+            raise ValueError("Empty base path")
+        if not parts['dynamic']:
+            raise ValueError("Empty dynamic variable")
+        if not parts['property']:
+            raise ValueError("Empty property")
+        
+        # Check for invalid characters
+        invalid_chars = set('{}[]()<>@#$%^&*+=|\\`~')
+        for part_name, part_value in parts.items():
+            if part_name == 'full_pattern':
+                continue
+            if any(char in invalid_chars for char in part_value):
+                raise ValueError(f"Invalid characters in {part_name}: {part_value}")
+
+    def resolve_nested_reference(self, pattern: str, context: Dict[str, ResolvedVariable]) -> str:
+        """
+        Resolve nested reference pattern with dynamic path construction.
+        
+        Args:
+            pattern: Pattern like {color.{theme}.primary}
+            context: Dictionary of available variables
+            
+        Returns:
+            Fully resolved token value
+            
+        Raises:
+            KeyError: If referenced variables don't exist
+            CircularReferenceError: If circular references detected
+            ValueError: If pattern is invalid or depth limit exceeded
+        """
+        # Check cache first
+        if self.enable_cache:
+            cache_key = self._generate_cache_key(pattern, context)
+            if cache_key in self._nested_resolution_cache:
+                return self._nested_resolution_cache[cache_key]
+        
+        # Validate pattern
+        self._validate_nested_pattern(pattern)
+        
+        # Resolve with depth tracking
+        result = self._resolve_nested_reference_recursive(
+            pattern, context, depth=0, resolution_path=[]
+        )
+        
+        # Cache result
+        if self.enable_cache:
+            self._update_cache(cache_key, result)
+        
+        return result
+
+    def _resolve_nested_reference_recursive(self, pattern: str, context: Dict[str, ResolvedVariable], 
+                                          depth: int, resolution_path: List[str]) -> str:
+        """Recursive resolution with circular reference and depth checking"""
+        
+        # Check depth limit
+        if depth >= self._resolution_depth_limit:
+            raise ValueError("Maximum nesting depth exceeded")
+        
+        # Check for circular references
+        if pattern in resolution_path:
+            raise CircularReferenceError(f"Circular reference detected: {' -> '.join(resolution_path + [pattern])}")
+        
+        # Parse the pattern
+        parts = self._parse_nested_reference(pattern)
+        
+        # Resolve dynamic variable(s)
+        try:
+            dynamic_value = self._resolve_dynamic_variable(parts['dynamic'], context)
+            
+            # Handle multi-level nesting
+            if 'nested_dynamic' in parts:
+                nested_dynamic_value = self._resolve_dynamic_variable(parts['nested_dynamic'], context)
+                constructed_path = f"{parts['base']}.{dynamic_value}.{nested_dynamic_value}.{parts['property']}"
+            else:
+                constructed_path = f"{parts['base']}.{dynamic_value}.{parts['property']}"
+            
+            # Look for the constructed token
+            target_token = self._find_token_by_path(constructed_path, context)
+            
+            if target_token is None:
+                error_msg = f"Token '{constructed_path}' not found (constructed from pattern '{pattern}')"
+                if self.strict_mode:
+                    raise KeyError(error_msg)
+                else:
+                    if self.verbose:
+                        logger.warning(f"⚠️  {error_msg}, returning original pattern")
+                    return pattern
+            
+            # If the target token itself contains references, resolve them recursively
+            if self._contains_references(target_token.value):
+                return self._resolve_token_references_in_value(
+                    target_token.value, context, depth + 1, resolution_path + [pattern]
+                )
+            
+            return target_token.value
+            
+        except KeyError as e:
+            if self.strict_mode:
+                raise KeyError(f"Dynamic variable '{parts['dynamic']}' not found in pattern '{pattern}'") from e
+            else:
+                return pattern
+
+    def _resolve_dynamic_variable(self, var_name: str, context: Dict[str, ResolvedVariable]) -> str:
+        """Resolve a dynamic variable name to its value"""
+        if var_name not in context:
+            raise KeyError(f"Dynamic variable '{var_name}' not found")
+        
+        dynamic_var = context[var_name]
+        
+        # If the dynamic variable itself contains references, resolve them first
+        if self._contains_references(dynamic_var.value):
+            return self._resolve_token_references_in_value(dynamic_var.value, context)
+        
+        return dynamic_var.value
+
+    def _find_token_by_path(self, path: str, context: Dict[str, ResolvedVariable]) -> Optional[ResolvedVariable]:
+        """Find a token by its path, trying various ID formats"""
+        # Try exact match first
+        if path in context:
+            return context[path]
+        
+        # Try with underscores (JSON token format)
+        underscore_path = path.replace('.', '_')
+        if underscore_path in context:
+            return context[underscore_path]
+        
+        # Try searching by partial match
+        for token_id, token in context.items():
+            if token_id.endswith(path.split('.')[-1]):  # Match by final component
+                # Additional validation could go here
+                return token
+        
+        return None
+
+    def _contains_references(self, value: str) -> bool:
+        """Check if a value contains any type of token references"""
+        simple_ref_pattern = r'\{[a-zA-Z][a-zA-Z0-9._]*\}'
+        return bool(re.search(simple_ref_pattern, value) or self._is_nested_reference(value))
+
+    def _resolve_token_references_in_value(self, value: str, context: Dict[str, ResolvedVariable], 
+                                         depth: int = 0, resolution_path: List[str] = None) -> str:
+        """Enhanced version that handles both simple and nested references"""
+        if resolution_path is None:
+            resolution_path = []
+        
+        if depth >= self._resolution_depth_limit:
+            raise ValueError("Maximum resolution depth exceeded")
+        
+        # Handle nested references first
+        for match in self._nested_reference_regex.finditer(value):
+            pattern = match.group(0)
+            try:
+                resolved_value = self._resolve_nested_reference_recursive(
+                    pattern, context, depth + 1, resolution_path
+                )
+                value = value.replace(pattern, resolved_value)
+            except (KeyError, CircularReferenceError) as e:
+                if self.strict_mode:
+                    raise
+                else:
+                    if self.verbose:
+                        logger.warning(f"⚠️  Failed to resolve nested reference '{pattern}': {e}")
+        
+        # Handle simple references with existing logic
+        simple_pattern = re.compile(r'\{([a-zA-Z][a-zA-Z0-9._]*)\}')
+        for match in simple_pattern.finditer(value):
+            ref_name = match.group(1)
+            full_pattern = match.group(0)
+            
+            if ref_name in context:
+                resolved_ref = context[ref_name].value
+                
+                # Check for recursive references
+                if self._contains_references(resolved_ref) and depth < self._resolution_depth_limit:
+                    resolved_ref = self._resolve_token_references_in_value(
+                        resolved_ref, context, depth + 1, resolution_path
+                    )
+                
+                value = value.replace(full_pattern, resolved_ref)
+        
+        return value
+
+    def _generate_cache_key(self, pattern: str, context: Dict[str, ResolvedVariable]) -> str:
+        """Generate cache key based on pattern and context state"""
+        # Create hash of context values that could affect resolution
+        context_hash = hashlib.md5()
+        
+        # Sort by key for consistent hashing
+        for key in sorted(context.keys()):
+            var = context[key]
+            context_hash.update(f"{key}:{var.value}:{var.hierarchy_level}".encode())
+        
+        return f"{pattern}:{context_hash.hexdigest()[:8]}"
+
+    def _update_cache(self, cache_key: str, result: str) -> None:
+        """Update cache with size limiting"""
+        if len(self._nested_resolution_cache) >= self._max_cache_size:
+            # Simple LRU: remove oldest entries (first 10%)
+            items_to_remove = list(self._nested_resolution_cache.keys())[:self._max_cache_size // 10]
+            for key in items_to_remove:
+                del self._nested_resolution_cache[key]
+        
+        self._nested_resolution_cache[cache_key] = result
+
+    def clear_nested_cache(self) -> None:
+        """Clear the nested resolution cache"""
+        self._nested_resolution_cache.clear()
+        if self.verbose:
+            logger.info("🧹 Cleared nested reference resolution cache")
+
+    def get_cache_stats(self) -> Dict[str, int]:
+        """Get cache statistics"""
+        return {
+            'nested_cache_size': len(self._nested_resolution_cache),
+            'nested_cache_limit': self._max_cache_size,
+            'resolution_depth_limit': self._resolution_depth_limit
+        }
+
+    def resolve_all(self, context: Optional[Dict[str, Any]] = None) -> Dict[str, ResolvedVariable]:
+        """Enhanced resolve_all method that handles nested references"""
+        if context is None:
+            context = {}
+        
+        # Convert context to ResolvedVariable format if needed
+        resolved_context = {}
+        for key, value in context.items():
+            if isinstance(value, ResolvedVariable):
+                resolved_context[key] = value
+            else:
+                # Convert to ResolvedVariable
+                resolved_context[key] = ResolvedVariable(
+                    id=key,
+                    value=str(value),
+                    type=TokenType.TEXT,  # Default type
+                    scope=TokenScope.THEME,
+                    source='manual'
+                )
+        
+        # Resolve any nested references in values
+        for var_id, variable in resolved_context.items():
+            if self._contains_references(variable.value):
+                try:
+                    resolved_value = self._resolve_token_references_in_value(variable.value, resolved_context)
+                    # Create new variable with resolved value
+                    resolved_context[var_id] = ResolvedVariable(
+                        id=variable.id,
+                        value=resolved_value,
+                        type=variable.type,
+                        scope=variable.scope,
+                        source=variable.source,
+                        xpath=variable.xpath,
+                        ooxml_mapping=variable.ooxml_mapping,
+                        hierarchy_level=variable.hierarchy_level,
+                        dependencies=variable.dependencies
+                    )
+                except (KeyError, CircularReferenceError) as e:
+                    if self.verbose:
+                        logger.warning(f"⚠️  Failed to resolve references in '{var_id}': {e}")
+        
+        return resolved_context
+
+    def resolve_aspect_ratio_conditional_tokens(self, 
+                                              base_tokens: Dict[str, Any], 
+                                              aspect_ratio_token: str,
+                                              context: Optional[Dict[str, Any]] = None) -> Dict[str, ResolvedVariable]:
+        """
+        Resolve tokens with aspect ratio conditional values using token-defined aspect ratios.
+        
+        Args:
+            base_tokens: Token structure with aspectRatios definitions and $aspectRatio conditions
+            aspect_ratio_token: Token path to aspect ratio (e.g., "aspectRatios.widescreen") 
+            context: Additional resolution context
+            
+        Returns:
+            Dictionary of resolved variables with aspect ratio conditional values resolved
+            
+        Raises:
+            AspectRatioTokenError: If aspect ratio token not found or malformed
+        """
+        if self.verbose:
+            logger.info(f"🖥️ Resolving aspect ratio conditional tokens for: {aspect_ratio_token}")
+        
+        try:
+            # Use AspectRatioResolver to resolve conditional tokens
+            resolved_tokens = self.aspect_ratio_resolver.resolve_aspect_ratio_tokens(
+                base_tokens, aspect_ratio_token
+            )
+            
+            # Convert resolved tokens to ResolvedVariable format
+            resolved_variables = {}
+            
+            for token_path, value in self._flatten_resolved_tokens(resolved_tokens).items():
+                # Determine token type and scope
+                scope, token_type = self._infer_scope_and_type_from_path(token_path)
+                
+                # Create ResolvedVariable
+                variable = ResolvedVariable(
+                    id=token_path.replace('.', '_'),
+                    value=str(value),
+                    type=token_type,
+                    scope=scope,
+                    source='aspect_ratio_conditional',
+                    hierarchy_level=self.hierarchy_levels['extension_theme'],  # High priority
+                    dependencies=[aspect_ratio_token] if aspect_ratio_token not in token_path else []
+                )
+                
+                resolved_variables[variable.id] = variable
+            
+            if self.verbose:
+                logger.info(f"   Resolved {len(resolved_variables)} aspect ratio conditional tokens")
+            
+            return resolved_variables
+            
+        except AspectRatioTokenError as e:
+            if self.strict_mode:
+                raise
+            else:
+                if self.verbose:
+                    logger.warning(f"⚠️ Aspect ratio resolution failed: {e}")
+                return {}
+
+    def convert_to_token_structure(self, variables: Dict[str, ResolvedVariable]) -> Dict[str, Any]:
+        """
+        Convert ResolvedVariable dictionary back to nested token structure.
+        
+        Args:
+            variables: Dictionary of resolved variables
+            
+        Returns:
+            Nested token structure suitable for further processing
+        """
+        token_structure = {}
+        
+        for var_id, variable in variables.items():
+            # Convert underscored ID back to dot notation path
+            token_path = var_id.replace('_', '.')
+            
+            # Set nested value in structure
+            self._set_nested_token_value(token_structure, token_path, variable.value)
+        
+        return token_structure
+
+    def _flatten_resolved_tokens(self, tokens: Dict[str, Any], prefix: str = "") -> Dict[str, Any]:
+        """Flatten nested token structure to dot-notation paths"""
+        flattened = {}
+        
+        for key, value in tokens.items():
+            full_key = f"{prefix}.{key}" if prefix else key
+            
+            if isinstance(value, dict) and not self._is_token_definition(value):
+                # Recursively flatten nested objects
+                flattened.update(self._flatten_resolved_tokens(value, full_key))
+            else:
+                # Leaf value
+                flattened[full_key] = value
+        
+        return flattened
+
+    def _is_token_definition(self, value: Dict[str, Any]) -> bool:
+        """Check if a dictionary is a token definition (has $type, $value, etc.)"""
+        return (
+            isinstance(value, dict) and
+            ("$type" in value or "$value" in value or "$aspectRatio" in value)
+        )
+
+    def _set_nested_token_value(self, obj: Dict[str, Any], path: str, value: Any):
+        """Set nested dictionary value using dot notation path"""
+        keys = path.split('.')
+        current = obj
+        
+        # Navigate to parent of target key
+        for key in keys[:-1]:
+            if key not in current:
+                current[key] = {}
+            current = current[key]
+        
+        # Set the final value
+        current[keys[-1]] = value
+
+    def get_available_aspect_ratios(self, tokens: Dict[str, Any]) -> List[str]:
+        """
+        Get list of available aspect ratio tokens from token structure.
+        
+        Args:
+            tokens: Token structure containing aspectRatios definitions
+            
+        Returns:
+            List of aspect ratio token paths (e.g., ["aspectRatios.widescreen", "aspectRatios.a4_landscape"])
+        """
+        aspect_ratio_tokens = self.aspect_ratio_resolver.list_available_aspect_ratios(tokens)
+        return [ratio.token_path for ratio in aspect_ratio_tokens]
 
 
 if __name__ == "__main__":
