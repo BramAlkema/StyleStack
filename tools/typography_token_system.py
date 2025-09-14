@@ -23,6 +23,17 @@ import logging
 from tools.variable_resolver import ResolvedVariable, VariableResolver
 from tools.token_parser import TokenType, TokenScope
 
+# Import inheritance enums and types for enhanced typography token support
+try:
+    from tools.style_inheritance_core import InheritanceMode
+except ImportError:
+    # Fallback for environments without style inheritance core
+    class InheritanceMode:
+        AUTO = "auto"
+        MANUAL_OVERRIDE = "manual_override"
+        COMPLETE = "complete"
+        DELTA = "delta"
+
 logger = logging.getLogger(__name__)
 
 
@@ -78,6 +89,13 @@ class TypographyToken:
     # OOXML-specific properties
     ooxml_properties: Dict[str, Any] = field(default_factory=dict)
 
+    # Style inheritance extensions (optional - for enhanced typography tokens)
+    base_style: Optional[str] = None
+    inheritance_mode: Optional[str] = None  # "auto", "manual_override", "strict"
+    delta_properties: Optional[Dict[str, Any]] = field(default_factory=dict)
+    inheritance_chain: Optional[List[str]] = field(default_factory=list)
+    inheritance_depth: Optional[int] = None
+
     def to_w3c_dtcg(self) -> Dict[str, Any]:
         """Convert to W3C DTCG typography token format"""
         token = {
@@ -129,7 +147,98 @@ class TypographyToken:
                 token["$extensions"] = {"stylestack": {}}
             token["$extensions"]["stylestack"]["ooxml"] = self.ooxml_properties
 
+        # Add inheritance metadata to extensions if present
+        if self.has_inheritance():
+            if "$extensions" not in token:
+                token["$extensions"] = {"stylestack": {}}
+            elif "stylestack" not in token["$extensions"]:
+                token["$extensions"]["stylestack"] = {}
+
+            token["$extensions"]["stylestack"]["inheritance"] = {
+                "baseStyle": self.base_style,
+                "mode": self.inheritance_mode,
+                "shouldGenerateDelta": self.should_generate_delta(),
+                "inheritanceChain": self.inheritance_chain,
+                "inheritanceDepth": self.inheritance_depth
+            }
+
+            if self.delta_properties:
+                token["$extensions"]["stylestack"]["inheritance"]["deltaProperties"] = self.delta_properties
+
         return token
+
+    def has_inheritance(self) -> bool:
+        """Check if this token has inheritance configuration"""
+        return self.base_style is not None or self.inheritance_mode is not None
+
+    def should_generate_delta(self) -> bool:
+        """Determine if this token should generate delta-only properties"""
+        return (self.has_inheritance() and
+                self.inheritance_mode in ["auto", "delta"] and
+                bool(self.delta_properties))
+
+    def get_effective_property(self, property_name: str) -> Any:
+        """Get effective property value considering inheritance"""
+        # Map property names to token attributes
+        property_map = {
+            "family": "font_family",
+            "fontFamily": "font_family",
+            "size": "font_size",
+            "fontSize": "font_size",
+            "weight": "font_weight",
+            "fontWeight": "font_weight",
+            "height": "line_height",
+            "lineHeight": "line_height",
+            "spacing": "letter_spacing",
+            "letterSpacing": "letter_spacing",
+            "style": "font_style",
+            "fontStyle": "font_style"
+        }
+
+        attr_name = property_map.get(property_name, property_name)
+        return getattr(self, attr_name, None)
+
+    def to_inherited_token(self):
+        """Convert to InheritedTypographyToken if inheritance core is available"""
+        try:
+            from tools.style_inheritance_core import InheritedTypographyToken, InheritanceMode as CoreInheritanceMode
+
+            # Convert inheritance mode string to enum
+            mode_map = {
+                "auto": CoreInheritanceMode.AUTO,
+                "manual_override": CoreInheritanceMode.MANUAL_OVERRIDE,
+                "complete": CoreInheritanceMode.COMPLETE,
+                "delta": CoreInheritanceMode.DELTA
+            }
+
+            inheritance_mode_enum = mode_map.get(self.inheritance_mode, CoreInheritanceMode.MANUAL_OVERRIDE)
+
+            return InheritedTypographyToken(
+                id=self.id,
+                font_family=self.font_family,
+                font_size=self.font_size,
+                font_weight=self.font_weight,
+                line_height=self.line_height,
+                letter_spacing=self.letter_spacing,
+                font_style=self.font_style,
+                text_decoration=self.text_decoration,
+                text_transform=self.text_transform,
+                font_size_emu=self.font_size_emu,
+                line_height_emu=self.line_height_emu,
+                letter_spacing_emu=self.letter_spacing_emu,
+                baseline_grid_emu=self.baseline_grid_emu,
+                wcag_level=self.wcag_level,
+                min_contrast_ratio=self.min_contrast_ratio,
+                ooxml_properties=self.ooxml_properties,
+                base_style=self.base_style,
+                inheritance_mode=inheritance_mode_enum,
+                delta_properties=self.delta_properties or {},
+                inheritance_chain=self.inheritance_chain or [],
+                inheritance_depth=self.inheritance_depth or 0
+            )
+        except ImportError:
+            # Return self if inheritance core not available
+            return self
 
 
 class EMUConversionEngine:
@@ -229,9 +338,22 @@ class BaselineGridEngine:
 class TypographyTokenHierarchyResolver:
     """Hierarchical typography token resolution with precedence"""
 
-    def __init__(self, variable_resolver: Optional[VariableResolver] = None):
+    def __init__(self, variable_resolver: Optional[VariableResolver] = None, enable_inheritance: bool = True):
         self.variable_resolver = variable_resolver or VariableResolver(verbose=True)
         self.baseline_engine = BaselineGridEngine()
+        self.enable_inheritance = enable_inheritance
+
+        # Initialize inheritance system if available and enabled
+        self.inheritance_registry = None
+        self.delta_generator = None
+        self.inheritance_resolver = None
+
+        if self.enable_inheritance:
+            try:
+                from tools.style_inheritance_core import create_inheritance_system
+                self.inheritance_registry, self.delta_generator, self.inheritance_resolver = create_inheritance_system()
+            except ImportError:
+                self.enable_inheritance = False
 
     def resolve_typography_tokens(self,
                                 design_system_tokens: Optional[Dict[str, Any]] = None,
@@ -272,6 +394,10 @@ class TypographyTokenHierarchyResolver:
         # Calculate EMU values and grid alignment
         for token in resolved_tokens.values():
             self._calculate_emu_values(token)
+
+        # Resolve inheritance relationships if enabled
+        if self.enable_inheritance and self.inheritance_resolver:
+            resolved_tokens = self._resolve_inheritance_relationships(resolved_tokens)
 
         return resolved_tokens
 
@@ -344,6 +470,15 @@ class TypographyTokenHierarchyResolver:
         # Extract OOXML properties
         token.ooxml_properties = extensions.get("ooxml", {})
 
+        # Extract inheritance data if present
+        inheritance_data = extensions.get("inheritance", {})
+        if inheritance_data:
+            token.base_style = inheritance_data.get("baseStyle")
+            token.inheritance_mode = inheritance_data.get("mode")
+            token.delta_properties = inheritance_data.get("deltaProperties", {})
+            token.inheritance_chain = inheritance_data.get("inheritanceChain", [])
+            token.inheritance_depth = inheritance_data.get("inheritanceDepth")
+
         return token
 
     def _create_typography_token_from_dtcg(self, token_id: str, dtcg_token: Dict[str, Any],
@@ -408,6 +543,77 @@ class TypographyTokenHierarchyResolver:
         # Set default baseline grid if not specified
         if token.baseline_grid_emu is None:
             token.baseline_grid_emu = self.baseline_engine.baseline_grid_emu
+
+    def _resolve_inheritance_relationships(self, tokens: Dict[str, TypographyToken]) -> Dict[str, TypographyToken]:
+        """Resolve inheritance relationships between typography tokens"""
+        if not self.enable_inheritance or not self.inheritance_resolver:
+            return tokens
+
+        resolved_tokens = {}
+
+        # Convert TypographyTokens with inheritance to InheritedTypographyTokens
+        inherited_tokens = {}
+        for token_id, token in tokens.items():
+            if token.has_inheritance():
+                inherited_token = token.to_inherited_token()
+                inherited_tokens[token_id] = inherited_token
+            else:
+                # Keep non-inheritance tokens as-is
+                resolved_tokens[token_id] = token
+
+        # Resolve inheritance for tokens that have inheritance relationships
+        for token_id, inherited_token in inherited_tokens.items():
+            try:
+                # Create hierarchy for this token resolution
+                token_hierarchy = inherited_tokens.copy()
+
+                # Resolve inheritance
+                resolved_inherited_token = self.inheritance_resolver.resolve_inheritance(
+                    inherited_token, token_hierarchy
+                )
+
+                # Convert back to TypographyToken with resolved inheritance data
+                resolved_token = self._convert_inherited_to_typography_token(resolved_inherited_token)
+                resolved_tokens[token_id] = resolved_token
+
+            except Exception as e:
+                logger.warning(f"Failed to resolve inheritance for token {token_id}: {e}")
+                # Fallback to original token without inheritance
+                fallback_token = tokens[token_id]
+                fallback_token.inheritance_mode = "manual_override"
+                resolved_tokens[token_id] = fallback_token
+
+        return resolved_tokens
+
+    def _convert_inherited_to_typography_token(self, inherited_token) -> TypographyToken:
+        """Convert InheritedTypographyToken back to TypographyToken with resolved data"""
+        # Get effective properties from the inherited token
+        typography_token = TypographyToken(
+            id=inherited_token.id,
+            font_family=inherited_token.get_effective_property("family"),
+            font_size=inherited_token.get_effective_property("size"),
+            font_weight=inherited_token.get_effective_property("weight"),
+            line_height=inherited_token.get_effective_property("height"),
+            letter_spacing=inherited_token.get_effective_property("spacing"),
+            font_style=inherited_token.get_effective_property("style"),
+            text_decoration=inherited_token.text_decoration,
+            text_transform=inherited_token.text_transform,
+            font_size_emu=inherited_token.font_size_emu,
+            line_height_emu=inherited_token.line_height_emu,
+            letter_spacing_emu=inherited_token.letter_spacing_emu,
+            baseline_grid_emu=inherited_token.baseline_grid_emu,
+            wcag_level=inherited_token.wcag_level,
+            min_contrast_ratio=inherited_token.min_contrast_ratio,
+            ooxml_properties=inherited_token.ooxml_properties.copy() if inherited_token.ooxml_properties else {},
+            # Preserve inheritance metadata
+            base_style=inherited_token.base_style,
+            inheritance_mode=inherited_token.inheritance_mode.value if hasattr(inherited_token.inheritance_mode, 'value') else str(inherited_token.inheritance_mode),
+            delta_properties=inherited_token.delta_properties.copy() if inherited_token.delta_properties else {},
+            inheritance_chain=inherited_token.inheritance_chain.copy() if inherited_token.inheritance_chain else [],
+            inheritance_depth=inherited_token.inheritance_depth
+        )
+
+        return typography_token
 
 
 class TypographyTokenValidator:
@@ -527,8 +733,123 @@ class TypographyTokenSystem:
 
         return w3c_tokens
 
+    def generate_ooxml_paragraph_styles_with_inheritance(self, tokens: Dict[str, TypographyToken]) -> Dict[str, Dict[str, Any]]:
+        """Generate OOXML paragraph style definitions with inheritance support"""
+        paragraph_styles = {}
+
+        for token_id, token in tokens.items():
+            style_id = token_id.replace('.', '_')
+
+            # Create base style structure
+            style = {
+                "w:style": {
+                    "@w:type": "paragraph",
+                    "@w:styleId": style_id,
+                    "w:name": {"@w:val": token_id.replace('_', ' ').title()}
+                }
+            }
+
+            # Add inheritance basedOn reference if present
+            if token.has_inheritance() and token.should_generate_delta():
+                # Delta-style with basedOn reference
+                if token.base_style:
+                    base_style_id = token.base_style.replace('.', '_') if '.' in token.base_style else token.base_style
+                    style["w:style"]["w:basedOn"] = {"@w:val": base_style_id}
+
+                # Add only delta properties
+                self._add_delta_properties_to_ooxml_style(style, token)
+            else:
+                # Complete style definition (no inheritance or manual override)
+                self._add_complete_properties_to_ooxml_style(style, token)
+
+            paragraph_styles[style_id] = style
+
+        return paragraph_styles
+
+    def _add_delta_properties_to_ooxml_style(self, style: Dict[str, Any], token: TypographyToken):
+        """Add only delta (changed) properties to OOXML style"""
+        if not token.delta_properties:
+            return
+
+        rpr = {}
+        ppr = {}
+
+        # Process delta properties
+        for prop, value in token.delta_properties.items():
+            if prop == "fontFamily":
+                rpr["w:rFonts"] = {"@w:ascii": value}
+            elif prop == "fontSize":
+                if isinstance(value, str) and value.endswith('pt'):
+                    pt_value = float(value[:-2])
+                    rpr["w:sz"] = {"@w:val": str(int(pt_value * 2))}
+            elif prop == "fontWeight":
+                if isinstance(value, int) and value >= 600:
+                    rpr["w:b"] = {}
+                elif value in ["bold", "semibold", "extrabold"]:
+                    rpr["w:b"] = {}
+            elif prop == "fontStyle" and value == "italic":
+                rpr["w:i"] = {}
+            elif prop == "letterSpacing":
+                if token.letter_spacing_emu:
+                    rpr["w:spacing"] = {"@w:val": str(int(token.letter_spacing_emu))}
+            elif prop == "lineHeight":
+                if token.line_height_emu:
+                    ppr["w:spacing"] = {
+                        "@w:line": str(int(token.line_height_emu)),
+                        "@w:lineRule": "exact"
+                    }
+
+        # Add properties to style
+        if rpr:
+            style["w:style"]["w:rPr"] = rpr
+        if ppr:
+            style["w:style"]["w:pPr"] = ppr
+
+    def _add_complete_properties_to_ooxml_style(self, style: Dict[str, Any], token: TypographyToken):
+        """Add complete properties to OOXML style (no inheritance)"""
+        rpr = {}
+        ppr = {}
+
+        # Font properties
+        if token.font_family:
+            rpr["w:rFonts"] = {
+                "@w:ascii": token.font_family if isinstance(token.font_family, str) else token.font_family[0]
+            }
+
+        if token.font_size_emu:
+            rpr["w:sz"] = {
+                "@w:val": str(int(token.font_size_emu // EMU_PER_POINT * 2))  # Half-points
+            }
+
+        if token.font_weight:
+            if isinstance(token.font_weight, int) and token.font_weight >= 600:
+                rpr["w:b"] = {}
+            elif token.font_weight in ["bold", "semibold", "extrabold"]:
+                rpr["w:b"] = {}
+
+        if token.font_style == "italic":
+            rpr["w:i"] = {}
+
+        if token.letter_spacing_emu:
+            rpr["w:spacing"] = {
+                "@w:val": str(int(token.letter_spacing_emu))
+            }
+
+        # Paragraph properties
+        if token.line_height_emu:
+            ppr["w:spacing"] = {
+                "@w:line": str(int(token.line_height_emu)),
+                "@w:lineRule": "exact"
+            }
+
+        # Add properties to style
+        if rpr:
+            style["w:style"]["w:rPr"] = rpr
+        if ppr:
+            style["w:style"]["w:pPr"] = ppr
+
     def generate_ooxml_paragraph_styles(self, tokens: Dict[str, TypographyToken]) -> Dict[str, Dict[str, Any]]:
-        """Generate OOXML paragraph style definitions from typography tokens"""
+        """Generate OOXML paragraph style definitions from typography tokens (legacy method)"""
         paragraph_styles = {}
 
         for token_id, token in tokens.items():
