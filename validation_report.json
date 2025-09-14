@@ -1,21 +1,21 @@
 {
-  "timestamp": "2025-09-11 17:47:26",
+  "timestamp": "2025-09-15 00:51:50",
   "validation_suite": "PowerPoint Layout Engine Validation",
   "version": "1.0.0",
   "results": {
     "layout_availability": {
       "total_layouts": 11,
       "layout_types": [
+        "obj",
+        "blank",
+        "picTx",
+        "secHead",
+        "twoTxTwoObj",
+        "title",
+        "objTx",
         "titleOnly",
         "pic",
-        "secHead",
-        "blank",
-        "twoTxTwoObj",
-        "twoObj",
-        "objTx",
-        "picTx",
-        "obj",
-        "title"
+        "twoObj"
       ],
       "status": "PASS"
     },

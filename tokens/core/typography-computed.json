@@ -349,22 +349,22 @@
         }
       },
       "punctuation_pairs": {
-        "T,": {
+        "T_comma": {
           "value": -24,
           "type": "number",
           "unit": "twentieths_pt"
         },
-        "T.": {
+        "T_period": {
           "value": -24,
           "type": "number",
           "unit": "twentieths_pt"
         },
-        "P,": {
+        "P_comma": {
           "value": -16,
           "type": "number",
           "unit": "twentieths_pt"
         },
-        "P.": {
+        "P_period": {
           "value": -16,
           "type": "number",
           "unit": "twentieths_pt"
