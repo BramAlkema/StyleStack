@@ -161,7 +161,7 @@ class TestTokenIntegrationLayer(unittest.TestCase):
     def test_processor_integration(self):
         """Test integration with JSON-to-OOXML processor."""
         # Create mock processor
-        mock_processor = Mock(spec=JSONPatchProcessor)
+        mock_processor = Mock()  # JSONPatchProcessor eliminated
         mock_processor.template_type = 'potx'
         mock_processor.variables = {'test_var': 'test_value'}
         mock_processor.metadata = {'version': '1.0'}
@@ -320,7 +320,7 @@ class TestConvenienceFunctions(unittest.TestCase):
     
     def test_integrate_tokens_with_processor(self):
         """Test integration with existing processor."""
-        mock_processor = Mock(spec=JSONPatchProcessor)
+        mock_processor = Mock()  # JSONPatchProcessor eliminated
         mock_processor.template_type = 'potx'
         mock_processor.variables = {}
         mock_processor.metadata = {}

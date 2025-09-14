@@ -28,7 +28,9 @@ from tools.template_analyzer import TemplateAnalyzer
 from tools.substitution.pipeline import SubstitutionPipeline
 from tools.handlers.types import OOXMLFormat
 from tools.handlers.formats import FormatRegistry
-from tools.multi_format_ooxml_handler import MultiFormatOOXMLHandler
+from tools.handlers.formats import create_format_processor
+from tools.handlers.types import FormatConfiguration
+from tools.core.types import RecoveryStrategy
 
 
 @dataclass
@@ -368,16 +370,23 @@ class PerformanceBenchmark:
         
         return suite
     
-    def benchmark_multi_format_handler(self) -> BenchmarkSuite:
-        """Benchmark the multi-format OOXML handler."""
-        suite = BenchmarkSuite("Multi-Format Handler")
-        
-        # Test handler initialization
-        with self.benchmark_timer("handler_initialization") as timer:
+    def benchmark_direct_processors(self) -> BenchmarkSuite:
+        """Benchmark direct format processors."""
+        suite = BenchmarkSuite("Direct Format Processors")
+
+        # Test processor creation for different formats
+        formats = [OOXMLFormat.POWERPOINT, OOXMLFormat.WORD, OOXMLFormat.EXCEL]
+
+        with self.benchmark_timer("processor_creation") as timer:
             for _ in range(20):
-                handler = MultiFormatOOXMLHandler()
+                for format_type in formats:
+                    config = FormatConfiguration(
+                        format_type=format_type,
+                        recovery_strategy=RecoveryStrategy.RETRY_WITH_FALLBACK.value
+                    )
+                    processor = create_format_processor(format_type, config)
         suite.add_result(timer.result)
-        
+
         return suite
     
     def benchmark_file_operations(self) -> BenchmarkSuite:
@@ -429,7 +438,7 @@ class PerformanceBenchmark:
             self.benchmark_template_analyzer,
             self.benchmark_substitution_pipeline,
             self.benchmark_format_registry,
-            self.benchmark_multi_format_handler,
+            self.benchmark_direct_processors,
             self.benchmark_file_operations,
             self.benchmark_concurrent_operations
         ]

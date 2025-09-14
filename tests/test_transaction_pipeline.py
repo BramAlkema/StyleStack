@@ -1,4 +1,3 @@
-from tools.handlers.types import OOXMLFormat
 #!/usr/bin/env python3
 """
 Transaction Pipeline Tests
@@ -23,7 +22,7 @@ from tools.transaction_pipeline import (
     TransactionOperation, TransactionSnapshot, TransactionResult,
     create_transaction_pipeline, atomic_ooxml_operation
 )
-from tools.multi_format_ooxml_handler import OOXMLFormat, ProcessingResult
+from tools.handlers.types import OOXMLFormat, ProcessingResult
 
 
 class TestTransactionState(unittest.TestCase):
@@ -424,9 +423,16 @@ class TestOperationExecution(unittest.TestCase):
             shutil.rmtree(self.temp_dir, ignore_errors=True)
         self.pipeline.executor.shutdown(wait=True)
     
-    @patch('tools.transaction_pipeline.MultiFormatOOXMLHandler.process_template')
-    def test_execute_process_template(self, mock_process):
+    @patch('tools.transaction_pipeline.FormatRegistry.detect_format')
+    @patch('tools.transaction_pipeline.create_format_processor')
+    def test_execute_process_template(self, mock_create_processor, mock_detect):
         """Test process template operation execution."""
+        # Mock format detection and processor creation
+        mock_detect.return_value = OOXMLFormat.POWERPOINT
+        mock_processor = Mock()
+        mock_create_processor.return_value = mock_processor
+
+        # Mock processor result
         mock_result = ProcessingResult(
             success=True,
             format_type=OOXMLFormat.POWERPOINT,
@@ -435,7 +441,7 @@ class TestOperationExecution(unittest.TestCase):
             warnings=[],
             statistics={}
         )
-        mock_process.return_value = mock_result
+        mock_processor.process_zip_entry.return_value = mock_result
         
         operation = TransactionOperation(
             operation_id="op-1",
@@ -451,7 +457,8 @@ class TestOperationExecution(unittest.TestCase):
         
         self.assertTrue(result.success)
         self.assertEqual(result.format_type, OOXMLFormat.POWERPOINT)
-        mock_process.assert_called_once()
+        mock_detect.assert_called_once()
+        mock_create_processor.assert_called_once()
     
     def test_execute_register_tokens(self):
         """Test token registration operation execution."""
@@ -470,7 +477,7 @@ class TestOperationExecution(unittest.TestCase):
         # Should succeed if token layer exists
         self.assertIsInstance(result, bool)
     
-    @patch('tools.transaction_pipeline.MultiFormatOOXMLHandler.validate_template_structure')
+    @patch('tools.transaction_pipeline.FormatRegistry.validate_template_structure')
     def test_execute_validate_structure(self, mock_validate):
         """Test structure validation operation execution."""
         mock_validate.return_value = {

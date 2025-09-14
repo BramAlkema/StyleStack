@@ -23,7 +23,9 @@ import threading
 from concurrent.futures import ThreadPoolExecutor, Future
 import json
 
-from tools.multi_format_ooxml_handler import MultiFormatOOXMLHandler, ProcessingResult, OOXMLFormat
+from tools.handlers.formats import FormatRegistry, create_format_processor
+from tools.handlers.types import ProcessingResult, OOXMLFormat, FormatConfiguration
+from tools.core.types import RecoveryStrategy
 from tools.core.types import PatchResult
 
 # Configure logging
@@ -129,7 +131,9 @@ class TransactionPipeline:
         self.audit_lock = threading.Lock()
         
         # Component integrations
-        self.ooxml_handler = MultiFormatOOXMLHandler(enable_token_integration=True)
+        # Direct processor components (replaces MultiFormatOOXMLHandler)
+        self.format_registry = FormatRegistry()
+        self.enable_token_integration = True
         
         # Performance monitoring
         self.performance_stats = {
@@ -419,30 +423,64 @@ class Transaction:
             original_files = {}
             modified_files = []
             
-            # Initialize JSON-OOXML processor for real XML processing
-            processor = JSONPatchProcessor()
-            
-            # Load the template file 
+            # Initialize direct format processor for real XML processing
             if not Path(template_path).exists():
                 raise FileNotFoundError(f"Template file not found: {template_path}")
-            
+
+            # Detect format and create appropriate processor
+            registry = FormatRegistry()
+            format_type = registry.detect_format(template_path)
+
+            config = FormatConfiguration(
+                format_type=format_type,
+                recovery_strategy=RecoveryStrategy.RETRY_WITH_FALLBACK.value,
+                enable_token_integration=True
+            )
+            processor = create_format_processor(format_type, config)
+
             # Capture original content before applying patches
             files_to_modify = [template_path]
             if output_path and output_path != template_path:
                 files_to_modify.append(output_path)
-            
+
             for file_path in files_to_modify:
                 if Path(file_path).exists():
                     with open(file_path, 'rb') as f:
                         original_files[file_path] = f.read()
                     logger.debug(f"Captured original state for rollback: {file_path}")
-            
-            # Apply patches to the template
+
+            # Apply patches using direct processor
             results = []
+            import shutil
+            import zipfile
+
+            # Copy template to output path for processing
+            if output_path and output_path != template_path:
+                shutil.copy2(template_path, output_path)
+                processing_path = Path(output_path)
+            else:
+                processing_path = Path(template_path)
+
+            structure = registry.get_structure(format_type)
+
             for patch in patches:
                 try:
-                    # Process each patch against the template
-                    result = processor.apply_patches_to_file(template_path, [patch], output_path)
+                    # Process each patch against the template using direct processor
+                    with zipfile.ZipFile(processing_path, 'a') as zip_file:
+                        processor_result = processor.process_zip_entry(
+                            zip_file, structure.main_document_path, [patch], None
+                        )
+
+                    # Convert processor result to PatchResult format
+                    result = PatchResult(
+                        success=len(processor_result.get('errors', [])) == 0,
+                        operation="apply_patch",
+                        target=str(processing_path),
+                        message="Direct processor patch application",
+                        affected_elements=1 if len(processor_result.get('errors', [])) == 0 else 0,
+                        affected_files=[str(processing_path)],
+                        severity="info" if len(processor_result.get('errors', [])) == 0 else "error"
+                    )
                     results.append(result)
                     
                     # Track modified files for rollback

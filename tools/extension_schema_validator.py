@@ -22,6 +22,9 @@ from lxml import etree as ET
 # Configure logging
 logger = get_logger(__name__)
 
+# Export alias for backward compatibility
+ValidationError = CoreValidationError
+
 
 class VariableType(Enum):
     COLOR = "color"
