@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-styles xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+                       xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+                       xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+                       xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+                       xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+                       xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+                       xmlns:xlink="http://www.w3.org/1999/xlink"
+                       xmlns:dc="http://purl.org/dc/elements/1.1/"
+                       xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+                       xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+                       xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+                       xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0"
+                       xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0"
+                       xmlns:math="http://www.w3.org/1998/Math/MathML"
+                       xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0"
+                       xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0"
+                       xmlns:ooo="http://openoffice.org/2004/office"
+                       xmlns:ooow="http://openoffice.org/2004/writer"
+                       xmlns:oooc="http://openoffice.org/2004/calc"
+                       xmlns:dom="http://www.w3.org/2001/xml-events"
+                       xmlns:rpt="http://openoffice.org/2005/report"
+                       xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2"
+                       xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                       xmlns:grddl="http://www.w3.org/2003/g/data-view#"
+                       xmlns:officeooo="http://openoffice.org/2009/office"
+                       xmlns:tableooo="http://openoffice.org/2009/table"
+                       xmlns:drawooo="http://openoffice.org/2010/draw"
+                       xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0"
+                       xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0"
+                       xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0"
+                       xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0"
+                       xmlns:css3t="http://www.w3.org/TR/css3-text/"
+                       office:version="1.3">
+
+  <!-- StyleStack Modern Mathematical Formula Styles with Design Token Integration -->
+
+  <!-- Font face declarations optimized for mathematical typography -->
+  <office:font-face-decls>
+    <style:font-face style:name="Inter" svg:font-family="{{typography.font.family|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"/>
+    <style:font-face style:name="Latin Modern Math" svg:font-family="{{typography.font.math|Latin Modern Math}}" style:font-family-generic="roman" style:font-pitch="variable"/>
+    <style:font-face style:name="STIX Two Math" svg:font-family="{{typography.font.math_alt|STIX Two Math}}" style:font-family-generic="roman" style:font-pitch="variable"/>
+    <style:font-face style:name="Liberation Serif" svg:font-family="'Liberation Serif'" style:font-family-generic="roman" style:font-pitch="variable"/>
+    <style:font-face style:name="DejaVu Sans" svg:font-family="'DejaVu Sans'" style:font-family-generic="system" style:font-pitch="variable"/>
+  </office:font-face-decls>
+
+  <!-- Document styles for mathematical content -->
+  <office:styles>
+    <!-- Default paragraph style for mathematical text -->
+    <style:style style:name="Standard" style:family="paragraph" style:class="text">
+      <style:paragraph-properties fo:margin-top="{{spacing.paragraph.margin.top|0cm}}" fo:margin-bottom="{{spacing.paragraph.margin.bottom|0.212cm}}"
+                                 fo:text-align="center" style:justify-single-word="false"/>
+      <style:text-properties style:use-window-font-color="true" style:font-name="Inter" fo:font-size="{{typography.sizes.default|12pt}}"
+                            fo:language="{{locale.language|en}}" fo:country="{{locale.country|US}}" style:font-name-asian="DejaVu Sans"
+                            style:font-size-asian="{{typography.sizes.default|12pt}}" style:language-asian="{{locale.language_asian|zh}}"
+                            style:country-asian="{{locale.country_asian|CN}}" style:font-name-complex="Liberation Serif"
+                            style:font-size-complex="{{typography.sizes.default|12pt}}" style:language-complex="{{locale.language_complex|hi}}"
+                            style:country-complex="{{locale.country_complex|IN}}" fo:color="{{brand.colors.text.default|#475569}}"/>
+    </style:style>
+
+    <!-- Mathematical formula styles -->
+    <style:style style:name="Formula" style:family="paragraph" style:parent-style-name="Standard" style:class="formula">
+      <style:paragraph-properties fo:text-align="{{alignment.formula.default|center}}" fo:margin-top="{{spacing.formula.margin.top|0.4cm}}"
+                                 fo:margin-bottom="{{spacing.formula.margin.bottom|0.4cm}}" fo:keep-together="{{layout.formula.keep_together|always}}"
+                                 fo:break-before="{{layout.formula.break_before|auto}}" fo:break-after="{{layout.formula.break_after|auto}}"/>
+      <style:text-properties fo:font-family="{{typography.font.math|Latin Modern Math}}" fo:font-size="{{typography.sizes.formula.default|14pt}}"
+                            fo:color="{{brand.colors.math.primary|#1E293B}}" fo:font-weight="{{typography.weight.formula.default|normal}}"/>
+    </style:style>
+
+    <!-- Inline formula style -->
+    <style:style style:name="InlineFormula" style:family="text" style:parent-style-name="Standard">
+      <style:text-properties fo:font-family="{{typography.font.math|Latin Modern Math}}" fo:font-size="{{typography.sizes.formula.inline|12pt}}"
+                            fo:color="{{brand.colors.math.inline|#1E293B}}" style:text-position="{{positioning.formula.inline|0% 100%}}"/>
+    </style:style>
+
+    <!-- Mathematical text styles -->
+    <style:style style:name="MathVariable" style:family="text">
+      <style:text-properties fo:font-family="{{typography.font.math|Latin Modern Math}}" fo:font-size="{{typography.sizes.math.variable|14pt}}"
+                            fo:color="{{brand.colors.math.variable|#0EA5E9}}" fo:font-style="{{typography.style.math.variable|italic}}"
+                            fo:font-weight="{{typography.weight.math.variable|normal}}"/>
+    </style:style>
+
+    <style:style style:name="MathFunction" style:family="text">
+      <style:text-properties fo:font-family="{{typography.font.math|Latin Modern Math}}" fo:font-size="{{typography.sizes.math.function|14pt}}"
+                            fo:color="{{brand.colors.math.function|#8B5CF6}}" fo:font-style="{{typography.style.math.function|normal}}"
+                            fo:font-weight="{{typography.weight.math.function|bold}}"/>
+    </style:style>
+
+    <style:style style:name="MathConstant" style:family="text">
+      <style:text-properties fo:font-family="{{typography.font.math|Latin Modern Math}}" fo:font-size="{{typography.sizes.math.constant|14pt}}"
+                            fo:color="{{brand.colors.math.constant|#059669}}" fo:font-style="{{typography.style.math.constant|normal}}"
+                            fo:font-weight="{{typography.weight.math.constant|bold}}"/>
+    </style:style>
+
+    <style:style style:name="MathOperator" style:family="text">
+      <style:text-properties fo:font-family="{{typography.font.math|Latin Modern Math}}" fo:font-size="{{typography.sizes.math.operator|14pt}}"
+                            fo:color="{{brand.colors.math.operator|#475569}}" fo:font-style="{{typography.style.math.operator|normal}}"
+                            fo:font-weight="{{typography.weight.math.operator|normal}}"/>
+    </style:style>
+
+    <style:style style:name="MathNumber" style:family="text">
+      <style:text-properties fo:font-family="{{typography.font.math|Latin Modern Math}}" fo:font-size="{{typography.sizes.math.number|14pt}}"
+                            fo:color="{{brand.colors.math.number|#DC2626}}" fo:font-style="{{typography.style.math.number|normal}}"
+                            fo:font-weight="{{typography.weight.math.number|normal}}"/>
+    </style:style>
+
+    <!-- Frame style for mathematical formulas -->
+    <style:style style:name="MathObject" style:family="graphic">
+      <style:graphic-properties text:anchor-type="{{positioning.math.anchor|as-char}}" style:vertical-pos="{{positioning.math.vertical|baseline}}"
+                               style:vertical-rel="{{positioning.math.vertical_rel|baseline}}"
+                               fo:margin-left="{{spacing.math.margin.left|0.2cm}}" fo:margin-right="{{spacing.math.margin.right|0.2cm}}"
+                               fo:margin-top="{{spacing.math.margin.top|0.1cm}}" fo:margin-bottom="{{spacing.math.margin.bottom|0.1cm}}"
+                               style:wrap="{{wrapping.math.default|none}}" style:number-wrapped-paragraphs="no-limit"
+                               draw:stroke="{{borders.math.stroke|none}}" draw:fill="{{fills.math.fill|none}}"
+                               fo:background-color="{{brand.colors.math.bg|transparent}}" style:background-transparency="{{transparency.math.bg|100%}}"/>
+    </style:style>
+
+    <!-- Default drawing page style -->
+    <style:style style:name="Standard-dp" style:family="drawing-page">
+      <style:drawing-page-properties draw:background-size="full" draw:fill="solid"
+                                    draw:fill-color="{{brand.colors.page.bg|#FFFFFF}}"
+                                    presentation:background-visible="true" presentation:background-objects-visible="true"
+                                    presentation:display-footer="true" presentation:display-page-number="false"
+                                    presentation:display-date-time="true"/>
+    </style:style>
+  </office:styles>
+
+  <!-- Automatic styles -->
+  <office:automatic-styles>
+    <!-- Master page layout optimized for mathematical content -->
+    <style:page-layout style:name="Mpm1">
+      <style:page-layout-properties fo:page-width="{{layout.page.width|21cm}}" fo:page-height="{{layout.page.height|29.7cm}}"
+                                   style:num-format="1" style:print-orientation="portrait"
+                                   fo:margin-top="{{spacing.page.margin.top|2.5cm}}" fo:margin-bottom="{{spacing.page.margin.bottom|2cm}}"
+                                   fo:margin-left="{{spacing.page.margin.left|2cm}}" fo:margin-right="{{spacing.page.margin.right|2cm}}"
+                                   style:writing-mode="lr-tb" style:first-page-number="continue"
+                                   style:footnote-max-height="0cm"/>
+      <!-- Header style for mathematical documents -->
+      <style:header-style>
+        <style:header-footer-properties fo:min-height="{{layout.header.min_height|1.2cm}}" fo:margin-left="0cm" fo:margin-right="0cm"
+                                       fo:margin-bottom="{{spacing.header.margin_bottom|0.5cm}}" fo:background-color="{{brand.colors.header.bg|#F8FAFC}}"
+                                       fo:border-bottom="{{borders.header.bottom|0.05pt solid #E2E8F0}}" style:dynamic-spacing="false"/>
+      </style:header-style>
+      <!-- Footer style -->
+      <style:footer-style>
+        <style:header-footer-properties fo:min-height="{{layout.footer.min_height|0.8cm}}" fo:margin-left="0cm" fo:margin-right="0cm"
+                                       fo:margin-top="{{spacing.footer.margin_top|0.5cm}}" fo:background-color="{{brand.colors.footer.bg|#F8FAFC}}"
+                                       fo:border-top="{{borders.footer.top|0.05pt solid #E2E8F0}}" style:dynamic-spacing="false"/>
+      </style:footer-style>
+    </style:page-layout>
+
+    <!-- Text styles for headers and footers -->
+    <style:style style:name="MP1" style:family="paragraph" style:parent-style-name="Standard">
+      <style:paragraph-properties fo:text-align="center"/>
+      <style:text-properties fo:font-weight="bold" fo:font-size="{{typography.sizes.header|14pt}}"
+                            fo:color="{{brand.colors.header.text|#1E293B}}"/>
+    </style:style>
+
+    <style:style style:name="MP2" style:family="paragraph" style:parent-style-name="Standard">
+      <style:paragraph-properties fo:text-align="center"/>
+      <style:text-properties fo:font-size="{{typography.sizes.footer|10pt}}" fo:color="{{brand.colors.footer.text|#64748B}}"/>
+    </style:style>
+
+    <!-- Mathematical display styles -->
+    <style:style style:name="T1" style:family="text">
+      <style:text-properties fo:color="{{brand.colors.header.text|#1E293B}}" fo:font-weight="bold"/>
+    </style:style>
+
+    <style:style style:name="T2" style:family="text">
+      <style:text-properties fo:color="{{brand.colors.footer.text|#64748B}}" fo:font-size="{{typography.sizes.small|9pt}}"/>
+    </style:style>
+
+    <style:style style:name="T3" style:family="text">
+      <style:text-properties fo:color="{{brand.colors.date.text|#475569}}" fo:font-size="{{typography.sizes.small|9pt}}"/>
+    </style:style>
+  </office:automatic-styles>
+
+  <!-- Master styles -->
+  <office:master-styles>
+    <style:master-page style:name="Default" style:page-layout-name="Mpm1" style:display-name="{{page.master.name|Default}}">
+      <!-- Header content -->
+      <style:header>
+        <text:p text:style-name="MP1">
+          <text:span text:style-name="T1">{{document.header.title|StyleStack Mathematical Formulas}}</text:span>
+        </text:p>
+      </style:header>
+      <!-- Footer content -->
+      <style:footer>
+        <text:p text:style-name="MP2">
+          <text:span text:style-name="T2">{{document.footer.left|Page}} <text:page-number/> {{document.footer.separator|of}} <text:page-count/></text:span>
+          <text:tab/>
+          <text:span text:style-name="T2">{{document.footer.center|Generated by StyleStack Design System}}</text:span>
+          <text:tab/>
+          <text:span text:style-name="T3">{{document.footer.right|<text:date style:data-style-name=\"N37\"/>}}</text:span>
+        </text:p>
+      </style:footer>
+    </style:master-page>
+  </office:master-styles>
+
+</office:document-styles>

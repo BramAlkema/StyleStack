@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:theme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="StyleStack Modern">
+  <a:themeElements>
+    <!-- StyleStack Modern Color Scheme -->
+    <a:clrScheme name="StyleStack Modern">
+      <a:dk1>
+        <a:srgbClr val="1F2937"/>
+      </a:dk1>
+      <a:lt1>
+        <a:srgbClr val="FFFFFF"/>
+      </a:lt1>
+      <a:dk2>
+        <a:srgbClr val="374151"/>
+      </a:dk2>
+      <a:lt2>
+        <a:srgbClr val="F9FAFB"/>
+      </a:lt2>
+      <a:accent1>
+        <a:srgbClr val="0EA5E9"/>
+      </a:accent1>
+      <a:accent2>
+        <a:srgbClr val="8B5CF6"/>
+      </a:accent2>
+      <a:accent3>
+        <a:srgbClr val="10B981"/>
+      </a:accent3>
+      <a:accent4>
+        <a:srgbClr val="F59E0B"/>
+      </a:accent4>
+      <a:accent5>
+        <a:srgbClr val="EF4444"/>
+      </a:accent5>
+      <a:accent6>
+        <a:srgbClr val="6B7280"/>
+      </a:accent6>
+      <a:hlink>
+        <a:srgbClr val="0EA5E9"/>
+      </a:hlink>
+      <a:folHlink>
+        <a:srgbClr val="8B5CF6"/>
+      </a:folHlink>
+    </a:clrScheme>
+
+    <!-- StyleStack Modern Typography -->
+    <a:fontScheme name="StyleStack Modern Typography">
+      <a:majorFont>
+        <a:latin typeface="Inter" pitchFamily="34" charset="0"/>
+        <a:ea typeface="Inter"/>
+        <a:cs typeface="Inter"/>
+        <a:font script="Arab" typeface="Noto Sans Arabic"/>
+        <a:font script="Hang" typeface="Noto Sans CJK KR"/>
+        <a:font script="Hans" typeface="Noto Sans CJK SC"/>
+        <a:font script="Hant" typeface="Noto Sans CJK TC"/>
+        <a:font script="Jpan" typeface="Noto Sans CJK JP"/>
+        <a:font script="Thai" typeface="Noto Sans Thai"/>
+        <a:font script="Ethi" typeface="Noto Sans Ethiopic"/>
+        <a:font script="Beng" typeface="Noto Sans Bengali"/>
+        <a:font script="Gujr" typeface="Noto Sans Gujarati"/>
+        <a:font script="Khmr" typeface="Noto Sans Khmer"/>
+        <a:font script="Knda" typeface="Noto Sans Kannada"/>
+        <a:font script="Guru" typeface="Noto Sans Gurmukhi"/>
+        <a:font script="Cans" typeface="Noto Sans Canadian Aboriginal"/>
+        <a:font script="Cher" typeface="Noto Sans Cherokee"/>
+        <a:font script="Yiii" typeface="Noto Sans Yi"/>
+        <a:font script="Tibt" typeface="Noto Sans Tibetan"/>
+        <a:font script="Thaa" typeface="Noto Sans Thaana"/>
+        <a:font script="Deva" typeface="Noto Sans Devanagari"/>
+        <a:font script="Telu" typeface="Noto Sans Telugu"/>
+        <a:font script="Taml" typeface="Noto Sans Tamil"/>
+        <a:font script="Syrc" typeface="Noto Sans Syriac"/>
+        <a:font script="Orya" typeface="Noto Sans Oriya"/>
+        <a:font script="Mlym" typeface="Noto Sans Malayalam"/>
+        <a:font script="Laoo" typeface="Noto Sans Lao"/>
+        <a:font script="Sinh" typeface="Noto Sans Sinhala"/>
+        <a:font script="Mong" typeface="Noto Sans Mongolian"/>
+        <a:font script="Viet" typeface="Noto Sans Vietnamese"/>
+        <a:font script="Uigh" typeface="Noto Sans Uighur"/>
+        <a:font script="Geor" typeface="Noto Sans Georgian"/>
+        <a:font script="Armn" typeface="Noto Sans Armenian"/>
+        <a:font script="Hebr" typeface="Noto Sans Hebrew"/>
+        <a:font script="Grek" typeface="Noto Sans Greek"/>
+        <a:font script="Cyrl" typeface="Noto Sans Cyrillic"/>
+      </a:majorFont>
+      <a:minorFont>
+        <a:latin typeface="Inter" pitchFamily="34" charset="0"/>
+        <a:ea typeface="Inter"/>
+        <a:cs typeface="Inter"/>
+        <a:font script="Arab" typeface="Noto Sans Arabic"/>
+        <a:font script="Hang" typeface="Noto Sans CJK KR"/>
+        <a:font script="Hans" typeface="Noto Sans CJK SC"/>
+        <a:font script="Hant" typeface="Noto Sans CJK TC"/>
+        <a:font script="Jpan" typeface="Noto Sans CJK JP"/>
+        <a:font script="Thai" typeface="Noto Sans Thai"/>
+        <a:font script="Ethi" typeface="Noto Sans Ethiopic"/>
+        <a:font script="Beng" typeface="Noto Sans Bengali"/>
+        <a:font script="Gujr" typeface="Noto Sans Gujarati"/>
+        <a:font script="Khmr" typeface="Noto Sans Khmer"/>
+        <a:font script="Knda" typeface="Noto Sans Kannada"/>
+        <a:font script="Guru" typeface="Noto Sans Gurmukhi"/>
+        <a:font script="Cans" typeface="Noto Sans Canadian Aboriginal"/>
+        <a:font script="Cher" typeface="Noto Sans Cherokee"/>
+        <a:font script="Yiii" typeface="Noto Sans Yi"/>
+        <a:font script="Tibt" typeface="Noto Sans Tibetan"/>
+        <a:font script="Thaa" typeface="Noto Sans Thaana"/>
+        <a:font script="Deva" typeface="Noto Sans Devanagari"/>
+        <a:font script="Telu" typeface="Noto Sans Telugu"/>
+        <a:font script="Taml" typeface="Noto Sans Tamil"/>
+        <a:font script="Syrc" typeface="Noto Sans Syriac"/>
+        <a:font script="Orya" typeface="Noto Sans Oriya"/>
+        <a:font script="Mlym" typeface="Noto Sans Malayalam"/>
+        <a:font script="Laoo" typeface="Noto Sans Lao"/>
+        <a:font script="Sinh" typeface="Noto Sans Sinhala"/>
+        <a:font script="Mong" typeface="Noto Sans Mongolian"/>
+        <a:font script="Viet" typeface="Noto Sans Vietnamese"/>
+        <a:font script="Uigh" typeface="Noto Sans Uighur"/>
+        <a:font script="Geor" typeface="Noto Sans Georgian"/>
+        <a:font script="Armn" typeface="Noto Sans Armenian"/>
+        <a:font script="Hebr" typeface="Noto Sans Hebrew"/>
+        <a:font script="Grek" typeface="Noto Sans Greek"/>
+        <a:font script="Cyrl" typeface="Noto Sans Cyrillic"/>
+      </a:minorFont>
+    </a:fontScheme>
+
+    <!-- StyleStack Modern Format Scheme -->
+    <a:fmtScheme name="StyleStack Modern">
+      <a:fillStyleLst>
+        <!-- Solid fill -->
+        <a:solidFill>
+          <a:schemeClr val="phClr"/>
+        </a:solidFill>
+
+        <!-- Gradient fill 1 - Modern blue gradient -->
+        <a:gradFill rotWithShape="1">
+          <a:gsLst>
+            <a:gs pos="0">
+              <a:schemeClr val="phClr">
+                <a:lumMod val="110000"/>
+                <a:satMod val="105000"/>
+                <a:tint val="67000"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="50000">
+              <a:schemeClr val="phClr">
+                <a:lumMod val="105000"/>
+                <a:satMod val="103000"/>
+                <a:tint val="73000"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="100000">
+              <a:schemeClr val="phClr">
+                <a:lumMod val="105000"/>
+                <a:satMod val="109000"/>
+                <a:tint val="81000"/>
+              </a:schemeClr>
+            </a:gs>
+          </a:gsLst>
+          <a:lin ang="5400000" scaled="0"/>
+        </a:gradFill>
+
+        <!-- Gradient fill 2 - Subtle accent gradient -->
+        <a:gradFill rotWithShape="1">
+          <a:gsLst>
+            <a:gs pos="0">
+              <a:schemeClr val="phClr">
+                <a:satMod val="103000"/>
+                <a:lumMod val="102000"/>
+                <a:tint val="94000"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="50000">
+              <a:schemeClr val="phClr">
+                <a:satMod val="110000"/>
+                <a:lumMod val="100000"/>
+                <a:shade val="100000"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="100000">
+              <a:schemeClr val="phClr">
+                <a:lumMod val="99000"/>
+                <a:satMod val="120000"/>
+                <a:shade val="78000"/>
+              </a:schemeClr>
+            </a:gs>
+          </a:gsLst>
+          <a:lin ang="5400000" scaled="0"/>
+        </a:gradFill>
+      </a:fillStyleLst>
+
+      <a:lnStyleLst>
+        <!-- Thin line -->
+        <a:ln w="6350" cap="flat" cmpd="sng" algn="ctr">
+          <a:solidFill>
+            <a:schemeClr val="phClr"/>
+          </a:solidFill>
+          <a:prstDash val="solid"/>
+          <a:miter lim="800000"/>
+        </a:ln>
+
+        <!-- Medium line -->
+        <a:ln w="12700" cap="flat" cmpd="sng" algn="ctr">
+          <a:solidFill>
+            <a:schemeClr val="phClr"/>
+          </a:solidFill>
+          <a:prstDash val="solid"/>
+          <a:miter lim="800000"/>
+        </a:ln>
+
+        <!-- Thick line -->
+        <a:ln w="19050" cap="flat" cmpd="sng" algn="ctr">
+          <a:solidFill>
+            <a:schemeClr val="phClr"/>
+          </a:solidFill>
+          <a:prstDash val="solid"/>
+          <a:miter lim="800000"/>
+        </a:ln>
+      </a:lnStyleLst>
+
+      <a:effectStyleLst>
+        <!-- Subtle shadow -->
+        <a:effectStyle>
+          <a:effectLst/>
+        </a:effectStyle>
+
+        <!-- Medium shadow -->
+        <a:effectStyle>
+          <a:effectLst>
+            <a:outerShdw blurRad="57150" dist="19050" dir="5400000" algn="ctr" rotWithShape="0">
+              <a:srgbClr val="000000">
+                <a:alpha val="63000"/>
+              </a:srgbClr>
+            </a:outerShdw>
+          </a:effectLst>
+        </a:effectStyle>
+
+        <!-- Strong shadow with 3D -->
+        <a:effectStyle>
+          <a:effectLst>
+            <a:outerShdw blurRad="57150" dist="19050" dir="5400000" algn="ctr" rotWithShape="0">
+              <a:srgbClr val="000000">
+                <a:alpha val="63000"/>
+              </a:srgbClr>
+            </a:outerShdw>
+          </a:effectLst>
+          <a:scene3d>
+            <a:camera prst="isometricTopUp">
+              <a:rot lat="0" lon="0" rev="0"/>
+            </a:camera>
+            <a:lightRig rig="balanced" dir="t">
+              <a:rot lat="0" lon="0" rev="1200000"/>
+            </a:lightRig>
+          </a:scene3d>
+          <a:sp3d contourW="25400">
+            <a:bevelT w="63500" h="25400"/>
+            <a:contourClr>
+              <a:schemeClr val="phClr">
+                <a:shade val="95000"/>
+                <a:satMod val="140000"/>
+              </a:schemeClr>
+            </a:contourClr>
+          </a:sp3d>
+        </a:effectStyle>
+      </a:effectStyleLst>
+
+      <a:bgFillStyleLst>
+        <!-- Simple background -->
+        <a:solidFill>
+          <a:schemeClr val="phClr"/>
+        </a:solidFill>
+
+        <!-- Gradient background 1 -->
+        <a:gradFill rotWithShape="1">
+          <a:gsLst>
+            <a:gs pos="0">
+              <a:schemeClr val="phClr">
+                <a:tint val="40000"/>
+                <a:satMod val="350000"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="40000">
+              <a:schemeClr val="phClr">
+                <a:tint val="45000"/>
+                <a:shade val="99000"/>
+                <a:satMod val="350000"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="100000">
+              <a:schemeClr val="phClr">
+                <a:shade val="20000"/>
+                <a:satMod val="255000"/>
+              </a:schemeClr>
+            </a:gs>
+          </a:gsLst>
+          <a:path path="circle">
+            <a:fillToRect l="50000" t="-80000" r="50000" b="180000"/>
+          </a:path>
+        </a:gradFill>
+
+        <!-- Gradient background 2 -->
+        <a:gradFill rotWithShape="1">
+          <a:gsLst>
+            <a:gs pos="0">
+              <a:schemeClr val="phClr">
+                <a:tint val="80000"/>
+                <a:satMod val="300000"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="100000">
+              <a:schemeClr val="phClr">
+                <a:shade val="30000"/>
+                <a:satMod val="200000"/>
+              </a:schemeClr>
+            </a:gs>
+          </a:gsLst>
+          <a:path path="circle">
+            <a:fillToRect l="50000" t="50000" r="50000" b="50000"/>
+          </a:path>
+        </a:gradFill>
+      </a:bgFillStyleLst>
+    </a:fmtScheme>
+  </a:themeElements>
+
+  <a:objectDefaults>
+    <a:spDef>
+      <a:spPr/>
+      <a:bodyPr/>
+      <a:lstStyle/>
+      <a:style>
+        <a:lnRef idx="1">
+          <a:schemeClr val="accent1"/>
+        </a:lnRef>
+        <a:fillRef idx="3">
+          <a:schemeClr val="accent1"/>
+        </a:fillRef>
+        <a:effectRef idx="2">
+          <a:schemeClr val="accent1"/>
+        </a:effectRef>
+        <a:fontRef idx="minor">
+          <a:schemeClr val="lt1"/>
+        </a:fontRef>
+      </a:style>
+    </a:spDef>
+    <a:lnDef>
+      <a:spPr/>
+      <a:bodyPr/>
+      <a:lstStyle/>
+      <a:style>
+        <a:lnRef idx="2">
+          <a:schemeClr val="accent1"/>
+        </a:lnRef>
+        <a:fillRef idx="0">
+          <a:schemeClr val="accent1"/>
+        </a:fillRef>
+        <a:effectRef idx="1">
+          <a:schemeClr val="accent1"/>
+        </a:effectRef>
+        <a:fontRef idx="minor">
+          <a:schemeClr val="tx1"/>
+        </a:fontRef>
+      </a:style>
+    </a:lnDef>
+  </a:objectDefaults>
+
+  <a:extraClrSchemeLst/>
+</a:theme>

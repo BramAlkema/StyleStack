@@ -77,7 +77,7 @@ jobs:
             OUTPUT_PATH="dist/${TEMPLATE_NAME}"
             
             # Use combined style: Minimal + A4 + Grid
-            BASELINE_DIR="baseline-templates"
+            BASELINE_DIR="xml-structures"
             STYLE_PREFIX="minimal"
             
             # Create template structure using baseline templates

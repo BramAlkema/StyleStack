@@ -1,0 +1,739 @@
+{
+  "summary": {
+    "total_files_analyzed": 78,
+    "total_internal_modules": 78,
+    "total_external_dependencies": 91,
+    "circular_dependencies_found": 0
+  },
+  "external_dependencies": {
+    "typing": 72,
+    "pathlib": 56,
+    "dataclasses": 38,
+    "json": 36,
+    "time": 27,
+    "logging": 27,
+    "re": 23,
+    "sys": 21,
+    "threading": 16,
+    "zipfile": 16,
+    "enum": 15,
+    "xml.etree.ElementTree": 14,
+    "types": 14,
+    "collections": 13,
+    "datetime": 13,
+    "lxml": 12,
+    "os": 11,
+    "concurrent.futures": 11,
+    "lxml.etree": 10,
+    "hashlib": 9,
+    "tempfile": 9,
+    "psutil": 7,
+    "uuid": 6,
+    "jsonschema": 6,
+    "argparse": 6,
+    "contextlib": 6,
+    "colorsys": 5,
+    "shutil": 5,
+    "io": 5,
+    "PIL": 5,
+    "weakref": 5,
+    "sqlite3": 4,
+    "math": 4,
+    "subprocess": 4,
+    "multiprocessing": 3,
+    "random": 3,
+    "statistics": 3,
+    "performance_benchmarks": 3,
+    "production_monitoring": 3,
+    "copy": 3,
+    "requests": 3,
+    "optimized_batch_processor": 2,
+    "base64": 2,
+    "hmac": 2,
+    "fitz": 2,
+    "google.auth.transport.requests": 2,
+    "queue": 2,
+    "click": 2,
+    "concurrent_processing_validator": 2,
+    "gc": 2,
+    "functools": 2,
+    "traceback": 2,
+    "pipeline": 2,
+    "validation": 2,
+    "cryptography.hazmat.primitives.ciphers": 1,
+    "cryptography.hazmat.backends": 1,
+    "google.oauth2": 1,
+    "glob": 1,
+    "core.types": 1,
+    "xml.parsers.expat": 1,
+    "docx": 1,
+    "openpyxl": 1,
+    "pptx": 1,
+    "unittest": 1,
+    "optimization_validation_tests": 1,
+    "production_load_testing": 1,
+    "fnmatch": 1,
+    "pickle": 1,
+    "zlib": 1,
+    "tracemalloc": 1,
+    "pstats": 1,
+    "doctest": 1,
+    "mmap": 1,
+    "smtplib": 1,
+    "email.mime.text": 1,
+    "email.mime.multipart": 1,
+    "urllib.request": 1,
+    "urllib.error": 1,
+    "googleapiclient.discovery": 1,
+    "google.auth.credentials": 1,
+    "abc": 1,
+    "xmltodict": 1,
+    "importlib.metadata": 1,
+    "targeting": 1,
+    "errors": 1,
+    "batch": 1,
+    "formats": 1,
+    "integration": 1,
+    "discovery": 1,
+    "coverage": 1,
+    "complexity": 1
+  },
+  "internal_dependency_graph": {
+    "variable_resolver": [
+      "token_parser",
+      "aspect_ratio_resolver",
+      "token_resolver",
+      "ooxml_extension_manager"
+    ],
+    "powerpoint_layout_schema": [
+      "powerpoint_positioning_calculator",
+      "core.types"
+    ],
+    "production_load_testing": [
+      "optimized_batch_processor",
+      "performance_benchmarks",
+      "performance_profiler",
+      "production_monitoring"
+    ],
+    "design_token_extractor": [
+      "theme_resolver",
+      "ooxml_processor",
+      "template_analyzer"
+    ],
+    "formula_variable_resolver": [
+      "formula_parser",
+      "emu_types"
+    ],
+    "ooxml_processor": [
+      "xml_utils"
+    ],
+    "patch_execution_engine": [
+      "ooxml_processor",
+      "json_patch_parser"
+    ],
+    "supertheme_validator": [
+      "supertheme_generator"
+    ],
+    "powerpoint_layout_engine": [
+      "powerpoint_positioning_calculator",
+      "powerpoint_layout_schema",
+      "core.types",
+      "powerpoint_placeholder_types"
+    ],
+    "optimized_batch_processor": [
+      "memory_optimizer",
+      "performance_profiler",
+      "json_patch_parser",
+      "advanced_cache_system"
+    ],
+    "powerpoint_supertheme_layout_engine": [
+      "powerpoint_positioning_calculator",
+      "powerpoint_token_transformer",
+      "supertheme_generator",
+      "powerpoint_layout_engine",
+      "core.types",
+      "theme_resolver",
+      "variable_resolver"
+    ],
+    "token_integration_layer": [
+      "formula_parser",
+      "emu_types",
+      "formula_variable_resolver",
+      "variable_resolver",
+      "json_patch_parser"
+    ],
+    "optimization_validation_tests": [
+      "memory_optimizer",
+      "advanced_cache_system",
+      "production_monitoring",
+      "concurrent_processing_validator",
+      "optimized_batch_processor",
+      "json_patch_parser"
+    ],
+    "performance_optimization_suite": [
+      "performance_profiler"
+    ],
+    "multi_format_ooxml_handler": [
+      "handlers.integration",
+      "handlers.formats",
+      "core.types",
+      "handlers.types"
+    ],
+    "powerpoint_token_transformer": [
+      "core.types"
+    ],
+    "aspect_ratio_resolver": [
+      "token_parser",
+      "emu_types"
+    ],
+    "transaction_pipeline": [
+      "multi_format_ooxml_handler",
+      "core.types"
+    ],
+    "template_analyzer_optimized": [
+      "performance.optimizations",
+      "template_analyzer"
+    ],
+    "concurrent_processing_validator": [
+      "advanced_cache_system",
+      "json_patch_parser"
+    ],
+    "powerpoint_placeholder_types": [
+      "powerpoint_positioning_calculator"
+    ],
+    "theme_resolver": [
+      "aspect_ratio_resolver"
+    ],
+    "ooxml_extension_manager": [
+      "xml_utils"
+    ],
+    "performance_benchmarks": [
+      "performance_profiler",
+      "json_patch_parser"
+    ],
+    "supertheme_generator": [
+      "emu_types",
+      "aspect_ratio_resolver",
+      "theme_resolver",
+      "xml_utils",
+      "variable_resolver"
+    ],
+    "production_monitoring": [
+      "memory_optimizer",
+      "json_patch_parser",
+      "advanced_cache_system"
+    ],
+    "potx_template_generator": [
+      "powerpoint_positioning_calculator",
+      "powerpoint_supertheme_layout_engine",
+      "variable_substitution",
+      "ooxml_processor",
+      "core.types"
+    ],
+    "supertheme_powerpoint_workflow": [
+      "powerpoint_supertheme_layout_engine",
+      "potx_template_generator",
+      "supertheme_generator",
+      "core.types"
+    ],
+    "composite_token_transformer": [
+      "emu_types"
+    ],
+    "variable_substitution": [
+      "substitution.types",
+      "substitution.pipeline",
+      "substitution.validation",
+      "ooxml_processor",
+      "substitution.batch",
+      "theme_resolver",
+      "variable_resolver"
+    ],
+    "powerpoint_positioning_calculator": [
+      "variable_resolver",
+      "core.types"
+    ],
+    "template_analyzer": [
+      "analyzer.discovery",
+      "analyzer.coverage",
+      "analyzer.complexity",
+      "ooxml_processor",
+      "analyzer.types",
+      "theme_resolver"
+    ],
+    "xpath.targeting": [
+      "core.types"
+    ],
+    "processing.errors": [
+      "core.types"
+    ],
+    "substitution.pipeline": [
+      "ooxml_processor",
+      "variable_resolver"
+    ],
+    "performance.benchmarks": [
+      "multi_format_ooxml_handler",
+      "substitution.pipeline",
+      "template_analyzer",
+      "handlers.types",
+      "handlers.formats"
+    ],
+    "handlers": [
+      "handlers.types"
+    ]
+  },
+  "reverse_dependencies": {
+    "token_parser": [
+      "aspect_ratio_resolver",
+      "variable_resolver"
+    ],
+    "token_resolver": [
+      "variable_resolver"
+    ],
+    "ooxml_extension_manager": [
+      "variable_resolver"
+    ],
+    "aspect_ratio_resolver": [
+      "theme_resolver",
+      "variable_resolver",
+      "supertheme_generator"
+    ],
+    "powerpoint_positioning_calculator": [
+      "powerpoint_supertheme_layout_engine",
+      "powerpoint_layout_engine",
+      "potx_template_generator",
+      "powerpoint_layout_schema",
+      "powerpoint_placeholder_types"
+    ],
+    "core.types": [
+      "multi_format_ooxml_handler",
+      "powerpoint_positioning_calculator",
+      "powerpoint_token_transformer",
+      "powerpoint_supertheme_layout_engine",
+      "powerpoint_layout_engine",
+      "transaction_pipeline",
+      "supertheme_powerpoint_workflow",
+      "potx_template_generator",
+      "powerpoint_layout_schema",
+      "processing.errors",
+      "xpath.targeting"
+    ],
+    "performance_profiler": [
+      "optimized_batch_processor",
+      "performance_benchmarks",
+      "performance_optimization_suite",
+      "production_load_testing"
+    ],
+    "optimized_batch_processor": [
+      "production_load_testing",
+      "optimization_validation_tests"
+    ],
+    "performance_benchmarks": [
+      "production_load_testing"
+    ],
+    "production_monitoring": [
+      "production_load_testing",
+      "optimization_validation_tests"
+    ],
+    "ooxml_processor": [
+      "substitution.pipeline",
+      "template_analyzer",
+      "variable_substitution",
+      "potx_template_generator",
+      "patch_execution_engine",
+      "design_token_extractor"
+    ],
+    "theme_resolver": [
+      "supertheme_generator",
+      "template_analyzer",
+      "powerpoint_supertheme_layout_engine",
+      "variable_substitution",
+      "design_token_extractor"
+    ],
+    "template_analyzer": [
+      "performance.benchmarks",
+      "template_analyzer_optimized",
+      "design_token_extractor"
+    ],
+    "formula_parser": [
+      "token_integration_layer",
+      "formula_variable_resolver"
+    ],
+    "emu_types": [
+      "token_integration_layer",
+      "supertheme_generator",
+      "aspect_ratio_resolver",
+      "composite_token_transformer",
+      "formula_variable_resolver"
+    ],
+    "xml_utils": [
+      "ooxml_processor",
+      "ooxml_extension_manager",
+      "supertheme_generator"
+    ],
+    "json_patch_parser": [
+      "token_integration_layer",
+      "performance_benchmarks",
+      "optimization_validation_tests",
+      "production_monitoring",
+      "concurrent_processing_validator",
+      "optimized_batch_processor",
+      "patch_execution_engine"
+    ],
+    "supertheme_generator": [
+      "powerpoint_supertheme_layout_engine",
+      "supertheme_powerpoint_workflow",
+      "supertheme_validator"
+    ],
+    "powerpoint_layout_schema": [
+      "powerpoint_layout_engine"
+    ],
+    "powerpoint_placeholder_types": [
+      "powerpoint_layout_engine"
+    ],
+    "memory_optimizer": [
+      "optimized_batch_processor",
+      "optimization_validation_tests",
+      "production_monitoring"
+    ],
+    "advanced_cache_system": [
+      "optimized_batch_processor",
+      "optimization_validation_tests",
+      "production_monitoring",
+      "concurrent_processing_validator"
+    ],
+    "powerpoint_layout_engine": [
+      "powerpoint_supertheme_layout_engine"
+    ],
+    "powerpoint_token_transformer": [
+      "powerpoint_supertheme_layout_engine"
+    ],
+    "variable_resolver": [
+      "token_integration_layer",
+      "powerpoint_positioning_calculator",
+      "supertheme_generator",
+      "substitution.pipeline",
+      "powerpoint_supertheme_layout_engine",
+      "variable_substitution"
+    ],
+    "formula_variable_resolver": [
+      "token_integration_layer"
+    ],
+    "concurrent_processing_validator": [
+      "optimization_validation_tests"
+    ],
+    "handlers.types": [
+      "handlers",
+      "multi_format_ooxml_handler",
+      "performance.benchmarks"
+    ],
+    "handlers.formats": [
+      "multi_format_ooxml_handler",
+      "performance.benchmarks"
+    ],
+    "handlers.integration": [
+      "multi_format_ooxml_handler"
+    ],
+    "multi_format_ooxml_handler": [
+      "performance.benchmarks",
+      "transaction_pipeline"
+    ],
+    "performance.optimizations": [
+      "template_analyzer_optimized"
+    ],
+    "powerpoint_supertheme_layout_engine": [
+      "supertheme_powerpoint_workflow",
+      "potx_template_generator"
+    ],
+    "variable_substitution": [
+      "potx_template_generator"
+    ],
+    "potx_template_generator": [
+      "supertheme_powerpoint_workflow"
+    ],
+    "substitution.types": [
+      "variable_substitution"
+    ],
+    "substitution.pipeline": [
+      "variable_substitution",
+      "performance.benchmarks"
+    ],
+    "substitution.validation": [
+      "variable_substitution"
+    ],
+    "substitution.batch": [
+      "variable_substitution"
+    ],
+    "analyzer.types": [
+      "template_analyzer"
+    ],
+    "analyzer.discovery": [
+      "template_analyzer"
+    ],
+    "analyzer.coverage": [
+      "template_analyzer"
+    ],
+    "analyzer.complexity": [
+      "template_analyzer"
+    ]
+  },
+  "circular_dependencies": [],
+  "critical_modules": [
+    [
+      "core.types",
+      11
+    ],
+    [
+      "json_patch_parser",
+      7
+    ],
+    [
+      "ooxml_processor",
+      6
+    ],
+    [
+      "variable_resolver",
+      6
+    ],
+    [
+      "powerpoint_positioning_calculator",
+      5
+    ],
+    [
+      "theme_resolver",
+      5
+    ],
+    [
+      "emu_types",
+      5
+    ],
+    [
+      "performance_profiler",
+      4
+    ],
+    [
+      "advanced_cache_system",
+      4
+    ],
+    [
+      "aspect_ratio_resolver",
+      3
+    ]
+  ],
+  "heavy_modules": [
+    [
+      "powerpoint_supertheme_layout_engine",
+      7
+    ],
+    [
+      "variable_substitution",
+      7
+    ],
+    [
+      "optimization_validation_tests",
+      6
+    ],
+    [
+      "template_analyzer",
+      6
+    ],
+    [
+      "token_integration_layer",
+      5
+    ],
+    [
+      "supertheme_generator",
+      5
+    ],
+    [
+      "potx_template_generator",
+      5
+    ],
+    [
+      "performance.benchmarks",
+      5
+    ],
+    [
+      "variable_resolver",
+      4
+    ],
+    [
+      "production_load_testing",
+      4
+    ]
+  ],
+  "detailed_imports": {
+    "/Users/ynse/projects/StyleStack/tools/variable_resolver.py": {
+      "internal": [
+        "tools.token_parser (TokenType, TokenScope, TokenParser)",
+        "tools.token_resolver (TokenResolver)",
+        "tools.ooxml_extension_manager (OOXMLExtensionManager, StyleStackExtension)",
+        "tools.aspect_ratio_resolver (AspectRatioResolver, AspectRatioTokenError)"
+      ],
+      "external": [
+        "typing (Dict, Any, List, Optional, Union, Tuple)",
+        "re",
+        "pathlib (Path)",
+        "dataclasses (dataclass, field)",
+        "xml.etree.ElementTree",
+        "hashlib",
+        "time",
+        "logging"
+      ]
+    },
+    "/Users/ynse/projects/StyleStack/tools/formula_variable_resolver.py": {
+      "internal": [
+        "formula_parser (FormulaParser)",
+        "emu_types (EMUValue)"
+      ],
+      "external": [
+        "typing (Any, Dict, List, Optional, Set, Union)",
+        "collections (defaultdict, deque)",
+        "dataclasses (dataclass, field)",
+        "copy"
+      ]
+    },
+    "/Users/ynse/projects/StyleStack/tools/ooxml_processor.py": {
+      "internal": [
+        "tools.xml_utils (indent_xml)"
+      ],
+      "external": [
+        "typing (Dict, List, Any, Optional, Union, Tuple)",
+        "xml.etree.ElementTree",
+        "zipfile",
+        "pathlib (Path)",
+        "dataclasses (dataclass)",
+        "logging",
+        "time",
+        "lxml (etree)"
+      ]
+    },
+    "/Users/ynse/projects/StyleStack/tools/token_integration_layer.py": {
+      "internal": [
+        "tools.formula_parser (FormulaParser, FormulaError)",
+        "tools.variable_resolver (VariableResolver)",
+        "tools.formula_variable_resolver (FormulaVariableResolver)",
+        "tools.emu_types (EMUValue, EMUConversionError)",
+        "tools.json_patch_parser (JSONPatchParser)"
+      ],
+      "external": [
+        "typing (Dict, List, Any, Optional, Union, Callable)",
+        "logging",
+        "dataclasses (dataclass)",
+        "enum (Enum)",
+        "pathlib (Path)",
+        "re",
+        "re"
+      ]
+    },
+    "/Users/ynse/projects/StyleStack/tools/multi_format_ooxml_handler.py": {
+      "internal": [
+        "tools.handlers.types (OOXMLFormat, OOXMLStructure, ProcessingResult, FormatConfiguration, ValidationIssue, ProcessingStatistics)",
+        "tools.core.types (RecoveryStrategy)",
+        "tools.handlers.formats (FormatRegistry, FormatProcessor, create_format_processor)",
+        "tools.handlers.integration (TokenIntegrationManager, CompatibilityMatrix)"
+      ],
+      "external": [
+        "typing (Any, Dict, List, Optional, Union)",
+        "logging",
+        "pathlib (Path)",
+        "zipfile",
+        "tempfile",
+        "shutil",
+        "time",
+        "fnmatch"
+      ]
+    },
+    "/Users/ynse/projects/StyleStack/tools/transaction_pipeline.py": {
+      "internal": [
+        "tools.multi_format_ooxml_handler (MultiFormatOOXMLHandler, ProcessingResult, OOXMLFormat)",
+        "tools.core.types (PatchResult)"
+      ],
+      "external": [
+        "typing (Any, Dict, List, Optional, Union)",
+        "logging",
+        "uuid",
+        "time",
+        "tempfile",
+        "shutil",
+        "dataclasses (dataclass, field)",
+        "enum (Enum)",
+        "pathlib (Path)",
+        "contextlib (contextmanager)",
+        "threading",
+        "concurrent.futures (ThreadPoolExecutor, Future)",
+        "json"
+      ]
+    },
+    "/Users/ynse/projects/StyleStack/tools/theme_resolver.py": {
+      "internal": [
+        "tools.aspect_ratio_resolver (AspectRatioResolver)",
+        "tools.aspect_ratio_resolver (create_standard_aspect_ratios)"
+      ],
+      "external": [
+        "typing (Dict, List, Any, Optional, Tuple, Union)",
+        "xml.etree.ElementTree",
+        "colorsys",
+        "zipfile",
+        "pathlib (Path)",
+        "dataclasses (dataclass, field)",
+        "logging",
+        "hashlib"
+      ]
+    },
+    "/Users/ynse/projects/StyleStack/tools/json_patch_parser.py": {
+      "internal": [],
+      "external": [
+        "typing (Any, Dict, List, Optional)",
+        "json",
+        "dataclasses (dataclass)",
+        "pathlib (Path)",
+        "logging",
+        "enum (Enum)"
+      ]
+    },
+    "/Users/ynse/projects/StyleStack/tools/variable_substitution.py": {
+      "internal": [
+        "tools.ooxml_processor (OOXMLProcessor, ProcessingResult)",
+        "tools.theme_resolver (ThemeResolver)",
+        "tools.variable_resolver (VariableResolver, ResolvedVariable)",
+        "tools.substitution.types (SubstitutionStage, ValidationCheckpointType, SubstitutionError, SubstitutionProgress, ValidationCheckpoint, SubstitutionResult, TransactionContext, OperationCancelledException, CancellationToken, ProgressReporter, DefaultProgressReporter, BatchSubstitutionConfig, SubstitutionConfig)",
+        "tools.substitution.pipeline (SubstitutionPipeline)",
+        "tools.substitution.validation (ValidationEngine)",
+        "tools.substitution.batch (BatchSubstitutionEngine, BatchProgressReporter)"
+      ],
+      "external": [
+        "typing (Any, Dict, List, Optional, Callable)",
+        "json",
+        "time",
+        "threading",
+        "datetime (datetime, timezone)",
+        "pathlib (Path)",
+        "contextlib (contextmanager)",
+        "concurrent.futures",
+        "sys",
+        "os"
+      ]
+    },
+    "/Users/ynse/projects/StyleStack/tools/template_analyzer.py": {
+      "internal": [
+        "tools.ooxml_processor (OOXMLProcessor)",
+        "tools.theme_resolver (ThemeResolver)",
+        "tools.analyzer.types (DesignElementType, AnalysisLevel, PriorityLevel, DesignElement, VariableCoverage, ComplexityScore, AnalysisResult, CoverageReport, AnalysisConfig, AnalysisContext)",
+        "tools.analyzer.discovery (ElementDiscoveryEngine)",
+        "tools.analyzer.coverage (CoverageAnalyzer)",
+        "tools.analyzer.complexity (ComplexityAnalyzer)"
+      ],
+      "external": [
+        "typing (Any, Dict, List, Optional, Tuple)",
+        "json",
+        "zipfile",
+        "datetime (datetime, timezone)",
+        "pathlib (Path)",
+        "time",
+        "sys",
+        "os",
+        "lxml.etree"
+      ]
+    }
+  }
+}

@@ -126,5 +126,3 @@ class TestAspectRatioResolverEdgeCases:
         no_aspect_ratios = {"colors": {"primary": "#FF0000"}}
         with pytest.raises(AspectRatioTokenError, match="Aspect ratio token not found"):
             resolver.resolve_aspect_ratio_tokens(no_aspect_ratios, "aspectRatios.missing")
-    
-    @pytest.mark.skipif(AspectRatioResolver is None, reason="AspectRatio resolver not available")

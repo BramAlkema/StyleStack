@@ -1,0 +1,502 @@
+{
+  "title": "{{content.document.title}}",
+  "body": {
+    "content": [
+      {
+        "paragraph": {
+          "elements": [
+            {
+              "textRun": {
+                "content": "{{content.document.title}}\n",
+                "textStyle": {
+                  "fontSize": {
+                    "magnitude": "{{typography.size.title}}",
+                    "unit": "PT"
+                  },
+                  "fontFamily": "{{typography.font.theme.major}}",
+                  "foregroundColor": {
+                    "color": {
+                      "rgbColor": {
+                        "red": "{{color.text.primary.r}}",
+                        "green": "{{color.text.primary.g}}",
+                        "blue": "{{color.text.primary.b}}"
+                      }
+                    }
+                  },
+                  "bold": "{{typography.title.bold}}",
+                  "weightedFontFamily": {
+                    "fontFamily": "{{typography.font.theme.major}}",
+                    "weight": "{{typography.title.weight}}"
+                  }
+                }
+              }
+            }
+          ],
+          "paragraphStyle": {
+            "namedStyleType": "TITLE",
+            "alignment": "{{typography.title.alignment}}",
+            "lineSpacing": "{{typography.title.lineSpacing}}",
+            "spaceAbove": {
+              "magnitude": "{{spacing.title.before}}",
+              "unit": "PT"
+            },
+            "spaceBelow": {
+              "magnitude": "{{spacing.title.after}}",
+              "unit": "PT"
+            },
+            "keepLinesTogether": "{{typography.title.keepTogether}}",
+            "keepWithNext": "{{typography.title.keepWithNext}}"
+          }
+        }
+      },
+      {
+        "paragraph": {
+          "elements": [
+            {
+              "textRun": {
+                "content": "{{content.heading1.text}}\n",
+                "textStyle": {
+                  "fontSize": {
+                    "magnitude": "{{typography.size.h1}}",
+                    "unit": "PT"
+                  },
+                  "fontFamily": "{{typography.font.theme.major}}",
+                  "foregroundColor": {
+                    "color": {
+                      "rgbColor": {
+                        "red": "{{color.heading.primary.r}}",
+                        "green": "{{color.heading.primary.g}}",
+                        "blue": "{{color.heading.primary.b}}"
+                      }
+                    }
+                  },
+                  "bold": "{{typography.h1.bold}}"
+                }
+              }
+            }
+          ],
+          "paragraphStyle": {
+            "namedStyleType": "HEADING_1",
+            "alignment": "{{typography.h1.alignment}}",
+            "lineSpacing": "{{typography.h1.lineSpacing}}",
+            "spaceAbove": {
+              "magnitude": "{{spacing.h1.before}}",
+              "unit": "PT"
+            },
+            "spaceBelow": {
+              "magnitude": "{{spacing.h1.after}}",
+              "unit": "PT"
+            }
+          }
+        }
+      },
+      {
+        "paragraph": {
+          "elements": [
+            {
+              "textRun": {
+                "content": "{{content.body.paragraph1}}",
+                "textStyle": {
+                  "fontSize": {
+                    "magnitude": "{{typography.size.body}}",
+                    "unit": "PT"
+                  },
+                  "fontFamily": "{{typography.font.theme.minor}}",
+                  "foregroundColor": {
+                    "color": {
+                      "rgbColor": {
+                        "red": "{{color.text.primary.r}}",
+                        "green": "{{color.text.primary.g}}",
+                        "blue": "{{color.text.primary.b}}"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "paragraphStyle": {
+            "namedStyleType": "NORMAL_TEXT",
+            "alignment": "{{typography.body.alignment}}",
+            "lineSpacing": "{{typography.body.lineSpacing}}",
+            "spaceAbove": {
+              "magnitude": "{{spacing.body.before}}",
+              "unit": "PT"
+            },
+            "spaceBelow": {
+              "magnitude": "{{spacing.body.after}}",
+              "unit": "PT"
+            }
+          }
+        }
+      },
+      {
+        "paragraph": {
+          "elements": [
+            {
+              "textRun": {
+                "content": "{{content.list.item1}}",
+                "textStyle": {
+                  "fontSize": {
+                    "magnitude": "{{typography.size.body}}",
+                    "unit": "PT"
+                  },
+                  "fontFamily": "{{typography.font.theme.minor}}",
+                  "foregroundColor": {
+                    "color": {
+                      "rgbColor": {
+                        "red": "{{color.text.primary.r}}",
+                        "green": "{{color.text.primary.g}}",
+                        "blue": "{{color.text.primary.b}}"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "paragraphStyle": {
+            "namedStyleType": "NORMAL_TEXT",
+            "alignment": "{{typography.list.alignment}}",
+            "lineSpacing": "{{typography.list.lineSpacing}}",
+            "spaceAbove": {
+              "magnitude": "{{spacing.list.before}}",
+              "unit": "PT"
+            },
+            "spaceBelow": {
+              "magnitude": "{{spacing.list.after}}",
+              "unit": "PT"
+            }
+          },
+          "bullet": {
+            "listId": "{{list.bullet.listId}}",
+            "nestingLevel": 0
+          }
+        }
+      },
+      {
+        "paragraph": {
+          "elements": [
+            {
+              "textRun": {
+                "content": "{{content.list.item2}}",
+                "textStyle": {
+                  "fontSize": {
+                    "magnitude": "{{typography.size.body}}",
+                    "unit": "PT"
+                  },
+                  "fontFamily": "{{typography.font.theme.minor}}"
+                }
+              }
+            }
+          ],
+          "paragraphStyle": {
+            "namedStyleType": "NORMAL_TEXT"
+          },
+          "bullet": {
+            "listId": "{{list.bullet.listId}}",
+            "nestingLevel": 0
+          }
+        }
+      },
+      {
+        "paragraph": {
+          "elements": [
+            {
+              "textRun": {
+                "content": "{{content.list.item3}}",
+                "textStyle": {
+                  "fontSize": {
+                    "magnitude": "{{typography.size.body}}",
+                    "unit": "PT"
+                  },
+                  "fontFamily": "{{typography.font.theme.minor}}"
+                }
+              }
+            }
+          ],
+          "paragraphStyle": {
+            "namedStyleType": "NORMAL_TEXT"
+          },
+          "bullet": {
+            "listId": "{{list.bullet.listId}}",
+            "nestingLevel": 1
+          }
+        }
+      },
+      {
+        "table": {
+          "rows": 3,
+          "columns": 2,
+          "tableRows": [
+            {
+              "tableCells": [
+                {
+                  "content": [
+                    {
+                      "paragraph": {
+                        "elements": [
+                          {
+                            "textRun": {
+                              "content": "{{content.table.header.cell1}}",
+                              "textStyle": {
+                                "fontSize": {
+                                  "magnitude": "{{typography.size.body}}",
+                                  "unit": "PT"
+                                },
+                                "fontFamily": "{{typography.font.theme.minor}}",
+                                "bold": "{{typography.table.header.bold}}"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "tableCellStyle": {
+                    "backgroundColor": {
+                      "color": {
+                        "rgbColor": {
+                          "red": "{{color.table.header.background.r}}",
+                          "green": "{{color.table.header.background.g}}",
+                          "blue": "{{color.table.header.background.b}}"
+                        }
+                      }
+                    },
+                    "paddingTop": {
+                      "magnitude": "{{table.cell.padding.top}}",
+                      "unit": "PT"
+                    },
+                    "paddingBottom": {
+                      "magnitude": "{{table.cell.padding.bottom}}",
+                      "unit": "PT"
+                    },
+                    "paddingLeft": {
+                      "magnitude": "{{table.cell.padding.left}}",
+                      "unit": "PT"
+                    },
+                    "paddingRight": {
+                      "magnitude": "{{table.cell.padding.right}}",
+                      "unit": "PT"
+                    }
+                  }
+                },
+                {
+                  "content": [
+                    {
+                      "paragraph": {
+                        "elements": [
+                          {
+                            "textRun": {
+                              "content": "{{content.table.header.cell2}}",
+                              "textStyle": {
+                                "fontSize": {
+                                  "magnitude": "{{typography.size.body}}",
+                                  "unit": "PT"
+                                },
+                                "fontFamily": "{{typography.font.theme.minor}}",
+                                "bold": "{{typography.table.header.bold}}"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tableCells": [
+                {
+                  "content": [
+                    {
+                      "paragraph": {
+                        "elements": [
+                          {
+                            "textRun": {
+                              "content": "{{content.table.row1.cell1}}",
+                              "textStyle": {
+                                "fontSize": {
+                                  "magnitude": "{{typography.size.body}}",
+                                  "unit": "PT"
+                                },
+                                "fontFamily": "{{typography.font.theme.minor}}"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "tableCellStyle": {
+                    "backgroundColor": {
+                      "color": {
+                        "rgbColor": {
+                          "red": "{{color.table.row.odd.background.r}}",
+                          "green": "{{color.table.row.odd.background.g}}",
+                          "blue": "{{color.table.row.odd.background.b}}"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "content": [
+                    {
+                      "paragraph": {
+                        "elements": [
+                          {
+                            "textRun": {
+                              "content": "{{content.table.row1.cell2}}"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "tableStyle": {
+            "tableColumnProperties": [
+              {
+                "widthType": "FIXED_WIDTH",
+                "width": {
+                  "magnitude": "{{table.column1.width}}",
+                  "unit": "PT"
+                }
+              },
+              {
+                "widthType": "FIXED_WIDTH",
+                "width": {
+                  "magnitude": "{{table.column2.width}}",
+                  "unit": "PT"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "documentStyle": {
+    "background": {
+      "color": {
+        "color": {
+          "rgbColor": {
+            "red": "{{color.background.primary.r}}",
+            "green": "{{color.background.primary.g}}",
+            "blue": "{{color.background.primary.b}}"
+          }
+        }
+      }
+    },
+    "pageNumberStart": 1,
+    "marginTop": {
+      "magnitude": "{{spacing.margins.top}}",
+      "unit": "PT"
+    },
+    "marginBottom": {
+      "magnitude": "{{spacing.margins.bottom}}",
+      "unit": "PT"
+    },
+    "marginLeft": {
+      "magnitude": "{{spacing.margins.left}}",
+      "unit": "PT"
+    },
+    "marginRight": {
+      "magnitude": "{{spacing.margins.right}}",
+      "unit": "PT"
+    }
+  },
+  "lists": {
+    "{{list.bullet.listId}}": {
+      "listProperties": {
+        "nestingLevels": [
+          {
+            "bulletAlignment": "{{list.bullet.alignment}}",
+            "glyphSymbol": "{{list.bullet.symbol.level1}}",
+            "glyphFormat": "{{list.bullet.format.level1}}",
+            "indentFirstLine": {
+              "magnitude": "{{list.bullet.indent.firstLine}}",
+              "unit": "PT"
+            },
+            "indentStart": {
+              "magnitude": "{{list.bullet.indent.start}}",
+              "unit": "PT"
+            },
+            "textStyle": {
+              "fontSize": {
+                "magnitude": "{{typography.size.body}}",
+                "unit": "PT"
+              }
+            }
+          },
+          {
+            "bulletAlignment": "{{list.bullet.alignment}}",
+            "glyphSymbol": "{{list.bullet.symbol.level2}}",
+            "glyphFormat": "{{list.bullet.format.level2}}",
+            "indentFirstLine": {
+              "magnitude": "{{list.bullet.indent.level2.firstLine}}",
+              "unit": "PT"
+            },
+            "indentStart": {
+              "magnitude": "{{list.bullet.indent.level2.start}}",
+              "unit": "PT"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "namedStyles": {
+    "styles": [
+      {
+        "namedStyleType": "NORMAL_TEXT",
+        "textStyle": {
+          "fontSize": {
+            "magnitude": "{{typography.size.body}}",
+            "unit": "PT"
+          },
+          "fontFamily": "{{typography.font.theme.minor}}"
+        },
+        "paragraphStyle": {
+          "lineSpacing": "{{typography.body.lineSpacing}}",
+          "alignment": "{{typography.body.alignment}}"
+        }
+      },
+      {
+        "namedStyleType": "TITLE",
+        "textStyle": {
+          "fontSize": {
+            "magnitude": "{{typography.size.title}}",
+            "unit": "PT"
+          },
+          "fontFamily": "{{typography.font.theme.major}}",
+          "bold": "{{typography.title.bold}}"
+        },
+        "paragraphStyle": {
+          "lineSpacing": "{{typography.title.lineSpacing}}",
+          "alignment": "{{typography.title.alignment}}"
+        }
+      },
+      {
+        "namedStyleType": "HEADING_1",
+        "textStyle": {
+          "fontSize": {
+            "magnitude": "{{typography.size.h1}}",
+            "unit": "PT"
+          },
+          "fontFamily": "{{typography.font.theme.major}}",
+          "bold": "{{typography.h1.bold}}"
+        },
+        "paragraphStyle": {
+          "lineSpacing": "{{typography.h1.lineSpacing}}",
+          "alignment": "{{typography.h1.alignment}}"
+        }
+      }
+    ]
+  }
+}

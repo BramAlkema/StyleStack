@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:theme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="StyleStack Modern">
+  <!-- StyleStack Modern Theme for PowerPoint with comprehensive design token integration -->
+
+  <!-- Theme Elements -->
+  <a:themeElements>
+    <!-- Color scheme with brand variable substitution -->
+    <a:clrScheme name="StyleStack Modern">
+      <!-- Primary text and background colors -->
+      <a:dk1>
+        <a:srgbClr val="{{brand.colors.text.primary|1F2937}}"/>
+      </a:dk1>
+      <a:lt1>
+        <a:srgbClr val="{{brand.colors.background.primary|FFFFFF}}"/>
+      </a:lt1>
+      <a:dk2>
+        <a:srgbClr val="{{brand.colors.text.secondary|374151}}"/>
+      </a:dk2>
+      <a:lt2>
+        <a:srgbClr val="{{brand.colors.background.secondary|F9FAFB}}"/>
+      </a:lt2>
+
+      <!-- Brand accent colors for slides and charts -->
+      <a:accent1>
+        <a:srgbClr val="{{brand.colors.primary|0EA5E9}}"/>
+      </a:accent1>
+      <a:accent2>
+        <a:srgbClr val="{{brand.colors.secondary|8B5CF6}}"/>
+      </a:accent2>
+      <a:accent3>
+        <a:srgbClr val="{{brand.colors.success|10B981}}"/>
+      </a:accent3>
+      <a:accent4>
+        <a:srgbClr val="{{brand.colors.warning|F59E0B}}"/>
+      </a:accent4>
+      <a:accent5>
+        <a:srgbClr val="{{brand.colors.error|EF4444}}"/>
+      </a:accent5>
+      <a:accent6>
+        <a:srgbClr val="{{brand.colors.accent|06B6D4}}"/>
+      </a:accent6>
+
+      <!-- Hyperlink colors -->
+      <a:hlink>
+        <a:srgbClr val="{{brand.colors.link|2563EB}}"/>
+      </a:hlink>
+      <a:folHlink>
+        <a:srgbClr val="{{brand.colors.link.visited|7C3AED}}"/>
+      </a:folHlink>
+    </a:clrScheme>
+
+    <!-- Font scheme with Inter typography system -->
+    <a:fontScheme name="StyleStack Modern">
+      <!-- Major font for headings and titles -->
+      <a:majorFont>
+        <a:latin typeface="{{typography.font.heading.family|Inter}}" pitchFamily="34" charset="0"/>
+        <a:ea typeface=""/>
+        <a:cs typeface=""/>
+        <a:font script="Arab" typeface="Times New Roman"/>
+        <a:font script="Hebr" typeface="Times New Roman"/>
+        <a:font script="Thai" typeface="Angsana New"/>
+        <a:font script="Ethi" typeface="Nyala"/>
+        <a:font script="Beng" typeface="Vrinda"/>
+        <a:font script="Gujr" typeface="Shruti"/>
+        <a:font script="Khmr" typeface="MoolBoran"/>
+        <a:font script="Knda" typeface="Tunga"/>
+        <a:font script="Guru" typeface="Raavi"/>
+        <a:font script="Cans" typeface="Euphemia"/>
+        <a:font script="Cher" typeface="Plantagenet Cherokee"/>
+        <a:font script="Yiii" typeface="Microsoft Yi Baiti"/>
+        <a:font script="Tibt" typeface="Microsoft Himalaya"/>
+        <a:font script="Thaa" typeface="MV Boli"/>
+        <a:font script="Deva" typeface="Mangal"/>
+        <a:font script="Telu" typeface="Gautami"/>
+        <a:font script="Taml" typeface="Latha"/>
+        <a:font script="Syrc" typeface="Estrangelo Edessa"/>
+        <a:font script="Orya" typeface="Kalinga"/>
+        <a:font script="Mlym" typeface="Kartika"/>
+        <a:font script="Laoo" typeface="DokChampa"/>
+        <a:font script="Sinh" typeface="Iskoola Pota"/>
+        <a:font script="Mong" typeface="Mongolian Baiti"/>
+        <a:font script="Viet" typeface="Times New Roman"/>
+        <a:font script="Uigh" typeface="Microsoft Uighur"/>
+      </a:majorFont>
+
+      <!-- Minor font for body text -->
+      <a:minorFont>
+        <a:latin typeface="{{typography.font.body.family|Inter}}" pitchFamily="34" charset="0"/>
+        <a:ea typeface=""/>
+        <a:cs typeface=""/>
+        <a:font script="Arab" typeface="Arial"/>
+        <a:font script="Hebr" typeface="Arial"/>
+        <a:font script="Thai" typeface="Cordia New"/>
+        <a:font script="Ethi" typeface="Nyala"/>
+        <a:font script="Beng" typeface="Vrinda"/>
+        <a:font script="Gujr" typeface="Shruti"/>
+        <a:font script="Khmr" typeface="DaunPenh"/>
+        <a:font script="Knda" typeface="Tunga"/>
+        <a:font script="Guru" typeface="Raavi"/>
+        <a:font script="Cans" typeface="Euphemia"/>
+        <a:font script="Cher" typeface="Plantagenet Cherokee"/>
+        <a:font script="Yiii" typeface="Microsoft Yi Baiti"/>
+        <a:font script="Tibt" typeface="Microsoft Himalaya"/>
+        <a:font script="Thaa" typeface="MV Boli"/>
+        <a:font script="Deva" typeface="Mangal"/>
+        <a:font script="Telu" typeface="Gautami"/>
+        <a:font script="Taml" typeface="Latha"/>
+        <a:font script="Syrc" typeface="Estrangelo Edessa"/>
+        <a:font script="Orya" typeface="Kalinga"/>
+        <a:font script="Mlym" typeface="Kartika"/>
+        <a:font script="Laoo" typeface="DokChampa"/>
+        <a:font script="Sinh" typeface="Iskoola Pota"/>
+        <a:font script="Mong" typeface="Mongolian Baiti"/>
+        <a:font script="Viet" typeface="Arial"/>
+        <a:font script="Uigh" typeface="Microsoft Uighur"/>
+      </a:minorFont>
+    </a:fontScheme>
+
+    <!-- Format scheme with StyleStack design aesthetics -->
+    <a:fmtScheme name="StyleStack Modern">
+      <!-- Fill styles with brand colors -->
+      <a:fillStyleLst>
+        <!-- Solid fill -->
+        <a:solidFill>
+          <a:schemeClr val="phClr"/>
+        </a:solidFill>
+
+        <!-- Gradient fill 1 - Professional gradient -->
+        <a:gradFill rotWithShape="1">
+          <a:gsLst>
+            <a:gs pos="0">
+              <a:schemeClr val="phClr">
+                <a:lumMod val="110000"/>
+                <a:satMod val="105000"/>
+                <a:tint val="67000"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="50000">
+              <a:schemeClr val="phClr">
+                <a:lumMod val="105000"/>
+                <a:satMod val="103000"/>
+                <a:tint val="73000"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="100000">
+              <a:schemeClr val="phClr">
+                <a:lumMod val="105000"/>
+                <a:satMod val="109000"/>
+                <a:tint val="81000"/>
+              </a:schemeClr>
+            </a:gs>
+          </a:gsLst>
+          <a:lin ang="5400000" scaled="0"/>
+        </a:gradFill>
+
+        <!-- Gradient fill 2 - Subtle gradient -->
+        <a:gradFill rotWithShape="1">
+          <a:gsLst>
+            <a:gs pos="0">
+              <a:schemeClr val="phClr">
+                <a:satMod val="103000"/>
+                <a:lumMod val="102000"/>
+                <a:tint val="94000"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="50000">
+              <a:schemeClr val="phClr">
+                <a:satMod val="110000"/>
+                <a:lumMod val="100000"/>
+                <a:shade val="100000"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="100000">
+              <a:schemeClr val="phClr">
+                <a:lumMod val="99000"/>
+                <a:satMod val="120000"/>
+                <a:shade val="78000"/>
+              </a:schemeClr>
+            </a:gs>
+          </a:gsLst>
+          <a:lin ang="5400000" scaled="0"/>
+        </a:gradFill>
+      </a:fillStyleLst>
+
+      <!-- Line styles -->
+      <a:lnStyleLst>
+        <!-- Thin line -->
+        <a:ln w="{{borders.thin.width|6350}}" cap="flat" cmpd="sng" algn="ctr">
+          <a:solidFill>
+            <a:schemeClr val="phClr"/>
+          </a:solidFill>
+          <a:prstDash val="solid"/>
+          <a:miter lim="800000"/>
+        </a:ln>
+        <!-- Medium line -->
+        <a:ln w="{{borders.medium.width|12700}}" cap="flat" cmpd="sng" algn="ctr">
+          <a:solidFill>
+            <a:schemeClr val="phClr"/>
+          </a:solidFill>
+          <a:prstDash val="solid"/>
+          <a:miter lim="800000"/>
+        </a:ln>
+        <!-- Thick line -->
+        <a:ln w="{{borders.thick.width|19050}}" cap="flat" cmpd="sng" algn="ctr">
+          <a:solidFill>
+            <a:schemeClr val="phClr"/>
+          </a:solidFill>
+          <a:prstDash val="solid"/>
+          <a:miter lim="800000"/>
+        </a:ln>
+      </a:lnStyleLst>
+
+      <!-- Effect styles -->
+      <a:effectStyleLst>
+        <!-- No effects -->
+        <a:effectStyle>
+          <a:effectLst/>
+        </a:effectStyle>
+        <!-- Simple effects -->
+        <a:effectStyle>
+          <a:effectLst/>
+        </a:effectStyle>
+        <!-- Professional shadow -->
+        <a:effectStyle>
+          <a:effectLst>
+            <a:outerShdw blurRad="{{effects.shadow.blur|57150}}" dist="{{effects.shadow.distance|19050}}"
+                        dir="5400000" algn="ctr" rotWithShape="0">
+              <a:srgbClr val="{{effects.shadow.color|000000}}">
+                <a:alpha val="{{effects.shadow.opacity|63000}}"/>
+              </a:srgbClr>
+            </a:outerShdw>
+          </a:effectLst>
+        </a:effectStyle>
+      </a:effectStyleLst>
+
+      <!-- Background fill styles -->
+      <a:bgFillStyleLst>
+        <!-- Solid background -->
+        <a:solidFill>
+          <a:schemeClr val="phClr"/>
+        </a:solidFill>
+        <!-- Subtle tinted background -->
+        <a:solidFill>
+          <a:schemeClr val="phClr">
+            <a:tint val="95000"/>
+            <a:satMod val="170000"/>
+          </a:schemeClr>
+        </a:solidFill>
+        <!-- Professional radial gradient background -->
+        <a:gradFill rotWithShape="1">
+          <a:gsLst>
+            <a:gs pos="0">
+              <a:schemeClr val="phClr">
+                <a:tint val="93000"/>
+                <a:satMod val="150000"/>
+                <a:shade val="98000"/>
+                <a:lumMod val="102000"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="50000">
+              <a:schemeClr val="phClr">
+                <a:tint val="98000"/>
+                <a:satMod val="130000"/>
+                <a:shade val="90000"/>
+                <a:lumMod val="103000"/>
+              </a:schemeClr>
+            </a:gs>
+            <a:gs pos="100000">
+              <a:schemeClr val="phClr">
+                <a:shade val="63000"/>
+                <a:satMod val="120000"/>
+              </a:schemeClr>
+            </a:gs>
+          </a:gsLst>
+          <a:path path="circle">
+            <a:fillToRect l="50000" t="50000" r="50000" b="50000"/>
+          </a:path>
+        </a:gradFill>
+      </a:bgFillStyleLst>
+    </a:fmtScheme>
+  </a:themeElements>
+
+  <!-- Object defaults -->
+  <a:objectDefaults>
+    <!-- Shape defaults -->
+    <a:spDef>
+      <a:spPr/>
+      <a:bodyPr/>
+      <a:lstStyle/>
+      <a:style>
+        <a:lnRef idx="1">
+          <a:schemeClr val="accent1"/>
+        </a:lnRef>
+        <a:fillRef idx="3">
+          <a:schemeClr val="accent1"/>
+        </a:fillRef>
+        <a:effectRef idx="2">
+          <a:schemeClr val="accent1"/>
+        </a:effectRef>
+        <a:fontRef idx="minor">
+          <a:schemeClr val="lt1"/>
+        </a:fontRef>
+      </a:style>
+    </a:spDef>
+
+    <!-- Line defaults -->
+    <a:lnDef>
+      <a:spPr/>
+      <a:style>
+        <a:lnRef idx="2">
+          <a:schemeClr val="accent1"/>
+        </a:lnRef>
+        <a:fillRef idx="0">
+          <a:schemeClr val="accent1"/>
+        </a:fillRef>
+        <a:effectRef idx="1">
+          <a:schemeClr val="accent1"/>
+        </a:effectRef>
+        <a:fontRef idx="minor">
+          <a:schemeClr val="tx1"/>
+        </a:fontRef>
+      </a:style>
+    </a:lnDef>
+  </a:objectDefaults>
+
+  <!-- Extra color scheme list -->
+  <a:extraClrSchemeLst/>
+
+  <!-- Custom colors with StyleStack brand palette -->
+  <a:custClrLst>
+    <a:custClr name="StyleStack Primary">
+      <a:srgbClr val="{{brand.colors.primary|0EA5E9}}"/>
+    </a:custClr>
+    <a:custClr name="StyleStack Secondary">
+      <a:srgbClr val="{{brand.colors.secondary|8B5CF6}}"/>
+    </a:custClr>
+    <a:custClr name="StyleStack Success">
+      <a:srgbClr val="{{brand.colors.success|10B981}}"/>
+    </a:custClr>
+    <a:custClr name="StyleStack Warning">
+      <a:srgbClr val="{{brand.colors.warning|F59E0B}}"/>
+    </a:custClr>
+    <a:custClr name="StyleStack Error">
+      <a:srgbClr val="{{brand.colors.error|EF4444}}"/>
+    </a:custClr>
+    <a:custClr name="StyleStack Neutral Light">
+      <a:srgbClr val="{{brand.colors.neutral.100|F3F4F6}}"/>
+    </a:custClr>
+    <a:custClr name="StyleStack Neutral Medium">
+      <a:srgbClr val="{{brand.colors.neutral.500|6B7280}}"/>
+    </a:custClr>
+    <a:custClr name="StyleStack Neutral Dark">
+      <a:srgbClr val="{{brand.colors.neutral.900|111827}}"/>
+    </a:custClr>
+  </a:custClrLst>
+
+</a:theme>

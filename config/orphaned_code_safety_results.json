@@ -1,0 +1,259 @@
+{
+  "empty_packages": {
+    "tools_xpath": {
+      "package": "tools.xpath",
+      "safe_to_remove": false,
+      "import_attempts": [
+        {
+          "type": "direct_import",
+          "success": true,
+          "has_content": true
+        }
+      ],
+      "dynamic_references": [
+        "/Users/ynse/projects/StyleStack/orphaned_code_safety_test.py:30:        results['tools_xpath'] = self._test_package_removal('tools.xpath')"
+      ],
+      "test_failures": []
+    },
+    "tools_processing": {
+      "package": "tools.processing",
+      "safe_to_remove": false,
+      "import_attempts": [
+        {
+          "type": "direct_import",
+          "success": true,
+          "has_content": true
+        }
+      ],
+      "dynamic_references": [
+        "/Users/ynse/projects/StyleStack/orphaned_code_safety_test.py:33:        results['tools_processing'] = self._test_package_removal('tools.processing')"
+      ],
+      "test_failures": []
+    }
+  },
+  "ooxml_extension_methods": {
+    "methods_tested": [
+      "add_variable",
+      "remove_variable",
+      "get_variable"
+    ],
+    "safe_to_remove": {
+      "add_variable": false,
+      "remove_variable": false,
+      "get_variable": false
+    },
+    "usage_found": {
+      "add_variable": [
+        "/Users/ynse/projects/StyleStack/tools/formula_variable_resolver.py:196:            graph.add_variable(var_def.name, var_def.dependencies)",
+        "/Users/ynse/projects/StyleStack/tools/exemplar_generator.py:371:                embedded_content[filename] = self._add_variable_extensions_to_theme(",
+        "/Users/ynse/projects/StyleStack/tools/exemplar_generator.py:379:    def _add_variable_extensions_to_theme(self, theme_xml: str, ",
+        "/Users/ynse/projects/StyleStack/orphaned_code_safety_test.py:95:            methods_to_test = ['add_variable', 'remove_variable', 'get_variable']",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:21:    def test_add_variable_with_dependencies(self):",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:23:        self.graph.add_variable(\"A\", {\"B\", \"C\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:24:        self.graph.add_variable(\"B\", {\"D\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:25:        self.graph.add_variable(\"C\", set())",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:26:        self.graph.add_variable(\"D\", set())",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:35:        self.graph.add_variable(\"A\", {\"B\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:36:        self.graph.add_variable(\"C\", {\"B\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:37:        self.graph.add_variable(\"B\", set())",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:44:        self.graph.add_variable(\"A\", {\"B\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:45:        self.graph.add_variable(\"B\", {\"C\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:46:        self.graph.add_variable(\"C\", set())",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:53:        self.graph.add_variable(\"A\", {\"B\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:54:        self.graph.add_variable(\"B\", {\"A\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:65:        self.graph.add_variable(\"A\", {\"B\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:66:        self.graph.add_variable(\"B\", {\"C\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:67:        self.graph.add_variable(\"C\", {\"A\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:78:        self.graph.add_variable(\"A\", {\"B\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:79:        self.graph.add_variable(\"B\", {\"C\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:80:        self.graph.add_variable(\"C\", set())",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:94:        self.graph.add_variable(\"A\", {\"B\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:95:        self.graph.add_variable(\"B\", {\"A\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:103:        self.graph.add_variable(\"A\", {\"B\", \"C\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:104:        self.graph.add_variable(\"B\", {\"D\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:105:        self.graph.add_variable(\"C\", {\"D\"})",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:106:        self.graph.add_variable(\"D\", set())"
+      ],
+      "remove_variable": [
+        "/Users/ynse/projects/StyleStack/orphaned_code_safety_test.py:95:            methods_to_test = ['add_variable', 'remove_variable', 'get_variable']"
+      ],
+      "get_variable": [
+        "/Users/ynse/projects/StyleStack/tools/formula_variable_resolver.py:220:        var_def = self.get_variable_definition(name)",
+        "/Users/ynse/projects/StyleStack/orphaned_code_safety_test.py:95:            methods_to_test = ['add_variable', 'remove_variable', 'get_variable']",
+        "/Users/ynse/projects/StyleStack/ooxml-roundtrip-tester/.venv/lib/python3.13/site-packages/pygments/lexers/meson.py:108:                'get_variable',",
+        "/Users/ynse/projects/StyleStack/ooxml-roundtrip-tester/.venv/lib/python3.13/site-packages/mypy/checker.py:3394:                type_context = self.get_variable_type_context(inferred, rvalue)",
+        "/Users/ynse/projects/StyleStack/tests/test_extension_schema.py:269:        assert var_manager.get_variable(\"accent1\") is not None",
+        "/Users/ynse/projects/StyleStack/tests/test_extension_schema.py:270:        assert var_manager.get_variable(\"nonexistent\") is None",
+        "/Users/ynse/projects/StyleStack/tests/test_extension_schema.py:271:        assert len(var_manager.get_variables_by_type(VariableType.COLOR)) == 1",
+        "/Users/ynse/projects/StyleStack/tests/test_extension_schema.py:272:        assert len(var_manager.get_variables_by_scope(VariableScope.THEME)) == 2",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:140:        width_def = self.resolver.get_variable_definition(\"WIDTH\")",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:145:        area_def = self.resolver.get_variable_definition(\"AREA\")",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:257:        color_def = self.resolver.get_variable_definition(\"COLOR\")",
+        "/Users/ynse/projects/StyleStack/tests/test_formula_variable_resolver.py:309:        double_def = self.resolver.get_variable_definition(\"DOUBLE\")",
+        "/Users/ynse/projects/StyleStack/.venv/lib/python3.13/site-packages/pygments/lexers/meson.py:108:                'get_variable',",
+        "/Users/ynse/projects/StyleStack/.venv/lib/python3.13/site-packages/mypy/checker.py:3267:                type_context = self.get_variable_type_context(inferred, rvalue)",
+        "/Users/ynse/projects/StyleStack/venv/lib/python3.13/site-packages/pygments/lexers/meson.py:108:                'get_variable',"
+      ]
+    }
+  },
+  "emu_conversion_methods": {
+    "methods_tested": [
+      "to_inches",
+      "to_points",
+      "to_cm",
+      "to_mm",
+      "from_inches",
+      "from_points",
+      "from_cm",
+      "from_mm"
+    ],
+    "safe_to_remove": {
+      "to_inches": false,
+      "to_points": false,
+      "to_cm": false,
+      "to_mm": false,
+      "from_inches": false,
+      "from_points": false,
+      "from_cm": false,
+      "from_mm": false
+    },
+    "usage_found": {
+      "to_inches": [
+        "/Users/ynse/projects/StyleStack/tools/template_validator.py:344:                                \"top\": self._twips_to_inches(page_mar.get(\"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top\", \"1440\")),",
+        "/Users/ynse/projects/StyleStack/tools/template_validator.py:345:                                \"bottom\": self._twips_to_inches(page_mar.get(\"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom\", \"1440\")),",
+        "/Users/ynse/projects/StyleStack/tools/template_validator.py:346:                                \"left\": self._twips_to_inches(page_mar.get(\"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left\", \"1440\")),",
+        "/Users/ynse/projects/StyleStack/tools/template_validator.py:347:                                \"right\": self._twips_to_inches(page_mar.get(\"{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right\", \"1440\"))",
+        "/Users/ynse/projects/StyleStack/tools/template_validator.py:383:    def _twips_to_inches(self, twips_str: str) -> float:",
+        "/Users/ynse/projects/StyleStack/tools/emu_types.py:591:def emu_to_inches(emu: EMUValue) -> float:",
+        "/Users/ynse/projects/StyleStack/tools/emu_types.py:593:    return emu.to_inches()",
+        "/Users/ynse/projects/StyleStack/tools/emu_types.py:653:    inches = emu.to_inches()",
+        "/Users/ynse/projects/StyleStack/tools/emu_types.py:667:    print(f\"Slide dimensions: {slide_width.to_inches():.2f}\\\" \u00d7 {slide_height.to_inches():.2f}\\\"\")",
+        "/Users/ynse/projects/StyleStack/orphaned_code_safety_test.py:126:                'to_inches', 'to_points', 'to_cm', 'to_mm',",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_types_comprehensive.py:93:    def test_to_inches(self):",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_types_comprehensive.py:96:        self.assertAlmostEqual(emu.to_inches(), 1.0, places=6)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_types_comprehensive.py:305:        self.assertAlmostEqual(page_width.to_inches(), 8.5, places=6)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_types_comprehensive.py:306:        self.assertAlmostEqual(page_height.to_inches(), 11.0, places=6)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_types_comprehensive.py:328:        self.assertAlmostEqual(content_width.to_inches(), 6.5, places=6)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:19:        emu_to_inches, emu_to_points, emu_to_cm",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:249:    def test_emu_to_inches_conversion(self):",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:252:        result = emu_to_inches(emu)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:256:        result = emu_to_inches(emu)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:284:        back_to_inches = emu_to_inches(emu)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:285:        self.assertAlmostEqual(back_to_inches, original_inches, places=6)"
+      ],
+      "to_points": [
+        "/Users/ynse/projects/StyleStack/releases/test-v1.0.0/.venv/lib/python3.13/site-packages/xlsxwriter/vml.py:171:    def _pixels_to_points(self, vertices):",
+        "/Users/ynse/projects/StyleStack/releases/test-v1.0.0/.venv/lib/python3.13/site-packages/xlsxwriter/vml.py:407:        (left, top, width, height) = self._pixels_to_points(comment.vertices)",
+        "/Users/ynse/projects/StyleStack/releases/test-v1.0.0/.venv/lib/python3.13/site-packages/xlsxwriter/vml.py:457:        (left, top, width, height) = self._pixels_to_points(button.vertices)",
+        "/Users/ynse/projects/StyleStack/releases/test-v1.0.0/.venv/lib/python3.13/site-packages/openpyxl/utils/units.py:86:def pixels_to_points(value, dpi=96):",
+        "/Users/ynse/projects/StyleStack/tools/substitution/carrier_processor.py:104:    def emu_to_points(cls, emu: int) -> float:",
+        "/Users/ynse/projects/StyleStack/tools/emu_types.py:596:def emu_to_points(emu: EMUValue) -> float:",
+        "/Users/ynse/projects/StyleStack/tools/emu_types.py:598:    return emu.to_points()",
+        "/Users/ynse/projects/StyleStack/tools/powerpoint_positioning_calculator.py:83:    def emu_to_points(emu_value: int) -> float:",
+        "/Users/ynse/projects/StyleStack/orphaned_code_safety_test.py:126:                'to_inches', 'to_points', 'to_cm', 'to_mm',",
+        "/Users/ynse/projects/StyleStack/ooxml-roundtrip-tester/.venv/lib/python3.13/site-packages/xlsxwriter/vml.py:171:    def _pixels_to_points(self, vertices):",
+        "/Users/ynse/projects/StyleStack/ooxml-roundtrip-tester/.venv/lib/python3.13/site-packages/xlsxwriter/vml.py:407:        (left, top, width, height) = self._pixels_to_points(comment.vertices)",
+        "/Users/ynse/projects/StyleStack/ooxml-roundtrip-tester/.venv/lib/python3.13/site-packages/xlsxwriter/vml.py:457:        (left, top, width, height) = self._pixels_to_points(button.vertices)",
+        "/Users/ynse/projects/StyleStack/ooxml-roundtrip-tester/.venv/lib/python3.13/site-packages/openpyxl/utils/units.py:86:def pixels_to_points(value, dpi=96):",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_types_comprehensive.py:98:    def test_to_points(self):",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_types_comprehensive.py:101:        self.assertAlmostEqual(emu.to_points(), 1.0, places=6)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_types_comprehensive.py:313:        self.assertAlmostEqual(font_size_12pt.to_points(), 12.0, places=6)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_types_comprehensive.py:317:        self.assertAlmostEqual(font_size_24pt.to_points(), 24.0, places=6)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:19:        emu_to_inches, emu_to_points, emu_to_cm",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:259:    def test_emu_to_points_conversion(self):",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:262:        result = emu_to_points(emu)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:266:        result = emu_to_points(emu)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:290:        back_to_points = emu_to_points(emu)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:291:        self.assertAlmostEqual(back_to_points, original_points, places=6)",
+        "/Users/ynse/projects/StyleStack/tests/test_carrier_variable_processing.py:145:    def emu_to_points(cls, emu: int) -> float:",
+        "/Users/ynse/projects/StyleStack/tests/test_carrier_variable_processing.py:312:    def test_emu_to_points_conversion(self):",
+        "/Users/ynse/projects/StyleStack/tests/test_carrier_variable_processing.py:326:                actual_points = self.emu_engine.emu_to_points(emu)",
+        "/Users/ynse/projects/StyleStack/tests/test_powerpoint_layout_schema.py:318:    def test_emu_to_points_conversion(self):",
+        "/Users/ynse/projects/StyleStack/tests/test_powerpoint_layout_schema.py:322:        points = EMUCalculator.emu_to_points(emu_value)",
+        "/Users/ynse/projects/StyleStack/.venv/lib/python3.13/site-packages/xlsxwriter/vml.py:171:    def _pixels_to_points(self, vertices):",
+        "/Users/ynse/projects/StyleStack/.venv/lib/python3.13/site-packages/xlsxwriter/vml.py:407:        (left, top, width, height) = self._pixels_to_points(comment.vertices)",
+        "/Users/ynse/projects/StyleStack/.venv/lib/python3.13/site-packages/xlsxwriter/vml.py:457:        (left, top, width, height) = self._pixels_to_points(button.vertices)",
+        "/Users/ynse/projects/StyleStack/.venv/lib/python3.13/site-packages/openpyxl/utils/units.py:86:def pixels_to_points(value, dpi=96):",
+        "/Users/ynse/projects/StyleStack/venv/lib/python3.13/site-packages/xlsxwriter/vml.py:171:    def _pixels_to_points(self, vertices):",
+        "/Users/ynse/projects/StyleStack/venv/lib/python3.13/site-packages/xlsxwriter/vml.py:407:        (left, top, width, height) = self._pixels_to_points(comment.vertices)",
+        "/Users/ynse/projects/StyleStack/venv/lib/python3.13/site-packages/xlsxwriter/vml.py:457:        (left, top, width, height) = self._pixels_to_points(button.vertices)",
+        "/Users/ynse/projects/StyleStack/venv/lib/python3.13/site-packages/openpyxl/utils/units.py:86:def pixels_to_points(value, dpi=96):"
+      ],
+      "to_cm": [
+        "/Users/ynse/projects/StyleStack/releases/test-v1.0.0/.venv/lib/python3.13/site-packages/openpyxl/utils/units.py:53:def dxa_to_cm(value):",
+        "/Users/ynse/projects/StyleStack/releases/test-v1.0.0/.venv/lib/python3.13/site-packages/openpyxl/utils/units.py:74:def EMU_to_cm(value):",
+        "/Users/ynse/projects/StyleStack/tools/emu_types.py:601:def emu_to_cm(emu: EMUValue) -> float:",
+        "/Users/ynse/projects/StyleStack/tools/emu_types.py:603:    return emu.to_cm()",
+        "/Users/ynse/projects/StyleStack/orphaned_code_safety_test.py:126:                'to_inches', 'to_points', 'to_cm', 'to_mm',",
+        "/Users/ynse/projects/StyleStack/ooxml-roundtrip-tester/.venv/lib/python3.13/site-packages/mypy/operators.py:34:ops_falling_back_to_cmp: Final = {\"__ne__\", \"__eq__\", \"__lt__\", \"__le__\", \"__gt__\", \"__ge__\"}",
+        "/Users/ynse/projects/StyleStack/ooxml-roundtrip-tester/.venv/lib/python3.13/site-packages/openpyxl/utils/units.py:53:def dxa_to_cm(value):",
+        "/Users/ynse/projects/StyleStack/ooxml-roundtrip-tester/.venv/lib/python3.13/site-packages/openpyxl/utils/units.py:74:def EMU_to_cm(value):",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_types_comprehensive.py:103:    def test_to_cm(self):",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_types_comprehensive.py:106:        self.assertAlmostEqual(emu.to_cm(), 1.0, places=6)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:19:        emu_to_inches, emu_to_points, emu_to_cm",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:269:    def test_emu_to_cm_conversion(self):",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:272:        result = emu_to_cm(emu)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:276:        result = emu_to_cm(emu)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:296:        back_to_cm = emu_to_cm(emu)",
+        "/Users/ynse/projects/StyleStack/tests/test_emu_type_system.py:297:        self.assertAlmostEqual(back_to_cm, original_cm, places=6)",
+        "/Users/ynse/projects/StyleStack/.venv/lib/python3.13/site-packages/mypy/operators.py:34:ops_falling_back_to_cmp: Final = {\"__ne__\", \"__eq__\", \"__lt__\", \"__le__\", \"__gt__\", \"__ge__\"}",
+        "/Users/ynse/projects/StyleStack/.venv/lib/python3.13/site-packages/openpyxl/utils/units.py:53:def dxa_to_cm(value):",
+        "/Users/ynse/projects/StyleStack/.venv/lib/python3.13/site-packages/openpyxl/utils/units.py:74:def EMU_to_cm(value):",
+        "/Users/ynse/projects/StyleStack/venv/lib/python3.13/site-packages/openpyxl/utils/units.py:53:def dxa_to_cm(value):",
+        "/Users/ynse/projects/StyleStack/venv/lib/python3.13/site-packages/openpyxl/utils/units.py:74:def EMU_to_cm(value):"
+      ],
+      "to_mm": [
+        "/Users/ynse/projects/StyleStack/tools/emu_types.py:625:def emu_to_mm(emu: EMUValue) -> float:",
+        "/Users/ynse/projects/StyleStack/tools/emu_types.py:627:    return emu.to_mm()",
+        "/Users/ynse/projects/StyleStack/orphaned_code_safety_test.py:126:                'to_inches', 'to_points', 'to_cm', 'to_mm',"
+      ],
+      "from_inches": [
+        "/Users/ynse/projects/StyleStack/tools/emu_types.py:248:        return cls.from_inches(inches)",
+        "/Users/ynse/projects/StyleStack/orphaned_code_safety_test.py:127:                'from_inches', 'from_points', 'from_cm', 'from_mm'",
+        "/Users/ynse/projects/StyleStack/tests/test_aspect_ratio_token_system.py:282:        letter_width = EMUValue.from_inches(8.5)",
+        "/Users/ynse/projects/StyleStack/tests/test_aspect_ratio_token_system.py:283:        letter_height = EMUValue.from_inches(11)"
+      ],
+      "from_points": [
+        "/Users/ynse/projects/StyleStack/orphaned_code_safety_test.py:127:                'from_inches', 'from_points', 'from_cm', 'from_mm'"
+      ],
+      "from_cm": [
+        "/Users/ynse/projects/StyleStack/orphaned_code_safety_test.py:127:                'from_inches', 'from_points', 'from_cm', 'from_mm'"
+      ],
+      "from_mm": [
+        "/Users/ynse/projects/StyleStack/orphaned_code_safety_test.py:127:                'from_inches', 'from_points', 'from_cm', 'from_mm'",
+        "/Users/ynse/projects/StyleStack/tests/test_aspect_ratio_token_system.py:275:        a4_width = EMUValue.from_mm(297)",
+        "/Users/ynse/projects/StyleStack/tests/test_aspect_ratio_token_system.py:276:        a4_height = EMUValue.from_mm(210)"
+      ]
+    },
+    "actually_used": {
+      "to_inches": true,
+      "to_points": true,
+      "to_cm": true,
+      "to_mm": true,
+      "from_inches": true,
+      "from_points": true,
+      "from_cm": true,
+      "from_mm": true
+    }
+  },
+  "summary": {
+    "safe_to_remove": [],
+    "potentially_safe": [],
+    "not_safe": [
+      "Package: tools_xpath",
+      "Package: tools_processing",
+      "Method: StyleStackExtension.add_variable",
+      "Method: StyleStackExtension.remove_variable",
+      "Method: StyleStackExtension.get_variable",
+      "Method: EMUValue.to_inches (functionally used)",
+      "Method: EMUValue.to_points (functionally used)",
+      "Method: EMUValue.to_cm (functionally used)",
+      "Method: EMUValue.to_mm (functionally used)",
+      "Method: EMUValue.from_inches (functionally used)",
+      "Method: EMUValue.from_points (functionally used)",
+      "Method: EMUValue.from_cm (functionally used)",
+      "Method: EMUValue.from_mm (functionally used)"
+    ],
+    "needs_investigation": []
+  }
+}

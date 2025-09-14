@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-meta xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                     xmlns:dc="http://purl.org/dc/elements/1.1/"
+                     xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+                     xmlns:ooo="http://openoffice.org/2004/office"
+                     xmlns:grddl="http://www.w3.org/2003/g/data-view#"
+                     office:version="1.3">
+
+  <!-- StyleStack Mathematical Formula Metadata with Design Token Integration -->
+
+  <office:meta>
+    <!-- Document identification -->
+    <meta:generator>{{meta.generator|StyleStack Design System v2025.1 - Mathematical Formula Editor}}</meta:generator>
+    <dc:title>{{document.meta.title|StyleStack Mathematical Formula Collection}}</dc:title>
+    <dc:description>{{document.meta.description|Professional mathematical formula template showcasing StyleStack's design token system with advanced mathematical typography, brand-compliant notation, and accessibility-optimized rendering.}}</dc:description>
+    <dc:subject>{{document.meta.subject|Mathematics, Formulas, Scientific Notation, Design System, Typography}}</dc:subject>
+    <meta:keyword>{{document.meta.keywords|mathematical formulas, design tokens, MathML, scientific notation, StyleStack, typography, accessibility, WCAG AAA, mathematical accessibility}}</meta:keyword>
+    <meta:initial-creator>{{document.meta.initial_creator|StyleStack Mathematical Formula System}}</meta:initial-creator>
+    <dc:creator>{{document.meta.creator|StyleStack Formula Generator}}</dc:creator>
+    <meta:creation-date>{{document.meta.creation_date|2025-01-01T00:00:00Z}}</meta:creation-date>
+    <dc:date>{{document.meta.date|2025-01-01T00:00:00Z}}</dc:date>
+    <dc:language>{{document.meta.language|en-US}}</dc:language>
+
+    <!-- Document statistics -->
+    <meta:document-statistic meta:object-count="{{stats.objects|8}}" meta:page-count="{{stats.pages|1}}"
+                            meta:paragraph-count="{{stats.paragraphs|12}}" meta:word-count="{{stats.words|85}}"
+                            meta:character-count="{{stats.characters|750}}" meta:non-whitespace-character-count="{{stats.non_whitespace|665}}"/>
+
+    <!-- Editing information -->
+    <meta:editing-cycles>{{document.meta.editing_cycles|1}}</meta:editing-cycles>
+    <meta:editing-duration>{{document.meta.editing_duration|PT00H03M30S}}</meta:editing-duration>
+
+    <!-- Custom properties for StyleStack mathematical integration -->
+    <meta:user-defined meta:name="StyleStack.Version" meta:value-type="string">{{stylestack.version|2025.1.0}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.DesignSystem" meta:value-type="string">{{stylestack.design_system|Modern Mathematics}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Organization" meta:value-type="string">{{organization.name|Default}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Channel" meta:value-type="string">{{channel.name|mathematics}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Template.Type" meta:value-type="string">{{template.type|OpenDocument Formula}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.BrandCompliance" meta:value-type="boolean">{{brand.compliance|true}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Accessibility.Level" meta:value-type="string">{{accessibility.level|WCAG AAA}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Typography.Mathematical" meta:value-type="string">{{typography.font.math|Latin Modern Math}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Typography.Fallback" meta:value-type="string">{{typography.font.math_alt|STIX Two Math}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Colors.Primary" meta:value-type="string">{{brand.colors.primary|#0EA5E9}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Colors.Variable" meta:value-type="string">{{brand.colors.math.variable|#0EA5E9}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Colors.Function" meta:value-type="string">{{brand.colors.math.function|#8B5CF6}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Colors.Constant" meta:value-type="string">{{brand.colors.math.constant|#059669}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Colors.Operator" meta:value-type="string">{{brand.colors.math.operator|#475569}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Colors.Number" meta:value-type="string">{{brand.colors.math.number|#DC2626}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Layout.Type" meta:value-type="string">{{layout.type|Scientific Document}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Platform.Target" meta:value-type="string">{{platform.target|LibreOffice Math}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Export.Quality" meta:value-type="string">{{export.quality|Publication Ready}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Update.Policy" meta:value-type="string">{{update.policy|Automatic}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Subscription.Tier" meta:value-type="string">{{subscription.tier|Professional}}</meta:user-defined>
+
+    <!-- Mathematical notation metadata -->
+    <meta:user-defined meta:name="Mathematics.Format" meta:value-type="string">{{math.format|MathML}}</meta:user-defined>
+    <meta:user-defined meta:name="Mathematics.Version" meta:value-type="string">{{math.version|MathML 3.0}}</meta:user-defined>
+    <meta:user-defined meta:name="Mathematics.Encoding" meta:value-type="string">{{math.encoding|UTF-8}}</meta:user-defined>
+    <meta:user-defined meta:name="Mathematics.DisplayStyle" meta:value-type="string">{{math.display_style|Block}}</meta:user-defined>
+    <meta:user-defined meta:name="Mathematics.InlineSupport" meta:value-type="boolean">{{math.inline_support|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Mathematics.ColorCoding" meta:value-type="boolean">{{math.color_coding|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Mathematics.SemanticAnnotation" meta:value-type="boolean">{{math.semantic_annotation|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Mathematics.AccessibilitySupport" meta:value-type="boolean">{{math.accessibility_support|true}}</meta:user-defined>
+
+    <!-- Corporate and academic metadata -->
+    <meta:user-defined meta:name="Company.Name" meta:value-type="string">{{company.name|Your Institution Name}}</meta:user-defined>
+    <meta:user-defined meta:name="Company.Department" meta:value-type="string">{{company.department|Mathematics Department}}</meta:user-defined>
+    <meta:user-defined meta:name="Company.ContactEmail" meta:value-type="string">{{company.contact.email|math@institution.edu}}</meta:user-defined>
+    <meta:user-defined meta:name="Company.Website" meta:value-type="string">{{company.website|https://institution.edu}}</meta:user-defined>
+    <meta:user-defined meta:name="Academic.Subject" meta:value-type="string">{{academic.subject|Mathematics}}</meta:user-defined>
+    <meta:user-defined meta:name="Academic.Level" meta:value-type="string">{{academic.level|University}}</meta:user-defined>
+    <meta:user-defined meta:name="Academic.Course" meta:value-type="string">{{academic.course|Advanced Mathematics}}</meta:user-defined>
+    <meta:user-defined meta:name="Academic.Prerequisites" meta:value-type="string">{{academic.prerequisites|Calculus, Linear Algebra}}</meta:user-defined>
+
+    <!-- Technical specifications for mathematical rendering -->
+    <meta:user-defined meta:name="Technical.ColorSpace" meta:value-type="string">{{technical.color_space|sRGB}}</meta:user-defined>
+    <meta:user-defined meta:name="Technical.Resolution" meta:value-type="string">{{technical.resolution|600 DPI}}</meta:user-defined>
+    <meta:user-defined meta:name="Technical.Format.Version" meta:value-type="string">{{technical.format.version|ODF 1.3}}</meta:user-defined>
+    <meta:user-defined meta:name="Technical.Compatibility" meta:value-type="string">{{technical.compatibility|LibreOffice 7.0+, OpenOffice 4.1+}}</meta:user-defined>
+    <meta:user-defined meta:name="Technical.PrintReady" meta:value-type="boolean">{{technical.print_ready|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Technical.WebReady" meta:value-type="boolean">{{technical.web_ready|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Technical.LaTeXExport" meta:value-type="boolean">{{technical.latex_export|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Technical.PDFOptimized" meta:value-type="boolean">{{technical.pdf_optimized|true}}</meta:user-defined>
+
+    <!-- Font and typography configuration -->
+    <meta:user-defined meta:name="Typography.MainFont" meta:value-type="string">{{typography.main_font|Latin Modern Math}}</meta:user-defined>
+    <meta:user-defined meta:name="Typography.FallbackFont" meta:value-type="string">{{typography.fallback_font|STIX Two Math}}</meta:user-defined>
+    <meta:user-defined meta:name="Typography.SansSerifFont" meta:value-type="string">{{typography.sans_serif_font|Inter}}</meta:user-defined>
+    <meta:user-defined meta:name="Typography.FontSize.Default" meta:value-type="string">{{typography.size.default|14pt}}</meta:user-defined>
+    <meta:user-defined meta:name="Typography.FontSize.Inline" meta:value-type="string">{{typography.size.inline|12pt}}</meta:user-defined>
+    <meta:user-defined meta:name="Typography.LineHeight" meta:value-type="string">{{typography.line_height|1.4}}</meta:user-defined>
+    <meta:user-defined meta:name="Typography.EmbeddedFonts" meta:value-type="boolean">{{typography.embedded_fonts|true}}</meta:user-defined>
+
+    <!-- Design system configuration -->
+    <meta:user-defined meta:name="DesignSystem.TokensVersion" meta:value-type="string">{{design_tokens.version|2025.1.0}}</meta:user-defined>
+    <meta:user-defined meta:name="DesignSystem.LastUpdate" meta:value-type="date">{{design_tokens.last_update|2025-01-01}}</meta:user-defined>
+    <meta:user-defined meta:name="DesignSystem.AutoUpdate" meta:value-type="boolean">{{design_tokens.auto_update|true}}</meta:user-defined>
+    <meta:user-defined meta:name="DesignSystem.ValidationStatus" meta:value-type="string">{{design_tokens.validation|Validated}}</meta:user-defined>
+    <meta:user-defined meta:name="DesignSystem.MathSpecific" meta:value-type="boolean">{{design_tokens.math_specific|true}}</meta:user-defined>
+
+    <!-- Accessibility and universal design -->
+    <meta:user-defined meta:name="Accessibility.ScreenReaderSupport" meta:value-type="boolean">{{accessibility.screen_reader|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Accessibility.MathSpeech" meta:value-type="boolean">{{accessibility.math_speech|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Accessibility.AlternativeText" meta:value-type="boolean">{{accessibility.alt_text|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Accessibility.HighContrast" meta:value-type="boolean">{{accessibility.high_contrast|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Accessibility.ColorBlindSafe" meta:value-type="boolean">{{accessibility.color_blind_safe|true}}</meta:user-defined>
+
+    <!-- Usage tracking and analytics -->
+    <meta:user-defined meta:name="Usage.CreatedFrom" meta:value-type="string">{{usage.created_from|StyleStack Mathematical Template}}</meta:user-defined>
+    <meta:user-defined meta:name="Usage.TemplateID" meta:value-type="string">{{usage.template_id|odf-math-showcase-v1}}</meta:user-defined>
+    <meta:user-defined meta:name="Usage.Environment" meta:value-type="string">{{usage.environment|Academic}}</meta:user-defined>
+    <meta:user-defined meta:name="Usage.MathComplexity" meta:value-type="string">{{usage.math_complexity|Advanced}}</meta:user-defined>
+    <meta:user-defined meta:name="Usage.FormulaCount" meta:value-type="int">{{usage.formula_count|7}}</meta:user-defined>
+  </office:meta>
+
+</office:document-meta>

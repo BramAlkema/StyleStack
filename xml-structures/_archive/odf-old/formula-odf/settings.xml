@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-settings xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                         xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0"
+                         xmlns:ooo="http://openoffice.org/2004/office"
+                         office:version="1.3">
+
+  <!-- StyleStack Mathematical Formula Settings with Design Token Configuration -->
+
+  <office:settings>
+    <config:config-item-set config:name="ooo:view-settings">
+      <!-- View configuration optimized for mathematical content -->
+      <config:config-item config:name="ViewAreaTop" config:type="int">{{view.area.top|0}}</config:config-item>
+      <config:config-item config:name="ViewAreaLeft" config:type="int">{{view.area.left|0}}</config:config-item>
+      <config:config-item config:name="ViewAreaWidth" config:type="int">{{view.area.width|19685}}</config:config-item>
+      <config:config-item config:name="ViewAreaHeight" config:type="int">{{view.area.height|27940}}</config:config-item>
+
+      <!-- Zoom and display settings for mathematical formulas -->
+      <config:config-item config:name="ZoomType" config:type="short">{{view.zoom.type|3}}</config:config-item>
+      <config:config-item config:name="ZoomFactor" config:type="short">{{view.zoom.factor|150}}</config:config-item>
+      <config:config-item config:name="IsTextWrapEnabled" config:type="boolean">{{view.text_wrap|false}}</config:config-item>
+
+      <!-- Mathematical notation display preferences -->
+      <config:config-item config:name="ShowFormulaCursor" config:type="boolean">{{formula.cursor.show|true}}</config:config-item>
+      <config:config-item config:name="AutoRedraw" config:type="boolean">{{formula.auto_redraw|true}}</config:config-item>
+      <config:config-item config:name="FormulaCursorWidth" config:type="int">{{formula.cursor.width|4}}</config:config-item>
+    </config:config-item-set>
+
+    <config:config-item-set config:name="ooo:configuration-settings">
+      <!-- Mathematical formula configuration -->
+      <config:config-item config:name="LoadReadonly" config:type="boolean">{{document.readonly|false}}</config:config-item>
+      <config:config-item config:name="IsKernAsianPunctuation" config:type="boolean">{{typography.kern_asian|true}}</config:config-item>
+      <config:config-item config:name="CharacterCompressionType" config:type="short">{{typography.compression|0}}</config:config-item>
+
+      <!-- Mathematical typography settings -->
+      <config:config-item config:name="BasicLibraries" config:type="string">{{math.libraries|Standard}}</config:config-item>
+      <config:config-item config:name="DialogLibraries" config:type="string">{{dialog.libraries|Standard}}</config:config-item>
+
+      <!-- Font embedding for mathematical notation -->
+      <config:config-item config:name="EmbedFonts" config:type="boolean">{{fonts.embed|true}}</config:config-item>
+      <config:config-item config:name="EmbedOnlyUsedFonts" config:type="boolean">{{fonts.embed_only_used|true}}</config:config-item>
+      <config:config-item config:name="EmbedLatinScriptFonts" config:type="boolean">{{fonts.embed_latin|true}}</config:config-item>
+      <config:config-item config:name="EmbedAsianScriptFonts" config:type="boolean">{{fonts.embed_asian|false}}</config:config-item>
+      <config:config-item config:name="EmbedComplexScriptFonts" config:type="boolean">{{fonts.embed_complex|false}}</config:config-item>
+
+      <!-- Mathematical rendering and display -->
+      <config:config-item config:name="BaseFontHeight" config:type="short">{{math.base_font_height|12}}</config:config-item>
+      <config:config-item config:name="TextFontHeight" config:type="short">{{math.text_font_height|12}}</config:config-item>
+      <config:config-item config:name="IndexFontHeight" config:type="short">{{math.index_font_height|8}}</config:config-item>
+      <config:config-item config:name="FunctionFontHeight" config:type="short">{{math.function_font_height|12}}</config:config-item>
+      <config:config-item config:name="OperatorFontHeight" config:type="short">{{math.operator_font_height|14}}</config:config-item>
+      <config:config-item config:name="LimitFontHeight" config:type="short">{{math.limit_font_height|10}}</config:config-item>
+
+      <!-- Mathematical font family settings -->
+      <config:config-item config:name="BaseFontName" config:type="string">{{math.fonts.base|Latin Modern Math}}</config:config-item>
+      <config:config-item config:name="TextFontName" config:type="string">{{math.fonts.text|Inter}}</config:config-item>
+      <config:config-item config:name="IndexFontName" config:type="string">{{math.fonts.index|Latin Modern Math}}</config:config-item>
+      <config:config-item config:name="FunctionFontName" config:type="string">{{math.fonts.function|Latin Modern Math}}</config:config-item>
+      <config:config-item config:name="OperatorFontName" config:type="string">{{math.fonts.operator|Latin Modern Math}}</config:config-item>
+      <config:config-item config:name="LimitFontName" config:type="string">{{math.fonts.limit|Latin Modern Math}}</config:config-item>
+
+      <!-- Mathematical style attributes -->
+      <config:config-item config:name="BaseFontItalic" config:type="boolean">{{math.style.base.italic|false}}</config:config-item>
+      <config:config-item config:name="BaseFontBold" config:type="boolean">{{math.style.base.bold|false}}</config:config-item>
+      <config:config-item config:name="TextFontItalic" config:type="boolean">{{math.style.text.italic|false}}</config:config-item>
+      <config:config-item config:name="TextFontBold" config:type="boolean">{{math.style.text.bold|false}}</config:config-item>
+      <config:config-item config:name="IndexFontItalic" config:type="boolean">{{math.style.index.italic|true}}</config:config-item>
+      <config:config-item config:name="IndexFontBold" config:type="boolean">{{math.style.index.bold|false}}</config:config-item>
+      <config:config-item config:name="FunctionFontItalic" config:type="boolean">{{math.style.function.italic|false}}</config:config-item>
+      <config:config-item config:name="FunctionFontBold" config:type="boolean">{{math.style.function.bold|true}}</config:config-item>
+      <config:config-item config:name="OperatorFontItalic" config:type="boolean">{{math.style.operator.italic|false}}</config:config-item>
+      <config:config-item config:name="OperatorFontBold" config:type="boolean">{{math.style.operator.bold|false}}</config:config-item>
+      <config:config-item config:name="LimitFontItalic" config:type="boolean">{{math.style.limit.italic|true}}</config:config-item>
+      <config:config-item config:name="LimitFontBold" config:type="boolean">{{math.style.limit.bold|false}}</config:config-item>
+
+      <!-- Spacing and alignment settings -->
+      <config:config-item config:name="TopMargin" config:type="short">{{spacing.margins.top|5}}</config:config-item>
+      <config:config-item config:name="BottomMargin" config:type="short">{{spacing.margins.bottom|5}}</config:config-item>
+      <config:config-item config:name="LeftMargin" config:type="short">{{spacing.margins.left|5}}</config:config-item>
+      <config:config-item config:name="RightMargin" config:type="short">{{spacing.margins.right|5}}</config:config-item>
+
+      <!-- Mathematical symbol spacing -->
+      <config:config-item config:name="RelLineSpacing" config:type="short">{{spacing.line.relative|105}}</config:config-item>
+      <config:config-item config:name="RelRootSpacing" config:type="short">{{spacing.root.relative|120}}</config:config-item>
+      <config:config-item config:name="RelIndexSuperscript" config:type="short">{{spacing.index.superscript|60}}</config:config-item>
+      <config:config-item config:name="RelIndexSubscript" config:type="short">{{spacing.index.subscript|40}}</config:config-item>
+      <config:config-item config:name="RelFractionNumeratorHeight" config:type="short">{{spacing.fraction.numerator|46}}</config:config-item>
+      <config:config-item config:name="RelFractionDenominatorDepth" config:type="short">{{spacing.fraction.denominator|60}}</config:config-item>
+      <config:config-item config:name="RelFractionBarExcess" config:type="short">{{spacing.fraction.bar_excess|10}}</config:config-item>
+      <config:config-item config:name="RelFractionBarLineWeight" config:type="short">{{spacing.fraction.bar_weight|5}}</config:config-item>
+
+      <!-- Bracket and delimiter settings -->
+      <config:config-item config:name="RelBracketExcess" config:type="short">{{spacing.bracket.excess|10}}</config:config-item>
+      <config:config-item config:name="RelBracketDistance" config:type="short">{{spacing.bracket.distance|5}}</config:config-item>
+      <config:config-item config:name="RelScaleBrackets" config:type="short">{{spacing.bracket.scale|125}}</config:config-item>
+      <config:config-item config:name="RelMatrixLineSpacing" config:type="short">{{spacing.matrix.line|140}}</config:config-item>
+      <config:config-item config:name="RelMatrixColumnSpacing" config:type="short">{{spacing.matrix.column|30}}</config:config-item>
+
+      <!-- Symbol and operator spacing -->
+      <config:config-item config:name="RelOperatorExcess" config:type="short">{{spacing.operator.excess|10}}</config:config-item>
+      <config:config-item config:name="RelOperatorSpacing" config:type="short">{{spacing.operator.spacing|20}}</config:config-item>
+      <config:config-item config:name="RelSymbolPrimary" config:type="short">{{spacing.symbol.primary|100}}</config:config-item>
+      <config:config-item config:name="RelSymbolMinimum" config:type="short">{{spacing.symbol.minimum|50}}</config:config-item>
+
+      <!-- Printing and export settings -->
+      <config:config-item config:name="PrinterName" config:type="string">{{printer.name|}}</config:config-item>
+      <config:config-item config:name="PrinterSetup" config:type="base64Binary">{{printer.setup|}}</config:config-item>
+      <config:config-item config:name="PrintTitle" config:type="boolean">{{print.title|true}}</config:config-item>
+      <config:config-item config:name="PrintFormulaText" config:type="boolean">{{print.formula_text|true}}</config:config-item>
+      <config:config-item config:name="PrintFrame" config:type="boolean">{{print.frame|false}}</config:config-item>
+      <config:config-item config:name="PrintSize" config:type="short">{{print.size|0}}</config:config-item>
+      <config:config-item config:name="PrintZoomFactor" config:type="short">{{print.zoom_factor|100}}</config:config-item>
+
+      <!-- Color and appearance for mathematical elements -->
+      <config:config-item config:name="SymbolSet" config:type="string">{{symbols.set|standard}}</config:config-item>
+      <config:config-item config:name="FormulaCursor" config:type="boolean">{{formula.cursor.enabled|true}}</config:config-item>
+      <config:config-item config:name="AutoCloseBrackets" config:type="boolean">{{editing.auto_close_brackets|true}}</config:config-item>
+
+      <!-- Accessibility settings for mathematical content -->
+      <config:config-item config:name="IsIgnoreSpacesRight" config:type="boolean">{{accessibility.ignore_spaces_right|true}}</config:config-item>
+      <config:config-item config:name="AlignMathObjectToBaseline" config:type="boolean">{{accessibility.align_to_baseline|true}}</config:config-item>
+
+      <!-- StyleStack-specific mathematical settings -->
+      <config:config-item config:name="StyleStackEnabled" config:type="boolean">{{stylestack.enabled|true}}</config:config-item>
+      <config:config-item config:name="StyleStackAutoUpdate" config:type="boolean">{{stylestack.auto_update|true}}</config:config-item>
+      <config:config-item config:name="StyleStackValidation" config:type="boolean">{{stylestack.validation|true}}</config:config-item>
+      <config:config-item config:name="StyleStackBrandCompliance" config:type="boolean">{{stylestack.brand_compliance|true}}</config:config-item>
+      <config:config-item config:name="StyleStackColorCoding" config:type="boolean">{{stylestack.color_coding|true}}</config:config-item>
+      <config:config-item config:name="StyleStackMathematicalAccessibility" config:type="boolean">{{stylestack.math_accessibility|true}}</config:config-item>
+
+      <!-- Advanced mathematical rendering -->
+      <config:config-item config:name="ApplyUserData" config:type="boolean">{{user_data.apply|true}}</config:config-item>
+      <config:config-item config:name="SaveVersionOnClose" config:type="boolean">{{version.save_on_close|false}}</config:config-item>
+      <config:config-item config:name="UpdateFromTemplate" config:type="boolean">{{template.update_from|true}}</config:config-item>
+    </config:config-item-set>
+  </office:settings>
+
+</office:document-settings>

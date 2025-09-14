@@ -1,0 +1,80 @@
+{
+  "tools/core/error_handling.py": {
+    "module": "/Users/ynse/projects/StyleStack/tools/core/error_handling.py",
+    "total_methods": 20,
+    "potentially_unused": [
+      "collect_errors"
+    ],
+    "definitely_unused": [],
+    "class_methods": {
+      "StyleStackError": [
+        "__init__"
+      ],
+      "ProcessingError": [],
+      "TemplateError": [],
+      "TokenResolutionError": [],
+      "ValidationError": [],
+      "ErrorCollector": [
+        "get_summary",
+        "add_warning",
+        "has_warnings",
+        "has_errors",
+        "execute_with_error_handling",
+        "add_error",
+        "clear",
+        "__init__"
+      ]
+    }
+  },
+  "tools/core/validation.py": {
+    "module": "/Users/ynse/projects/StyleStack/tools/core/validation.py",
+    "total_methods": 20,
+    "potentially_unused": [
+      "SchemaValidatorMixin._validate_field_against_schema"
+    ],
+    "definitely_unused": [
+      "SchemaValidatorMixin._validate_field_against_schema"
+    ],
+    "class_methods": {
+      "ValidationError": [
+        "__str__"
+      ],
+      "ValidationResult": [
+        "warning_count",
+        "add_info",
+        "format_summary",
+        "add_warning",
+        "merge",
+        "to_dict",
+        "error_count",
+        "add_error",
+        "total_issues",
+        "get_errors_by_field",
+        "get_errors_by_code"
+      ],
+      "BaseValidator": [
+        "_validate_enum_value",
+        "_validate_field_type",
+        "_create_result",
+        "validate",
+        "_validate_required_field",
+        "__init__"
+      ],
+      "SchemaValidatorMixin": [
+        "_validate_field_against_schema",
+        "validate_against_schema"
+      ]
+    }
+  },
+  "tools/core/file_utils.py": {
+    "module": "/Users/ynse/projects/StyleStack/tools/core/file_utils.py",
+    "total_methods": 15,
+    "potentially_unused": [],
+    "definitely_unused": [],
+    "class_methods": {
+      "FileOperationError": [],
+      "JSONError": [],
+      "ZIPError": []
+    }
+  }
+}

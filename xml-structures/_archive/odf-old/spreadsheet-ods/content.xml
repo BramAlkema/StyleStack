@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+                        xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+                        xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+                        xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+                        xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+                        xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        xmlns:dc="http://purl.org/dc/elements/1.1/"
+                        xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+                        xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+                        xmlns:presentation="urn:oasis:names:tc:opendocument:xmlns:presentation:1.0"
+                        xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+                        xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0"
+                        xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0"
+                        xmlns:math="http://www.w3.org/1998/Math/MathML"
+                        xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0"
+                        xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0"
+                        xmlns:ooo="http://openoffice.org/2004/office"
+                        xmlns:ooow="http://openoffice.org/2004/writer"
+                        xmlns:oooc="http://openoffice.org/2004/calc"
+                        xmlns:dom="http://www.w3.org/2001/xml-events"
+                        xmlns:xforms="http://www.w3.org/2002/xforms"
+                        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xmlns:rpt="http://openoffice.org/2005/report"
+                        xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2"
+                        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                        xmlns:grddl="http://www.w3.org/2003/g/data-view#"
+                        xmlns:officeooo="http://openoffice.org/2009/office"
+                        xmlns:tableooo="http://openoffice.org/2009/table"
+                        xmlns:drawooo="http://openoffice.org/2010/draw"
+                        xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0"
+                        xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0"
+                        xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0"
+                        xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0"
+                        xmlns:css3t="http://www.w3.org/TR/css3-text/"
+                        office:version="1.3">
+
+  <!-- StyleStack Modern Spreadsheet Content with Design Token Integration -->
+
+  <!-- Script definitions for interactive design tokens -->
+  <office:scripts/>
+
+  <!-- Font face declarations with StyleStack typography -->
+  <office:font-face-decls>
+    <style:font-face style:name="Inter" svg:font-family="{{typography.font.family|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"/>
+    <style:font-face style:name="Inter1" svg:font-family="{{typography.font.family|Inter}}" style:font-family-generic="system" style:font-pitch="variable"/>
+    <style:font-face style:name="Liberation Sans" svg:font-family="'Liberation Sans'" style:font-family-generic="swiss" style:font-pitch="variable"/>
+    <style:font-face style:name="DejaVu Sans" svg:font-family="'DejaVu Sans'" style:font-family-generic="system" style:font-pitch="variable"/>
+  </office:font-face-decls>
+
+  <!-- Automatic styles with design token variables -->
+  <office:automatic-styles>
+    <!-- Column styles with responsive width -->
+    <style:style style:name="co1" style:family="table-column">
+      <style:table-column-properties fo:break-before="auto" style:column-width="{{layout.columns.header_width|3cm}}"/>
+    </style:style>
+    <style:style style:name="co2" style:family="table-column">
+      <style:table-column-properties fo:break-before="auto" style:column-width="{{layout.columns.data_width|2.5cm}}"/>
+    </style:style>
+    <style:style style:name="co3" style:family="table-column">
+      <style:table-column-properties fo:break-before="auto" style:column-width="{{layout.columns.value_width|2cm}}"/>
+    </style:style>
+
+    <!-- Row styles with design system spacing -->
+    <style:style style:name="ro1" style:family="table-row">
+      <style:table-row-properties style:row-height="{{layout.rows.header_height|0.8cm}}" fo:break-before="auto" style:use-optimal-row-height="true"/>
+    </style:style>
+    <style:style style:name="ro2" style:family="table-row">
+      <style:table-row-properties style:row-height="{{layout.rows.data_height|0.6cm}}" style:min-row-height="{{layout.rows.min_height|0.4cm}}" fo:break-before="auto" style:use-optimal-row-height="true"/>
+    </style:style>
+
+    <!-- Cell styles with brand colors and typography -->
+    <style:style style:name="ce1" style:family="table-cell" style:parent-style-name="Default">
+      <style:table-cell-properties fo:padding="{{spacing.cell.padding|0.2cm}}" fo:border="{{borders.cell.default|0.05pt solid #E5E7EB}}"
+                                  fo:background-color="{{brand.colors.header.bg|#F8FAFC}}"/>
+      <style:text-properties fo:font-weight="bold" fo:color="{{brand.colors.header.text|#1E293B}}"
+                            fo:font-size="{{typography.sizes.header|12pt}}" style:font-name="Inter"/>
+    </style:style>
+
+    <!-- Data cell styles -->
+    <style:style style:name="ce2" style:family="table-cell" style:parent-style-name="Default">
+      <style:table-cell-properties fo:padding="{{spacing.cell.padding|0.2cm}}" fo:border="{{borders.cell.data|0.05pt solid #F1F5F9}}"
+                                  fo:background-color="{{brand.colors.cell.bg|#FFFFFF}}"/>
+      <style:text-properties fo:color="{{brand.colors.cell.text|#475569}}" fo:font-size="{{typography.sizes.data|10pt}}" style:font-name="Inter"/>
+    </style:style>
+
+    <!-- Value cell styles with brand accent -->
+    <style:style style:name="ce3" style:family="table-cell" style:parent-style-name="Default">
+      <style:table-cell-properties fo:padding="{{spacing.cell.padding|0.2cm}}" fo:border="{{borders.cell.value|0.05pt solid #E2E8F0}}"
+                                  fo:background-color="{{brand.colors.value.bg|#F8FAFC}}"/>
+      <style:text-properties fo:font-weight="bold" fo:color="{{brand.colors.primary|#0EA5E9}}" fo:font-size="{{typography.sizes.value|11pt}}" style:font-name="Inter"/>
+    </style:style>
+
+    <!-- Status cell styles -->
+    <style:style style:name="ce4" style:family="table-cell" style:parent-style-name="Default">
+      <style:table-cell-properties fo:padding="{{spacing.cell.padding|0.2cm}}" fo:border="{{borders.cell.status|0.05pt solid #D1D5DB}}"
+                                  fo:background-color="{{brand.colors.success.light|#F0FDF4}}"/>
+      <style:text-properties fo:font-weight="bold" fo:color="{{brand.colors.success|#16A34A}}" fo:font-size="{{typography.sizes.status|9pt}}" style:font-name="Inter"/>
+    </style:style>
+
+    <!-- Warning status style -->
+    <style:style style:name="ce5" style:family="table-cell" style:parent-style-name="Default">
+      <style:table-cell-properties fo:padding="{{spacing.cell.padding|0.2cm}}" fo:border="{{borders.cell.status|0.05pt solid #D1D5DB}}"
+                                  fo:background-color="{{brand.colors.warning.light|#FFFBEB}}"/>
+      <style:text-properties fo:font-weight="bold" fo:color="{{brand.colors.warning|#D97706}}" fo:font-size="{{typography.sizes.status|9pt}}" style:font-name="Inter"/>
+    </style:style>
+
+    <!-- Error status style -->
+    <style:style style:name="ce6" style:family="table-cell" style:parent-style-name="Default">
+      <style:table-cell-properties fo:padding="{{spacing.cell.padding|0.2cm}}" fo:border="{{borders.cell.status|0.05pt solid #D1D5DB}}"
+                                  fo:background-color="{{brand.colors.error.light|#FEF2F2}}"/>
+      <style:text-properties fo:font-weight="bold" fo:color="{{brand.colors.error|#DC2626}}" fo:font-size="{{typography.sizes.status|9pt}}" style:font-name="Inter"/>
+    </style:style>
+
+    <!-- Chart cell style -->
+    <style:style style:name="ce7" style:family="table-cell" style:parent-style-name="Default">
+      <style:table-cell-properties fo:padding="{{spacing.chart.padding|0.3cm}}" fo:border="{{borders.chart|0.1pt solid #CBD5E1}}"
+                                  fo:background-color="{{brand.colors.chart.bg|#FAFAFA}}"/>
+    </style:style>
+
+    <!-- Page layout -->
+    <style:page-layout style:name="pm1">
+      <style:page-layout-properties fo:page-width="{{layout.page.width|29.7cm}}" fo:page-height="{{layout.page.height|21cm}}"
+                                   style:num-format="1" style:print-orientation="landscape"
+                                   fo:margin-top="{{spacing.page.top|2cm}}" fo:margin-bottom="{{spacing.page.bottom|2cm}}"
+                                   fo:margin-left="{{spacing.page.left|2cm}}" fo:margin-right="{{spacing.page.right|2cm}}"
+                                   style:writing-mode="lr-tb"/>
+      <!-- Header properties -->
+      <style:header-style>
+        <style:header-footer-properties fo:min-height="{{layout.header.height|1cm}}" fo:margin-left="0cm" fo:margin-right="0cm"
+                                       fo:margin-bottom="{{spacing.header.bottom|0.3cm}}" style:dynamic-spacing="false"
+                                       fo:background-color="{{brand.colors.header.page_bg|#F8FAFC}}"/>
+      </style:header-style>
+      <!-- Footer properties -->
+      <style:footer-style>
+        <style:header-footer-properties fo:min-height="{{layout.footer.height|0.8cm}}" fo:margin-left="0cm" fo:margin-right="0cm"
+                                       fo:margin-top="{{spacing.footer.top|0.3cm}}" style:dynamic-spacing="false"
+                                       fo:background-color="{{brand.colors.footer.page_bg|#F8FAFC}}"/>
+      </style:footer-style>
+    </style:page-layout>
+  </office:automatic-styles>
+
+  <!-- Document body -->
+  <office:body>
+    <office:spreadsheet>
+
+      <!-- Named expressions for design tokens -->
+      <table:named-expressions>
+        <table:named-range table:name="brand_primary_color" table:base-cell-address="Dashboard.A1" table:cell-range-address="Dashboard.A1"/>
+        <table:named-range table:name="brand_secondary_color" table:base-cell-address="Dashboard.B1" table:cell-range-address="Dashboard.B1"/>
+        <table:named-range table:name="company_name" table:base-cell-address="Dashboard.C1" table:cell-range-address="Dashboard.C1"/>
+        <table:named-range table:name="design_system_version" table:base-cell-address="Dashboard.D1" table:cell-range-address="Dashboard.D1"/>
+      </table:named-expressions>
+
+      <!-- Main dashboard table -->
+      <table:table table:name="{{sheets.dashboard.name|StyleStack Dashboard}}" table:style-name="ta1">
+        <!-- Column definitions -->
+        <table:table-column table:style-name="co1" table:number-columns-repeated="1"/>
+        <table:table-column table:style-name="co2" table:number-columns-repeated="2"/>
+        <table:table-column table:style-name="co3" table:number-columns-repeated="7"/>
+
+        <!-- Header row -->
+        <table:table-row table:style-name="ro1">
+          <table:table-cell table:style-name="ce1" office:value-type="string" office:string-value="{{table.headers.component|Design Component}}">
+            <text:p>{{table.headers.component|Design Component}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce1" office:value-type="string" office:string-value="{{table.headers.token|Token Name}}">
+            <text:p>{{table.headers.token|Token Name}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce1" office:value-type="string" office:string-value="{{table.headers.value|Current Value}}">
+            <text:p>{{table.headers.value|Current Value}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce1" office:value-type="string" office:string-value="{{table.headers.status|Status}}">
+            <text:p>{{table.headers.status|Status}}</text:p>
+          </table:table-cell>
+        </table:table-row>
+
+        <!-- Brand Colors Section -->
+        <table:table-row table:style-name="ro2">
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="{{data.brand.colors.label|Brand Colors}}">
+            <text:p>{{data.brand.colors.label|Brand Colors}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="brand.colors.primary">
+            <text:p>brand.colors.primary</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce3" office:value-type="string" office:string-value="{{brand.colors.primary|#0EA5E9}}">
+            <text:p>{{brand.colors.primary|#0EA5E9}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce4" office:value-type="string" office:string-value="{{status.active|Active}}">
+            <text:p>{{status.active|Active}}</text:p>
+          </table:table-cell>
+        </table:table-row>
+
+        <table:table-row table:style-name="ro2">
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="">
+            <text:p></text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="brand.colors.secondary">
+            <text:p>brand.colors.secondary</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce3" office:value-type="string" office:string-value="{{brand.colors.secondary|#8B5CF6}}">
+            <text:p>{{brand.colors.secondary|#8B5CF6}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce4" office:value-type="string" office:string-value="{{status.active|Active}}">
+            <text:p>{{status.active|Active}}</text:p>
+          </table:table-cell>
+        </table:table-row>
+
+        <!-- Typography Section -->
+        <table:table-row table:style-name="ro2">
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="{{data.typography.label|Typography}}">
+            <text:p>{{data.typography.label|Typography}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="typography.font.family">
+            <text:p>typography.font.family</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce3" office:value-type="string" office:string-value="{{typography.font.family|Inter}}">
+            <text:p>{{typography.font.family|Inter}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce4" office:value-type="string" office:string-value="{{status.active|Active}}">
+            <text:p>{{status.active|Active}}</text:p>
+          </table:table-cell>
+        </table:table-row>
+
+        <!-- Spacing Section -->
+        <table:table-row table:style-name="ro2">
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="{{data.spacing.label|Spacing}}">
+            <text:p>{{data.spacing.label|Spacing}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="spacing.cell.padding">
+            <text:p>spacing.cell.padding</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce3" office:value-type="string" office:string-value="{{spacing.cell.padding|0.2cm}}">
+            <text:p>{{spacing.cell.padding|0.2cm}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce4" office:value-type="string" office:string-value="{{status.active|Active}}">
+            <text:p>{{status.active|Active}}</text:p>
+          </table:table-cell>
+        </table:table-row>
+
+        <!-- Metrics Section -->
+        <table:table-row table:style-name="ro2">
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="{{data.metrics.label|System Metrics}}">
+            <text:p>{{data.metrics.label|System Metrics}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="tokens.total">
+            <text:p>tokens.total</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce3" office:value-type="float" office:value="{{metrics.tokens.total|89}}">
+            <text:p>{{metrics.tokens.total|89}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce4" office:value-type="string" office:string-value="{{status.monitored|Monitored}}">
+            <text:p>{{status.monitored|Monitored}}</text:p>
+          </table:table-cell>
+        </table:table-row>
+
+        <!-- Compliance row -->
+        <table:table-row table:style-name="ro2">
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="">
+            <text:p></text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="compliance.score">
+            <text:p>compliance.score</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce3" office:value-type="percentage" office:value="{{metrics.compliance.score|0.94}}">
+            <text:p>{{metrics.compliance.percentage|94%}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce4" office:value-type="string" office:string-value="{{status.excellent|Excellent}}">
+            <text:p>{{status.excellent|Excellent}}</text:p>
+          </table:table-cell>
+        </table:table-row>
+
+        <!-- Chart placeholder row -->
+        <table:table-row table:style-name="ro1">
+          <table:table-cell table:style-name="ce7" table:number-columns-spanned="4" office:value-type="string">
+            <text:p>{{charts.compliance.title|Design Token Compliance Dashboard}}</text:p>
+            <draw:frame draw:style-name="gr1" draw:name="ComplianceChart" text:anchor-type="paragraph"
+                       svg:x="{{charts.compliance.x|0.2cm}}" svg:y="{{charts.compliance.y|0.2cm}}"
+                       svg:width="{{charts.compliance.width|15cm}}" svg:height="{{charts.compliance.height|8cm}}"
+                       draw:z-index="0">
+              <draw:object xlink:href="./Object 1" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
+            </draw:frame>
+          </table:table-cell>
+        </table:table-row>
+      </table:table>
+
+      <!-- Design Token Examples Table -->
+      <table:table table:name="{{sheets.examples.name|Design Token Examples}}" table:style-name="ta1">
+        <!-- Column definitions for examples -->
+        <table:table-column table:style-name="co1" table:number-columns-repeated="1"/>
+        <table:table-column table:style-name="co2" table:number-columns-repeated="2"/>
+        <table:table-column table:style-name="co3" table:number-columns-repeated="2"/>
+
+        <!-- Examples header -->
+        <table:table-row table:style-name="ro1">
+          <table:table-cell table:style-name="ce1" office:value-type="string" office:string-value="{{table.examples.category|Category}}">
+            <text:p>{{table.examples.category|Category}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce1" office:value-type="string" office:string-value="{{table.examples.property|Property}}">
+            <text:p>{{table.examples.property|Property}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce1" office:value-type="string" office:string-value="{{table.examples.token|Token Path}}">
+            <text:p>{{table.examples.token|Token Path}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce1" office:value-type="string" office:string-value="{{table.examples.value|Default Value}}">
+            <text:p>{{table.examples.value|Default Value}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce1" office:value-type="string" office:string-value="{{table.examples.override|Corporate Override}}">
+            <text:p>{{table.examples.override|Corporate Override}}</text:p>
+          </table:table-cell>
+        </table:table-row>
+
+        <!-- Color examples -->
+        <table:table-row table:style-name="ro2">
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="{{examples.colors.category|Colors}}">
+            <text:p>{{examples.colors.category|Colors}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="{{examples.colors.primary.property|Primary Color}}">
+            <text:p>{{examples.colors.primary.property|Primary Color}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="brand.colors.primary">
+            <text:p>brand.colors.primary</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce3" office:value-type="string" office:string-value="#0EA5E9">
+            <text:p>#0EA5E9</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce3" office:value-type="string" office:string-value="{{brand.colors.primary}}">
+            <text:p>{{brand.colors.primary}}</text:p>
+          </table:table-cell>
+        </table:table-row>
+
+        <!-- Typography examples -->
+        <table:table-row table:style-name="ro2">
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="{{examples.typography.category|Typography}}">
+            <text:p>{{examples.typography.category|Typography}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="{{examples.typography.font.property|Font Family}}">
+            <text:p>{{examples.typography.font.property|Font Family}}</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce2" office:value-type="string" office:string-value="typography.font.family">
+            <text:p>typography.font.family</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce3" office:value-type="string" office:string-value="Inter">
+            <text:p>Inter</text:p>
+          </table:table-cell>
+          <table:table-cell table:style-name="ce3" office:value-type="string" office:string-value="{{typography.font.family}}">
+            <text:p>{{typography.font.family}}</text:p>
+          </table:table-cell>
+        </table:table-row>
+      </table:table>
+
+    </office:spreadsheet>
+  </office:body>
+
+</office:document-content>

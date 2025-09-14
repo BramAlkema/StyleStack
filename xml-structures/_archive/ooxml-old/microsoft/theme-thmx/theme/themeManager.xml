@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:themeManager xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+  <!-- StyleStack Theme Manager with Design Token Integration -->
+  <a:themeFamily name="{{theme.family.name|StyleStack Modern}}" id="{{theme.family.id|{F79F4F42-2E82-4DB7-A3E4-5C2F8B3E4A7F}}}" vid="{{theme.family.version_id|{12345678-1234-5678-9012-123456789012}}}"/>
+</a:themeManager>

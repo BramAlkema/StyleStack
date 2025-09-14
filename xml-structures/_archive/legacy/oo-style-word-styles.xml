@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <!-- Document defaults inspired by LibreOffice -->
+  <w:docDefaults>
+    <w:rPrDefault>
+      <w:rPr>
+        <!-- Liberation Sans as primary font (OpenOffice default) -->
+        <w:rFonts w:ascii="Liberation Sans" w:hAnsi="Liberation Sans" w:cs="Liberation Sans"/>
+        <w:kern w:val="2"/>
+        <w:sz w:val="24"/>
+        <w:szCs w:val="24"/>
+        <w:lang w:val="en-US"/>
+      </w:rPr>
+    </w:rPrDefault>
+    <w:pPrDefault>
+      <!-- Grid-aligned spacing from LibreOffice -->
+      <w:spacing w:line="17" w:lineRule="exact"/>
+    </w:pPrDefault>
+  </w:docDefaults>
+  
+  <!-- Standard paragraph style -->
+  <w:style w:type="paragraph" w:default="1" w:styleId="Standard">
+    <w:name w:val="Standard"/>
+    <w:qFormat/>
+    <w:pPr>
+      <w:spacing w:line="17" w:lineRule="exact"/>
+    </w:pPr>
+    <w:rPr>
+      <w:rFonts w:ascii="Liberation Sans" w:hAnsi="Liberation Sans" w:cs="Liberation Sans"/>
+      <w:sz w:val="24"/>
+      <w:szCs w:val="24"/>
+    </w:rPr>
+  </w:style>
+  
+  <!-- Heading style inspired by LibreOffice -->
+  <w:style w:type="paragraph" w:styleId="Heading">
+    <w:name w:val="Heading"/>
+    <w:basedOn w:val="Standard"/>
+    <w:next w:val="Text_body"/>
+    <w:qFormat/>
+    <w:pPr>
+      <w:spacing w:before="85" w:after="34" w:line="34" w:lineRule="exact"/>
+      <w:keepNext/>
+    </w:pPr>
+    <w:rPr>
+      <w:rFonts w:ascii="Liberation Sans" w:hAnsi="Liberation Sans" w:cs="Liberation Sans"/>
+      <w:sz w:val="28"/>
+      <w:szCs w:val="28"/>
+    </w:rPr>
+  </w:style>
+  
+  <!-- Text body style -->
+  <w:style w:type="paragraph" w:styleId="Text_body">
+    <w:name w:val="Text body"/>
+    <w:basedOn w:val="Standard"/>
+    <w:qFormat/>
+    <w:pPr>
+      <w:spacing w:after="17" w:line="17" w:lineRule="exact"/>
+    </w:pPr>
+  </w:style>
+  
+  <!-- List style -->
+  <w:style w:type="paragraph" w:styleId="List">
+    <w:name w:val="List"/>
+    <w:basedOn w:val="Text_body"/>
+    <w:pPr>
+      <w:spacing w:line="17" w:lineRule="exact"/>
+    </w:pPr>
+    <w:rPr>
+      <w:rFonts w:ascii="Liberation Sans" w:hAnsi="Liberation Sans" w:cs="Liberation Sans"/>
+    </w:rPr>
+  </w:style>
+  
+  <!-- Caption style -->
+  <w:style w:type="paragraph" w:styleId="Caption">
+    <w:name w:val="Caption"/>
+    <w:basedOn w:val="Standard"/>
+    <w:pPr>
+      <w:spacing w:before="34" w:after="34" w:line="17" w:lineRule="exact"/>
+    </w:pPr>
+    <w:rPr>
+      <w:rFonts w:ascii="Liberation Sans" w:hAnsi="Liberation Sans" w:cs="Liberation Sans"/>
+      <w:sz w:val="24"/>
+      <w:szCs w:val="24"/>
+      <w:i/>
+    </w:rPr>
+  </w:style>
+  
+  <!-- Default character style -->
+  <w:style w:type="character" w:default="1" w:styleId="DefaultParagraphFont">
+    <w:name w:val="Default Paragraph Font"/>
+    <w:uiPriority w:val="1"/>
+  </w:style>
+  
+  <!-- Table style inspired by LibreOffice defaults -->
+  <w:style w:type="table" w:default="1" w:styleId="TableNormal">
+    <w:name w:val="Normal Table"/>
+    <w:uiPriority w:val="99"/>
+    <w:tblPr>
+      <w:tblCellMar>
+        <w:top w:w="0" w:type="dxa"/>
+        <w:left w:w="108" w:type="dxa"/>
+        <w:bottom w:w="0" w:type="dxa"/>
+        <w:right w:w="108" w:type="dxa"/>
+      </w:tblCellMar>
+    </w:tblPr>
+  </w:style>
+</w:styles>

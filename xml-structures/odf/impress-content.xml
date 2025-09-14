@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+                        xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+                        xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+                        xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+                        xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+                        xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        xmlns:dc="http://purl.org/dc/elements/1.1/"
+                        xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+                        xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+                        xmlns:presentation="urn:oasis:names:tc:opendocument:xmlns:presentation:1.0"
+                        xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+                        xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0"
+                        xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0"
+                        xmlns:math="http://www.w3.org/1998/Math/MathML"
+                        xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0"
+                        xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0"
+                        xmlns:ooo="http://openoffice.org/2004/office"
+                        xmlns:ooow="http://openoffice.org/2004/writer"
+                        xmlns:oooc="http://openoffice.org/2004/calc"
+                        xmlns:dom="http://www.w3.org/2001/xml-events"
+                        xmlns:xforms="http://www.w3.org/2002/xforms"
+                        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xmlns:smil="urn:oasis:names:tc:opendocument:xmlns:smil-compatible:1.0"
+                        xmlns:anim="urn:oasis:names:tc:opendocument:xmlns:animation:1.0"
+                        xmlns:rpt="http://openoffice.org/2005/report"
+                        xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2"
+                        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                        xmlns:grddl="http://www.w3.org/2003/g/data-view#"
+                        xmlns:officeooo="http://openoffice.org/2009/office"
+                        xmlns:tableooo="http://openoffice.org/2009/table"
+                        xmlns:drawooo="http://openoffice.org/2010/draw"
+                        xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0"
+                        xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0"
+                        xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0"
+                        xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0"
+                        xmlns:css3t="http://www.w3.org/TR/css3-text/"
+                        office:version="1.3">
+
+  <!-- ============================================ -->
+  <!-- COMPREHENSIVE ODF PRESENTATION STYLE OVERRIDES -->
+  <!-- Complete StyleStack takeover of LibreOffice Impress styles -->
+  <!-- ============================================ -->
+
+  <!-- StyleStack Modern Presentation Content with Design Token Integration -->
+
+  <!-- Font face declarations with StyleStack typography -->
+  <office:font-face-decls>
+    <style:font-face style:name="Inter" svg:font-family="{{typography.font.family|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"/>
+    <style:font-face style:name="Inter1" svg:font-family="{{typography.font.family|Inter}}" style:font-family-generic="system" style:font-pitch="variable"/>
+    <style:font-face style:name="Liberation Sans" svg:font-family="'Liberation Sans'" style:font-family-generic="swiss" style:font-pitch="variable"/>
+    <style:font-face style:name="DejaVu Sans" svg:font-family="'DejaVu Sans'" style:font-family-generic="system" style:font-pitch="variable"/>
+  </office:font-face-decls>
+
+  <!-- Automatic styles with design token variables -->
+  <office:automatic-styles>
+    <!-- Drawing page styles -->
+    <style:style style:name="dp1" style:family="drawing-page">
+      <style:drawing-page-properties presentation:background-visible="true" presentation:background-objects-visible="true"
+                                    presentation:display-footer="true" presentation:display-page-number="true" presentation:display-date-time="true"
+                                    draw:fill="gradient" draw:fill-gradient-name="{{gradients.slide_bg|StyleStack_Gradient}}"
+                                    presentation:transition-type="{{transitions.default.type|fade}}"
+                                    presentation:transition-style="{{transitions.default.style|crossfade}}"
+                                    presentation:transition-speed="{{transitions.default.speed|medium}}"
+                                    smil:type="{{transitions.smil.type|fadeInOut}}" smil:subtype="{{transitions.smil.subtype|crossfade}}"/>
+    </style:style>
+
+    <style:style style:name="dp2" style:family="drawing-page">
+      <style:drawing-page-properties presentation:background-visible="true" presentation:background-objects-visible="true"
+                                    presentation:display-footer="true" presentation:display-page-number="true" presentation:display-date-time="true"
+                                    draw:fill="solid" draw:fill-color="{{brand.colors.slide.content_bg|#FAFAFA}}"
+                                    presentation:transition-type="{{transitions.content.type|wipe}}"
+                                    presentation:transition-style="{{transitions.content.style|fromRight}}"
+                                    presentation:transition-speed="{{transitions.content.speed|medium}}"/>
+    </style:style>
+
+    <!-- Text styles with StyleStack typography -->
+    <style:style style:name="P1" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="center" style:writing-mode="lr-tb"/>
+      <style:text-properties fo:font-family="{{typography.font.title.family|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"
+                            fo:font-size="{{typography.sizes.presentation_title|36pt}}" fo:font-weight="bold"
+                            fo:color="{{brand.colors.text.title|#1E293B}}" text:outline="false"
+                            style:text-shadow="{{effects.title.shadow|0.18cm 0.18cm 0.18cm #B0BEC5}}"/>
+    </style:style>
+
+    <style:style style:name="P2" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="center" style:writing-mode="lr-tb" fo:margin-top="{{spacing.subtitle.top|1cm}}"/>
+      <style:text-properties fo:font-family="{{typography.font.subtitle.family|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"
+                            fo:font-size="{{typography.sizes.subtitle|20pt}}" fo:font-style="italic"
+                            fo:color="{{brand.colors.text.subtitle|#64748B}}" text:outline="false"/>
+    </style:style>
+
+    <style:style style:name="P3" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="start" style:writing-mode="lr-tb" fo:margin-top="{{spacing.body.top|0.5cm}}"
+                                 fo:margin-bottom="{{spacing.body.bottom|0.3cm}}"/>
+      <style:text-properties fo:font-family="{{typography.font.body.family|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"
+                            fo:font-size="{{typography.sizes.body|16pt}}" fo:color="{{brand.colors.text.body|#475569}}" text:outline="false"/>
+    </style:style>
+
+    <style:style style:name="P4" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="start" style:writing-mode="lr-tb" fo:margin-left="{{spacing.list.indent|1cm}}"/>
+      <style:text-properties fo:font-family="{{typography.font.body.family|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"
+                            fo:font-size="{{typography.sizes.list|14pt}}" fo:color="{{brand.colors.text.list|#64748B}}" text:outline="false"/>
+    </style:style>
+
+    <!-- List style -->
+    <text:list-style style:name="L1">
+      <text:list-level-style-bullet text:level="1" text:style-name="P4" style:num-suffix="." text:bullet-char="•">
+        <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+          <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="{{spacing.list.tab_stop|1.27cm}}"
+                                           fo:text-indent="{{spacing.list.text_indent|-0.635cm}}" fo:margin-left="{{spacing.list.margin_left|1.27cm}}"/>
+        </style:list-level-properties>
+        <style:text-properties fo:color="{{brand.colors.list.bullet|#0EA5E9}}" fo:font-weight="bold"/>
+      </text:list-level-style-bullet>
+    </text:list-style>
+
+    <!-- Shape styles -->
+    <style:style style:name="gr1" style:family="graphic">
+      <style:graphic-properties draw:stroke="solid" draw:stroke-width="{{borders.shape.width|0.05cm}}" draw:stroke-color="{{brand.colors.shape.border|#CBD5E1}}"
+                               draw:fill="solid" draw:fill-color="{{brand.colors.shape.fill|#F8FAFC}}"
+                               draw:shadow="{{effects.shape.shadow|visible}}" draw:shadow-offset-x="{{effects.shape.shadow.x|0.3cm}}"
+                               draw:shadow-offset-y="{{effects.shape.shadow.y|0.3cm}}" draw:shadow-color="{{effects.shape.shadow.color|#94A3B8}}"
+                               fo:padding-top="{{spacing.shape.padding.top|0.3cm}}" fo:padding-bottom="{{spacing.shape.padding.bottom|0.3cm}}"
+                               fo:padding-left="{{spacing.shape.padding.left|0.4cm}}" fo:padding-right="{{spacing.shape.padding.right|0.4cm}}"/>
+    </style:style>
+
+    <!-- ============================================ -->
+    <!-- COMPREHENSIVE PRESENTATION STYLE OVERRIDES -->
+    <!-- ============================================ -->
+
+    <!-- Extended Outline Level Styles -->
+    <style:style style:name="P5" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="{{layout.outline4.align|start}}" style:writing-mode="lr-tb"
+                                 fo:margin-left="{{spacing.outline4.left|1.905cm}}" fo:text-indent="{{spacing.outline4.indent|-0.635cm}}"/>
+      <style:text-properties fo:font-family="{{typography.font.outline4|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"
+                            fo:font-size="{{typography.size.outline4|14pt}}" fo:color="{{brand.colors.text.outline4|#64748B}}" text:outline="false"
+                            <!-- Hidden Properties: Advanced Typography -->
+                            fo:letter-spacing="{{typography.character_spacing.outline4|normal}}" fo:word-spacing="{{typography.word_spacing.outline4|normal}}"
+                            style:letter-kerning="{{typography.kerning.outline4|true}}" style:text-emphasize="{{typography.emphasis.outline4|none}}"
+                            style:text-position="{{typography.position.outline4.vertical|normal}} {{typography.position.outline4.scale|100%}}"
+                            style:font-relief="{{typography.font_relief.outline4|none}}" fo:text-transform="{{typography.text_transform.outline4|none}}"/>
+    </style:style>
+
+    <style:style style:name="P6" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="{{layout.outline5.align|start}}" style:writing-mode="lr-tb"
+                                 fo:margin-left="{{spacing.outline5.left|2.54cm}}" fo:text-indent="{{spacing.outline5.indent|-0.635cm}}"/>
+      <style:text-properties fo:font-family="{{typography.font.outline5|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"
+                            fo:font-size="{{typography.size.outline5|12pt}}" fo:color="{{brand.colors.text.outline5|#94A3B8}}" text:outline="false"/>
+    </style:style>
+
+    <style:style style:name="P7" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="{{layout.outline6.align|start}}" style:writing-mode="lr-tb"
+                                 fo:margin-left="{{spacing.outline6.left|3.175cm}}" fo:text-indent="{{spacing.outline6.indent|-0.635cm}}"/>
+      <style:text-properties fo:font-family="{{typography.font.outline6|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"
+                            fo:font-size="{{typography.size.outline6|11pt}}" fo:color="{{brand.colors.text.outline6|#CBD5E1}}" text:outline="false"/>
+    </style:style>
+
+    <style:style style:name="P8" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="{{layout.outline7.align|start}}" style:writing-mode="lr-tb"
+                                 fo:margin-left="{{spacing.outline7.left|3.81cm}}" fo:text-indent="{{spacing.outline7.indent|-0.635cm}}"/>
+      <style:text-properties fo:font-family="{{typography.font.outline7|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"
+                            fo:font-size="{{typography.size.outline7|10pt}}" fo:color="{{brand.colors.text.outline7|#E2E8F0}}" text:outline="false"/>
+    </style:style>
+
+    <style:style style:name="P9" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="{{layout.outline8.align|start}}" style:writing-mode="lr-tb"
+                                 fo:margin-left="{{spacing.outline8.left|4.445cm}}" fo:text-indent="{{spacing.outline8.indent|-0.635cm}}"/>
+      <style:text-properties fo:font-family="{{typography.font.outline8|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"
+                            fo:font-size="{{typography.size.outline8|9pt}}" fo:color="{{brand.colors.text.outline8|#F1F5F9}}" text:outline="false"/>
+    </style:style>
+
+    <style:style style:name="P10" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="{{layout.outline9.align|start}}" style:writing-mode="lr-tb"
+                                 fo:margin-left="{{spacing.outline9.left|5.08cm}}" fo:text-indent="{{spacing.outline9.indent|-0.635cm}}"/>
+      <style:text-properties fo:font-family="{{typography.font.outline9|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"
+                            fo:font-size="{{typography.size.outline9|8pt}}" fo:color="{{brand.colors.text.outline9|#F8FAFC}}" text:outline="false"/>
+    </style:style>
+
+    <!-- Advanced List Styles with Hidden Properties -->
+    <text:list-style style:name="L2">
+      <text:list-level-style-bullet text:level="2" text:style-name="P5" style:num-suffix="." text:bullet-char="–">
+        <style:list-level-properties text:list-level-position-and-space-mode="{{lists.position.mode|label-alignment}}"
+                                   text:min-label-width="{{lists.position.min_label_width.level2|0.635cm}}"
+                                   text:min-label-distance="{{lists.position.min_label_distance.level2|0.318cm}}">
+          <style:list-level-label-alignment text:label-followed-by="{{lists.label.followed_by.level2|listtab}}"
+                                          text:list-tab-stop-position="{{lists.label.tab_stop.level2|2.54cm}}"
+                                          fo:text-indent="{{lists.label.text_indent.level2|-0.635cm}}"
+                                          fo:margin-left="{{lists.label.margin_left.level2|2.54cm}}"/>
+        </style:list-level-properties>
+        <style:text-properties fo:color="{{brand.colors.list.bullet.level2|#8B5CF6}}" fo:font-weight="{{typography.weight.bullet.level2|normal}}"
+                              fo:font-size="{{typography.size.bullet.level2|14pt}}" style:font-name="{{typography.font.bullet.level2|Liberation Sans}}"/>
+      </text:list-level-style-bullet>
+      <text:list-level-style-bullet text:level="3" text:style-name="P6" style:num-suffix="." text:bullet-char="◦">
+        <style:list-level-properties text:list-level-position-and-space-mode="{{lists.position.mode|label-alignment}}">
+          <style:list-level-label-alignment text:label-followed-by="{{lists.label.followed_by.level3|listtab}}"
+                                          text:list-tab-stop-position="{{lists.label.tab_stop.level3|3.81cm}}"
+                                          fo:text-indent="{{lists.label.text_indent.level3|-0.635cm}}"
+                                          fo:margin-left="{{lists.label.margin_left.level3|3.81cm}}"/>
+        </style:list-level-properties>
+        <style:text-properties fo:color="{{brand.colors.list.bullet.level3|#10B981}}" fo:font-weight="{{typography.weight.bullet.level3|normal}}"/>
+      </text:list-level-style-bullet>
+    </text:list-style>
+
+    <!-- Advanced Shape Styles with Hidden Properties -->
+    <style:style style:name="gr3" style:family="graphic">
+      <style:graphic-properties
+                               <!-- Hidden Properties: Advanced Stroke Control -->
+                               draw:stroke="{{graphics.stroke.type|solid}}" draw:stroke-width="{{graphics.stroke.width|0.05cm}}"
+                               draw:stroke-color="{{graphics.stroke.color|#0EA5E9}}" draw:stroke-opacity="{{graphics.stroke.opacity|100%}}"
+                               draw:stroke-linejoin="{{graphics.stroke.line_join|miter}}" draw:stroke-linecap="{{graphics.stroke.line_cap|butt}}"
+                               draw:stroke-dash="{{graphics.stroke.dash|none}}" draw:marker-start="{{graphics.marker.start|none}}"
+                               draw:marker-end="{{graphics.marker.end|none}}" draw:marker-start-width="{{graphics.marker.start_width|0.3cm}}"
+                               draw:marker-end-width="{{graphics.marker.end_width|0.3cm}}"
+                               <!-- Hidden Properties: Advanced Fill Control -->
+                               draw:fill="{{graphics.fill.type|gradient}}" draw:fill-color="{{graphics.fill.color|#F0F9FF}}"
+                               draw:fill-gradient-name="{{graphics.fill.gradient_name|Primary_Gradient}}"
+                               draw:opacity="{{graphics.fill.opacity|100%}}" draw:transparency="{{graphics.transparency|0%}}"
+                               <!-- Hidden Properties: Advanced Shadow Control -->
+                               draw:shadow="{{graphics.shadow.visible|visible}}" draw:shadow-offset-x="{{graphics.shadow.offset.x|0.2cm}}"
+                               draw:shadow-offset-y="{{graphics.shadow.offset.y|0.2cm}}" draw:shadow-color="{{graphics.shadow.color|#1E40AF}}"
+                               draw:shadow-opacity="{{graphics.shadow.opacity|60%}}"
+                               <!-- Hidden Properties: Text Frame Control -->
+                               fo:padding="{{spacing.shape.padding|0.3cm}}" fo:padding-top="{{spacing.shape.padding.top|0.3cm}}"
+                               fo:padding-bottom="{{spacing.shape.padding.bottom|0.3cm}}" fo:padding-left="{{spacing.shape.padding.left|0.4cm}}"
+                               fo:padding-right="{{spacing.shape.padding.right|0.4cm}}" style:wrap="{{layout.shape.wrap|none}}"
+                               style:run-through="{{layout.shape.run_through|foreground}}" style:flow-with-text="{{layout.shape.flow_with_text|false}}"/>
+    </style:style>
+
+    <!-- Professional Chart/Object Styles -->
+    <style:style style:name="gr4" style:family="graphic">
+      <style:graphic-properties draw:stroke="{{graphics.chart.stroke|solid}}" draw:stroke-width="{{graphics.chart.stroke_width|0.1cm}}"
+                               draw:stroke-color="{{graphics.chart.stroke_color|#475569}}" draw:fill="{{graphics.chart.fill|solid}}"
+                               draw:fill-color="{{graphics.chart.fill_color|#FFFFFF}}" fo:border="{{borders.chart|0.05pt solid #E2E8F0}}"
+                               fo:background-color="{{graphics.chart.bg_color|#FAFAFA}}" style:background-transparency="{{graphics.chart.bg_transparency|0%}}"
+                               style:protect="{{protection.chart.protect|none}}" style:editable="{{layout.chart.editable|true}}"/>
+    </style:style>
+
+    <!-- Advanced Drawing Page Styles -->
+    <style:style style:name="dp3" style:family="drawing-page">
+      <style:drawing-page-properties
+                                    <!-- Hidden Properties: Advanced Slide Control -->
+                                    presentation:background-visible="{{presentation.background.visible|true}}"
+                                    presentation:background-objects-visible="{{presentation.background.objects|true}}"
+                                    presentation:display-header="{{presentation.header.display|false}}"
+                                    presentation:display-footer="{{presentation.footer.display|true}}"
+                                    presentation:display-page-number="{{presentation.page_number.display|true}}"
+                                    presentation:display-date-time="{{presentation.date_time.display|true}}"
+                                    <!-- Hidden Properties: Advanced Transitions -->
+                                    presentation:transition-type="{{transitions.advanced.type|dissolve}}"
+                                    presentation:transition-style="{{transitions.advanced.style|from-center}}"
+                                    presentation:transition-speed="{{transitions.advanced.speed|slow}}"
+                                    presentation:duration="{{transitions.advanced.duration|00:00:02}}"
+                                    presentation:visibility="{{presentation.slide.visibility|visible}}"
+                                    <!-- Hidden Properties: SMIL Animation Control -->
+                                    smil:type="{{presentation.smil.type|slideWipe}}" smil:subtype="{{presentation.smil.subtype|fromTop}}"
+                                    smil:dur="{{presentation.smil.duration|2s}}" smil:direction="{{presentation.smil.direction|forward}}"
+                                    smil:fadeColor="{{presentation.smil.fade_color|#000000}}"
+                                    <!-- Hidden Properties: Background Control -->
+                                    draw:fill="{{presentation.slide.fill.type|gradient}}" draw:fill-color="{{presentation.slide.fill.color|#F8FAFC}}"
+                                    draw:fill-gradient-name="{{presentation.slide.fill.gradient|Slide_Gradient}}"/>
+    </style:style>
+
+    <style:style style:name="gr2" style:family="graphic">
+      <style:graphic-properties draw:stroke="solid" draw:stroke-width="{{borders.accent.width|0.1cm}}" draw:stroke-color="{{brand.colors.primary|#0EA5E9}}"
+                               draw:fill="gradient" draw:fill-gradient-name="{{gradients.accent|Primary_Gradient}}"
+                               draw:shadow="{{effects.accent.shadow|visible}}" draw:shadow-offset-x="{{effects.accent.shadow.x|0.2cm}}"
+                               draw:shadow-offset-y="{{effects.accent.shadow.y|0.2cm}}" draw:shadow-color="{{effects.accent.shadow.color|#1E40AF}}"
+                               <!-- Hidden Properties: Enhanced Accent Control -->
+                               draw:stroke-opacity="{{graphics.accent.stroke_opacity|100%}}" draw:opacity="{{graphics.accent.opacity|100%}}"
+                               draw:transparency="{{graphics.accent.transparency|0%}}" draw:shadow-opacity="{{graphics.accent.shadow_opacity|80%}}"
+                               style:wrap="{{layout.accent.wrap|none}}" style:run-through="{{layout.accent.run_through|foreground}}"/>
+    </style:style>
+  </office:automatic-styles>
+
+  <!-- Document body -->
+  <office:body>
+    <office:presentation>
+
+      <!-- Title Slide -->
+      <draw:page draw:name="{{slides.title.name|Title}}" draw:style-name="dp1" draw:master-page-name="{{master_pages.title|StyleStack_Title}}">
+
+        <!-- Main title text box -->
+        <draw:frame presentation:style-name="pr1" draw:text-style-name="P1" draw:layer="layout"
+                   svg:width="{{layout.title.width|20cm}}" svg:height="{{layout.title.height|4cm}}"
+                   svg:x="{{layout.title.x|4cm}}" svg:y="{{layout.title.y|6cm}}">
+          <draw:text-box>
+            <text:p text:style-name="P1">{{presentation.title|StyleStack Design System Presentation}}</text:p>
+          </draw:text-box>
+        </draw:frame>
+
+        <!-- Subtitle text box -->
+        <draw:frame presentation:style-name="pr2" draw:text-style-name="P2" draw:layer="layout"
+                   svg:width="{{layout.subtitle.width|18cm}}" svg:height="{{layout.subtitle.height|2cm}}"
+                   svg:x="{{layout.subtitle.x|5cm}}" svg:y="{{layout.subtitle.y|11cm}}">
+          <draw:text-box>
+            <text:p text:style-name="P2">{{presentation.subtitle|Corporate Brand Guidelines with Design Token Integration}}</text:p>
+          </draw:text-box>
+        </draw:frame>
+
+        <!-- Company logo -->
+        <draw:frame draw:style-name="gr1" draw:name="CompanyLogo" draw:layer="layout"
+                   svg:width="{{layout.logo.width|4cm}}" svg:height="{{layout.logo.height|3cm}}"
+                   svg:x="{{layout.logo.x|20cm}}" svg:y="{{layout.logo.y|2cm}}">
+          <draw:image xlink:href="{{company.logo.url|Pictures/company_logo.png}}" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
+        </draw:frame>
+
+        <!-- Brand accent shape -->
+        <draw:custom-shape draw:style-name="gr2" draw:text-style-name="P1" draw:layer="layout"
+                          svg:width="{{layout.accent.width|24cm}}" svg:height="{{layout.accent.height|0.5cm}}"
+                          svg:x="{{layout.accent.x|2cm}}" svg:y="{{layout.accent.y|15cm}}">
+          <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle"/>
+        </draw:custom-shape>
+      </draw:page>
+
+      <!-- Content Slide -->
+      <draw:page draw:name="{{slides.content.name|Design Token Overview}}" draw:style-name="dp2" draw:master-page-name="{{master_pages.content|StyleStack_Content}}">
+
+        <!-- Slide title -->
+        <draw:frame presentation:style-name="pr3" draw:text-style-name="P1" draw:layer="layout"
+                   svg:width="{{layout.content_title.width|20cm}}" svg:height="{{layout.content_title.height|2cm}}"
+                   svg:x="{{layout.content_title.x|4cm}}" svg:y="{{layout.content_title.y|2cm}}">
+          <draw:text-box>
+            <text:p text:style-name="P1">{{slides.content.title|Design Token Overview}}</text:p>
+          </draw:text-box>
+        </draw:frame>
+
+        <!-- Main content area -->
+        <draw:frame presentation:style-name="pr4" draw:text-style-name="P3" draw:layer="layout"
+                   svg:width="{{layout.content_body.width|18cm}}" svg:height="{{layout.content_body.height|10cm}}"
+                   svg:x="{{layout.content_body.x|3cm}}" svg:y="{{layout.content_body.y|5cm}}">
+          <draw:text-box>
+            <text:p text:style-name="P3">{{content.overview.intro|StyleStack provides comprehensive design token management across all corporate templates:}}</text:p>
+
+            <text:list text:style-name="L1">
+              <text:list-item>
+                <text:p text:style-name="P4">{{content.overview.item1|Hierarchical Token System - Global foundation with corporate overrides}}</text:p>
+              </text:list-item>
+              <text:list-item>
+                <text:p text:style-name="P4">{{content.overview.item2|Brand Compliance - Automatic color, typography, and spacing consistency}}</text:p>
+              </text:list-item>
+              <text:list-item>
+                <text:p text:style-name="P4">{{content.overview.item3|Cross-Platform Support - Word, Excel, PowerPoint, LibreOffice compatibility}}</text:p>
+              </text:list-item>
+              <text:list-item>
+                <text:p text:style-name="P4">{{content.overview.item4|Accessibility Compliance - WCAG AAA color contrast and typography standards}}</text:p>
+              </text:list-item>
+            </text:list>
+          </draw:text-box>
+        </draw:frame>
+
+        <!-- Side accent shape -->
+        <draw:custom-shape draw:style-name="gr2" draw:layer="layout"
+                          svg:width="{{layout.side_accent.width|0.5cm}}" svg:height="{{layout.side_accent.height|12cm}}"
+                          svg:x="{{layout.side_accent.x|1cm}}" svg:y="{{layout.side_accent.y|4cm}}">
+          <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle"/>
+        </draw:custom-shape>
+      </draw:page>
+
+      <!-- Data Visualization Slide -->
+      <draw:page draw:name="{{slides.data.name|Design Metrics}}" draw:style-name="dp2" draw:master-page-name="{{master_pages.content|StyleStack_Content}}">
+
+        <!-- Slide title -->
+        <draw:frame presentation:style-name="pr3" draw:text-style-name="P1" draw:layer="layout"
+                   svg:width="{{layout.data_title.width|20cm}}" svg:height="{{layout.data_title.height|2cm}}"
+                   svg:x="{{layout.data_title.x|4cm}}" svg:y="{{layout.data_title.y|2cm}}">
+          <draw:text-box>
+            <text:p text:style-name="P1">{{slides.data.title|Design System Metrics}}</text:p>
+          </draw:text-box>
+        </draw:frame>
+
+        <!-- Chart frame -->
+        <draw:frame draw:style-name="gr1" draw:name="MetricsChart" draw:layer="layout"
+                   svg:width="{{layout.chart.width|12cm}}" svg:height="{{layout.chart.height|8cm}}"
+                   svg:x="{{layout.chart.x|3cm}}" svg:y="{{layout.chart.y|5cm}}">
+          <draw:object xlink:href="./Object 1" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
+        </draw:frame>
+
+        <!-- Metrics table -->
+        <draw:frame draw:style-name="gr1" draw:name="MetricsTable" draw:layer="layout"
+                   svg:width="{{layout.metrics_table.width|8cm}}" svg:height="{{layout.metrics_table.height|8cm}}"
+                   svg:x="{{layout.metrics_table.x|16cm}}" svg:y="{{layout.metrics_table.y|5cm}}">
+          <draw:object xlink:href="./Object 2" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
+        </draw:frame>
+      </draw:page>
+
+      <!-- Brand Colors Showcase -->
+      <draw:page draw:name="{{slides.colors.name|Brand Colors}}" draw:style-name="dp2" draw:master-page-name="{{master_pages.content|StyleStack_Content}}">
+
+        <!-- Slide title -->
+        <draw:frame presentation:style-name="pr3" draw:text-style-name="P1" draw:layer="layout"
+                   svg:width="{{layout.colors_title.width|20cm}}" svg:height="{{layout.colors_title.height|2cm}}"
+                   svg:x="{{layout.colors_title.x|4cm}}" svg:y="{{layout.colors_title.y|2cm}}">
+          <draw:text-box>
+            <text:p text:style-name="P1">{{slides.colors.title|Brand Color Palette}}</text:p>
+          </draw:text-box>
+        </draw:frame>
+
+        <!-- Primary color swatch -->
+        <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P3" draw:layer="layout"
+                          svg:width="{{layout.color_swatch.width|4cm}}" svg:height="{{layout.color_swatch.height|3cm}}"
+                          svg:x="{{layout.color_primary.x|3cm}}" svg:y="{{layout.color_primary.y|6cm}}">
+          <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle"/>
+          <style:graphic-properties draw:fill-color="{{brand.colors.primary|#0EA5E9}}"/>
+          <draw:text-box>
+            <text:p text:style-name="P3">{{colors.primary.label|Primary}}</text:p>
+            <text:p text:style-name="P4">{{brand.colors.primary|#0EA5E9}}</text:p>
+          </draw:text-box>
+        </draw:custom-shape>
+
+        <!-- Secondary color swatch -->
+        <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P3" draw:layer="layout"
+                          svg:width="{{layout.color_swatch.width|4cm}}" svg:height="{{layout.color_swatch.height|3cm}}"
+                          svg:x="{{layout.color_secondary.x|8cm}}" svg:y="{{layout.color_secondary.y|6cm}}">
+          <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle"/>
+          <style:graphic-properties draw:fill-color="{{brand.colors.secondary|#8B5CF6}}"/>
+          <draw:text-box>
+            <text:p text:style-name="P3">{{colors.secondary.label|Secondary}}</text:p>
+            <text:p text:style-name="P4">{{brand.colors.secondary|#8B5CF6}}</text:p>
+          </draw:text-box>
+        </draw:custom-shape>
+
+        <!-- Success color swatch -->
+        <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P3" draw:layer="layout"
+                          svg:width="{{layout.color_swatch.width|4cm}}" svg:height="{{layout.color_swatch.height|3cm}}"
+                          svg:x="{{layout.color_success.x|13cm}}" svg:y="{{layout.color_success.y|6cm}}">
+          <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle"/>
+          <style:graphic-properties draw:fill-color="{{brand.colors.success|#10B981}}"/>
+          <draw:text-box>
+            <text:p text:style-name="P3">{{colors.success.label|Success}}</text:p>
+            <text:p text:style-name="P4">{{brand.colors.success|#10B981}}</text:p>
+          </draw:text-box>
+        </draw:custom-shape>
+
+        <!-- Warning color swatch -->
+        <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P3" draw:layer="layout"
+                          svg:width="{{layout.color_swatch.width|4cm}}" svg:height="{{layout.color_swatch.height|3cm}}"
+                          svg:x="{{layout.color_warning.x|18cm}}" svg:y="{{layout.color_warning.y|6cm}}">
+          <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle"/>
+          <style:graphic-properties draw:fill-color="{{brand.colors.warning|#F59E0B}}"/>
+          <draw:text-box>
+            <text:p text:style-name="P3">{{colors.warning.label|Warning}}</text:p>
+            <text:p text:style-name="P4">{{brand.colors.warning|#F59E0B}}</text:p>
+          </draw:text-box>
+        </draw:custom-shape>
+      </draw:page>
+
+      <!-- Summary Slide -->
+      <draw:page draw:name="{{slides.summary.name|Summary}}" draw:style-name="dp1" draw:master-page-name="{{master_pages.title|StyleStack_Title}}">
+
+        <!-- Summary title -->
+        <draw:frame presentation:style-name="pr1" draw:text-style-name="P1" draw:layer="layout"
+                   svg:width="{{layout.summary_title.width|20cm}}" svg:height="{{layout.summary_title.height|3cm}}"
+                   svg:x="{{layout.summary_title.x|4cm}}" svg:y="{{layout.summary_title.y|5cm}}">
+          <draw:text-box>
+            <text:p text:style-name="P1">{{slides.summary.title|StyleStack Design Excellence}}</text:p>
+          </draw:text-box>
+        </draw:frame>
+
+        <!-- Key points -->
+        <draw:frame presentation:style-name="pr4" draw:text-style-name="P3" draw:layer="layout"
+                   svg:width="{{layout.summary_content.width|18cm}}" svg:height="{{layout.summary_content.height|6cm}}"
+                   svg:x="{{layout.summary_content.x|5cm}}" svg:y="{{layout.summary_content.y|9cm}}">
+          <draw:text-box>
+            <text:list text:style-name="L1">
+              <text:list-item>
+                <text:p text:style-name="P4">{{summary.point1|Professional design templates with zero IT maintenance}}</text:p>
+              </text:list-item>
+              <text:list-item>
+                <text:p text:style-name="P4">{{summary.point2|Automatic brand compliance across all document types}}</text:p>
+              </text:list-item>
+              <text:list-item>
+                <text:p text:style-name="P4">{{summary.point3|Accessibility-first design with WCAG AAA standards}}</text:p>
+              </text:list-item>
+              <text:list-item>
+                <text:p text:style-name="P4">{{summary.point4|Enterprise-ready with continuous design system updates}}</text:p>
+              </text:list-item>
+            </text:list>
+          </draw:text-box>
+        </draw:frame>
+      </draw:page>
+
+      <!-- Animation sequences -->
+      <anim:seq>
+        <anim:par>
+          <anim:transitionFilter smil:type="fade" smil:dur="{{animations.slide_transition.duration|1s}}"/>
+        </anim:par>
+      </anim:seq>
+
+    </office:presentation>
+  </office:body>
+
+</office:document-content>

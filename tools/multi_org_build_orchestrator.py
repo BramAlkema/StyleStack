@@ -942,7 +942,7 @@ if __name__ == "__main__":
         request = BuildRequest(
             org=f'org_{i:02d}',
             channel='present',
-            template_path=Path('templates/microsoft/presentation.potx'),
+            template_path=Path('xml-structures/ooxml/powerpoint-master.xml'),
             output_path=output_path,
             variables={'org_id': i, 'org_name': f'Organization {i}'}
         )

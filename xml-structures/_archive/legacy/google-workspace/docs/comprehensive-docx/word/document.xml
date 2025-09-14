@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+           xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+           xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
+           xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"
+           xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           mc:Ignorable="w14 w15 w16">
+  <w:body>
+    <!-- Document title with comprehensive styling -->
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Title"/>
+        <w:keepNext/>
+        <w:keepLines/>
+        <w:pageBreakBefore w:val="0"/>
+        <w:spacing w:before="480" w:after="120" w:line="240" w:lineRule="auto"/>
+        <w:outlineLvl w:val="0"/>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Inter" w:hAnsi="Inter" w:cs="Inter"/>
+          <w:b/>
+          <w:sz w:val="44"/>
+          <w:szCs w:val="44"/>
+          <w:color w:val="1F2937" w:themeColor="dk2"/>
+        </w:rPr>
+        <w:t>StyleStack Modern Document Template</w:t>
+      </w:r>
+    </w:p>
+
+    <!-- Subtitle -->
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Subtitle"/>
+        <w:spacing w:before="0" w:after="240"/>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Inter" w:hAnsi="Inter"/>
+          <w:sz w:val="28"/>
+          <w:szCs w:val="28"/>
+          <w:color w:val="6B7280" w:themeColor="accent6"/>
+        </w:rPr>
+        <w:t>Professional document template with comprehensive OOXML structure</w:t>
+      </w:r>
+    </w:p>
+
+    <!-- Heading 1 with all layoutable elements -->
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading1"/>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="1"/>
+        </w:numPr>
+        <w:spacing w:before="480" w:after="120"/>
+        <w:outlineLvl w:val="0"/>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Inter" w:hAnsi="Inter"/>
+          <w:b/>
+          <w:sz w:val="32"/>
+          <w:color w:val="0EA5E9" w:themeColor="accent1"/>
+        </w:rPr>
+        <w:t>Document Structure and Formatting</w:t>
+      </w:r>
+    </w:p>
+
+    <!-- Body paragraph with comprehensive formatting -->
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Normal"/>
+        <w:ind w:left="0" w:right="0" w:firstLine="360"/>
+        <w:spacing w:before="0" w:after="120" w:line="276" w:lineRule="auto"/>
+        <w:jc w:val="left"/>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Inter" w:hAnsi="Inter"/>
+          <w:sz w:val="22"/>
+          <w:color w:val="374151"/>
+        </w:rPr>
+        <w:t>This document demonstrates comprehensive OOXML structure including all layoutable components: </w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Inter" w:hAnsi="Inter"/>
+          <w:b/>
+          <w:sz w:val="22"/>
+          <w:color w:val="10B981" w:themeColor="accent3"/>
+        </w:rPr>
+        <w:t>headers, footers, tables, lists, images, charts, and embedded objects</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Inter" w:hAnsi="Inter"/>
+          <w:sz w:val="22"/>
+          <w:color w:val="374151"/>
+        </w:rPr>
+        <w:t>.</w:t>
+      </w:r>
+    </w:p>
+
+    <!-- Bulleted list -->
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="ListParagraph"/>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="2"/>
+        </w:numPr>
+        <w:ind w:left="720" w:hanging="360"/>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Inter" w:hAnsi="Inter"/>
+          <w:sz w:val="22"/>
+          <w:color w:val="374151"/>
+        </w:rPr>
+        <w:t>Typography system with Inter font family</w:t>
+      </w:r>
+    </w:p>
+
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="ListParagraph"/>
+        <w:numPr>
+          <w:ilvl w:val="0"/>
+          <w:numId w:val="2"/>
+        </w:numPr>
+        <w:ind w:left="720" w:hanging="360"/>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Inter" w:hAnsi="Inter"/>
+          <w:sz w:val="22"/>
+          <w:color w:val="374151"/>
+        </w:rPr>
+        <w:t>Modern color scheme with accessibility compliance</w:t>
+      </w:r>
+    </w:p>
+
+    <!-- Table with comprehensive styling -->
+    <w:tbl>
+      <w:tblPr>
+        <w:tblStyle w:val="TableGrid"/>
+        <w:tblW w:w="5000" w:type="pct"/>
+        <w:tblInd w:w="0" w:type="dxa"/>
+        <w:tblBorders>
+          <w:top w:val="single" w:sz="4" w:space="0" w:color="E5E7EB"/>
+          <w:left w:val="single" w:sz="4" w:space="0" w:color="E5E7EB"/>
+          <w:bottom w:val="single" w:sz="4" w:space="0" w:color="E5E7EB"/>
+          <w:right w:val="single" w:sz="4" w:space="0" w:color="E5E7EB"/>
+          <w:insideH w:val="single" w:sz="4" w:space="0" w:color="E5E7EB"/>
+          <w:insideV w:val="single" w:sz="4" w:space="0" w:color="E5E7EB"/>
+        </w:tblBorders>
+        <w:tblCellMar>
+          <w:top w:w="108" w:type="dxa"/>
+          <w:left w:w="108" w:type="dxa"/>
+          <w:bottom w:w="108" w:type="dxa"/>
+          <w:right w:w="108" w:type="dxa"/>
+        </w:tblCellMar>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="2500"/>
+        <w:gridCol w:w="2500"/>
+      </w:tblGrid>
+      <w:tr>
+        <w:trPr>
+          <w:trHeight w:val="567"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="2500" w:type="pct"/>
+            <w:shd w:val="clear" w:color="auto" w:fill="F9FAFB"/>
+          </w:tcPr>
+          <w:p>
+            <w:pPr>
+              <w:pStyle w:val="Normal"/>
+              <w:jc w:val="center"/>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="Inter" w:hAnsi="Inter"/>
+                <w:b/>
+                <w:sz w:val="22"/>
+                <w:color w:val="1F2937"/>
+              </w:rPr>
+              <w:t>Component</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="2500" w:type="pct"/>
+            <w:shd w:val="clear" w:color="auto" w:fill="F9FAFB"/>
+          </w:tcPr>
+          <w:p>
+            <w:pPr>
+              <w:pStyle w:val="Normal"/>
+              <w:jc w:val="center"/>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="Inter" w:hAnsi="Inter"/>
+                <w:b/>
+                <w:sz w:val="22"/>
+                <w:color w:val="1F2937"/>
+              </w:rPr>
+              <w:t>Status</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="2500" w:type="pct"/>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="Inter" w:hAnsi="Inter"/>
+                <w:sz w:val="22"/>
+              </w:rPr>
+              <w:t>Typography</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="2500" w:type="pct"/>
+          </w:tcPr>
+          <w:p>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="Inter" w:hAnsi="Inter"/>
+                <w:sz w:val="22"/>
+                <w:color w:val="10B981" w:themeColor="accent3"/>
+              </w:rPr>
+              <w:t>✓ Complete</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+
+    <!-- Page break -->
+    <w:p>
+      <w:pPr>
+        <w:pageBreakBefore/>
+      </w:pPr>
+    </w:p>
+
+    <!-- Footnote reference -->
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Normal"/>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Inter" w:hAnsi="Inter"/>
+          <w:sz w:val="22"/>
+        </w:rPr>
+        <w:t>This template includes comprehensive footnote support</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Inter" w:hAnsi="Inter"/>
+          <w:sz w:val="22"/>
+          <w:vertAlign w:val="superscript"/>
+        </w:rPr>
+        <w:footnoteReference w:id="1"/>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="Inter" w:hAnsi="Inter"/>
+          <w:sz w:val="22"/>
+        </w:rPr>
+        <w:t> and comprehensive layoutable elements.</w:t>
+      </w:r>
+    </w:p>
+
+    <!-- Section properties with all layout options -->
+    <w:sectPr>
+      <w:headerReference w:type="default" r:id="rId7"/>
+      <w:headerReference w:type="first" r:id="rId8"/>
+      <w:headerReference w:type="even" r:id="rId9"/>
+      <w:footerReference w:type="default" r:id="rId10"/>
+      <w:footerReference w:type="first" r:id="rId11"/>
+      <w:footerReference w:type="even" r:id="rId12"/>
+      <w:footnoteColumns w:num="1" w:space="720"/>
+      <w:type w:val="nextPage"/>
+      <w:pgSz w:w="12240" w:h="15840" w:orient="portrait"/>
+      <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"
+               w:header="720" w:footer="720" w:gutter="0"/>
+      <w:cols w:space="720" w:num="1"/>
+      <w:docGrid w:linePitch="360"/>
+    </w:sectPr>
+  </w:body>
+</w:document>

@@ -1,0 +1,181 @@
+{
+  "timestamp": "2025-09-09 02:47:52",
+  "system_info": {
+    "python_version": "3.13.7 (main, Aug 14 2025, 11:12:11) [Clang 17.0.0 (clang-1700.0.13.3)]",
+    "platform": "darwin",
+    "cpu_count": 8,
+    "memory_total": 8589934592,
+    "memory_available": 1767538688
+  },
+  "benchmarks": [
+    {
+      "suite": {
+        "name": "Template Analyzer",
+        "total_benchmarks": 2,
+        "total_duration": 0.012645040987990797,
+        "average_duration": 0.006322520493995398,
+        "fastest_operation": "get_analysis_statistics",
+        "slowest_operation": "analyzer_initialization",
+        "overall_success_rate": 100.0,
+        "timestamp": "2025-09-09 02:47:52"
+      },
+      "results": [
+        {
+          "name": "analyzer_initialization",
+          "duration": 0.012560790986754,
+          "ops_per_sec": 79.61282064597296,
+          "success_rate": 100.0
+        },
+        {
+          "name": "get_analysis_statistics",
+          "duration": 8.425000123679638e-05,
+          "ops_per_sec": 11869.436027536196,
+          "success_rate": 100.0
+        }
+      ]
+    },
+    {
+      "suite": {
+        "name": "Substitution Pipeline",
+        "total_benchmarks": 4,
+        "total_duration": 0.002286710077896714,
+        "average_duration": 0.0005716775194741786,
+        "fastest_operation": "pipeline_initialization",
+        "slowest_operation": "substitute_variables_small",
+        "overall_success_rate": 100.0,
+        "timestamp": "2025-09-09 02:47:52"
+      },
+      "results": [
+        {
+          "name": "pipeline_initialization",
+          "duration": 7.829198148101568e-05,
+          "ops_per_sec": 12772.700103936966,
+          "success_rate": 100.0
+        },
+        {
+          "name": "substitute_variables_small",
+          "duration": 0.001167084090411663,
+          "ops_per_sec": 856.8362881609261,
+          "success_rate": 100.0
+        },
+        {
+          "name": "substitute_variables_medium",
+          "duration": 0.0003730419557541609,
+          "ops_per_sec": 2680.663621276455,
+          "success_rate": 100.0
+        },
+        {
+          "name": "substitute_variables_large",
+          "duration": 0.0006682920502498746,
+          "ops_per_sec": 1496.3517815693,
+          "success_rate": 100.0
+        }
+      ]
+    },
+    {
+      "suite": {
+        "name": "Format Registry",
+        "total_benchmarks": 2,
+        "total_duration": 0.0010257080430164933,
+        "average_duration": 0.0005128540215082467,
+        "fastest_operation": "structure_retrieval",
+        "slowest_operation": "format_detection",
+        "overall_success_rate": 100.0,
+        "timestamp": "2025-09-09 02:47:52"
+      },
+      "results": [
+        {
+          "name": "format_detection",
+          "duration": 0.0006646669935435057,
+          "ops_per_sec": 1504.512800716567,
+          "success_rate": 100.0
+        },
+        {
+          "name": "structure_retrieval",
+          "duration": 0.00036104104947298765,
+          "ops_per_sec": 2769.7681509061144,
+          "success_rate": 100.0
+        }
+      ]
+    },
+    {
+      "suite": {
+        "name": "Multi-Format Handler",
+        "total_benchmarks": 1,
+        "total_duration": 0.00024133292026817799,
+        "average_duration": 0.00024133292026817799,
+        "fastest_operation": "handler_initialization",
+        "slowest_operation": "handler_initialization",
+        "overall_success_rate": 100.0,
+        "timestamp": "2025-09-09 02:47:52"
+      },
+      "results": [
+        {
+          "name": "handler_initialization",
+          "duration": 0.00024133292026817799,
+          "ops_per_sec": 4143.65350110032,
+          "success_rate": 100.0
+        }
+      ]
+    },
+    {
+      "suite": {
+        "name": "File Operations",
+        "total_benchmarks": 3,
+        "total_duration": 0.0028773749945685267,
+        "average_duration": 0.0009591249981895089,
+        "fastest_operation": "read_template_medium",
+        "slowest_operation": "read_template_small",
+        "overall_success_rate": 100.0,
+        "timestamp": "2025-09-09 02:47:52"
+      },
+      "results": [
+        {
+          "name": "read_template_small",
+          "duration": 0.0013987499987706542,
+          "ops_per_sec": 714.9240399491609,
+          "success_rate": 100.0
+        },
+        {
+          "name": "read_template_medium",
+          "duration": 0.0005465419963002205,
+          "ops_per_sec": 1829.6855626272695,
+          "success_rate": 100.0
+        },
+        {
+          "name": "read_template_large",
+          "duration": 0.000932082999497652,
+          "ops_per_sec": 1072.8658290505803,
+          "success_rate": 100.0
+        }
+      ]
+    },
+    {
+      "suite": {
+        "name": "Concurrent Operations",
+        "total_benchmarks": 1,
+        "total_duration": 0.0005002089310437441,
+        "average_duration": 0.0005002089310437441,
+        "fastest_operation": "concurrent_analyzer_access",
+        "slowest_operation": "concurrent_analyzer_access",
+        "overall_success_rate": 100.0,
+        "timestamp": "2025-09-09 02:47:52"
+      },
+      "results": [
+        {
+          "name": "concurrent_analyzer_access",
+          "duration": 0.0005002089310437441,
+          "ops_per_sec": 1999.1646248966083,
+          "success_rate": 100.0
+        }
+      ]
+    }
+  ],
+  "recommendations": [
+    "Consider implementing caching for frequently accessed data",
+    "Evaluate lazy loading for heavy imports",
+    "Consider connection pooling for concurrent operations",
+    "Implement result memoization for expensive computations"
+  ],
+  "total_benchmark_time": 0.019576375954784453
+}

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-meta xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                     xmlns:dc="http://purl.org/dc/elements/1.1/"
+                     xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+                     xmlns:ooo="http://openoffice.org/2004/office"
+                     xmlns:grddl="http://www.w3.org/2003/g/data-view#"
+                     office:version="1.3">
+
+  <!-- StyleStack Graphics Metadata with Design Token Integration -->
+
+  <office:meta>
+    <!-- Document identification -->
+    <meta:generator>{{meta.generator|StyleStack Design System v2025.1}}</meta:generator>
+    <dc:title>{{document.meta.title|StyleStack Design System Graphics}}</dc:title>
+    <dc:description>{{document.meta.description|Professional graphics template showcasing StyleStack's design token system with brand compliance, accessibility features, and cross-platform compatibility.}}</dc:description>
+    <dc:subject>{{document.meta.subject|Design System, Graphics, Brand Identity, Accessibility}}</dc:subject>
+    <meta:keyword>{{document.meta.keywords|design tokens, graphics, brand compliance, StyleStack, accessibility, WCAG AAA, inter typography}}</meta:keyword>
+    <meta:initial-creator>{{document.meta.initial_creator|StyleStack Design System}}</meta:initial-creator>
+    <dc:creator>{{document.meta.creator|StyleStack Generator}}</dc:creator>
+    <meta:creation-date>{{document.meta.creation_date|2025-01-01T00:00:00Z}}</meta:creation-date>
+    <dc:date>{{document.meta.date|2025-01-01T00:00:00Z}}</dc:date>
+    <dc:language>{{document.meta.language|en-US}}</dc:language>
+
+    <!-- Document statistics -->
+    <meta:document-statistic meta:object-count="{{stats.objects|15}}" meta:page-count="{{stats.pages|1}}"
+                            meta:paragraph-count="{{stats.paragraphs|8}}" meta:word-count="{{stats.words|45}}"
+                            meta:character-count="{{stats.characters|320}}" meta:non-whitespace-character-count="{{stats.non_whitespace|285}}"/>
+
+    <!-- Editing information -->
+    <meta:editing-cycles>{{document.meta.editing_cycles|1}}</meta:editing-cycles>
+    <meta:editing-duration>{{document.meta.editing_duration|PT00H02M15S}}</meta:editing-duration>
+
+    <!-- Custom properties for StyleStack integration -->
+    <meta:user-defined meta:name="StyleStack.Version" meta:value-type="string">{{stylestack.version|2025.1.0}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.DesignSystem" meta:value-type="string">{{stylestack.design_system|Modern}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Organization" meta:value-type="string">{{organization.name|Default}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Channel" meta:value-type="string">{{channel.name|graphics}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Template.Type" meta:value-type="string">{{template.type|OpenDocument Graphics}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.BrandCompliance" meta:value-type="boolean">{{brand.compliance|true}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Accessibility.Level" meta:value-type="string">{{accessibility.level|WCAG AAA}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Typography.Primary" meta:value-type="string">{{typography.font.family|Inter}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Colors.Primary" meta:value-type="string">{{brand.colors.primary|#0EA5E9}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Colors.Secondary" meta:value-type="string">{{brand.colors.secondary|#8B5CF6}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Layout.Type" meta:value-type="string">{{layout.type|Modern Grid}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Platform.Target" meta:value-type="string">{{platform.target|LibreOffice Draw}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Export.Quality" meta:value-type="string">{{export.quality|Professional}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Update.Policy" meta:value-type="string">{{update.policy|Automatic}}</meta:user-defined>
+    <meta:user-defined meta:name="StyleStack.Subscription.Tier" meta:value-type="string">{{subscription.tier|Professional}}</meta:user-defined>
+
+    <!-- Corporate branding metadata -->
+    <meta:user-defined meta:name="Company.Name" meta:value-type="string">{{company.name|Your Company Name}}</meta:user-defined>
+    <meta:user-defined meta:name="Company.Department" meta:value-type="string">{{company.department|Design Team}}</meta:user-defined>
+    <meta:user-defined meta:name="Company.ContactEmail" meta:value-type="string">{{company.contact.email|design@company.com}}</meta:user-defined>
+    <meta:user-defined meta:name="Company.Website" meta:value-type="string">{{company.website|https://company.com}}</meta:user-defined>
+    <meta:user-defined meta:name="Company.BrandGuidelines" meta:value-type="string">{{company.brand.guidelines_url|https://company.com/brand}}</meta:user-defined>
+
+    <!-- Technical specifications -->
+    <meta:user-defined meta:name="Technical.ColorSpace" meta:value-type="string">{{technical.color_space|sRGB}}</meta:user-defined>
+    <meta:user-defined meta:name="Technical.Resolution" meta:value-type="string">{{technical.resolution|300 DPI}}</meta:user-defined>
+    <meta:user-defined meta:name="Technical.Format.Version" meta:value-type="string">{{technical.format.version|ODF 1.3}}</meta:user-defined>
+    <meta:user-defined meta:name="Technical.Compatibility" meta:value-type="string">{{technical.compatibility|LibreOffice 7.0+, OpenOffice 4.1+}}</meta:user-defined>
+    <meta:user-defined meta:name="Technical.PrintReady" meta:value-type="boolean">{{technical.print_ready|true}}</meta:user-defined>
+    <meta:user-defined meta:name="Technical.WebReady" meta:value-type="boolean">{{technical.web_ready|true}}</meta:user-defined>
+
+    <!-- Design system configuration -->
+    <meta:user-defined meta:name="DesignSystem.TokensVersion" meta:value-type="string">{{design_tokens.version|2025.1.0}}</meta:user-defined>
+    <meta:user-defined meta:name="DesignSystem.LastUpdate" meta:value-type="date">{{design_tokens.last_update|2025-01-01}}</meta:user-defined>
+    <meta:user-defined meta:name="DesignSystem.AutoUpdate" meta:value-type="boolean">{{design_tokens.auto_update|true}}</meta:user-defined>
+    <meta:user-defined meta:name="DesignSystem.ValidationStatus" meta:value-type="string">{{design_tokens.validation|Validated}}</meta:user-defined>
+
+    <!-- Usage tracking and analytics -->
+    <meta:user-defined meta:name="Usage.CreatedFrom" meta:value-type="string">{{usage.created_from|StyleStack Template}}</meta:user-defined>
+    <meta:user-defined meta:name="Usage.TemplateID" meta:value-type="string">{{usage.template_id|odg-modern-showcase-v1}}</meta:user-defined>
+    <meta:user-defined meta:name="Usage.Environment" meta:value-type="string">{{usage.environment|Production}}</meta:user-defined>
+  </office:meta>
+
+</office:document-meta>

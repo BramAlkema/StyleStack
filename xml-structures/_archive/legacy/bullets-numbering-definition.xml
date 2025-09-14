@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Bullets and Numbering Definition with Design Token Integration -->
+<!-- This provides list structures that design tokens can patch against -->
+
+<!-- Word Numbering Definitions -->
+<w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  
+  <!-- Abstract Numbering Definition - Bullet List -->
+  <w:abstractNum w:abstractNumId="{{list.bullet.abstractId}}">
+    <w:nsid w:val="{{list.bullet.nsid}}"/>
+    <w:multiLevelType w:val="{{list.bullet.multiLevelType}}"/>
+    <w:tmpl w:val="{{list.bullet.template}}"/>
+    
+    <!-- Level 1 - Primary bullet -->
+    <w:lvl w:ilvl="0" w:tplc="{{list.bullet.level1.template}}">
+      <w:start w:val="{{list.bullet.level1.start}}"/>
+      <w:numFmt w:val="{{list.bullet.level1.format}}"/>  <!-- bullet, decimal, lowerLetter, etc -->
+      <w:lvlText w:val="{{list.bullet.level1.text}}"/>   <!-- •, ○, ▪, etc -->
+      <w:lvlJc w:val="{{list.bullet.level1.justification}}"/>
+      <w:pPr>
+        <w:ind w:left="{{list.bullet.level1.indent.left}}" 
+               w:hanging="{{list.bullet.level1.indent.hanging}}"/>
+        <w:spacing w:before="{{list.bullet.level1.spacing.before}}" 
+                   w:after="{{list.bullet.level1.spacing.after}}"/>
+      </w:pPr>
+      <w:rPr>
+        <w:rFonts w:ascii="{{list.bullet.level1.font.family}}" 
+                  w:hAnsi="{{list.bullet.level1.font.family}}" 
+                  w:cs="{{list.bullet.level1.font.family}}" 
+                  w:hint="{{list.bullet.level1.font.hint}}"/>
+        <w:sz w:val="{{list.bullet.level1.font.size}}"/>
+        <w:szCs w:val="{{list.bullet.level1.font.size}}"/>
+        <w:color w:val="{{color.list.bullet.level1}}"/>
+      </w:rPr>
+    </w:lvl>
+    
+    <!-- Level 2 - Secondary bullet -->
+    <w:lvl w:ilvl="1" w:tplc="{{list.bullet.level2.template}}">
+      <w:start w:val="{{list.bullet.level2.start}}"/>
+      <w:numFmt w:val="{{list.bullet.level2.format}}"/>
+      <w:lvlText w:val="{{list.bullet.level2.text}}"/>   <!-- ○, ▪, -, etc -->
+      <w:lvlJc w:val="{{list.bullet.level2.justification}}"/>
+      <w:pPr>
+        <w:ind w:left="{{list.bullet.level2.indent.left}}" 
+               w:hanging="{{list.bullet.level2.indent.hanging}}"/>
+        <w:spacing w:before="{{list.bullet.level2.spacing.before}}" 
+                   w:after="{{list.bullet.level2.spacing.after}}"/>
+      </w:pPr>
+      <w:rPr>
+        <w:rFonts w:ascii="{{list.bullet.level2.font.family}}" 
+                  w:hAnsi="{{list.bullet.level2.font.family}}"/>
+        <w:sz w:val="{{list.bullet.level2.font.size}}"/>
+        <w:color w:val="{{color.list.bullet.level2}}"/>
+      </w:rPr>
+    </w:lvl>
+    
+    <!-- Level 3 - Tertiary bullet -->
+    <w:lvl w:ilvl="2" w:tplc="{{list.bullet.level3.template}}">
+      <w:start w:val="{{list.bullet.level3.start}}"/>
+      <w:numFmt w:val="{{list.bullet.level3.format}}"/>
+      <w:lvlText w:val="{{list.bullet.level3.text}}"/>   <!-- ▪, -, •, etc -->
+      <w:lvlJc w:val="{{list.bullet.level3.justification}}"/>
+      <w:pPr>
+        <w:ind w:left="{{list.bullet.level3.indent.left}}" 
+               w:hanging="{{list.bullet.level3.indent.hanging}}"/>
+        <w:spacing w:before="{{list.bullet.level3.spacing.before}}" 
+                   w:after="{{list.bullet.level3.spacing.after}}"/>
+      </w:pPr>
+      <w:rPr>
+        <w:rFonts w:ascii="{{list.bullet.level3.font.family}}" 
+                  w:hAnsi="{{list.bullet.level3.font.family}}"/>
+        <w:sz w:val="{{list.bullet.level3.font.size}}"/>
+        <w:color w:val="{{color.list.bullet.level3}}"/>
+      </w:rPr>
+    </w:lvl>
+    
+    <!-- Levels 4-9 continue the pattern -->
+    <w:lvl w:ilvl="3" w:tplc="{{list.bullet.level4.template}}">
+      <w:start w:val="{{list.bullet.level4.start}}"/>
+      <w:numFmt w:val="{{list.bullet.level4.format}}"/>
+      <w:lvlText w:val="{{list.bullet.level4.text}}"/>
+      <w:lvlJc w:val="{{list.bullet.level4.justification}}"/>
+      <w:pPr>
+        <w:ind w:left="{{list.bullet.level4.indent.left}}" 
+               w:hanging="{{list.bullet.level4.indent.hanging}}"/>
+      </w:pPr>
+      <w:rPr>
+        <w:rFonts w:ascii="{{list.bullet.level4.font.family}}"/>
+        <w:sz w:val="{{list.bullet.level4.font.size}}"/>
+        <w:color w:val="{{color.list.bullet.level4}}"/>
+      </w:rPr>
+    </w:lvl>
+  </w:abstractNum>
+  
+  <!-- Abstract Numbering Definition - Numbered List -->
+  <w:abstractNum w:abstractNumId="{{list.number.abstractId}}">
+    <w:nsid w:val="{{list.number.nsid}}"/>
+    <w:multiLevelType w:val="{{list.number.multiLevelType}}"/>
+    <w:tmpl w:val="{{list.number.template}}"/>
+    
+    <!-- Level 1 - Primary numbering (1, 2, 3...) -->
+    <w:lvl w:ilvl="0" w:tplc="{{list.number.level1.template}}">
+      <w:start w:val="{{list.number.level1.start}}"/>
+      <w:numFmt w:val="{{list.number.level1.format}}"/>  <!-- decimal, upperRoman, lowerRoman, etc -->
+      <w:lvlText w:val="{{list.number.level1.text}}"/>   <!-- %1., %1), (%1), etc -->
+      <w:lvlJc w:val="{{list.number.level1.justification}}"/>
+      <w:pPr>
+        <w:ind w:left="{{list.number.level1.indent.left}}" 
+               w:hanging="{{list.number.level1.indent.hanging}}"/>
+        <w:spacing w:before="{{list.number.level1.spacing.before}}" 
+                   w:after="{{list.number.level1.spacing.after}}"/>
+      </w:pPr>
+      <w:rPr>
+        <w:rFonts w:ascii="{{typography.font.theme.minor}}" 
+                  w:hAnsi="{{typography.font.theme.minor}}"/>
+        <w:sz w:val="{{list.number.level1.font.size}}"/>
+        <w:color w:val="{{color.list.number.level1}}"/>
+        <w:b w:val="{{list.number.level1.font.bold}}"/>
+      </w:rPr>
+    </w:lvl>
+    
+    <!-- Level 2 - Secondary numbering (a, b, c...) -->
+    <w:lvl w:ilvl="1" w:tplc="{{list.number.level2.template}}">
+      <w:start w:val="{{list.number.level2.start}}"/>
+      <w:numFmt w:val="{{list.number.level2.format}}"/>  <!-- lowerLetter, upperLetter -->
+      <w:lvlText w:val="{{list.number.level2.text}}"/>   <!-- %2., %2), etc -->
+      <w:lvlJc w:val="{{list.number.level2.justification}}"/>
+      <w:pPr>
+        <w:ind w:left="{{list.number.level2.indent.left}}" 
+               w:hanging="{{list.number.level2.indent.hanging}}"/>
+        <w:spacing w:before="{{list.number.level2.spacing.before}}" 
+                   w:after="{{list.number.level2.spacing.after}}"/>
+      </w:pPr>
+      <w:rPr>
+        <w:rFonts w:ascii="{{typography.font.theme.minor}}" 
+                  w:hAnsi="{{typography.font.theme.minor}}"/>
+        <w:sz w:val="{{list.number.level2.font.size}}"/>
+        <w:color w:val="{{color.list.number.level2}}"/>
+      </w:rPr>
+    </w:lvl>
+    
+    <!-- Level 3 - Tertiary numbering (i, ii, iii...) -->
+    <w:lvl w:ilvl="2" w:tplc="{{list.number.level3.template}}">
+      <w:start w:val="{{list.number.level3.start}}"/>
+      <w:numFmt w:val="{{list.number.level3.format}}"/>  <!-- lowerRoman, upperRoman -->
+      <w:lvlText w:val="{{list.number.level3.text}}"/>   <!-- %3., %3), etc -->
+      <w:lvlJc w:val="{{list.number.level3.justification}}"/>
+      <w:pPr>
+        <w:ind w:left="{{list.number.level3.indent.left}}" 
+               w:hanging="{{list.number.level3.indent.hanging}}"/>
+      </w:pPr>
+      <w:rPr>
+        <w:rFonts w:ascii="{{typography.font.theme.minor}}" 
+                  w:hAnsi="{{typography.font.theme.minor}}"/>
+        <w:sz w:val="{{list.number.level3.font.size}}"/>
+        <w:color w:val="{{color.list.number.level3}}"/>
+      </w:rPr>
+    </w:lvl>
+  </w:abstractNum>
+  
+  <!-- Abstract Numbering Definition - Outline List -->
+  <w:abstractNum w:abstractNumId="{{list.outline.abstractId}}">
+    <w:nsid w:val="{{list.outline.nsid}}"/>
+    <w:multiLevelType w:val="{{list.outline.multiLevelType}}"/>
+    <w:tmpl w:val="{{list.outline.template}}"/>
+    
+    <!-- Level 1 - Major heading (1., 2., 3.) -->
+    <w:lvl w:ilvl="0" w:tplc="{{list.outline.level1.template}}">
+      <w:start w:val="{{list.outline.level1.start}}"/>
+      <w:numFmt w:val="{{list.outline.level1.format}}"/>
+      <w:lvlText w:val="{{list.outline.level1.text}}"/>
+      <w:lvlJc w:val="{{list.outline.level1.justification}}"/>
+      <w:pPr>
+        <w:ind w:left="{{list.outline.level1.indent.left}}" 
+               w:hanging="{{list.outline.level1.indent.hanging}}"/>
+        <w:spacing w:before="{{list.outline.level1.spacing.before}}" 
+                   w:after="{{list.outline.level1.spacing.after}}"/>
+        <w:outlineLvl w:val="0"/>
+      </w:pPr>
+      <w:rPr>
+        <w:rFonts w:ascii="{{typography.font.theme.major}}" 
+                  w:hAnsi="{{typography.font.theme.major}}"/>
+        <w:sz w:val="{{list.outline.level1.font.size}}"/>
+        <w:color w:val="{{color.list.outline.level1}}"/>
+        <w:b w:val="{{list.outline.level1.font.bold}}"/>
+      </w:rPr>
+    </w:lvl>
+    
+    <!-- Level 2 - Sub heading (1.1., 1.2., 1.3.) -->
+    <w:lvl w:ilvl="1" w:tplc="{{list.outline.level2.template}}">
+      <w:start w:val="{{list.outline.level2.start}}"/>
+      <w:numFmt w:val="{{list.outline.level2.format}}"/>
+      <w:lvlText w:val="{{list.outline.level2.text}}"/>  <!-- %1.%2. -->
+      <w:lvlJc w:val="{{list.outline.level2.justification}}"/>
+      <w:pPr>
+        <w:ind w:left="{{list.outline.level2.indent.left}}" 
+               w:hanging="{{list.outline.level2.indent.hanging}}"/>
+        <w:outlineLvl w:val="1"/>
+      </w:pPr>
+      <w:rPr>
+        <w:rFonts w:ascii="{{typography.font.theme.major}}" 
+                  w:hAnsi="{{typography.font.theme.major}}"/>
+        <w:sz w:val="{{list.outline.level2.font.size}}"/>
+        <w:color w:val="{{color.list.outline.level2}}"/>
+        <w:b w:val="{{list.outline.level2.font.bold}}"/>
+      </w:rPr>
+    </w:lvl>
+    
+    <!-- Level 3 - Sub-sub heading (1.1.1., 1.1.2.) -->
+    <w:lvl w:ilvl="2" w:tplc="{{list.outline.level3.template}}">
+      <w:start w:val="{{list.outline.level3.start}}"/>
+      <w:numFmt w:val="{{list.outline.level3.format}}"/>
+      <w:lvlText w:val="{{list.outline.level3.text}}"/>  <!-- %1.%2.%3. -->
+      <w:lvlJc w:val="{{list.outline.level3.justification}}"/>
+      <w:pPr>
+        <w:ind w:left="{{list.outline.level3.indent.left}}" 
+               w:hanging="{{list.outline.level3.indent.hanging}}"/>
+        <w:outlineLvl w:val="2"/>
+      </w:pPr>
+      <w:rPr>
+        <w:rFonts w:ascii="{{typography.font.theme.minor}}" 
+                  w:hAnsi="{{typography.font.theme.minor}}"/>
+        <w:sz w:val="{{list.outline.level3.font.size}}"/>
+        <w:color w:val="{{color.list.outline.level3}}"/>
+      </w:rPr>
+    </w:lvl>
+  </w:abstractNum>
+  
+  <!-- Numbering Instance - Bullet List -->
+  <w:num w:numId="{{list.bullet.numId}}">
+    <w:abstractNumId w:val="{{list.bullet.abstractId}}"/>
+  </w:num>
+  
+  <!-- Numbering Instance - Numbered List -->
+  <w:num w:numId="{{list.number.numId}}">
+    <w:abstractNumId w:val="{{list.number.abstractId}}"/>
+  </w:num>
+  
+  <!-- Numbering Instance - Outline List -->
+  <w:num w:numId="{{list.outline.numId}}">
+    <w:abstractNumId w:val="{{list.outline.abstractId}}"/>
+  </w:num>
+  
+  <!-- Numbering Instance - Custom List with Overrides -->
+  <w:num w:numId="{{list.custom.numId}}">
+    <w:abstractNumId w:val="{{list.bullet.abstractId}}"/>
+    <!-- Level overrides for custom styling -->
+    <w:lvlOverride w:ilvl="0">
+      <w:lvl w:ilvl="0">
+        <w:start w:val="{{list.custom.level1.start}}"/>
+        <w:numFmt w:val="{{list.custom.level1.format}}"/>
+        <w:lvlText w:val="{{list.custom.level1.text}}"/>
+        <w:rPr>
+          <w:color w:val="{{color.list.custom.level1}}"/>
+          <w:sz w:val="{{list.custom.level1.font.size}}"/>
+        </w:rPr>
+      </w:lvl>
+    </w:lvlOverride>
+  </w:num>
+</w:numbering>
+
+<!-- PowerPoint Bullet/Numbering Definitions -->
+<a:lstStyle xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+  
+  <!-- Level 1 Properties -->
+  <a:lvl1pPr marL="{{list.powerpoint.level1.marginLeft}}" 
+             marR="{{list.powerpoint.level1.marginRight}}" 
+             lvl="0" 
+             indent="{{list.powerpoint.level1.indent}}" 
+             algn="{{list.powerpoint.level1.alignment}}" 
+             defTabSz="{{list.powerpoint.level1.tabSize}}" 
+             rtl="{{list.powerpoint.level1.rightToLeft}}" 
+             eaLnBrk="{{list.powerpoint.level1.eastAsianLineBreak}}" 
+             fontAlgn="{{list.powerpoint.level1.fontAlignment}}" 
+             latinLnBrk="{{list.powerpoint.level1.latinLineBreak}}" 
+             hangingPunct="{{list.powerpoint.level1.hangingPunctuation}}">
+    
+    <!-- Line spacing -->
+    <a:lnSpc>
+      <a:spcPts val="{{list.powerpoint.level1.lineSpacing.points}}"/>
+    </a:lnSpc>
+    
+    <!-- Space before paragraph -->
+    <a:spcBef>
+      <a:spcPts val="{{list.powerpoint.level1.spaceBefore.points}}"/>
+    </a:spcBef>
+    
+    <!-- Space after paragraph -->
+    <a:spcAft>
+      <a:spcPts val="{{list.powerpoint.level1.spaceAfter.points}}"/>
+    </a:spcAft>
+    
+    <!-- Bullet Color -->
+    <a:buClr>
+      <a:srgbClr val="{{color.list.powerpoint.level1.bullet}}"/>
+    </a:buClr>
+    
+    <!-- Bullet Size -->
+    <a:buSzTx/>  <!-- Follow text size -->
+    <a:buSzPts val="{{list.powerpoint.level1.bullet.sizePoints}}"/>
+    <a:buSzPct val="{{list.powerpoint.level1.bullet.sizePercent}}"/>
+    
+    <!-- Bullet Font -->
+    <a:buFont typeface="{{list.powerpoint.level1.bullet.font}}" 
+              charset="{{list.powerpoint.level1.bullet.charset}}" 
+              pitchFamily="{{list.powerpoint.level1.bullet.pitchFamily}}"/>
+    
+    <!-- Bullet Character -->
+    <a:buChar char="{{list.powerpoint.level1.bullet.character}}"/>
+    
+    <!-- Alternative: Bullet Auto Numbering -->
+    <a:buAutoNum type="{{list.powerpoint.level1.numbering.type}}" 
+                 startAt="{{list.powerpoint.level1.numbering.startAt}}"/>
+    
+    <!-- Alternative: Bullet Picture -->
+    <a:buBlip>
+      <a:blip r:embed="{{list.powerpoint.level1.bullet.imageId}}" 
+              xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"/>
+    </a:buBlip>
+    
+    <!-- Default run properties -->
+    <a:defRPr sz="{{typography.size.body}}" 
+              kern="{{typography.kerning.auto}}" 
+              u="{{list.powerpoint.level1.underline}}" 
+              strike="{{list.powerpoint.level1.strikethrough}}" 
+              cap="{{list.powerpoint.level1.capitalization}}" 
+              spc="{{list.powerpoint.level1.characterSpacing}}" 
+              b="{{list.powerpoint.level1.bold}}" 
+              i="{{list.powerpoint.level1.italic}}" 
+              lang="{{typography.language.primary}}" 
+              altLang="{{typography.language.secondary}}">
+      
+      <!-- Text fill -->
+      <a:solidFill>
+        <a:srgbClr val="{{color.list.powerpoint.level1.text}}"/>
+      </a:solidFill>
+      
+      <!-- Font references -->
+      <a:latin typeface="{{typography.font.theme.minor}}" 
+               pitchFamily="{{typography.font.theme.minor.pitchFamily}}" 
+               charset="{{typography.font.theme.minor.charset}}"/>
+      <a:ea typeface="{{typography.font.theme.minor.eastAsian}}"/>
+      <a:cs typeface="{{typography.font.theme.minor.complexScript}}"/>
+      
+      <!-- Effects -->
+      <a:effectLst>
+        <a:outerShdw blurRad="{{list.powerpoint.level1.shadow.blur}}" 
+                     dist="{{list.powerpoint.level1.shadow.distance}}" 
+                     dir="{{list.powerpoint.level1.shadow.angle}}">
+          <a:srgbClr val="{{color.list.powerpoint.level1.shadow}}">
+            <a:alpha val="{{list.powerpoint.level1.shadow.alpha}}"/>
+          </a:srgbClr>
+        </a:outerShdw>
+      </a:effectLst>
+    </a:defRPr>
+  </a:lvl1pPr>
+  
+  <!-- Level 2 Properties -->
+  <a:lvl2pPr marL="{{list.powerpoint.level2.marginLeft}}" 
+             marR="{{list.powerpoint.level2.marginRight}}" 
+             lvl="1" 
+             indent="{{list.powerpoint.level2.indent}}" 
+             algn="{{list.powerpoint.level2.alignment}}">
+    
+    <!-- Bullet properties for level 2 -->
+    <a:buClr>
+      <a:srgbClr val="{{color.list.powerpoint.level2.bullet}}"/>
+    </a:buClr>
+    <a:buSzPts val="{{list.powerpoint.level2.bullet.sizePoints}}"/>
+    <a:buFont typeface="{{list.powerpoint.level2.bullet.font}}"/>
+    <a:buChar char="{{list.powerpoint.level2.bullet.character}}"/>
+    
+    <a:defRPr sz="{{typography.size.body}}" 
+              lang="{{typography.language.primary}}">
+      <a:solidFill>
+        <a:srgbClr val="{{color.list.powerpoint.level2.text}}"/>
+      </a:solidFill>
+      <a:latin typeface="{{typography.font.theme.minor}}"/>
+    </a:defRPr>
+  </a:lvl2pPr>
+  
+  <!-- Level 3-9 Properties continue the pattern -->
+  <a:lvl3pPr marL="{{list.powerpoint.level3.marginLeft}}" 
+             indent="{{list.powerpoint.level3.indent}}">
+    <a:buClr>
+      <a:srgbClr val="{{color.list.powerpoint.level3.bullet}}"/>
+    </a:buClr>
+    <a:buChar char="{{list.powerpoint.level3.bullet.character}}"/>
+    <a:defRPr sz="{{typography.size.body}}">
+      <a:latin typeface="{{typography.font.theme.minor}}"/>
+    </a:defRPr>
+  </a:lvl3pPr>
+</a:lstStyle>
+
+<!-- Design Token Integration Examples -->
+<!-- 
+Common bullet characters and their design token values:
+- Solid bullet: "•" (U+2022)
+- Hollow bullet: "○" (U+25CB) 
+- Square bullet: "▪" (U+25AA)
+- Diamond bullet: "◆" (U+25C6)
+- Arrow bullet: "➤" (U+27A4)
+- Checkmark bullet: "✓" (U+2713)
+- Dash bullet: "–" (U+2013)
+
+Number formats:
+- decimal: 1, 2, 3...
+- upperRoman: I, II, III...
+- lowerRoman: i, ii, iii...
+- upperLetter: A, B, C...
+- lowerLetter: a, b, c...
+
+Text patterns:
+- %1. = "1."
+- (%1) = "(1)" 
+- %1.%2. = "1.1."
+- %1.%2.%3. = "1.1.1."
+-->

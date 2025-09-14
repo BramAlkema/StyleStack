@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"
+           xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">
+
+  <!-- StyleStack Design System Custom Properties for PowerPoint -->
+
+  <!-- Design system metadata -->
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="2" name="StyleStack_Version">
+    <vt:lpwstr>{{stylestack.version|2025.1.0}}</vt:lpwstr>
+  </property>
+
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="3" name="Design_System_Name">
+    <vt:lpwstr>{{design_system.name|StyleStack Modern}}</vt:lpwstr>
+  </property>
+
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="4" name="Corporate_Brand_Override">
+    <vt:bool>{{design_system.corporate_override|true}}</vt:bool>
+  </property>
+
+  <!-- Brand identity properties -->
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="5" name="Brand_Primary_Color">
+    <vt:lpwstr>{{brand.colors.primary|#0EA5E9}}</vt:lpwstr>
+  </property>
+
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="6" name="Brand_Secondary_Color">
+    <vt:lpwstr>{{brand.colors.secondary|#8B5CF6}}</vt:lpwstr>
+  </property>
+
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="7" name="Brand_Font_Family">
+    <vt:lpwstr>{{typography.font.family|Inter}}</vt:lpwstr>
+  </property>
+
+  <!-- Presentation specific properties -->
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="8" name="Presentation_Type">
+    <vt:lpwstr>{{presentation.type|Corporate Presentation}}</vt:lpwstr>
+  </property>
+
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="9" name="Slide_Dimensions">
+    <vt:lpwstr>{{presentation.dimensions|16:9 Widescreen}}</vt:lpwstr>
+  </property>
+
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="10" name="Design_Token_Count">
+    <vt:i4>{{metrics.tokens.presentation|89}}</vt:i4>
+  </property>
+
+  <!-- Template configuration -->
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="11" name="Template_Channel">
+    <vt:lpwstr>{{template.channel|presentation}}</vt:lpwstr>
+  </property>
+
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="12" name="Auto_Update_Enabled">
+    <vt:bool>{{template.auto_update|true}}</vt:bool>
+  </property>
+
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="13" name="Master_Slide_Count">
+    <vt:i4>{{presentation.slide_masters|1}}</vt:i4>
+  </property>
+
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="14" name="Layout_Count">
+    <vt:i4>{{presentation.slide_layouts|11}}</vt:i4>
+  </property>
+
+  <!-- Corporate subscription metadata -->
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="15" name="Organization_ID">
+    <vt:lpwstr>{{organization.id|org_default}}</vt:lpwstr>
+  </property>
+
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="16" name="Subscription_Tier">
+    <vt:lpwstr>{{organization.subscription.tier|Professional}}</vt:lpwstr>
+  </property>
+
+  <!-- Accessibility compliance -->
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="17" name="WCAG_Compliance_Level">
+    <vt:lpwstr>{{accessibility.wcag_level|AAA}}</vt:lpwstr>
+  </property>
+
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="18" name="Color_Contrast_Verified">
+    <vt:bool>{{accessibility.contrast_verified|true}}</vt:bool>
+  </property>
+
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="19" name="Alt_Text_Complete">
+    <vt:bool>{{accessibility.alt_text_complete|true}}</vt:bool>
+  </property>
+
+  <!-- Animation and transition properties -->
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="20" name="Animation_Style">
+    <vt:lpwstr>{{presentation.animations.style|Professional Fade}}</vt:lpwstr>
+  </property>
+
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="21" name="Transition_Duration">
+    <vt:lpwstr>{{presentation.animations.duration|Medium}}</vt:lpwstr>
+  </property>
+
+  <!-- Creation and modification tracking -->
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="22" name="StyleStack_Creation_Method">
+    <vt:lpwstr>{{system.creation_method|Automated Template Generation}}</vt:lpwstr>
+  </property>
+
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="23" name="Template_Generation_Version">
+    <vt:lpwstr>{{system.generator_version|2025.1.0-beta}}</vt:lpwstr>
+  </property>
+
+  <property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="24" name="Last_Token_Sync">
+    <vt:filetime>{{system.last_token_sync|2025-01-15T10:00:00Z}}</vt:filetime>
+  </property>
+
+</Properties>

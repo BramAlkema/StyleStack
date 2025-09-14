@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:presentation xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" 
+                xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" 
+                xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">
+  <p:sldMasterIdLst>
+    <p:sldMasterId id="2147483648" r:id="rId1"/>
+  </p:sldMasterIdLst>
+  
+  <!-- A4 Portrait dimensions inspired by LibreOffice A4 layout -->
+  <p:sldSz cx="7772400" cy="10986120" type="custom"/>
+  <p:notesSz cx="10986120" cy="7772400"/>
+  
+  <!-- Clean default typography - OpenOffice style -->
+  <p:defaultTextStyle>
+    <a:defPPr>
+      <a:defRPr lang="en-US" sz="2400" kern="1200">
+        <a:solidFill>
+          <a:schemeClr val="tx1"/>
+        </a:solidFill>
+        <a:latin typeface="Liberation Sans"/>
+        <a:ea typeface="Noto Sans"/>
+        <a:cs typeface="Liberation Sans"/>
+      </a:defRPr>
+    </a:defPPr>
+  </p:defaultTextStyle>
+  
+  <!-- Presentation settings inspired by ODF -->
+  <p:showPr>
+    <p:present speakerNotes="1"/>
+  </p:showPr>
+</p:presentation>

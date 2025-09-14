@@ -1,0 +1,19 @@
+# OOXML Round-Trip Testing Utility Dependencies
+
+# Core Dependencies
+click>=8.0.0          # Command-line interface framework
+lxml>=4.9.0           # Fast XML processing and normalization
+python-docx>=0.8.11   # Microsoft Word document manipulation
+python-pptx>=0.6.21   # PowerPoint presentation manipulation  
+openpyxl>=3.1.0       # Excel workbook manipulation
+PyYAML>=6.0           # YAML configuration file support
+
+# Platform-specific dependencies (will be conditionally imported)
+# pywin32>=306         # Windows COM automation (Windows only)
+# uno                  # LibreOffice UNO API (Linux/macOS)
+
+# Development Dependencies
+pytest>=7.0.0         # Testing framework
+pytest-cov>=4.0.0     # Coverage reporting
+black>=22.0.0          # Code formatting
+mypy>=1.0.0           # Type checking

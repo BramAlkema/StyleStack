@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+                        xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+                        xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+                        xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+                        xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+                        xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        xmlns:dc="http://purl.org/dc/elements/1.1/"
+                        xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+                        xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+                        xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+                        xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0"
+                        xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0"
+                        xmlns:math="http://www.w3.org/1998/Math/MathML"
+                        xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0"
+                        xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0"
+                        xmlns:ooo="http://openoffice.org/2004/office"
+                        xmlns:ooow="http://openoffice.org/2004/writer"
+                        xmlns:oooc="http://openoffice.org/2004/calc"
+                        xmlns:dom="http://www.w3.org/2001/xml-events"
+                        xmlns:xforms="http://www.w3.org/2002/xforms"
+                        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xmlns:rpt="http://openoffice.org/2005/report"
+                        xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2"
+                        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+                        xmlns:grddl="http://www.w3.org/2003/g/data-view#"
+                        xmlns:officeooo="http://openoffice.org/2009/office"
+                        xmlns:tableooo="http://openoffice.org/2009/table"
+                        xmlns:drawooo="http://openoffice.org/2010/draw"
+                        xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0"
+                        xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0"
+                        xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0"
+                        xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0"
+                        xmlns:css3t="http://www.w3.org/TR/css3-text/"
+                        office:version="1.3">
+
+  <!-- StyleStack Modern Mathematical Formula Content with Design Token Integration -->
+
+  <!-- Font face declarations optimized for mathematical notation -->
+  <office:font-face-decls>
+    <style:font-face style:name="Inter" svg:font-family="{{typography.font.family|Inter}}" style:font-family-generic="swiss" style:font-pitch="variable"/>
+    <style:font-face style:name="Latin Modern Math" svg:font-family="{{typography.font.math|Latin Modern Math}}" style:font-family-generic="roman" style:font-pitch="variable"/>
+    <style:font-face style:name="STIX Two Math" svg:font-family="{{typography.font.math_alt|STIX Two Math}}" style:font-family-generic="roman" style:font-pitch="variable"/>
+    <style:font-face style:name="Liberation Serif" svg:font-family="'Liberation Serif'" style:font-family-generic="roman" style:font-pitch="variable"/>
+  </office:font-face-decls>
+
+  <!-- Automatic styles for mathematical notation -->
+  <office:automatic-styles>
+    <!-- Main formula style -->
+    <style:style style:name="fr1" style:family="graphic">
+      <style:graphic-properties fo:margin-top="{{spacing.formula.margin.top|0.2cm}}" fo:margin-bottom="{{spacing.formula.margin.bottom|0.2cm}}"
+                               style:vertical-pos="{{positioning.formula.vertical|middle}}" style:vertical-rel="{{positioning.formula.vertical_rel|baseline}}"
+                               style:horizontal-pos="{{positioning.formula.horizontal|center}}" style:horizontal-rel="{{positioning.formula.horizontal_rel|paragraph}}"
+                               fo:background-color="{{brand.colors.formula.bg|transparent}}" style:background-transparency="{{transparency.formula.bg|100%}}"
+                               draw:stroke="{{borders.formula.stroke|none}}" draw:fill="{{fills.formula.fill|none}}"/>
+    </style:style>
+
+    <!-- Mathematical text styles -->
+    <style:style style:name="T1" style:family="text">
+      <style:text-properties fo:color="{{brand.colors.math.primary|#1E293B}}" fo:font-size="{{typography.sizes.math.default|14pt}}"
+                            fo:font-family="{{typography.font.math|Latin Modern Math}}" fo:font-weight="{{typography.weight.math.default|normal}}"/>
+    </style:style>
+
+    <style:style style:name="T2" style:family="text">
+      <style:text-properties fo:color="{{brand.colors.math.variable|#0EA5E9}}" fo:font-size="{{typography.sizes.math.variable|14pt}}"
+                            fo:font-family="{{typography.font.math|Latin Modern Math}}" fo:font-style="{{typography.style.math.variable|italic}}"/>
+    </style:style>
+
+    <style:style style:name="T3" style:family="text">
+      <style:text-properties fo:color="{{brand.colors.math.function|#8B5CF6}}" fo:font-size="{{typography.sizes.math.function|14pt}}"
+                            fo:font-family="{{typography.font.math|Latin Modern Math}}" fo:font-weight="{{typography.weight.math.function|bold}}"/>
+    </style:style>
+
+    <style:style style:name="T4" style:family="text">
+      <style:text-properties fo:color="{{brand.colors.math.constant|#059669}}" fo:font-size="{{typography.sizes.math.constant|14pt}}"
+                            fo:font-family="{{typography.font.math|Latin Modern Math}}" fo:font-weight="{{typography.weight.math.constant|bold}}"/>
+    </style:style>
+
+    <!-- Display equation style -->
+    <style:style style:name="P1" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="{{alignment.formula.display|center}}" fo:margin-top="{{spacing.formula.display.top|0.3cm}}"
+                                 fo:margin-bottom="{{spacing.formula.display.bottom|0.3cm}}" fo:keep-together="{{layout.formula.keep_together|always}}"/>
+    </style:style>
+
+    <!-- Inline equation style -->
+    <style:style style:name="P2" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="{{alignment.formula.inline|start}}" fo:margin-top="{{spacing.formula.inline.top|0.1cm}}"
+                                 fo:margin-bottom="{{spacing.formula.inline.bottom|0.1cm}}"/>
+    </style:style>
+  </office:automatic-styles>
+
+  <!-- Document body containing mathematical formulas -->
+  <office:body>
+    <office:math>
+
+      <!-- Main mathematical document structure -->
+      <math:math xmlns:math="http://www.w3.org/1998/Math/MathML"
+                display="{{math.display.mode|block}}" mathsize="{{math.size.default|14pt}}"
+                mathcolor="{{brand.colors.math.primary|#1E293B}}" mathbackground="{{brand.colors.math.bg|transparent}}">
+
+        <!-- Title annotation -->
+        <math:semantics>
+          <math:annotation encoding="{{encoding.title|text/plain}}">{{formula.title|StyleStack Design System - Mathematical Formulas}}</math:annotation>
+          <math:mrow>
+            <math:mtext mathcolor="{{brand.colors.formula.title|#1E293B}}" mathsize="{{typography.sizes.formula.title|18pt}}">
+              {{formula.title|StyleStack Mathematical Notation Showcase}}
+            </math:mtext>
+          </math:mrow>
+        </math:semantics>
+
+        <!-- Algebraic expressions section -->
+        <math:mrow>
+          <math:mtable frame="{{table.frame|none}}" rowspacing="{{table.row_spacing|0.5em}}" columnspacing="{{table.column_spacing|1em}}">
+
+            <!-- Quadratic Formula -->
+            <math:mtr>
+              <math:mtd>
+                <math:mtext mathcolor="{{brand.colors.math.label|#64748B}}" mathsize="{{typography.sizes.math.label|12pt}}">
+                  {{labels.quadratic|Quadratic Formula:}}
+                </math:mtext>
+              </math:mtd>
+              <math:mtd>
+                <math:mrow>
+                  <math:mi mathvariant="{{math.variant.variable|italic}}" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">x</math:mi>
+                  <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">=</math:mo>
+                  <math:mfrac>
+                    <math:mrow>
+                      <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">−</math:mo>
+                      <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">b</math:mi>
+                      <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">±</math:mo>
+                      <math:msqrt>
+                        <math:mrow>
+                          <math:msup>
+                            <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">b</math:mi>
+                            <math:mn mathcolor="{{brand.colors.math.number|#DC2626}}">2</math:mn>
+                          </math:msup>
+                          <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">−</math:mo>
+                          <math:mn mathcolor="{{brand.colors.math.number|#DC2626}}">4</math:mn>
+                          <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">a</math:mi>
+                          <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">c</math:mi>
+                        </math:mrow>
+                      </math:msqrt>
+                    </math:mrow>
+                    <math:mrow>
+                      <math:mn mathcolor="{{brand.colors.math.number|#DC2626}}">2</math:mn>
+                      <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">a</math:mi>
+                    </math:mrow>
+                  </math:mfrac>
+                </math:mrow>
+              </math:mtd>
+            </math:mtr>
+
+            <!-- Euler's Identity -->
+            <math:mtr>
+              <math:mtd>
+                <math:mtext mathcolor="{{brand.colors.math.label|#64748B}}" mathsize="{{typography.sizes.math.label|12pt}}">
+                  {{labels.euler|Euler's Identity:}}
+                </math:mtext>
+              </math:mtd>
+              <math:mtd>
+                <math:mrow>
+                  <math:msup>
+                    <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.constant|#059669}}">e</math:mi>
+                    <math:mrow>
+                      <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.constant|#059669}}">i</math:mi>
+                      <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.constant|#059669}}">π</math:mi>
+                    </math:mrow>
+                  </math:msup>
+                  <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">+</math:mo>
+                  <math:mn mathcolor="{{brand.colors.math.number|#DC2626}}">1</math:mn>
+                  <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">=</math:mo>
+                  <math:mn mathcolor="{{brand.colors.math.number|#DC2626}}">0</math:mn>
+                </math:mrow>
+              </math:mtd>
+            </math:mtr>
+
+            <!-- Calculus - Derivative -->
+            <math:mtr>
+              <math:mtd>
+                <math:mtext mathcolor="{{brand.colors.math.label|#64748B}}" mathsize="{{typography.sizes.math.label|12pt}}">
+                  {{labels.derivative|Derivative:}}
+                </math:mtext>
+              </math:mtd>
+              <math:mtd>
+                <math:mrow>
+                  <math:mfrac>
+                    <math:mrow>
+                      <math:mi mathvariant="normal" mathcolor="{{brand.colors.math.operator|#475569}}">d</math:mi>
+                      <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.function|#8B5CF6}}">f</math:mi>
+                    </math:mrow>
+                    <math:mrow>
+                      <math:mi mathvariant="normal" mathcolor="{{brand.colors.math.operator|#475569}}">d</math:mi>
+                      <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">x</math:mi>
+                    </math:mrow>
+                  </math:mfrac>
+                  <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">=</math:mo>
+                  <math:munder>
+                    <math:mo mathcolor="{{brand.colors.math.operator|#475569}}" movablelimits="false">lim</math:mo>
+                    <math:mrow>
+                      <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">h</math:mi>
+                      <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">→</math:mo>
+                      <math:mn mathcolor="{{brand.colors.math.number|#DC2626}}">0</math:mn>
+                    </math:mrow>
+                  </math:munder>
+                  <math:mfrac>
+                    <math:mrow>
+                      <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.function|#8B5CF6}}">f</math:mi>
+                      <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">(</math:mo>
+                      <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">x</math:mi>
+                      <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">+</math:mo>
+                      <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">h</math:mi>
+                      <math:mo mathcolor="{{brand.colors.math.operator|#475569}})−</math:mo>
+                      <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.function|#8B5CF6}}">f</math:mi>
+                      <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">(</math:mo>
+                      <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">x</math:mi>
+                      <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">)</math:mo>
+                    </math:mrow>
+                    <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">h</math:mi>
+                  </math:mfrac>
+                </math:mrow>
+              </math:mtd>
+            </math:mtr>
+
+            <!-- Integral -->
+            <math:mtr>
+              <math:mtd>
+                <math:mtext mathcolor="{{brand.colors.math.label|#64748B}}" mathsize="{{typography.sizes.math.label|12pt}}">
+                  {{labels.integral|Definite Integral:}}
+                </math:mtext>
+              </math:mtd>
+              <math:mtd>
+                <math:mrow>
+                  <math:msubsup>
+                    <math:mo mathcolor="{{brand.colors.math.operator|#475569}}" largeop="true" stretchy="true">∫</math:mo>
+                    <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">a</math:mi>
+                    <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">b</math:mi>
+                  </math:msubsup>
+                  <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.function|#8B5CF6}}">f</math:mi>
+                  <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">(</math:mo>
+                  <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">x</math:mi>
+                  <math:mo mathcolor="{{brand.colors.math.operator|#475569}})></math:mo>
+                  <math:mi mathvariant="normal" mathcolor="{{brand.colors.math.operator|#475569}}">d</math:mi>
+                  <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">x</math:mi>
+                </math:mrow>
+              </math:mtd>
+            </math:mtr>
+
+            <!-- Matrix representation -->
+            <math:mtr>
+              <math:mtd>
+                <math:mtext mathcolor="{{brand.colors.math.label|#64748B}}" mathsize="{{typography.sizes.math.label|12pt}}">
+                  {{labels.matrix|Matrix:}}
+                </math:mtext>
+              </math:mtd>
+              <math:mtd>
+                <math:mrow>
+                  <math:mi mathvariant="bold" mathcolor="{{brand.colors.math.matrix|#7C3AED}}">A</math:mi>
+                  <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">=</math:mo>
+                  <math:mfenced open="{{matrix.bracket.open|[}}" close="{{matrix.bracket.close|]}}" separators="{{matrix.separators| }}">
+                    <math:mtable>
+                      <math:mtr>
+                        <math:mtd>
+                          <math:msub>
+                            <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">a</math:mi>
+                            <math:mn mathcolor="{{brand.colors.math.index|#EF4444}}">11</math:mn>
+                          </math:msub>
+                        </math:mtd>
+                        <math:mtd>
+                          <math:msub>
+                            <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">a</math:mi>
+                            <math:mn mathcolor="{{brand.colors.math.index|#EF4444}}">12</math:mn>
+                          </math:msub>
+                        </math:mtd>
+                      </math:mtr>
+                      <math:mtr>
+                        <math:mtd>
+                          <math:msub>
+                            <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">a</math:mi>
+                            <math:mn mathcolor="{{brand.colors.math.index|#EF4444}}">21</math:mn>
+                          </math:msub>
+                        </math:mtd>
+                        <math:mtd>
+                          <math:msub>
+                            <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">a</math:mi>
+                            <math:mn mathcolor="{{brand.colors.math.index|#EF4444}}">22</math:mn>
+                          </math:msub>
+                        </math:mtd>
+                      </math:mtr>
+                    </math:mtable>
+                  </math:mfenced>
+                </math:mrow>
+              </math:mtd>
+            </math:mtr>
+
+            <!-- Statistics - Normal Distribution -->
+            <math:mtr>
+              <math:mtd>
+                <math:mtext mathcolor="{{brand.colors.math.label|#64748B}}" mathsize="{{typography.sizes.math.label|12pt}}">
+                  {{labels.normal_distribution|Normal Distribution:}}
+                </math:mtext>
+              </math:mtd>
+              <math:mtd>
+                <math:mrow>
+                  <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.function|#8B5CF6}}">f</math:mi>
+                  <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">(</math:mo>
+                  <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">x</math:mi>
+                  <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">)</math:mo>
+                  <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">=</math:mo>
+                  <math:mfrac>
+                    <math:mn mathcolor="{{brand.colors.math.number|#DC2626}}">1</math:mn>
+                    <math:mrow>
+                      <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">σ</math:mi>
+                      <math:msqrt>
+                        <math:mrow>
+                          <math:mn mathcolor="{{brand.colors.math.number|#DC2626}}">2</math:mn>
+                          <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.constant|#059669}}">π</math:mi>
+                        </math:mrow>
+                      </math:msqrt>
+                    </math:mrow>
+                  </math:mfrac>
+                  <math:msup>
+                    <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.constant|#059669}}">e</math:mi>
+                    <math:mrow>
+                      <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">−</math:mo>
+                      <math:mfrac>
+                        <math:msup>
+                          <math:mrow>
+                            <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">(</math:mo>
+                            <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">x</math:mi>
+                            <math:mo mathcolor="{{brand.colors.math.operator|#475569}}">−</math:mo>
+                            <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">μ</math:mi>
+                            <math:mo mathcolor="{{brand.colors.math.operator|#475569}})></math:mo>
+                          </math:mrow>
+                          <math:mn mathcolor="{{brand.colors.math.number|#DC2626}}">2</math:mn>
+                        </math:msup>
+                        <math:mrow>
+                          <math:mn mathcolor="{{brand.colors.math.number|#DC2626}}">2</math:mn>
+                          <math:msup>
+                            <math:mi mathvariant="italic" mathcolor="{{brand.colors.math.variable|#0EA5E9}}">σ</math:mi>
+                            <math:mn mathcolor="{{brand.colors.math.number|#DC2626}}">2</math:mn>
+                          </math:msup>
+                        </math:mrow>
+                      </math:mfrac>
+                    </math:mrow>
+                  </math:msup>
+                </math:mrow>
+              </math:mtd>
+            </math:mtr>
+
+          </math:mtable>
+        </math:mrow>
+
+        <!-- Footer with StyleStack branding -->
+        <math:mrow>
+          <math:mtext mathcolor="{{brand.colors.formula.footer|#94A3B8}}" mathsize="{{typography.sizes.formula.footer|10pt}}">
+            {{formula.footer|Generated by StyleStack Design System - Professional Mathematical Notation}}
+          </math:mtext>
+        </math:mrow>
+
+      </math:math>
+
+    </office:math>
+  </office:body>
+
+</office:document-content>
