@@ -39,6 +39,12 @@ except ImportError as e:
     LicenseError = None
     EXTENSION_SYSTEM_AVAILABLE = False
 
+# Import OOXML extension manager separately for extension detection
+try:
+    from tools.ooxml_extension_manager import OOXMLExtensionManager
+except ImportError:
+    OOXMLExtensionManager = None
+
 # Import JSON-to-OOXML Processing Engine components
 try:
     from tools.patch_execution_engine import PatchExecutionEngine, ExecutionMode
@@ -565,33 +571,39 @@ def process_json_patches(context: BuildContext, pkg_dir: pathlib.Path, org: Opti
 
 def process_extension_variables(context: BuildContext, pkg_dir: pathlib.Path):
     """Process extension variables using the substitution pipeline"""
-    if not context.substitution_pipeline:
+    if not context.substitution_pipeline or not OOXMLExtensionManager:
         return
-    
+
     try:
+        manager = OOXMLExtensionManager()
+
         # Look for OOXML files that may have extension variables
         ooxml_files = []
         for ext in ["*.xml"]:
             ooxml_files.extend(pkg_dir.rglob(ext))
-        
+
         if not ooxml_files:
             return
-        
+
         # Process variables in each OOXML file
         for xml_file in ooxml_files:
             try:
-                # Check if file contains extension variables
                 content = xml_file.read_text(encoding='utf-8')
-                if 'stylestack.extension.variables' not in content:
+                extensions = manager.read_extensions_from_xml(content)
+                if not extensions:
                     continue
-                
+
+                logging.info(
+                    f"Found StyleStack extensions in {xml_file.relative_to(pkg_dir)}"
+                )
+
                 # Process the file with the substitution pipeline
                 result = context.substitution_pipeline.substitute_variables_in_document(
                     str(xml_file),
                     backup_original=True,
                     validate_result=True
                 )
-                
+
                 if not result.success:
                     context.add_error(StyleStackError(
                         f"Extension variable processing failed for {xml_file}: {result.error_message}",
@@ -599,8 +611,10 @@ def process_extension_variables(context: BuildContext, pkg_dir: pathlib.Path):
                         {"file": str(xml_file), "errors": result.validation_errors}
                     ))
                 else:
-                    context.add_warning(f"Processed extension variables in {xml_file.relative_to(pkg_dir)}")
-                    
+                    context.add_warning(
+                        f"Processed extension variables in {xml_file.relative_to(pkg_dir)}"
+                    )
+
             except Exception as e:
                 context.add_error(StyleStackError(
                     f"Failed to process extension variables in {xml_file}: {e}",
